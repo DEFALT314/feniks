@@ -40,7 +40,7 @@ function Field({ label, hint, error, id, className, children }: FieldProps) {
         </p>
       ) : null}
       {error ? (
-        <p id={`${controlId}-error`} className="text-danger text-base font-bold">
+        <p id={`${controlId}-error`} className="t-text-in text-danger text-base font-bold">
           {error}
         </p>
       ) : null}
