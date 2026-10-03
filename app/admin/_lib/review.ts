@@ -143,5 +143,11 @@ export async function reviewIdea(
     emailSent = sent.sent;
   }
 
-  return { status: "saved", message: `Zapisano: ${statusLabel.toLowerCase()}.`, emailSent };
+  // Names the idea: after a decision the panel moves on to the next idea, so "Zapisano" alone
+  // would sit under a different title
+  return {
+    status: "saved",
+    message: `„${idea.tytul}”: ${statusLabel.toLowerCase()}.`,
+    emailSent,
+  };
 }

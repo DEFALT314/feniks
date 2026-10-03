@@ -51,6 +51,8 @@ describe("reviewIdea", () => {
     const state = await reviewIdea(d, IDEA.id, { status: "zatwierdzony" });
 
     expect(state).toMatchObject({ status: "saved", emailSent: true });
+    // The panel moves on to the next idea, so the confirmation names the decided one
+    expect(state.message).toBe(`„${IDEA.tytul}”: zatwierdzony.`);
     expect(insert).toHaveBeenCalledWith({
       idea_id: IDEA.id,
       status: "zatwierdzony",
