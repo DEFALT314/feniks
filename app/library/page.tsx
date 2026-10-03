@@ -6,7 +6,7 @@ import { LibraryFilters, type InnovationSummary } from "@/lib/contracts/knowledg
 import { getAvailableFilters, getInnovations } from "./_lib/data";
 import { search } from "./_lib/search";
 import { libraryUrl } from "./_lib/url-params";
-import { filterSummary, formatResultCount, libraryTitle } from "./_lib/format";
+import { filterSummary, formatResultCount, libraryTitle, sourceBreakdown } from "./_lib/format";
 import { HashFocus } from "./_components/hash-focus";
 
 // Colors and layout per design/makiety/Biblioteka.dc.html (theme tokens from app/globals.css)
@@ -35,6 +35,7 @@ export async function generateMetadata({ searchParams }: PageProps<"/library">):
 
 export default async function LibraryPage({ searchParams }: PageProps<"/library">) {
   const { filters, available, list, summary } = await loadLibrary(searchParams);
+  const breakdown = sourceBreakdown(list.liczba, list.liczniki.z_biblioteki);
   const pageUrl = (page: number) => `${libraryUrl(filters, { page })}#${RESULTS}`;
 
   return (
@@ -151,6 +152,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
               Sortowanie: {filters.q ? "najlepiej pasujące" : "najpierw sprawdzone przez ROPS"}
             </span>
           </div>
+          {breakdown ? <p className="text-ink-muted pt-2 text-base">{breakdown}</p> : null}
 
           {list.wyniki.length === 0 ? (
             <div className="flex flex-col gap-3 py-8">

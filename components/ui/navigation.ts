@@ -9,6 +9,9 @@ const PUBLIC_ITEMS: NavItem[] = [
   { label: "Dopasuj rozwiązanie", href: "/match" },
   { label: "Biblioteka", href: "/library" },
   { label: "Mapa wyzwań", href: "/challenge-map" },
+  // Guides, glossary and ROPS reports (module II educational materials); before this it was only
+  // in the footer, where visitors did not find it
+  { label: "Wiedza", href: "/resources" },
 ];
 
 // Personal pages live in the account menu ("Imię ▾"), so the main menu fits in one row (#75)
