@@ -119,7 +119,7 @@ function InnovationCard({
             Zobacz kartę
           </Link>
           <Link
-            href={`/my/middleman?innowacja=${i.id}`}
+            href={`/my/middleman?innovation=${i.id}`}
             className={buttonVariants({ variant: "secondary" })}
           >
             Przygotuj dla mojej gminy

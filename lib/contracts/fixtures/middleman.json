@@ -74,6 +74,24 @@
       "constraints": "Brak własnego transportu, szpital powiatowy 30 km."
     },
     "status": "szkic",
-    "created_at": "2026-10-03T18:00:00Z"
+    "created_at": "2026-10-03T18:00:00Z",
+    "fit": {
+      "level": "dobra",
+      "note": "Innowację wdrażają m.in. ośrodki pomocy społecznej (OPS), więc pasuje do GOPS."
+    },
+    "materials": [
+      {
+        "label": "Karta innowacji w ROPS",
+        "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-seniorow,organizator-kompleksowej-opieki-w-miejscu-zamieszkania"
+      }
+    ],
+    "updated_at": "2026-10-03T18:00:00Z"
+  },
+  "edit": {
+    "cost_estimate": "Do ustalenia z księgową GOPS po rozmowie z autorami.",
+    "first_steps": [
+      "Rozmowa z autorami innowacji przez ROPS.",
+      "Porozumienie ze szpitalem powiatowym."
+    ]
   }
 }
