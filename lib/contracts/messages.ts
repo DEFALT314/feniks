@@ -3,9 +3,9 @@ import fixture from "./fixtures/messages.json";
 import { Role } from "./shared";
 
 // Module V: messages between ROPS, idea author and expert (P4).
-// GET  /api/wiadomosci                → Thread[] (threads I take part in)
-// GET  /api/wiadomosci/[threadId]     → ThreadWithMessages
-// POST /api/wiadomosci                NewMessageInput → Message (new thread or reply)
+// GET  /api/messages                   → Thread[] (threads I take part in)
+// GET  /api/messages/[threadId]        → ThreadWithMessages
+// POST /api/messages                   NewMessageInput → Message (new thread or reply)
 
 export const Participant = z.object({
   user_id: z.uuid(),
