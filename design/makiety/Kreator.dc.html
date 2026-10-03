@@ -51,7 +51,7 @@ a.card{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) va
 a.card:hover{border-color:#8A99C7;box-shadow:0 8px 20px -10px rgba(21,26,35,.22)}
 input:not([type=radio]):not([type=checkbox]),textarea,select{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) var(--ease)}
 input:not([type=radio]):not([type=checkbox]):hover,textarea:hover,select:hover{border-color:#4B5565}
-input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A}
+input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{outline:none;border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A,0 0 0 5px rgba(31,58,138,.18)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:1ms!important;animation-delay:0ms!important;transition-property:color,background-color,border-color,box-shadow,text-decoration-color!important}
   .btn:active{transform:none}
