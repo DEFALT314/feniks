@@ -67,17 +67,17 @@ export const GUIDES: Guide[] = [
   {
     id: "wdrozenie-w-gminie",
     title: "Jak wdrożyć sprawdzoną innowację w gminie",
-    forWhom: "Dla samorządów, OPS i instytucji",
+    forWhom: "Dla gmin, ośrodków pomocy społecznej i innych instytucji",
     intro:
       "Nie musisz wymyślać koła od nowa. W Bibliotece są rozwiązania przetestowane w Małopolsce.",
     steps: [
-      "Wybierz innowację pasującą do potrzeb mieszkańców. Zwróć uwagę na etykietę „Wybrana do upowszechniania”.",
+      "Wybierz innowację pasującą do potrzeb mieszkańców. Zwróć uwagę na etykietę „Sprawdzona przez ROPS”.",
       "Przeczytaj materiały i zasady wykorzystania na karcie innowacji.",
       "Przygotuj kartę usługi: kto ją prowadzi, ile kosztuje, od czego zacząć.",
       "Zapytaj ROPS o wsparcie i sprawdź aktualne nabory na dofinansowanie.",
     ],
     links: [
-      { label: "Biblioteka: tylko wybrane do upowszechniania", href: "/library?verified=1" },
+      { label: "Biblioteka: tylko sprawdzone przez ROPS", href: "/library?verified=1" },
       { label: "Przygotuj kartę usługi dla swojej instytucji", href: "/my/middleman" },
     ],
   },
@@ -92,11 +92,11 @@ export const GLOSSARY: { term: string; meaning: string }[] = [
   },
   {
     term: "Upowszechnianie",
-    meaning: "Przenoszenie sprawdzonej innowacji do kolejnych gmin i instytucji.",
+    meaning: "Wdrażanie sprawdzonej innowacji w kolejnych gminach i instytucjach.",
   },
   {
     term: "Nabór",
-    meaning: "Czas, w którym można złożyć wniosek o dofinansowanie pomysłu.",
+    meaning: "Czas, w którym można poprosić o pieniądze na swój pomysł.",
   },
   {
     term: "Kanwa innowacji",
