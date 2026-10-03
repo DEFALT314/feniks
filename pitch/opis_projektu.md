@@ -7,8 +7,8 @@ HubMI.pl łączy problemy społeczne Małopolski z gotowymi, przetestowanymi roz
 słowami, a sztuczna inteligencja wskazuje innowacje z Biblioteki ROPS, które już go rozwiązały, i mówi, dlaczego pasują.
 
 ## Problem
-ROPS Kraków przetestował w inkubatorach ok. 175 innowacji społecznych, a 115 z nich opisał w Bibliotece online, która
-jest „w przebudowie”. Mapa Wyzwań Społecznych wskazuje 8 obszarów i 48 kluczowych wyzwań. Gminy, organizacje
+ROPS Kraków od 10 lat testuje innowacje społeczne i ma ich w portfolio blisko 200, a 115 opisał w Bibliotece online,
+która jest „w przebudowie”. Mapa Wyzwań Społecznych wskazuje 8 obszarów i 48 kluczowych wyzwań. Gminy, organizacje
 i mieszkańcy nie mają jednego miejsca, które łączy potrzebę z rozwiązaniem, pomysłodawcę z ekspertem, a ROPS
 z wiedzą o tym, czego ludzie potrzebują.
 
@@ -16,7 +16,7 @@ z wiedzą o tym, czego ludzie potrzebują.
 Mieszkańcy i organizacje, samorządy (JST), eksperci oraz pracownicy ROPS pracują na jednej platformie:
 1. **Matchmaking społeczny**: opis problemu → obszar i wyzwanie z Mapy Wyzwań oraz do 3 innowacji z uzasadnieniem,
    cytatem i podświetlonymi słowami kluczowymi. AI wybiera tylko spośród innowacji z Biblioteki. [trafność: X% w top 3 na 230 zapytaniach testowych]
-2. **Zasobnik wiedzy**: dostępna Biblioteka [158] innowacji z filtrami, Mapa Wyzwań z personami (także jako tabele), 57 raportów i publikacji ROPS.
+2. **Zasobnik wiedzy**: dostępna Biblioteka 158 innowacji z filtrami, Mapa Wyzwań z personami (także jako tabele), 57 raportów i publikacji ROPS.
 3. **Kreator pomysłów**: kanwa innowacji społecznej krok po kroku, fiszka pomysłu, wniosek pod nabór i wizualizacja od AI.
 4. **Tester innowacji**: zapis na test, ocena i uwagi dla autora.
 5. **Komunikacja**: wątki z ROPS i ekspertami, powiadomienia w aplikacji i mailem.
