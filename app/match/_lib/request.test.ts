@@ -1,6 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 import fixture from "@/lib/contracts/fixtures/match.json";
-import { buildRequest, fetchMatch, runTwoPhase, validate, type Phase } from "./request";
+import type { MatchResponse } from "@/lib/contracts/match";
+import {
+  buildRequest,
+  fetchMatch,
+  reportNeedHref,
+  runTwoPhase,
+  validate,
+  type Phase,
+} from "./request";
 
 const values = {
   description: "  Tata wraca ze szpitala po udarze.  ",
@@ -113,5 +121,31 @@ describe("runTwoPhase", () => {
     const report = vi.fn();
     await runTwoPhase(values, report, () => current, fetcher);
     expect(report).toHaveBeenCalledTimes(1); // only "searching"
+  });
+});
+
+describe("reportNeedHref", () => {
+  const base = fixture.response as MatchResponse;
+  const parse = (href: string) => new URL(href, "http://app");
+
+  it("opens the 'Napisz do ROPS' form with the challenge as topic and the description as text", () => {
+    const url = parse(reportNeedHref(base));
+    expect(url.pathname).toBe("/my/messages/new");
+    expect(url.searchParams.get("topic")).toBe(
+      `Potrzeba: ${base.challenge!.area_name} – ${base.challenge!.challenge_text}`,
+    );
+    expect(url.searchParams.get("text")).toBe(
+      base.description_segments.map((s) => s.text).join(""),
+    );
+  });
+
+  it("without a challenge uses a plain topic", () => {
+    const url = parse(reportNeedHref({ ...base, challenge: null }));
+    expect(url.searchParams.get("topic")).toBe("Potrzeba, na którą nie znalazłem rozwiązania");
+  });
+
+  it("sends the redacted description from the response, never more than the form accepts", () => {
+    const long = { ...base, description_segments: [{ text: "x".repeat(6000), highlight: false }] };
+    expect(parse(reportNeedHref(long)).searchParams.get("text")).toHaveLength(5000);
   });
 });

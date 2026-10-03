@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import type { MatchResponse, MatchedInnovation, TextSegment } from "@/lib/contracts/match";
 import { cn } from "@/lib/utils";
 import { AiProgress } from "./ai-progress";
+import { reportNeedHref } from "../_lib/request";
 
 // The result of /match, laid out as in design/makiety/Dopasuj.dc.html: description → challenge → innovations.
 
@@ -231,7 +232,7 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
           Zgłoś potrzebę do ROPS. Trafi na Mapę Wyzwań i pomoże zaplanować kolejne nabory.
         </p>
         <Link
-          href="/my/messages"
+          href={reportNeedHref(result)}
           className={buttonVariants({ variant: weak ? "primary" : "secondary" })}
         >
           Zgłoś potrzebę
