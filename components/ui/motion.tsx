@@ -55,15 +55,24 @@ function sweep(marks: HTMLElement[], delay: number, stagger: number) {
   });
 }
 
+// While the number runs it is hidden from screen readers, which would otherwise read "0" or "17"
+// instead of the real value.
 function countUp(el: HTMLElement) {
   const target = parseCount(el.textContent);
   if (target === null) return;
+  const final = el.textContent;
   const start = performance.now();
   const frame = (now: number) => {
     const progress = (now - start) / DURATION.count;
+    if (progress >= 1) {
+      el.textContent = final;
+      el.removeAttribute("aria-hidden");
+      return;
+    }
     el.textContent = String(countAt(target, progress));
-    if (progress < 1) requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
   };
+  el.setAttribute("aria-hidden", "true");
   el.textContent = "0";
   requestAnimationFrame(frame);
 }
@@ -162,14 +171,30 @@ function playScreen(): () => void {
   const schedule = () => {
     frame ||= requestAnimationFrame(check);
   };
+  // Keyboard focus can reach a hidden child before it scrolls far enough: show it right away, or
+  // the focused element would be invisible (WCAG 2.4.7)
+  const onFocus = (event: FocusEvent) => {
+    for (const entry of [...waiting]) {
+      if (event.target instanceof Node && entry.el.contains(event.target)) {
+        waiting.splice(waiting.indexOf(entry), 1);
+        entry.cancel();
+      }
+    }
+  };
+  // Printing and "Save as PDF" take the page as it is: show everything that is still waiting
+  const onPrint = () => waiting.splice(0).forEach((entry) => entry.cancel());
   check();
   window.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", schedule, { passive: true });
+  document.addEventListener("focusin", onFocus);
+  window.addEventListener("beforeprint", onPrint);
 
   return () => {
     cancelAnimationFrame(frame);
     window.removeEventListener("scroll", schedule);
     window.removeEventListener("resize", schedule);
+    document.removeEventListener("focusin", onFocus);
+    window.removeEventListener("beforeprint", onPrint);
     waiting.splice(0).forEach(({ el, cancel }) => {
       cancel();
       seen.delete(el);
@@ -222,7 +247,16 @@ export function Motion() {
 
   useEffect(() => {
     document.addEventListener("change", onChange);
-    return () => document.removeEventListener("change", onChange);
+    // Reduced motion switched on while the page is open: finish everything at once
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onMotionPreference = () => {
+      if (query.matches) document.getAnimations().forEach((a) => a.finish());
+    };
+    query.addEventListener("change", onMotionPreference);
+    return () => {
+      document.removeEventListener("change", onChange);
+      query.removeEventListener("change", onMotionPreference);
+    };
   }, []);
 
   return null;
