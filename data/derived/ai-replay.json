@@ -1,0 +1,168 @@
+{
+  "entries": {
+    "03e0acd084ea2858f4e650a06f3ace0a21e168ab2661aadd5a03d79ff1be3b48": {
+      "note": "Problem: Samotni seniorzy na wsi z objawami depresji Candidates (json): [{\"id\":\"centrum-antydepresyjne\",\"name\":\"Centrum ",
+      "value": {
+        "picks": [
+          {
+            "id": "centrum-antydepresyjne",
+            "reason": "Pomaga seniorom z depresją w ich domach, łącząc terapię z udziałem zwierząt i wsparcie bliskich, co jest szczególnie ważne na wsi, gdzie dostęp do specjalistów jest utrudniony.",
+            "quote": "Wsparcie seniorów z depresją w ich domach z użyciem dogoterapii i felinoterapii, obejmujące też bliskich, by zmniejszyć ryzyko epizodów depresyjnych i zachowań samobójczych."
+          },
+          {
+            "id": "mobilne-centrum-pomocy-dla-osob-starszych",
+            "reason": "Dojeżdża do domów seniorów na wsi, oferując wsparcie psychologiczne i praktyczne, co przeciwdziała izolacji i pomaga w codziennych sprawach.",
+            "quote": "Mobilna usługa dojeżdżająca do domów seniorów na wsi: coaching senioralny oraz porady prawnika, dietetyka, rehabilitanta i specjalisty od budżetu domowego, dobrane do lokalnych potrzeb."
+          },
+          {
+            "id": "innowacyjna-terapia-zajeciowa-w-domu-osoby-starszej",
+            "reason": "Zapewnia terapię zajęciową w domu seniora, co aktywizuje osoby, które nie mogą wychodzić, i zmniejsza ryzyko pogłębiania się depresji.",
+            "quote": "Usługa terapii zajęciowej w domu seniora: ergoterapia, biblioterapia, muzykoterapia, hortiterapia, terapia kulinarna, trening pamięci oraz warsztaty zapobiegania upadkom."
+          }
+        ],
+        "no_match_reason": null
+      }
+    },
+    "287aa1f833acf7fc91a665cfed5916ae6b54437704177d25e69a7c464d54145f": {
+      "note": "Problem: Mama po udarze wróciła ze szpitala i jest sama w domu Candidates (json): [{\"id\":\"telerehabilitacja-oddechowa\",\"",
+      "value": {
+        "picks": [
+          {
+            "id": "organizator-kompleksowej-opieki-w-miejscu-zamieszkania",
+            "reason": "Pomaga rodzinie szybko zorganizować opiekę, sprzęt i wsparcie w domu po powrocie mamy ze szpitala.",
+            "quote": "Rodzina nie wie, jak zorganizować opiekę, sprzęt i pomoc, gdy z dnia na dzień w domu pojawia się chory wymagający stałego wsparcia."
+          },
+          {
+            "id": "terapeuta-przestrzeni",
+            "reason": "Pomaga dostosować mieszkanie do ograniczeń mamy po udarze i uczy, jak bezpiecznie się w nim poruszać.",
+            "quote": "Senior czuje, że nie radzi sobie sam w domu, co obniża jakość życia i zwiększa ryzyko trafienia do placówki całodobowej."
+          },
+          {
+            "id": "innowacyjna-terapia-zajeciowa-w-domu-osoby-starszej",
+            "reason": "Zapewnia mamie zajęcia aktywizujące w domu, co wspiera rehabilitację i zmniejsza izolację.",
+            "quote": "Seniorzy, którzy nie wychodzą z domu, nie mają dostępu do zajęć aktywizujących; zostaje im opieka lub placówka."
+          }
+        ],
+        "no_match_reason": null
+      }
+    },
+    "303209a57c18401b41352f0d5825f4967f5358692d9502f84faf5891b4a6b47c": {
+      "note": "Problem: Niewidomi petenci gubią się w urzędzie Candidates (json): [{\"id\":\"ngoz-nawigacja-glosowa-osob-zaleznych\",\"name\"",
+      "value": {
+        "picks": [
+          {
+            "id": "ngoz-nawigacja-glosowa-osob-zaleznych",
+            "reason": "Pomaga niewidomym samodzielnie poruszać się po urzędzie, bo głosowo prowadzi po budynku i mówi, gdzie są poszczególne pomieszczenia.",
+            "quote": "Głosowa nawigacja po budynku oparta na nadajnikach iBeacon, która tworzy dla osoby niewidomej mapę przestrzeni i na bieżąco mówi o położeniu, trasie i mijanych pomieszczeniach."
+          },
+          {
+            "id": "teleasystent",
+            "reason": "Daje niewidomemu zdalne wsparcie przez wideorozmowę, więc w razie zgubienia się w urzędzie może szybko uzyskać pomoc w nawigacji i kontaktach z urzędnikami.",
+            "quote": "Aplikacja na smartfon do zdalnej asysty przez wideorozmowę z nawigacją na żywo: pomoc w mieście, w kontaktach z urzędami, w domu (kuchnia, łazienka) oraz wsparcie dopasowane do potrzeb osoby."
+          },
+          {
+            "id": "drogowskazy-ajkum",
+            "reason": "Prowadzi krok po kroku po skomplikowanym budynku, co pomaga osobom z trudnościami w percepcji nie zgubić się i trafić do właściwych pomieszczeń.",
+            "quote": "System nawigacji krok po kroku po szpitalu lub centrum onkologicznym oparty na sieci punktów kontrolnych (check pointów), bez instalowania czegokolwiek na telefonie pacjenta."
+          }
+        ],
+        "no_match_reason": null
+      }
+    },
+    "7bbe8995e58b6591dcd2ac880560a45a2f6a6b36a82a2620ba8733181aadc89f": {
+      "note": "Problem: Młodzież w naszej gminie nie ma gdzie spędzać czasu po szkole Candidates (json): [{\"id\":\"czas-na-aktywnosc\",\"na",
+      "value": {
+        "picks": [
+          {
+            "id": "marimbaza",
+            "reason": "Pomaga zagospodarować czas młodzieży po szkole, angażując ją w tworzenie wydarzenia muzycznego i budowanie instrumentów, co rozwija kompetencje społeczne.",
+            "quote": "Młodzież z ośrodków szkolno-wychowawczych i socjoterapii od podstaw przygotowuje wydarzenie muzyczne i własnoręcznie buduje marimby."
+          },
+          {
+            "id": "komix-zyciowy",
+            "reason": "Daje młodzieży atrakcyjne zajęcia po szkole w formie gry terapeutycznej, która pomaga rozmawiać o emocjach i trudnych tematach.",
+            "quote": "Terapeutyczna gra planszowa dla nastolatków z pieczy zastępczej i placówek opiekuńczo-wychowawczych."
+          },
+          {
+            "id": "mpatyk",
+            "reason": "To gra, która może być wykorzystana w świetlicy lub szkole jako sposób na spędzanie czasu po lekcjach, ucząc empatii i akceptacji.",
+            "quote": "Edukacyjna, inkluzywna gra planszowa, w której gracze wcielają się w osoby z niepełnosprawnościami i mierzą się z ich codziennymi wyzwaniami."
+          }
+        ],
+        "no_match_reason": null
+      }
+    },
+    "8271771f3fe5f1d54f9a50417a05a354372004e63039c5330d9c7f2e6228d66a": {
+      "note": "Idea: Tytuł: Sąsiedzki dyżur po wypisie Opis: Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie",
+      "value": {
+        "hints": [
+          {
+            "field": "title",
+            "text": "Sąsiedzki dyżur po wypisie – wolontariusze dla seniorów",
+            "why": "Tytuł lepiej oddaje sens i zawiera słowo 'wolontariusze', co przyciąga uwagę."
+          },
+          {
+            "field": "description",
+            "text": "Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala. Pomagają w zakupach, przypominają o lekach, rozmawiają i kontaktują z ośrodkiem pomocy społecznej. Dzięki temu senior nie zostaje sam w trudnym czasie.",
+            "why": "Opis jest pełniejszy, dodano korzyść i płynność."
+          },
+          {
+            "field": "essence",
+            "text": "Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu. Sąsiedzka pomoc daje poczucie bezpieczeństwa i wsparcie.",
+            "why": "Istota zawiera dodatkowe uzasadnienie i podkreśla wartość."
+          },
+          {
+            "field": "audience",
+            "text": "Seniorzy mieszkający samotnie, którzy wracają ze szpitala i potrzebują wsparcia w codziennych czynnościach.",
+            "why": "Doprecyzowano grupę docelową i jej potrzeby."
+          }
+        ]
+      }
+    },
+    "e0848585becb92c45a9a030e8ff819a9d58b4630b948acad23e82d30ec766f11": {
+      "note": "Call: Wsparcie seniorów w miejscu zamieszkania Call goal: Usługi i rozwiązania, które pomagają osobom starszym dłużej mi",
+      "value": {
+        "sections": [
+          {
+            "key": "goal",
+            "text": "Celem jest pomoc seniorom w samodzielnym mieszkaniu we własnym domu po powrocie ze szpitala. Działanie zmniejsza samotność w pierwszych dniach po wypisie."
+          },
+          {
+            "key": "audience",
+            "text": "Seniorzy mieszkający samotnie, którzy wracają ze szpitala do domu."
+          },
+          {
+            "key": "activities",
+            "text": "Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po wypisie. Robią zakupy. Przypominają o lekach. Rozmawiają. Kontaktują seniora z ośrodkiem pomocy społecznej."
+          },
+          {
+            "key": "results",
+            "text": "Seniorzy nie zostają sami w najtrudniejszych dniach po szpitalu. Liczba odwiedzonych seniorów: [liczba seniorów]. Liczba wolontariuszy: [liczba wolontariuszy]. Liczba wizyt: [liczba wizyt]."
+          },
+          {
+            "key": "budget",
+            "text": "Kategorie kosztów: szkolenie wolontariuszy, koordynacja wizyt, materiały informacyjne, zwrot kosztów transportu dla wolontariuszy."
+          }
+        ]
+      }
+    },
+    "f5151a0dd8c52ff519bc82cfb4d8c96b7da360e42dde36527b9fe5561db48ff3": {
+      "note": "Problem: Bezdomni nie mają gdzie się umyć zimą Candidates (json): [{\"id\":\"szlakiem-ludzi-bezdomnych\",\"name\":\"Szlakiem lu",
+      "value": {
+        "picks": [
+          {
+            "id": "szlakiem-ludzi-bezdomnych",
+            "reason": "Pomaga bezdomnym zadbać o higienę zimą, bo oferuje mobilny punkt z ogrzewaną przyczepą, prysznicem i środkami czystości.",
+            "quote": "Mobilny Punkt Higieniczny: ogrzewana przyczepa sanitarna z prysznicem, umywalką, szafką na czystą bieliznę i środkami higieny, dostępna dla osób w kryzysie bezdomności."
+          },
+          {
+            "id": "przenosne-modularne-lazienki",
+            "reason": "Pomaga, bo można je ustawić w mieszkaniu bez łazienki, co daje możliwość mycia się bez remontu i formalności.",
+            "quote": "Przenośna łazienka składana z modułów, którą można ustawić w mieszkaniu bez łazienki, bez przebudowy lokalu i bez zmiany kosztów zużycia wody i prądu."
+          }
+        ],
+        "no_match_reason": null
+      }
+    }
+  }
+}
