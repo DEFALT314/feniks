@@ -12,18 +12,17 @@ import {
 
 const values = {
   description: "  Tata wraca ze szpitala po udarze.  ",
-  role: "mieszkaniec" as const,
   municipality: " ",
 };
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
 describe("buildRequest", () => {
-  it("trims the description and leaves out an empty municipality", () => {
+  it("trims the description and leaves out an empty municipality and the role", () => {
     expect(buildRequest(values, false)).toEqual({
       description: "Tata wraca ze szpitala po udarze.",
-      role: "mieszkaniec",
       ai: false,
     });
+    expect(buildRequest(values, false)).not.toHaveProperty("role");
     expect(buildRequest({ ...values, municipality: "Przykładowa Wola" }, true).municipality).toBe(
       "Przykładowa Wola",
     );
