@@ -3,6 +3,7 @@ import { Atkinson_Hyperlegible_Next, Bricolage_Grotesque } from "next/font/googl
 import { SiteFooter } from "@/components/ui/site-footer";
 import { SiteHeader } from "@/components/ui/site-header";
 import { A11Y_PLUS_SCRIPT } from "@/components/ui/text-size-toggle";
+import { getCurrentUser, headerName } from "@/lib/auth";
 import "./globals.css";
 
 // Body text: designed for low-vision readers (design/makiety/System.dc.html).
@@ -26,9 +27,10 @@ export const metadata: Metadata = {
 };
 
 // Every page renders its own <main id="main-content">, the target of the skip link.
-export default function RootLayout({ children }: LayoutProps<"/">) {
-  // TODO(P4): pass getCurrentUser() from lib/auth and the unread notification count once they exist
-  const user = null;
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // TODO(P4): pass the unread notification count (#7)
+  const current = await getCurrentUser();
+  const user = current ? { name: headerName(current), role: current.role } : null;
   return (
     <html
       lang="pl"
