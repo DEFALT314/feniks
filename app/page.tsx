@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { accountItemsFor, navItemsFor } from "@/components/ui/navigation";
 import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { getCategories, getInnovations } from "@/app/library/_lib/data";
-import { homeStats, pickFeatured, plural } from "./_lib/home";
+import { getCurrentUser, headerName } from "@/lib/auth";
+import { homeStats, personalTiles, pickFeatured, plural } from "./_lib/home";
 
 export const metadata: Metadata = {
   title: "HubMI.pl – Małopolski Hub Innowacji Społecznych",
@@ -54,6 +56,35 @@ const ENTRIES = [
   },
 ] as const;
 
+// "Jak to działa": the whole path, including how ROPS hears about it and how the answer comes back
+const STEPS = [
+  {
+    title: "Opisz sprawę swoimi słowami",
+    text: "Tak, jak opowiadasz sąsiadowi. Nie trzeba znać fachowych słów ani wypełniać wniosków.",
+  },
+  {
+    title: "Zobacz, co już działa",
+    text: "HubMI pokaże sprawdzone innowacje z Biblioteki ROPS i wyjaśni, dlaczego pasują.",
+  },
+  {
+    title: "Wyślij pomysł albo pytanie do ROPS",
+    text: "Pracownik ROPS od razu dostaje powiadomienie. Odpowiedź zobaczysz pod dzwonkiem i w poczcie e-mail.",
+  },
+] as const;
+
+// Who HubMI is for and where each of them starts (one click to their main task)
+const AUDIENCES = [
+  { who: "Mieszkańcy i opiekunowie", task: "Opisz problem", href: "/match" },
+  {
+    who: "Gminy i ośrodki pomocy społecznej",
+    task: "Przygotuj kartę usługi",
+    href: "/my/middleman",
+  },
+  { who: "Organizacje pozarządowe", task: "Zgłoś pomysł", href: "/my/creator" },
+  { who: "Eksperci i testerzy", task: "Oceń rozwiązania", href: "/my/tester" },
+  { who: "Pracownicy ROPS", task: "Otwórz Panel ROPS", href: "/admin" },
+] as const;
+
 const AI_RULES = [
   "Wybiera tylko spośród innowacji z Biblioteki ROPS.",
   "Pokazuje słowa, które zdecydowały o dopasowaniu.",
@@ -62,11 +93,13 @@ const AI_RULES = [
 ];
 
 export default async function Home() {
-  const [innovations, categories, areas] = await Promise.all([
+  const [innovations, categories, areas, user] = await Promise.all([
     getInnovations(),
     getCategories(),
     getChallengeAreas(),
+    getCurrentUser(),
   ]);
+  const tiles = user ? personalTiles(navItemsFor(user.role), accountItemsFor(user.role)) : [];
   const stats = homeStats(innovations, categories, areas);
   const categoryName = (id: string) => categories.find((k) => k.id === id)?.nazwa ?? "";
   const example = EXAMPLE_IDS.flatMap((id) => innovations.filter((i) => i.id === id));
@@ -163,6 +196,32 @@ export default async function Home() {
         </div>
       </section>
 
+      {tiles.length ? (
+        <section aria-labelledby="own-heading" className={`${WRAP} flex flex-col gap-5 pt-10`}>
+          <h2 id="own-heading" className={H2}>
+            Twoje sprawy, {headerName(user!)}
+          </h2>
+          <ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-4">
+            {tiles.map((t, i) => (
+              <li key={t.href} className="flex">
+                <Link
+                  href={t.href}
+                  className={`${CARD_LINK} group w-full gap-2 p-6 ${i === 0 ? "border-navy border-2" : ""}`}
+                >
+                  <strong className="font-heading text-xl leading-tight">
+                    {t.title}
+                    <span className={ARROW} aria-hidden="true">
+                      →
+                    </span>
+                  </strong>
+                  <span className="text-ink-muted text-base">{t.text}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       <section aria-label="Dane na start" className={`${WRAP} py-10`}>
         {/* min-w-0 and the narrower gap on phones: long words like "upowszechniania" wrap inside
             the column at 320 px with A+ instead of pushing the page sideways (WCAG 1.4.10) */}
@@ -207,6 +266,55 @@ export default async function Home() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section aria-labelledby="how-heading" className="border-line border-t bg-white">
+        <div className={`${WRAP} grid gap-x-16 gap-y-10 py-14 lg:grid-cols-[3fr_2fr]`}>
+          <div className="flex flex-col gap-6">
+            <h2 id="how-heading" className={H2}>
+              Jak to działa
+            </h2>
+            <ol className="m-0 flex list-none flex-col gap-5 p-0">
+              {STEPS.map((step, i) => (
+                <li key={step.title} className="flex gap-4">
+                  <span
+                    aria-hidden="true"
+                    className="bg-navy font-heading flex size-11 shrink-0 items-center justify-center rounded-full text-xl font-bold text-white"
+                  >
+                    {i + 1}
+                  </span>
+                  <span className="flex flex-col gap-1">
+                    <strong className="text-xl leading-snug">{step.title}</strong>
+                    <span className="text-ink-muted">{step.text}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="flex flex-col gap-4">
+            <h2 id="audience-heading" className="font-heading text-2xl leading-tight font-bold">
+              Dla kogo jest HubMI
+            </h2>
+            <ul aria-labelledby="audience-heading" className="m-0 flex list-none flex-col p-0">
+              {AUDIENCES.map((a) => (
+                <li key={a.href} className="border-line border-b last:border-b-0">
+                  <Link
+                    href={a.href}
+                    className="text-ink hover:text-navy group flex min-h-11 flex-col gap-0.5 py-3 no-underline"
+                  >
+                    <span>{a.who}</span>
+                    <span className="text-navy font-bold">
+                      {a.task}
+                      <span className={ARROW} aria-hidden="true">
+                        →
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </section>
 
       <section aria-labelledby="ai-heading" className="bg-navy-soft border-y border-[#c9d3ee]">
