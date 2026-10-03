@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
@@ -52,8 +53,9 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
             Potrzeby w regionie
           </h1>
           <p className="text-muted-foreground max-w-[760px]">
-            Problemy opisane w „Mam problem” i pomysły wysłane do ROPS, według obszarów Mapy Wyzwań.
-            Bez treści zgłoszeń i bez danych osobowych.
+            Ile razy mieszkańcy, gminy i organizacje opisali problem w „Dopasuj rozwiązanie” i ile
+            pomysłów wysłali do ROPS, według obszarów Mapy Wyzwań. Widać tylko liczby: bez treści
+            zgłoszeń i bez danych osobowych. Strona jest dostępna tylko dla pracowników ROPS.
           </p>
           <nav aria-label="Okres" className="flex flex-wrap gap-2">
             {PERIODS.map((p) => (
@@ -152,8 +154,42 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
           <p className="text-muted-foreground text-base">
             „Bez dobrego dopasowania” to problemy, na które Biblioteka nie ma jeszcze rozwiązania.
             Warto o nich pomyśleć przy kolejnym naborze.
-            {trends.unassigned > 0 ? ` Bez przypisanego obszaru: ${trends.unassigned}.` : ""}
+            {trends.unassigned > 0
+              ? ` Bez przypisanego obszaru: ${trends.unassigned} (obszar wskazuje asystent AI; gdy nie działał albo pomysł nie ma obszaru, zgłoszenie liczymy tylko w sumie).`
+              : ""}
           </p>
+        </section>
+
+        <section
+          aria-labelledby="co-zrobic"
+          className="border-border border-t-navy flex flex-col gap-3 rounded-xl border border-t-4 bg-white p-6"
+        >
+          <h2 id="co-zrobic" className="text-[1.375rem] font-bold">
+            Co możesz z tym zrobić
+          </h2>
+          <ul className="m-0 flex list-disc flex-col gap-2 pl-6">
+            <li>
+              Dużo problemów „bez dobrego dopasowania” w jednym obszarze to luka w Bibliotece.{" "}
+              <Link href="/admin/calls" className="text-navy underline underline-offset-[3px]">
+                Ogłoś nabór pomysłów w tym obszarze
+              </Link>
+              .
+            </li>
+            <li>
+              Problemy są, ale pasujące innowacje się nie pokazują? Dopisz słowa kluczowe w{" "}
+              <Link href="/admin/library" className="text-navy underline underline-offset-[3px]">
+                kartach innowacji
+              </Link>
+              .
+            </li>
+            <li>
+              Dużo pomysłów z jednego obszaru czeka na odpowiedź?{" "}
+              <Link href="/admin" className="text-navy underline underline-offset-[3px]">
+                Przejrzyj nowe pomysły
+              </Link>
+              .
+            </li>
+          </ul>
         </section>
 
         <section aria-labelledby="wyzwania" className="flex flex-col gap-3">
@@ -168,8 +204,15 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
                 <li key={c.id}>
                   <strong>{c.text}</strong>{" "}
                   <span className="text-muted-foreground text-base">
-                    ({c.areaName}, {c.count})
+                    ({c.areaName}, {c.count}{" "}
+                    {plural(c.count, "zgłoszenie", "zgłoszenia", "zgłoszeń")})
                   </span>
+                  {c.weak > 0 ? (
+                    <>
+                      {" "}
+                      <Badge variant="warning">{c.weak} bez dobrego dopasowania</Badge>
+                    </>
+                  ) : null}
                 </li>
               ))}
             </ol>
