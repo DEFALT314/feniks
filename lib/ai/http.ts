@@ -4,9 +4,10 @@ import { NextResponse } from "next/server";
 import type { z } from "zod";
 import { LlmError } from "./llm";
 import { clientIp, createRateLimiter } from "./rate-limit";
+import { DAILY_LIMIT_MESSAGE, dailyQuotaForCurrentUser } from "./usage";
 
-// One budget for all AI endpoints of the creator: 30 requests per hour per IP (#20 adds daily
-// per-user limits). Matchmaking has its own limiter in app/api/match.
+// One budget for all AI endpoints of the creator and Middleman: 30 requests per hour per IP, plus
+// a daily limit per signed-in user (lib/ai/usage.ts). Matchmaking has its own limiter in app/api/match.
 const limiter = createRateLimiter(30, 60 * 60 * 1000);
 
 export const llmConfigured = () =>
@@ -39,6 +40,8 @@ export async function readAiRequest<T>(
       }),
     };
   }
+  const daily = await dailyQuotaForCurrentUser();
+  if (!daily.ok) return { response: jsonError(DAILY_LIMIT_MESSAGE, 429) };
   return { data: parsed.data };
 }
 
