@@ -2,8 +2,13 @@
 // EMBED_URL defaults to the same deployment; EMBED_TOKEN is sent as X-Embed-Token.
 import "server-only";
 
+// In production the app calls its public domain: Vercel protects the per-deployment address
+// (VERCEL_URL) even for production deployments, so a call there gets the login page, not vectors.
 export function embedUrl(env: NodeJS.ProcessEnv = process.env): string | null {
   if (env.EMBED_URL) return env.EMBED_URL;
+  if (env.VERCEL_ENV === "production" && env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${env.VERCEL_PROJECT_PRODUCTION_URL}/api/embed`;
+  }
   if (env.VERCEL_URL) return `https://${env.VERCEL_URL}/api/embed`;
   return null;
 }
