@@ -4,24 +4,13 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Input, Textarea } from "@/components/ui/input";
-import type { MatchResponse, MatchRole } from "@/lib/contracts/match";
-import {
-  EXAMPLES,
-  MAX_LENGTH,
-  ROLE_OPTIONS,
-  runTwoPhase,
-  validate,
-  type Phase,
-} from "../_lib/request";
+import type { MatchResponse } from "@/lib/contracts/match";
+import { EXAMPLES, MAX_LENGTH, runTwoPhase, validate, type Phase } from "../_lib/request";
 import { ResultSkeleton } from "./ai-progress";
 import { MatchResult } from "./match-result";
 
-const SELECT =
-  "border-input text-ink hover:border-ink-muted focus:border-navy w-full rounded-[10px] border bg-white px-3.5 py-3 text-lg transition-[border-color,box-shadow] duration-200 focus:shadow-[0_0_0_1px_var(--navy)]";
-
 export function MatchForm({ initialDescription }: { initialDescription: string }) {
   const [description, setDescription] = useState(initialDescription);
-  const [role, setRole] = useState<MatchRole>("mieszkaniec");
   const [municipality, setMunicipality] = useState("");
   const [fieldError, setFieldError] = useState<string | null>(null);
   const [phase, setPhase] = useState<Phase>("idle");
@@ -36,7 +25,7 @@ export function MatchForm({ initialDescription }: { initialDescription: string }
     if (problem) return;
     const id = ++searchId.current;
     await runTwoPhase(
-      { description: text, role, municipality },
+      { description: text, municipality },
       (next, data, message) => {
         setPhase(next);
         setError(message);
@@ -95,22 +84,6 @@ export function MatchForm({ initialDescription }: { initialDescription: string }
             ))}
           </div>
           <div className="flex flex-wrap items-end gap-4">
-            <Field label="Pytam jako" className="flex-[1_1_240px]">
-              {(p) => (
-                <select
-                  {...p}
-                  className={SELECT}
-                  value={role}
-                  onChange={(e) => setRole(e.target.value as MatchRole)}
-                >
-                  {ROLE_OPTIONS.map((o) => (
-                    <option key={o.value} value={o.value}>
-                      {o.label}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </Field>
             <Field label="Gmina (nieobowiązkowo)" className="flex-[1_1_240px]">
               {(p) => (
                 <Input
