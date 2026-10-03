@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <title>HubMI – strona główna</title>
 <script src="./support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="./ruch.js"></script>
 </head>
 <body>
 <x-dc>
@@ -50,10 +53,6 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
   *,*::before,*::after{animation-duration:1ms!important;animation-delay:0ms!important;transition-property:color,background-color,border-color,box-shadow,text-decoration-color!important}
   .btn:active{transform:none}
 }
-/* echo momentu z /dopasuj: zakreślacz na przykładzie w hero */
-@keyframes zakresl{from{background-size:0% 100%}to{background-size:100% 100%}}
-.card mark{background-repeat:no-repeat;animation:zakresl .55s var(--ease) .5s both}
-.card mark:nth-of-type(2){animation-delay:.62s}
 </style>
 </helmet>
 <div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
@@ -61,7 +60,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
   <main id="tresc">
     <section style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
       <div class="wrap" style="padding-top: 72px; padding-bottom: 72px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
-        <div style="flex: 1 1 520px; display: flex; flex-direction: column; gap: 22px">
+        <div data-ruch="wejscie" style="flex: 1 1 520px; display: flex; flex-direction: column; gap: 22px">
           <span class="lbl">Małopolski Hub Innowacji Społecznych</span>
           <h1 class="h" style="font-size: 58px">Ktoś już to rozwiązał. Połączymy Was.</h1>
           <p style="font-size: 21px; max-width: 600px">Opisz problem swojej gminy, organizacji albo sąsiedztwa. Pokażemy sprawdzone innowacje społeczne z Małopolski i pomożemy je u Was wdrożyć.</p>
@@ -70,7 +69,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
             <a class="btn btn-s" href="Kreator.dc.html">Mam własny pomysł</a>
           </div>
         </div>
-        <div class="card" style="flex: 1 1 420px; padding: 28px; display: flex; flex-direction: column; gap: 16px; border-color: #B8C0CD">
+        <div class="card" data-ruch="wejscie zakresl" style="flex: 1 1 420px; padding: 28px; display: flex; flex-direction: column; gap: 16px; border-color: #B8C0CD">
           <span class="lbl">Tak to wygląda</span>
           <p style="font-size: 19px">„Tata wraca <mark>ze szpitala</mark> po udarze. Nie wiemy, jak zorganizować <mark>opiekę w domu</mark>.”</p>
           <div style="border-top: 1px solid #D9DDE4; padding-top: 16px; display: flex; flex-direction: column; gap: 6px">
@@ -85,16 +84,16 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
       </div>
     </section>
 
-    <section aria-label="Dane na start" class="wrap" style="padding-top: 40px; padding-bottom: 40px; display: flex; flex-wrap: wrap; gap: 24px 56px">
-      <div><div class="h" style="font-size: 40px">115</div><p class="muted">innowacji w Bibliotece ROPS</p></div>
-      <div><div class="h" style="font-size: 40px">27</div><p class="muted">wybranych do upowszechniania</p></div>
-      <div><div class="h" style="font-size: 40px">48</div><p class="muted">wyzwań na Mapie Wyzwań</p></div>
-      <div><div class="h" style="font-size: 40px">9</div><p class="muted">kategorii, od seniorów po rynek pracy</p></div>
+    <section aria-label="Dane na start" class="wrap" data-ruch="pokaz" style="padding-top: 40px; padding-bottom: 40px; display: flex; flex-wrap: wrap; gap: 24px 56px">
+      <div><div class="h" data-ruch="licznik" style="font-size: 40px">115</div><p class="muted">innowacji w Bibliotece ROPS</p></div>
+      <div><div class="h" data-ruch="licznik" style="font-size: 40px">27</div><p class="muted">wybranych do upowszechniania</p></div>
+      <div><div class="h" data-ruch="licznik" style="font-size: 40px">48</div><p class="muted">wyzwań na Mapie Wyzwań</p></div>
+      <div><div class="h" data-ruch="licznik" style="font-size: 40px">9</div><p class="muted">kategorii, od seniorów po rynek pracy</p></div>
     </section>
 
     <section aria-labelledby="wejscia" class="wrap" style="padding-top: 24px; padding-bottom: 64px; display: flex; flex-direction: column; gap: 24px">
       <h2 id="wejscia" class="h" style="font-size: 34px">Od czego zaczynasz?</h2>
-      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+      <div data-ruch="pokaz" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
         <a href="Dopasuj.dc.html" class="card" style="padding: 28px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #151A23; border-top: 4px solid #1F3A8A">
           <strong class="h" style="font-size: 24px">Mam problem</strong>
           <span class="muted">Szukam sprawdzonego rozwiązania dla gminy, ośrodka, organizacji albo sąsiedztwa.</span>
@@ -119,7 +118,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
           <h2 id="ai" class="h" style="font-size: 34px">AI proponuje. Człowiek decyduje.</h2>
           <p class="muted">Model językowy pomaga zrozumieć opis i uzasadnić wybór. Nie podejmuje decyzji za nikogo.</p>
         </div>
-        <ul style="flex: 2 1 520px; margin: 0; padding-left: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px">
+        <ul data-ruch="pokaz" style="flex: 2 1 520px; margin: 0; padding-left: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px">
           <li>Wybiera tylko spośród innowacji z Biblioteki ROPS.</li>
           <li>Pokazuje słowa, które zdecydowały o dopasowaniu.</li>
           <li>Nic nie wysyła ani nie publikuje bez Twojego kliknięcia.</li>
@@ -133,7 +132,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
         <h2 id="sprawdzone" class="h" style="font-size: 34px">Wybrane do upowszechniania</h2>
         <a href="Biblioteka.dc.html" style="font-weight: 700">Cała Biblioteka<span class="arr" aria-hidden="true">→</span></a>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+      <div data-ruch="pokaz" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
         <a href="Karta.dc.html" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23">
           <span class="muted" style="font-size: 15px">Dla seniorów</span>
           <strong style="font-size: 20px; line-height: 1.35">Organizator kompleksowej opieki w miejscu zamieszkania</strong>

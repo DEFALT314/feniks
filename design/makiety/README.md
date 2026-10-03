@@ -24,3 +24,9 @@ Kolory: granat `#1F3A8A`, cegła `#C2452B` (tylko fokus i akcenty), zieleń `#1D
 drugorzędny `#4B5565`, linie `#D9DDE4`. Fonty: Bricolage Grotesque (nagłówki), Atkinson Hyperlegible Next (tekst).
 Dane na makietach są przykładowe: w aplikacji bierzemy prawdziwe z bazy, a pokazowe oznaczamy „Dane demonstracyjne”.
 Zmiany w makietach: P2 (artefakt Claude Design „HubMI.pl – makiety”), potem eksport tutaj.
+
+Ruch: `ruch.js` (GSAP 3.13 + ScrollTrigger z CDN) odtwarza ruch na każdym ekranie według atrybutów `data-ruch`
+(`wejscie`, `pokaz`, `licznik`, `slupki`, `postep`, `zakresl`, `tok`, `wybor`, `odswiez`; opis na początku pliku).
+Hover, wciśnięcie i fokus zostają w CSS. W aplikacji przenosimy te same sekwencje do komponentów przez `useGSAP()`
+z `@gsap/react` (scope = ref kontenera, `gsap.matchMedia()` dla `prefers-reduced-motion`). Moment ekranu `/dopasuj`
+to jedna oś czasu, odtwarzana od nowa po kliknięciu „Dopasuj”.

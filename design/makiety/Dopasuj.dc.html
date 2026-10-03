@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <title>HubMI – dopasuj rozwiązanie</title>
 <script src="./support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="./ruch.js"></script>
 </head>
 <body>
 <x-dc>
@@ -63,36 +66,15 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
 .ex{transition:border-color var(--ruch) var(--ease),background-color var(--ruch) var(--ease),color var(--ruch) var(--ease),transform var(--ruch-szybko) var(--ease)}
 .ex:hover{border-color:#1F3A8A;background:#F3F6FD;color:#1F3A8A}
 .ex:active{transform:scale(.985)}
-/* Moment: wynik odsłania tok rozumowania – krok po kroku, linia łączy kroki, zakreślacz pokazuje słowa, które zdecydowały */
-@keyframes krok{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes linia{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-@keyframes zakresl{from{background-size:0% 100%}to{background-size:100% 100%}}
-[aria-live] .step{animation:krok var(--ruch-wolno) var(--ease) both}
-[aria-live] .step:nth-child(2){animation-delay:.32s}
-[aria-live] .step:nth-child(3){animation-delay:.64s}
-[aria-live] .step:before{transform-origin:top;animation:linia .36s var(--ease) both}
-[aria-live] .step:nth-child(1):before{animation-delay:.2s}
-[aria-live] .step:nth-child(2):before{animation-delay:.52s}
-[aria-live] .step article{animation:krok var(--ruch-wolno) var(--ease) both}
-[aria-live] .step article:nth-child(1){animation-delay:.78s}
-[aria-live] .step article:nth-child(2){animation-delay:.86s}
-[aria-live] .step article:nth-child(3){animation-delay:.94s}
-[aria-live] mark{background-repeat:no-repeat;animation:zakresl .5s var(--ease) both}
-[aria-live] .step:nth-child(1) mark:nth-of-type(1){animation-delay:.15s}
-[aria-live] .step:nth-child(1) mark:nth-of-type(2){animation-delay:.23s}
-[aria-live] .step:nth-child(1) mark:nth-of-type(3){animation-delay:.31s}
-[aria-live] .step:nth-child(1) mark:nth-of-type(4){animation-delay:.39s}
-[aria-live] .step:nth-child(1) mark:nth-of-type(5){animation-delay:.47s}
-[aria-live] .step article mark{animation-delay:1.1s}
-[aria-live] .step article mark:nth-of-type(2){animation-delay:1.18s}
-[aria-live] .step article mark:nth-of-type(3){animation-delay:1.26s}
+/* Moment: wynik odsłania tok rozumowania krok po kroku (oś czasu GSAP w ruch.js, data-ruch="tok"); linia między krokami rośnie przez --linia */
+.step:before{transform-origin:top;transform:scaleY(var(--linia,1))}
 </style>
 </helmet>
 <div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
   <dc-import name="Naglowek" active="dopasuj" rola="mieszkaniec" kto="Stanisław" hint-size="100%,112px"></dc-import>
   <main>
     <section aria-labelledby="dop" style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
-      <div class="wrap" style="padding-top: 48px; padding-bottom: 48px; display: flex; flex-direction: column; gap: 20px; max-width: 920px">
+      <div class="wrap" data-ruch="wejscie" style="padding-top: 48px; padding-bottom: 48px; display: flex; flex-direction: column; gap: 20px; max-width: 920px">
         <h1 id="dop" class="h" style="font-size: 44px">Opisz problem, a znajdziemy, kto już go rozwiązał</h1>
         <div style="display: flex; flex-direction: column; gap: 8px">
           <label for="opis">Co się dzieje? Napisz własnymi słowami</label>
@@ -118,7 +100,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
         <h2 id="wynik" class="h" style="font-size: 32px">Wynik</h2>
         <span class="tag tag-ai">Propozycja AI, wybór należy do Ciebie</span>
       </div>
-      <ol style="list-style: none; margin: 0; padding: 0">
+      <ol data-ruch="tok" data-ruch-wyzwalacz="button.btn-p, button.ex" style="list-style: none; margin: 0; padding: 0">
         <li class="step">
           <span class="dot" aria-hidden="true">1</span>
           <h3 class="lbl" style="margin-bottom: 6px">Twój opis</h3>

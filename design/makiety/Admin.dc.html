@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <title>HubMI – panel ROPS</title>
 <script src="./support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="./ruch.js"></script>
 </head>
 <body>
 <x-dc>
@@ -69,7 +72,7 @@ tbody tr:hover{background:#F8F9FB}
   <dc-import name="Naglowek" active="admin" rola="rops" kto="Redakcja ROPS" hint-size="100%,112px"></dc-import>
   <main>
     <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
-      <div class="wrap" style="padding-top: 32px; display: flex; flex-direction: column; gap: 14px">
+      <div data-ruch="wejscie" class="wrap" style="padding-top: 32px; display: flex; flex-direction: column; gap: 14px">
         <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px"><h1 class="h" style="font-size: 40px">Panel ROPS</h1><span class="tag tag-warn">Dane demonstracyjne</span></div>
         <nav aria-label="Sekcje panelu" style="display: flex; flex-wrap: wrap; gap: 4px 28px">
           <a class="tab" href="#kolejka" aria-current="page" style="color: #1F3A8A; font-weight: 700; border-bottom-color: #1F3A8A">Nowe pomysły (3)</a>
@@ -88,7 +91,7 @@ tbody tr:hover{background:#F8F9FB}
           <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D9DDE4; border-radius: 12px">
             <table>
               <thead><tr><th scope="col">Pomysł</th><th scope="col">Autor</th><th scope="col">Obszar</th><th scope="col">Wysłano</th><th scope="col">Status</th></tr></thead>
-              <tbody>
+              <tbody data-ruch="pokaz">
                 <tr style="background: #F3F6FD"><td><a href="#p1"><strong>Sąsiedzki dyżur po wypisie</strong></a></td><td>Fundacja Dobry Start</td><td>Seniorzy</td><td>dziś 16:42</td><td><span class="tag tag-warn">W weryfikacji</span></td></tr>
                 <tr><td><a href="#p2">Kawiarenka cyfrowa w bibliotece</a></td><td>mieszkanka (konto demo)</td><td>Seniorzy</td><td>dziś 15:10</td><td><span class="tag">Nowy</span></td></tr>
                 <tr><td><a href="#p3">Mapa miejsc przyjaznych osobom w spektrum autyzmu</a></td><td>stowarzyszenie (konto demo)</td><td>Niepełnosprawność</td><td>wczoraj</td><td><span class="tag tag-err">Do poprawy</span></td></tr>
@@ -98,7 +101,7 @@ tbody tr:hover{background:#F8F9FB}
         </section>
         <section id="trendy" aria-labelledby="tr" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 14px">
           <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: baseline"><h2 id="tr" class="h" style="font-size: 22px">Zgłoszenia według obszarów Mapy Wyzwań, ostatnie 30 dni</h2><span class="tag tag-warn">Dane demonstracyjne</span></div>
-          <div role="img" aria-label="Wykres słupkowy: Seniorzy 14, Niepełnosprawność 9, Zdrowie psychiczne 7, Ubóstwo 6, Rodzina i piecza 5, Zdrowie 4, Cudzoziemcy 3, Bezdomność 2" style="display: flex; flex-direction: column; gap: 8px">
+          <div data-ruch="slupki" role="img" aria-label="Wykres słupkowy: Seniorzy 14, Niepełnosprawność 9, Zdrowie psychiczne 7, Ubóstwo 6, Rodzina i piecza 5, Zdrowie 4, Cudzoziemcy 3, Bezdomność 2" style="display: flex; flex-direction: column; gap: 8px">
             <div class="bar"><span>Seniorzy</span><span style="width: 100%"></span><span>14</span></div>
             <div class="bar"><span>Niepełnosprawność</span><span style="width: 64%"></span><span>9</span></div>
             <div class="bar"><span>Zdrowie psychiczne</span><span style="width: 50%"></span><span>7</span></div>
@@ -112,7 +115,7 @@ tbody tr:hover{background:#F8F9FB}
           <a href="#tabela" style="font-size: 16px">Pokaż dane w tabeli</a>
         </section>
       </div>
-      <aside aria-label="Szczegóły" style="flex: 1 1 340px; max-width: 400px; display: flex; flex-direction: column; gap: 20px">
+      <aside data-ruch="pokaz" aria-label="Szczegóły" style="flex: 1 1 340px; max-width: 400px; display: flex; flex-direction: column; gap: 20px">
         <div id="p1" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px; border-top: 4px solid #1F3A8A">
           <span class="lbl">Fundacja Dobry Start</span>
           <h2 class="h" style="font-size: 22px">Sąsiedzki dyżur po wypisie</h2>

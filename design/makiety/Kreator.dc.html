@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <title>HubMI – kreator pomysłów</title>
 <script src="./support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="./ruch.js"></script>
 </head>
 <body>
 <x-dc>
@@ -64,12 +67,12 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
   <dc-import name="Naglowek" active="kreator" rola="ngo" kto="Fundacja Dobry Start" hint-size="100%,112px"></dc-import>
   <main>
     <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
-      <div class="wrap" style="padding-top: 20px; padding-bottom: 20px; display: flex; flex-direction: column; gap: 10px">
+      <div data-ruch="wejscie" class="wrap" style="padding-top: 20px; padding-bottom: 20px; display: flex; flex-direction: column; gap: 10px">
         <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: baseline">
           <strong style="font-size: 18px">Nowy pomysł: Sąsiedzki dyżur po wypisie</strong>
           <span class="muted" style="font-size: 16px">Krok 1 z 22 · zapisuje się automatycznie</span>
         </div>
-        <div role="progressbar" aria-label="Postęp kreatora" aria-valuemin="1" aria-valuemax="22" aria-valuenow="1" style="height: 8px; border-radius: 999px; background: #E9ECF1; overflow: hidden"><div style="width: 4.5%; height: 100%; background: #1F3A8A"></div></div>
+        <div data-ruch="postep" role="progressbar" aria-label="Postęp kreatora" aria-valuemin="1" aria-valuemax="22" aria-valuenow="1" style="height: 8px; border-radius: 999px; background: #E9ECF1; overflow: hidden"><div style="width: 4.5%; height: 100%; background: #1F3A8A"></div></div>
       </div>
     </div>
     <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 40px; padding-top: 32px; padding-bottom: 64px">
@@ -87,8 +90,8 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
         <a class="step" href="#wplyw"><span>Wpływ</span><span class="muted" style="font-size: 15px">0/1</span></a>
         <a href="Fiszka.dc.html" style="margin-top: 12px; font-weight: 700">Podgląd fiszki<span class="arr" aria-hidden="true">→</span></a>
       </nav>
-      <section style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 22px; max-width: 680px">
-        <fieldset style="display: flex; flex-direction: column; gap: 12px">
+      <section data-ruch="pokaz" style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 22px; max-width: 680px">
+        <fieldset data-ruch="wybor" style="display: flex; flex-direction: column; gap: 12px">
           <legend class="h" style="font-size: 32px; margin-bottom: 6px">Jak bardzo źle jest ludziom bez Waszego rozwiązania?</legend>
           <p class="muted" style="margin-bottom: 4px">Wybierz jedną odpowiedź. Zawsze możesz wrócić i ją zmienić.</p>
           <sc-for list="{{opcje}}" as="o" hint-placeholder-count="4">
