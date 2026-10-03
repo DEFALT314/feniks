@@ -18,7 +18,15 @@ export async function embedQuery(
   try {
     const response = await fetcher(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json", "X-Embed-Token": env.EMBED_TOKEN },
+      headers: {
+        "Content-Type": "application/json",
+        "X-Embed-Token": env.EMBED_TOKEN,
+        // Preview deployments sit behind Vercel Authentication, which also blocks calls from the
+        // app to its own /api/embed; Vercel's bypass secret lets this server-to-server call through.
+        ...(env.VERCEL_AUTOMATION_BYPASS_SECRET
+          ? { "x-vercel-protection-bypass": env.VERCEL_AUTOMATION_BYPASS_SECRET }
+          : {}),
+      },
       body: JSON.stringify({ texts: [text], kind: "query" }),
       signal: AbortSignal.timeout(timeoutMs),
     });

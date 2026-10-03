@@ -1,0 +1,41 @@
+{"style": "no-diacritics", "query": "babcia zapomina brac lekow i myli tabletki", "expected": ["inteligentny-organizer-do-lekow"]}
+{"style": "no-diacritics", "query": "glusi nie slysza alarmu pozarowego", "expected": ["straznik"]}
+{"style": "no-diacritics", "query": "dziecko z autyzmem nie mowi", "expected": ["jezykolamacz", "piosenki-uczestniczace"]}
+{"style": "no-diacritics", "query": "osoby bezdomne zima nie maja gdzie sie wykapac", "expected": ["szlakiem-ludzi-bezdomnych"]}
+{"style": "typos", "query": "senjor nie umi obsluzyc bankomatru", "expected": ["merkury"]}
+{"style": "typos", "query": "dzieco z porazenem mózgowym nie trzyma kredki", "expected": ["edki-kredki-terapeutyczne"]}
+{"style": "typos", "query": "niewidomy niewie który autobus przyjezdza na przystanek", "expected": ["dostepny-transport-publiczny"]}
+{"style": "typos", "query": "dempresja u starszych ludzi", "expected": ["centrum-antydepresyjne"]}
+{"style": "one-word", "query": "demencja", "expected": ["bawita", "kody-qr-na-pomoc-seniorom", "korytarz-wspomnien"]}
+{"style": "one-word", "query": "bezdomność", "expected": ["szlakiem-ludzi-bezdomnych", "wiejski-program-pomocy-osobom-w-kryzysie-bezdomnosci-sciezka-feniksa"]}
+{"style": "one-word", "query": "uchodźcy", "expected": ["wortal-informacyjny", "dialog-ponad-kulturami-1", "health-guide-pl", "moj-pomocny-virtual-world", "zrozum-moja-kulture-zrozum-mnie", "bajkala"]}
+{"style": "one-word", "query": "otyłość", "expected": ["stop-otylosci-innowacyjna-metoda-pracy-z-osobami-niepelnosprawnymi-intelektualnie", "brzuszkole-brzuszek-zostaje-w-przedszkolu", "talerze-zdrowia"]}
+{"style": "one-word", "query": "insulina", "expected": ["cold-box"]}
+{"style": "two-words", "query": "samotni seniorzy", "expected": ["senior-cuder", "centrum-antydepresyjne", "edu-gra-hahaha", "spotkania-kulturlove", "mobilne-centrum-pomocy-dla-osob-starszych"]}
+{"style": "two-words", "query": "przemoc domowa", "expected": ["mobilna-pomoc-terapeutyczna"]}
+{"style": "two-words", "query": "wypalenie zawodowe", "expected": ["niewypaleni"]}
+{"style": "question", "query": "Czy macie coś dla rodziców, których dziecko właśnie dostało diagnozę niepełnosprawności?", "expected": ["to-nie-koniec-swiata-to-poczatek-swiata", "uwaznione-rodzienstwo"]}
+{"style": "question", "query": "Jak zrobić, żeby osoba na wózku mogła wjechać do naszej biblioteki?", "expected": ["puzzles-ramp"]}
+{"style": "question", "query": "Co zrobić gdy mama ze zdiagnozowanym alzheimerem wychodzi w nocy z domu?", "expected": ["kody-qr-na-pomoc-seniorom"]}
+{"style": "long-rambling", "query": "Dzień dobry, piszę w imieniu stowarzyszenia z małej gminy pod Nowym Sączem. Mamy grupę starszych pań, które przychodzą do świetlicy, ale ostatnio coraz więcej z nich ma problem z pamięcią, gubią się w rozmowie, zapominają co robiły rano. Nasza terapeutka chciałaby z nimi ćwiczyć, ale nie ma żadnych pomocy, a wszystko co jest w sklepach to zabawki dla dzieci. Budżet mamy mały.", "expected": ["bawita", "sciezka-treningu-umyslu", "therapy-set"]}
+{"style": "long-rambling", "query": "Mój brat ma 23 lata i autyzm, skończył szkołę specjalną dwa lata temu i od tamtej pory siedzi w pokoju przy komputerze, nigdzie nie pracuje, rodzice są już starsi i nie wiedzą co dalej, boją się co będzie jak ich zabraknie, w okolicy nie ma żadnych zajęć dla dorosłych z autyzmem.", "expected": ["rodzinny-system-wzajemnej-pomocy", "osa-i-eco-puzzle"]}
+{"style": "official-jargon", "query": "Deinstytucjonalizacja usług opiekuńczych – wsparcie osób niesamodzielnych po hospitalizacji w środowisku zamieszkania", "expected": ["organizator-kompleksowej-opieki-w-miejscu-zamieszkania"]}
+{"style": "official-jargon", "query": "Aktywizacja zawodowa osób z niepełnosprawnością intelektualną na otwartym rynku pracy", "expected": ["konsultant-etr", "niepelnosprawnosc-szansa-na-pelnosprawnosc-w-pracy-i-zyciu", "agencja-pracy-incydentalnej", "niewypaleni"]}
+{"style": "official-jargon", "query": "Likwidacja barier architektonicznych w obiektach użyteczności publicznej", "expected": ["puzzles-ramp", "nakreceni-na-aktywnosc", "dostepny-stol-targowy"]}
+{"style": "official-jargon", "query": "Integracja cudzoziemców w środowisku szkolnym", "expected": ["moj-pomocny-virtual-world", "zrozum-moja-kulture-zrozum-mnie", "bajkala"]}
+{"style": "english", "query": "elderly people struggle with ticket machines and ATMs", "expected": ["merkury"]}
+{"style": "english", "query": "deaf people want to learn programming", "expected": ["hear-it"]}
+{"style": "ukrainian", "query": "Моя дитина не розуміє правил у польській школі", "expected": ["moj-pomocny-virtual-world"]}
+{"style": "ukrainian", "query": "Як записатися до сімейного лікаря в Польщі?", "expected": ["health-guide-pl"]}
+{"style": "slang", "query": "dziadek totalnie ogarnia smartfona ale w urzędzie to wymiękka", "expected": ["mobilne-centrum-pomocy-dla-osob-starszych", "e-rzecznik-konsumenta-seniora", "stworzenie-narzedzia-ulatwiajacego-seniorom-prawidlowe-regulowanie-spraw-spadkowych"]}
+{"style": "slang", "query": "młodzi z bidula mają totalny chaos w głowie i nie gadają o uczuciach", "expected": ["komix-zyciowy", "marimbaza"]}
+{"style": "multi-problem", "query": "Senior mieszka sam, jest smutny, a do tego potyka się o progi w mieszkaniu", "expected": ["terapeuta-przestrzeni", "centrum-antydepresyjne", "obu-obuwie-po-domu", "senior-cuder"]}
+{"style": "multi-problem", "query": "Rodzina z dzieckiem na wózku nie może zrobić zakupów ani wjechać do sklepu", "expected": ["zakupy-na-jednym-wozku-z-dzieckiem-z-niepelnosprawnoscia-ruchowa", "puzzles-ramp", "zakupy-bez-barier"]}
+{"style": "solution-phrased", "query": "szukamy gry planszowej dla osób z niepełnosprawnością intelektualną o załatwianiu spraw w urzędzie", "expected": ["urzedowy-ambaras", "zalatw-to-sam"]}
+{"style": "solution-phrased", "query": "aplikacja VR do ćwiczenia wychodzenia z domu", "expected": ["podroz-poza-domem-w-wirtualnej-rzeczywistosci"]}
+{"style": "solution-phrased", "query": "pies w terapii dzieci", "expected": ["bez-stresu-do-sukcesu-terapia-neurologiczna-przyjazna-dziecku", "centrum-antydepresyjne"]}
+{"style": "indirect", "query": "pracujemy w muzeum i chcemy przyjmować wszystkich zwiedzających", "expected": ["my-way-to-culture", "ta-sciezka-terapeutyczna-sciezka-kulturowa-dla-dzieci-i-doroslych-z-autyzmem"]}
+{"style": "indirect", "query": "organizujemy dni miasta, co zrobić dla niewidomych uczestników", "expected": ["wsparcie-imprez-masowych-dla-osob-z-niepelnosprawnoscia-wzroku"]}
+{"style": "indirect", "query": "w naszym sklepie klienci z niepełnosprawnością nie radzą sobie z zakupami", "expected": ["zakupy-bez-barier", "zakupy-na-jednym-wozku-z-dzieckiem-z-niepelnosprawnoscia-ruchowa"]}
+{"style": "emotional", "query": "nie daję już rady, opiekuję się mężem po udarze sama i nie wiem co robić", "expected": ["organizator-kompleksowej-opieki-w-miejscu-zamieszkania", "bawita", "biustspinka"]}
+{"style": "emotional", "query": "mam 17 lat, wróciłam po psychiatryku i boję się iść do klasy", "expected": ["bez-presji-z-depresji"]}
