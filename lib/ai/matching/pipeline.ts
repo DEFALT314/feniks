@@ -57,39 +57,9 @@ export type MatchStats = {
 };
 
 const MORE = 5;
-// All challenges (48 today): their texts are short, so their vectors lie close together (0.76–0.79
-// for "Nikt mnie nie odwiedza…") and the right area's challenges often miss a top 10. Ranking them
-// all is cheap and lets the area of the recommendation decide.
-const CHALLENGE_CANDIDATES = 100;
-
-// The challenge comes from the area of the top recommendation (then of any recommendation): a short
-// challenge text alone can mislead ("siedzę sam w mieszkaniu" was closest to "Nierozdzielanie
-// rodzeństwa przy umieszczaniu w pieczy"). With recommendations but no matching area, no challenge
-// is better than an off-topic one; without recommendations the plain best match is shown.
-export function chooseChallenge(
-  hits: VectorHit[],
-  areas: AreaWithChallenges[],
-  pickedCategories: string[],
-): MatchResponse["challenge"] {
-  const located = hits.flatMap((hit) => {
-    const area = areas.find((a) => a.wyzwania.some((w) => w.id === hit.ref_id));
-    const found = area?.wyzwania.find((w) => w.id === hit.ref_id);
-    return area && found ? [{ area, found }] : [];
-  });
-  const inArea = (categories: string[]) =>
-    located.find(({ area }) => categories.some((c) => area.kategorie_biblioteki.includes(c)));
-  const preferred = pickedCategories.length
-    ? (inArea(pickedCategories.slice(0, 1)) ?? inArea(pickedCategories))
-    : located[0];
-  return preferred
-    ? {
-        area_id: preferred.area.id,
-        area_name: preferred.area.nazwa,
-        challenge_id: preferred.found.id,
-        challenge_text: preferred.found.tekst,
-      }
-    : null;
-}
+// The challenge is named by the AI from the whole Challenges Map (rerank.ts). Without the AI no
+// challenge is shown: vectors of the short challenge texts put 44% of everyday queries in a wrong
+// area (evals/results.md), and a wrong challenge would also skew the ROPS trends.
 function challengeById(
   areas: AreaWithChallenges[],
   id: string | null | undefined,
@@ -147,19 +117,14 @@ export async function runMatch(
 
   const vector = await deps.embedQuery(description);
   const similarities = new Map<string, number>();
-  let challengeHits: VectorHit[] = [];
   let retrieval: Retrieval = { mode: "keywords", reason: "no-embed" };
   if (vector) {
     let failed = false;
     const fail = () => ((failed = true), [] as VectorHit[]);
-    const [innovationHits, challenges] = await Promise.all([
-      deps.vectorSearch(vector, "innovation", 50).catch(fail),
-      deps.vectorSearch(vector, "challenge", CHALLENGE_CANDIDATES).catch(fail),
-    ]);
+    const innovationHits = await deps.vectorSearch(vector, "innovation", 50).catch(fail);
     for (const hit of innovationHits) {
       if (byId.has(hit.ref_id)) similarities.set(hit.ref_id, hit.similarity);
     }
-    challengeHits = challenges;
     retrieval = similarities.size
       ? { mode: "hybrid" }
       : { mode: "keywords", reason: failed ? "vector-error" : "no-vectors" };
@@ -193,13 +158,7 @@ export async function runMatch(
       }));
   if (ai && !ai.picks.length) weak = true;
 
-  const challenge =
-    challengeById(deps.areas, ai?.challengeId) ??
-    chooseChallenge(
-      challengeHits,
-      deps.areas,
-      picks.map((p) => byId.get(p.id)!.kategoria_id),
-    );
+  const challenge = challengeById(deps.areas, ai?.challengeId);
 
   const innovations: MatchedInnovation[] = picks.map((p) => {
     const i = byId.get(p.id)!;

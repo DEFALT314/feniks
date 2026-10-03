@@ -5,8 +5,12 @@
 //   NEXT_PUBLIC_SUPABASE_URL=… NEXT_PUBLIC_SUPABASE_ANON_KEY=… EMBED_URL=… EMBED_TOKEN=… \
 //     NODE_OPTIONS=--conditions=react-server npx tsx evals/match-accuracy.ts [--ai 25]
 //
-// --ai N also runs the LLM step on the first N ROPS queries (LLM_* variables; the free tier is
-// limited, so it is a sample). Without the database/embedding service it measures keywords only.
+// --ai N also runs the LLM step on the first N ROPS queries and on all challenge queries (LLM_*
+// variables). Without the database/embedding service it measures keywords only.
+//
+// Challenges: evals/challenge_queries.jsonl has one everyday query per challenge of the Challenges
+// Map (48, written by P3) with the acceptable challenge ids; it reports the right area, the right
+// challenge and "off-topic" (a challenge from a wrong area, worse than none).
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createClient } from "@supabase/supabase-js";
@@ -44,6 +48,15 @@ const SETS: { name: string; note: string; cases: Case[] }[] = [
     cases: load("evals/atypical_queries.jsonl", "query", "expected"),
   },
 ];
+type ChallengeCase = { query: string; area: string; challenges: string[] };
+const CHALLENGE_CASES: ChallengeCase[] = readFileSync(
+  join(ROOT, "evals/challenge_queries.jsonl"),
+  "utf8",
+)
+  .trim()
+  .split("\n")
+  .map((line) => JSON.parse(line));
+
 const NO_ANSWER = load("evals/no_answer_queries.jsonl", "query", "query").map((c) => c.query);
 
 const aiSample = Number(process.argv[process.argv.indexOf("--ai") + 1]) || 0;
@@ -86,6 +99,39 @@ async function score(cases: Case[], deps: MatchDeps): Promise<Score> {
   return s;
 }
 
+type ChallengeScore = {
+  area: number;
+  challenge: number;
+  offTopic: number;
+  none: number;
+  n: number;
+};
+
+async function scoreChallenges(deps: MatchDeps): Promise<ChallengeScore> {
+  const s = { area: 0, challenge: 0, offTopic: 0, none: 0, n: CHALLENGE_CASES.length };
+  const areaOf = new Map(deps.areas.flatMap((a) => a.wyzwania.map((w) => [w.id, a.id])));
+  for (const c of CHALLENGE_CASES) {
+    const { response } = await runMatch({ description: c.query }, deps);
+    const got = response.challenge;
+    if (!got) {
+      s.none++;
+      continue;
+    }
+    const okAreas = new Set([c.area, ...c.challenges.map((id) => areaOf.get(id))]);
+    if (okAreas.has(got.area_id)) s.area++;
+    else s.offTopic++;
+    if (got.challenge_id && c.challenges.includes(got.challenge_id)) s.challenge++;
+  }
+  return s;
+}
+
+function challengeLine(label: string, s: ChallengeScore) {
+  console.log(
+    `challenges ${label}: area ${pct(s.area, s.n)}  challenge ${pct(s.challenge, s.n)}  off-topic ${pct(s.offTopic, s.n)}  none ${pct(s.none, s.n)}`,
+  );
+  return `| ${label} | ${s.n} | ${pct(s.area, s.n)} | **${pct(s.challenge, s.n)}** | ${pct(s.offTopic, s.n)} | ${pct(s.none, s.n)} |`;
+}
+
 async function main() {
   const mode = db ? "vectors + keywords" : "keywords only (no database)";
   const lines = [
@@ -120,13 +166,24 @@ async function main() {
     `White spots: ${pct(flagged, NO_ANSWER.length)} of ${NO_ANSWER.length} problems outside the Library flagged as \"no match\" (without AI).`,
   );
 
+  const withAi: MatchDeps = {
+    ...baseDeps,
+    rerank: (d, c, ch) => rerank(d, c, {}, ch),
+  };
+  lines.push(
+    "",
+    "## Challenge from the Challenges Map",
+    "",
+    "One everyday query per challenge (48, `evals/challenge_queries.jsonl`, written by P3). Off-topic = a challenge from a wrong area. Without AI no challenge is shown on purpose: vectors of the short challenge texts put 44% of these queries in a wrong area.",
+    "",
+    "| mode | queries | right area | right challenge | off-topic | none |",
+    "|---|---|---|---|---|---|",
+    challengeLine("without AI", await scoreChallenges({ ...baseDeps })),
+  );
+  if (aiSample) lines.push(challengeLine("with AI", await scoreChallenges(withAi)));
+
   if (aiSample) {
     const sample = SETS[0].cases.slice(0, aiSample);
-    const withAi = {
-      ...baseDeps,
-      rerank: (d: string, c: Parameters<typeof rerank>[1], ch: Parameters<typeof rerank>[3]) =>
-        rerank(d, c, {}, ch),
-    };
     const started = Date.now();
     const s = await score(sample, withAi);
     const seconds = Math.round((Date.now() - started) / 1000 / sample.length);
