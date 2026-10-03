@@ -4,12 +4,14 @@ import {
   changePassword,
   recordConsent,
   requestPasswordReset,
+  resendConfirmation,
   signInWithPassword,
   signUpWithPassword,
 } from "./login";
 import { mockAuthClient } from "./supabase-auth-mock";
 
 const RESET_REDIRECT = "https://hubmi.example/auth/confirm?next=%2Fupdate-password";
+const CONFIRM_REDIRECT = "https://hubmi.example/auth/confirm?next=%2F";
 
 describe("signInWithPassword", () => {
   it("signs in with a normalized address", async () => {
@@ -103,15 +105,80 @@ describe("signUpWithPassword", () => {
     if (!result.ok) expect(result.state.message).toMatch(/już istnieje/);
   });
 
-  it("explains when Supabase still requires e-mail confirmation", async () => {
-    const { client } = mockAuthClient({
+  it("asks to check the inbox when Supabase requires e-mail confirmation", async () => {
+    const { client, auth } = mockAuthClient({
       signUp: { data: { user: { id: "u4", identities: [{}] }, session: null } },
     });
 
-    const result = await signUpWithPassword(client, valid);
+    const result = await signUpWithPassword(client, valid, CONFIRM_REDIRECT);
 
     expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.state.message).toMatch(/potwierdzenia/);
+    if (!result.ok) {
+      expect(result.state.status).toBe("sent");
+      expect(result.state.message).toMatch(/Kliknij go, żeby potwierdzić konto/);
+    }
+    expect(auth.signUp).toHaveBeenCalledWith(
+      expect.objectContaining({ options: { emailRedirectTo: CONFIRM_REDIRECT } }),
+    );
+  });
+});
+
+describe("unconfirmed accounts", () => {
+  it("flags a sign-in refused because the address is not confirmed", async () => {
+    const { client } = mockAuthClient({
+      signInWithPassword: {
+        error: { code: "email_not_confirmed", message: "Email not confirmed" },
+      },
+    });
+
+    const result = await signInWithPassword(client, { email: "anna@example.org", password: "x" });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.state.unconfirmed).toBe(true);
+      expect(result.state.message).toMatch(/nie jest jeszcze potwierdzony/);
+    }
+  });
+
+  it("does not flag wrong passwords as unconfirmed", async () => {
+    const { client } = mockAuthClient({
+      signInWithPassword: {
+        error: { code: "invalid_credentials", message: "Invalid login credentials" },
+      },
+    });
+    const result = await signInWithPassword(client, { email: "anna@example.org", password: "x" });
+    if (!result.ok) expect(result.state.unconfirmed).toBeUndefined();
+  });
+
+  it("resends the confirmation link to /auth/confirm", async () => {
+    const { client, auth } = mockAuthClient({});
+
+    const state = await resendConfirmation(
+      client,
+      { email: " Anna@Example.org " },
+      CONFIRM_REDIRECT,
+    );
+
+    expect(state.status).toBe("sent");
+    expect(auth.resend).toHaveBeenCalledWith({
+      type: "signup",
+      email: "anna@example.org",
+      options: { emailRedirectTo: CONFIRM_REDIRECT },
+    });
+  });
+
+  it("explains when Supabase cannot send the confirmation e-mail", () => {
+    expect(authErrorMessage({ status: 500, message: "Error sending confirmation email" })).toMatch(
+      /Nie udało się wysłać maila/,
+    );
+  });
+
+  it("keeps the resend option on errors", async () => {
+    const { client } = mockAuthClient({
+      resend: { error: { status: 429, message: "rate limit" } },
+    });
+    const state = await resendConfirmation(client, { email: "anna@example.org" }, CONFIRM_REDIRECT);
+    expect(state).toMatchObject({ status: "error", unconfirmed: true });
   });
 });
 

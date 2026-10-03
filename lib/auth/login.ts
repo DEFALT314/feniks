@@ -9,6 +9,8 @@ export type AuthFormState = {
   email?: string;
   message?: string;
   fieldErrors?: Partial<Record<FieldName, string>>;
+  // Sign-in refused because the address is not confirmed yet: offer to resend the link.
+  unconfirmed?: boolean;
 };
 
 type FormFields = Record<string, FormDataEntryValue | null>;
@@ -45,8 +47,15 @@ export function authErrorMessage(error: { message?: string; code?: string; statu
   if (t.includes("same_password") || t.includes("different from the old")) {
     return "Nowe hasło musi się różnić od poprzedniego.";
   }
+  if (
+    t.includes("error sending") ||
+    t.includes("sending confirmation") ||
+    t.includes("sending recovery")
+  ) {
+    return "Nie udało się wysłać maila na ten adres. Spróbuj za chwilę albo skorzystaj z wersji pokazowej.";
+  }
   if (t.includes("email_not_confirmed") || t.includes("not confirmed")) {
-    return "Ten adres e-mail nie jest jeszcze potwierdzony.";
+    return "Ten adres e-mail nie jest jeszcze potwierdzony. Kliknij link z maila, który wysłaliśmy przy rejestracji.";
   }
   return "Coś poszło nie tak. Spróbuj ponownie za chwilę.";
 }
@@ -75,6 +84,7 @@ export async function signInWithPassword(
         status: "error",
         email: parsed.data.email,
         message: error ? authErrorMessage(error) : "Nie udało się zalogować.",
+        unconfirmed: error ? isUnconfirmed(error) || undefined : undefined,
       },
     };
   }
@@ -88,6 +98,7 @@ export async function signInWithPassword(
 export async function signUpWithPassword(
   supabase: SupabaseClient<Database>,
   fields: FormFields,
+  emailRedirectTo?: string,
 ): Promise<AuthResult> {
   const email = text(fields.email);
   const parsed = SignUpInput.safeParse({
@@ -104,6 +115,8 @@ export async function signUpWithPassword(
   const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
+    // The confirmation link comes back to /auth/confirm, which also stores the consent.
+    options: emailRedirectTo ? { emailRedirectTo } : undefined,
   });
   if (error) {
     return {
@@ -122,13 +135,14 @@ export async function signUpWithPassword(
       },
     };
   }
+  // "Confirm email" is on in Supabase: no session until the link in the e-mail is clicked.
   if (!data.user || !data.session) {
     return {
       ok: false,
       state: {
-        status: "error",
+        status: "sent",
         email: parsed.data.email,
-        message: "Konto założone, ale wymaga potwierdzenia adresu e-mail. Sprawdź skrzynkę.",
+        message: confirmationSentMessage(parsed.data.email),
       },
     };
   }
@@ -172,4 +186,44 @@ export async function recordConsent(supabase: SupabaseClient<Database>, userId: 
     .update({ zgoda_rodo_at: new Date().toISOString() })
     .eq("id", userId)
     .is("zgoda_rodo_at", null);
+}
+
+export function isUnconfirmed(error: { message?: string; code?: string }): boolean {
+  const t = `${error.code ?? ""} ${error.message ?? ""}`.toLowerCase();
+  return t.includes("email_not_confirmed") || t.includes("not confirmed");
+}
+
+export function confirmationSentMessage(email: string): string {
+  return `Wysłaliśmy link na adres ${email}. Kliknij go, żeby potwierdzić konto. Sprawdź też folder Spam.`;
+}
+
+/** Sends the sign-up confirmation link again (for "Ten adres nie jest jeszcze potwierdzony"). */
+export async function resendConfirmation(
+  supabase: SupabaseClient<Database>,
+  fields: FormFields,
+  emailRedirectTo: string,
+): Promise<AuthFormState> {
+  const email = text(fields.email);
+  const parsed = PasswordResetInput.safeParse({ email });
+  if (!parsed.success) {
+    return { status: "error", email, fieldErrors: firstErrors(parsed.error.issues) };
+  }
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email: parsed.data.email,
+    options: { emailRedirectTo },
+  });
+  if (error) {
+    return {
+      status: "error",
+      email: parsed.data.email,
+      message: authErrorMessage(error),
+      unconfirmed: true,
+    };
+  }
+  return {
+    status: "sent",
+    email: parsed.data.email,
+    message: confirmationSentMessage(parsed.data.email),
+  };
 }
