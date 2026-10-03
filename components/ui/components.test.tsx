@@ -74,13 +74,11 @@ describe("SiteHeader", () => {
     expect(html).not.toContain("Wersja pokazowa");
   });
 
-  it("links the signed-in user's name to the profile page", () => {
+  it("links the profile page from the account menu", () => {
     const html = renderToStaticMarkup(
       <SiteHeader user={{ name: "Stanisław", role: "mieszkaniec" }} />,
     );
-    expect(linkTag(html, "/my/profile")).toContain(
-      'aria-label="Twój profil: Stanisław, mieszkaniec"',
-    );
+    expect(html).toMatch(/<a [^>]*href="\/my\/profile"[^>]*>Twój profil<\/a>/);
   });
 
   it("marks the current section and shows the signed-in user", () => {
@@ -88,10 +86,29 @@ describe("SiteHeader", () => {
       <SiteHeader user={{ name: "Stanisław", role: "jst" }} unreadNotifications={2} demoMode />,
     );
     expect(linkTag(html, "/library")).toContain('aria-current="page"');
-    expect(html.match(/aria-current="page"/g)).toHaveLength(1);
+    // Once in the wide-screen menu and once in the (hidden) mobile panel
+    expect(html.match(/aria-current="page"/g)).toHaveLength(2);
     expect(html).toContain('aria-label="Powiadomienia: 2 nowe"');
     expect(html).toContain("gmina (JST)");
     expect(html).toContain("/my/middleman");
     expect(html).toContain("Wersja pokazowa");
+  });
+
+  it("keeps personal pages in the account menu and offers sign-out (#75)", () => {
+    const html = renderToStaticMarkup(<SiteHeader user={{ name: "Ewa", role: "rops_admin" }} />);
+    const mainMenu = html.match(/<nav aria-label="Menu główne"[^>]*>(.*?)<\/nav>/)?.[1] ?? "";
+    expect(mainMenu).toContain('href="/admin"');
+    expect(mainMenu).not.toContain("/my/messages");
+    expect(html).toMatch(/<button[^>]*aria-expanded="false"[^>]*>.*Ewa/);
+    expect(html).toContain('action="/auth/sign-out"');
+    expect(html).toContain("Twój profil");
+  });
+
+  it("gives narrow screens a Menu button instead of a wrapped menu", () => {
+    const html = renderToStaticMarkup(<SiteHeader user={null} />);
+    expect(html).toMatch(
+      /<button[^>]*aria-expanded="false"[^>]*aria-controls="[^"]+"[^>]*>.*Menu<\/button>/,
+    );
+    expect(html).toContain('href="/register"');
   });
 });

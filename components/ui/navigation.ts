@@ -11,7 +11,8 @@ const PUBLIC_ITEMS: NavItem[] = [
   { label: "Mapa wyzwań", href: "/challenge-map" },
 ];
 
-const SIGNED_IN_ITEMS: NavItem[] = [
+// Personal pages live in the account menu ("Imię ▾"), so the main menu fits in one row (#75)
+const ACCOUNT_ITEMS: NavItem[] = [
   { label: "Moje pomysły", href: "/my/creator" },
   { label: "Testy", href: "/my/tester" },
   { label: "Wiadomości", href: "/my/messages" },
@@ -26,16 +27,24 @@ const ROLE_LABELS: Record<Role, string> = {
   rops_admin: "administracja ROPS",
 };
 
-// Main menu per design/makiety/Naglowek.dc.html: personal pages only when signed in,
-// "Karta usługi" for municipalities and NGOs, "Panel ROPS" for ROPS staff.
+// Main menu per design/makiety/Naglowek.dc.html: public pages for everyone, "Panel ROPS" for ROPS
+// staff. Short enough to stay in one row from 1024 px up, for every role (#75).
 export function navItemsFor(role: Role | null): NavItem[] {
-  if (!role) return PUBLIC_ITEMS;
-  const items = [...PUBLIC_ITEMS, ...SIGNED_IN_ITEMS];
-  if (role === "jst" || role === "ngo")
-    items.push({ label: "Karta usługi", href: "/my/middleman" });
+  const items = [...PUBLIC_ITEMS];
   if (role === "rops_redaktor" || role === "rops_admin") {
     items.push({ label: "Panel ROPS", href: "/admin" });
   }
+  return items;
+}
+
+// Account menu of a signed-in user: personal pages, "Karta usługi" for municipalities and NGOs,
+// then the profile. Empty for visitors.
+export function accountItemsFor(role: Role | null): NavItem[] {
+  if (!role) return [];
+  const items = [...ACCOUNT_ITEMS];
+  if (role === "jst" || role === "ngo")
+    items.push({ label: "Karta usługi", href: "/my/middleman" });
+  items.push({ label: "Twój profil", href: "/my/profile" });
   return items;
 }
 
