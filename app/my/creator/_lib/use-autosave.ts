@@ -19,6 +19,7 @@ export function useAutosave<T>(save: (key: string, value: T) => Promise<Result>)
   const pending = useRef(new Map<string, { value: T; timer: ReturnType<typeof setTimeout> }>());
   const failed = useRef(new Map<string, { value: T; error: string }>());
   const inFlight = useRef(0);
+  const running = useRef(new Set<Promise<boolean>>());
   const saveRef = useRef(save);
   useEffect(() => {
     saveRef.current = save;
@@ -37,7 +38,7 @@ export function useAutosave<T>(save: (key: string, value: T) => Promise<Result>)
     }
   }, []);
 
-  const run = useCallback(
+  const runOnce = useCallback(
     async (key: string, value: T) => {
       inFlight.current += 1;
       setStatus("saving");
@@ -59,6 +60,17 @@ export function useAutosave<T>(save: (key: string, value: T) => Promise<Result>)
     [refresh],
   );
 
+  // Every save is tracked, so flush() can wait for the ones already on their way
+  const run = useCallback(
+    (key: string, value: T) => {
+      const promise = runOnce(key, value);
+      running.current.add(promise);
+      void promise.finally(() => running.current.delete(promise));
+      return promise;
+    },
+    [runOnce],
+  );
+
   const schedule = useCallback(
     (key: string, value: T, delay = 600) => {
       const previous = pending.current.get(key);
@@ -74,8 +86,9 @@ export function useAutosave<T>(save: (key: string, value: T) => Promise<Result>)
     [run],
   );
 
-  /** Saves everything waiting or failed now; true when all of it is saved. */
+  /** Saves everything waiting or failed now and waits for saves in progress; true when all succeeded. */
   const flush = useCallback(async () => {
+    const alreadyRunning = [...running.current];
     const entries = new Map<string, T>();
     for (const [key, { value }] of failed.current) entries.set(key, value);
     for (const [key, { value, timer }] of pending.current) {
@@ -84,8 +97,11 @@ export function useAutosave<T>(save: (key: string, value: T) => Promise<Result>)
     }
     pending.current.clear();
     failed.current.clear();
-    const results = await Promise.all([...entries].map(([key, value]) => run(key, value)));
-    return results.every(Boolean);
+    const results = await Promise.all([
+      ...alreadyRunning,
+      ...[...entries].map(([key, value]) => run(key, value)),
+    ]);
+    return results.every(Boolean) && failed.current.size === 0;
   }, [run]);
 
   const hasUnsaved = useCallback(
