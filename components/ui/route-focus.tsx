@@ -17,15 +17,14 @@ export function pageStart(doc: Document = document): HTMLElement | null {
 
 // After a client-side navigation focus stays on the clicked link of the previous page. Move it to
 // the new page's heading, so keyboard users start at the content and screen readers read the title
-// (WCAG 2.4.3). The first load is left alone.
+// (WCAG 2.4.3). The first load is left alone: comparing paths, not a "first run" flag, because
+// Strict Mode runs effects twice and focusing the heading on load scrolls the header away.
 export function RouteFocus() {
   const pathname = usePathname();
-  const first = useRef(true);
+  const previous = useRef(pathname);
   useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
+    if (previous.current === pathname) return;
+    previous.current = pathname;
     focusElement(pageStart());
   }, [pathname]);
   return null;
