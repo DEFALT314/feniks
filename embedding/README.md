@@ -1,66 +1,66 @@
-# Embeddingi (P3)
+# Embeddings (P3)
 
-Zamiana tekstu na wektor znaczenia dla Matchmakingu. Model `sdadas/mmlw-e5-base` (polski, 768
-wymiarów) jako ONNX int8 z przyciętym słownikiem (łacinka i cyrylica). Działa jako funkcja Pythona
-na Vercelu, w tym samym projekcie co Next.js. Hugging Face Spaces z serwerem wymagają płatnego
-planu, a to rozwiązanie jest darmowe i nie wymaga konta na HF.
+Turns text into a meaning vector for Matchmaking. Model `sdadas/mmlw-e5-base` (Polish, 768
+dimensions) as int8 ONNX with a trimmed vocabulary (Latin and Cyrillic). Runs as a Python function
+on Vercel, in the same project as Next.js. Hugging Face Spaces with a server need a paid plan;
+this setup is free and needs no HF account.
 
 ```
 Next.js /api/match (TS)  →  POST /api/embed (api/embed.py, Python)  →  embedding/core.py
-                                   model z GitHub Release embed-model-v1, pobierany do /tmp przy zimnym starcie
+                                   model from GitHub Release embed-model-v1, downloaded to /tmp on cold start
 ```
 
 ## API
 
 ```bash
-curl $EMBED_URL                            # GET: rozgrzanie i stan, bez tokenu
+curl $EMBED_URL                            # GET: warm-up and status, no token
 curl -X POST $EMBED_URL -H "X-Embed-Token: $EMBED_TOKEN" -H 'content-type: application/json' \
   -d '{"texts": ["samotni seniorzy"], "kind": "query"}'
 # → {"model": "sdadas/mmlw-e5-base", "dim": 768, "vectors": [[0.021, ...]]}
 ```
 
-- `kind: "query"` dla tekstu od użytkownika, `"passage"` dla opisów innowacji, wyzwań i zgłoszeń.
-  Prefiksy `query: ` / `passage: ` wymagane przez model dodaje usługa.
-- Wektory mają długość 1: podobieństwo to iloczyn skalarny (w pgvector `1 - (a <=> b)`).
-- Do 256 tekstów naraz; ok. 10 ms na zapytanie po rozgrzaniu. Zimny start = pobranie 197 MB z GitHuba
-  + wczytanie (lokalnie przy łączu 6 MB/s: 31 s; na Vercelu do zmierzenia na podglądzie).
+- `kind: "query"` for user text, `"passage"` for descriptions of innovations, challenges and submissions.
+  The service adds the `query: ` / `passage: ` prefixes the model requires.
+- Vectors have length 1: similarity is the dot product (in pgvector `1 - (a <=> b)`).
+- Up to 256 texts at once; about 10 ms per query once warm. Cold start = downloading 197 MB from GitHub
+  + loading (locally on a 6 MB/s link: 31 s; on Vercel still to be measured on a preview).
 
-## Zmienne środowiskowe (Vercel, tylko serwer)
+## Environment variables (Vercel, server only)
 
-| zmienna | opis |
+| variable | description |
 |---|---|
-| `EMBED_TOKEN` | wymagany; długi losowy ciąg (`openssl rand -hex 32`), wysyłany w `X-Embed-Token` |
-| `EMBED_URL` | dla `/api/match`: `https://<domena>/api/embed`, lokalnie `http://localhost:7860/api/embed` |
+| `EMBED_TOKEN` | required; a long random string (`openssl rand -hex 32`), sent in `X-Embed-Token` |
+| `EMBED_URL` | for `/api/match`: `https://<domain>/api/embed`, locally `http://localhost:7860/api/embed` |
 
-## Plik modelu
+## Model file
 
-Model (188 MB) nie mieści się jako plik w repozytorium (limit GitHuba 100 MB), więc jest
-załącznikiem do [GitHub Release `embed-model-v1`](https://github.com/dominikjurkowski-hub/feniks/releases/tag/embed-model-v1).
-Funkcja pobiera go przy zimnym starcie i sprawdza sumy SHA-256 zapisane w `embedding/core.py`.
-Źródło: [sdadas/mmlw-e5-base](https://huggingface.co/sdadas/mmlw-e5-base), Apache-2.0.
+The model (188 MB) doesn't fit as a file in the repository (GitHub's 100 MB limit), so it is
+an asset of [GitHub Release `embed-model-v1`](https://github.com/dominikjurkowski-hub/feniks/releases/tag/embed-model-v1).
+The function downloads it on cold start and checks the SHA-256 sums stored in `embedding/core.py`.
+Source: [sdadas/mmlw-e5-base](https://huggingface.co/sdadas/mmlw-e5-base), Apache-2.0.
 
-Nowa wersja modelu (P3):
+New model version (P3):
 ```bash
-uv run embedding/export_onnx.py                      # tworzy embedding/model/ (torch tylko na czas eksportu)
+uv run embedding/export_onnx.py                      # creates embedding/model/ (torch only during export)
 gh release create embed-model-v2 embedding/model/{model.onnx,tokenizer.json,MODEL} --latest=false
-sha256sum embedding/model/*                          # → MODEL_SHA256 i MODEL_RELEASE_URL w core.py
+sha256sum embedding/model/*                          # → MODEL_SHA256 and MODEL_RELEASE_URL in core.py
 ```
 
-## Lokalnie
+## Locally
 
-`pnpm dev` nie uruchamia Pythona, więc usługa chodzi obok:
+`pnpm dev` doesn't run Python, so the service runs alongside it:
 
 ```bash
 uv venv --python 3.12 embedding/.venv
 uv pip install --python embedding/.venv/bin/python -r requirements.txt pytest
 EMBED_TOKEN=dev EMBED_MODEL_DIR=embedding/model embedding/.venv/bin/python -m embedding.serve
-embedding/.venv/bin/python -m pytest -q embedding    # testy (część na prawdziwym modelu)
+embedding/.venv/bin/python -m pytest -q embedding    # tests (some on the real model)
 ```
 
-## Konfiguracja Vercel (P4)
+## Vercel configuration (P4)
 
-Funkcja Pythona dołącza domyślnie wszystkie pliki projektu. Żeby nie przekroczyć limitu 500 MB,
-w `vercel.json` potrzebny jest wpis (do dodania przez P4):
+A Python function bundles all project files by default. To stay under the 500 MB limit,
+`vercel.json` needs this entry (to be added by P4):
 
 ```json
 "functions": {
@@ -70,15 +70,15 @@ w `vercel.json` potrzebny jest wpis (do dodania przez P4):
 }
 ```
 
-Rozgrzewanie: `GET /api/embed` co 10 minut z crona (`app/api/cron/`, P4).
+Warm-up: `GET /api/embed` every 10 minutes from a cron (`app/api/cron/`, P4).
 
-## Wektory katalogu w bazie
+## Catalog vectors in the database
 
-`scripts/embed.py` liczy wektory 124 innowacji (po kilka fragmentów, razem ze zdaniami potocznymi z
-`data/derived/plain_queries.json`), 8 obszarów i 48 wyzwań i zapisuje je do `public.embeddings`
-(migracja `202610031900_ai_tables.sql`). Wyszukiwanie: funkcja `match_embeddings(query, match_kind, match_count)`,
-innowacja liczy się najlepszym fragmentem. Skrypt najpierw nadpisuje, potem usuwa nieaktualne wiersze,
-więc wyszukiwanie działa także w trakcie odświeżania.
+`scripts/embed.py` computes vectors for 124 innovations (several chunks each, together with plain-language
+sentences from `data/derived/plain_queries.json`), 8 areas and 48 challenges and stores them in `public.embeddings`
+(migration `202610031900_ai_tables.sql`). Search: the function `match_embeddings(query, match_kind, match_count)`;
+an innovation scores by its best chunk. The script first upserts, then deletes stale rows,
+so search keeps working while it refreshes.
 
 ```bash
 EMBED_MODEL_DIR=embedding/model embedding/.venv/bin/python scripts/embed.py --dry-run
