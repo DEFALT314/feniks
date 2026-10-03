@@ -1,5 +1,5 @@
 {
-  "kategorie": [
+  "categories": [
     {
       "id": "dla-seniorow",
       "nazwa": "Dla seniorów",
@@ -51,7 +51,7 @@
       "url": null
     }
   ],
-  "lista_innowacji": {
+  "innovation_list": {
     "wyniki": [
       {
         "id": "bawita",
@@ -291,7 +291,7 @@
       "pdf": 3
     }
   },
-  "innowacja": {
+  "innovation": {
     "id": "bawita",
     "nazwa": "BaWita",
     "kategoria_id": "dla-seniorow",
@@ -343,7 +343,7 @@
     "opublikowana": true,
     "updated_at": "2026-10-03T12:00:00.000Z"
   },
-  "innowacje": [
+  "innovations": [
     {
       "id": "bawita",
       "nazwa": "BaWita",
@@ -582,7 +582,7 @@
       "updated_at": "2026-10-03T12:00:00.000Z"
     }
   ],
-  "obszary": [
+  "challenge_areas": [
     {
       "id": "rodzina-piecza",
       "nr": 1,
@@ -804,7 +804,7 @@
       "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
     }
   ],
-  "obszar_szczegoly": {
+  "challenge_area_details": {
     "id": "seniorzy",
     "nr": 8,
     "nazwa": "Seniorzy",
@@ -1010,7 +1010,7 @@
       }
     ]
   },
-  "zasoby": [
+  "resources": [
     {
       "id": "r01",
       "typ": "raport",
@@ -1057,7 +1057,7 @@
       "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/Innowacje_spoleczne_dla_dostepnosci.pdf"
     }
   ],
-  "edycja_innowacji": {
+  "innovation_edit": {
     "opis_krotki": "Poprawiony opis z panelu ROPS.",
     "sprawdzona_przez_rops": true
   }

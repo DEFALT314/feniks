@@ -1,0 +1,243 @@
+{
+  "request": {
+    "description": "Tata wraca ze szpitala po udarze, mieszka sam na wsi. Nie wiemy, jak zorganizować opiekę i sprzęt w domu.",
+    "role": "mieszkaniec",
+    "municipality": "Przykładowa Wola (gmina wiejska)"
+  },
+  "response": {
+    "description_segments": [
+      {
+        "text": "Tata wraca ",
+        "highlight": false
+      },
+      {
+        "text": "ze szpitala",
+        "highlight": true
+      },
+      {
+        "text": " po ",
+        "highlight": false
+      },
+      {
+        "text": "udarze",
+        "highlight": true
+      },
+      {
+        "text": ", mieszka sam na ",
+        "highlight": false
+      },
+      {
+        "text": "wsi",
+        "highlight": true
+      },
+      {
+        "text": ". Nie wiemy, jak zorganizować ",
+        "highlight": false
+      },
+      {
+        "text": "opiekę",
+        "highlight": true
+      },
+      {
+        "text": " i ",
+        "highlight": false
+      },
+      {
+        "text": "sprzęt w domu",
+        "highlight": true
+      },
+      {
+        "text": ".",
+        "highlight": false
+      }
+    ],
+    "challenge": {
+      "area_id": "seniorzy",
+      "area_name": "Seniorzy",
+      "challenge_id": "uslugi-dla-starzejacych",
+      "challenge_text": "Instytucje i usługi zdrowotne dopasowane do starzejącego się społeczeństwa, także z nowymi technologiami"
+    },
+    "innovations": [
+      {
+        "innovation": {
+          "id": "organizator-kompleksowej-opieki-w-miejscu-zamieszkania",
+          "nazwa": "Organizator kompleksowej opieki w miejscu zamieszkania",
+          "kategoria_id": "dla-seniorow",
+          "etykieta": "MIWS",
+          "sprawdzona_przez_rops": true,
+          "opis_krotki": "Program pilnej, wielokierunkowej pomocy w domu dla osób niesamodzielnych po wyjściu ze szpitala i ich rodzin: organizacja opieki, sprzętu i wsparcia dostosowanych do możliwości bliskich.",
+          "dla_kogo": [
+            "osoby niesamodzielne po pobycie w szpitalu",
+            "seniorzy po nagłym pogorszeniu zdrowia",
+            "rodziny i opiekunowie nieformalni"
+          ],
+          "slowa_kluczowe": [
+            "opieka domowa",
+            "wypis ze szpitala",
+            "osoba leżąca",
+            "opiekun rodzinny",
+            "niesamodzielność",
+            "opieka długoterminowa",
+            "sprzęt rehabilitacyjny",
+            "pielęgniarka",
+            "usługi opiekuńcze",
+            "senior",
+            "po szpitalu"
+          ],
+          "spoza_biblioteki": false,
+          "opis_niepelny": false,
+          "ma_film": false,
+          "ma_pdf": true,
+          "kto_moze_wdrozyc": [
+            "podmioty organizujące pielęgniarstwo opieki długoterminowej",
+            "JST",
+            "OPS"
+          ]
+        },
+        "reason": "Pomaga zorganizować opiekę i sprzęt w domu zaraz po wyjściu ze szpitala, razem z rodziną.",
+        "quote": "organizacja opieki, sprzętu i wsparcia dostosowanych do możliwości bliskich",
+        "summary_segments": [
+          {
+            "text": "Program pilnej, wielokierunkowej pomocy w domu dla osób niesamodzielnych ",
+            "highlight": false
+          },
+          {
+            "text": "po wyjściu ze szpitala",
+            "highlight": true
+          },
+          {
+            "text": " i ich rodzin: organizacja ",
+            "highlight": false
+          },
+          {
+            "text": "opieki",
+            "highlight": true
+          },
+          {
+            "text": ", ",
+            "highlight": false
+          },
+          {
+            "text": "sprzętu",
+            "highlight": true
+          },
+          {
+            "text": " i wsparcia dostosowanych do możliwości bliskich.",
+            "highlight": false
+          }
+        ],
+        "matched_keywords": ["opieka domowa", "wypis ze szpitala", "opiekun rodzinny"]
+      },
+      {
+        "innovation": {
+          "id": "terapeuta-przestrzeni",
+          "nazwa": "Terapeuta przestrzeni",
+          "kategoria_id": "dla-seniorow",
+          "etykieta": null,
+          "sprawdzona_przez_rops": true,
+          "opis_krotki": "Usługa dostosowania mieszkania seniora do jego ograniczeń niskim kosztem, połączona z treningiem poruszania się w nowej przestrzeni i wsparciem psychologicznym dla seniora i bliskich.",
+          "dla_kogo": [
+            "seniorzy mieszkający samodzielnie lub z rodziną",
+            "osoby starsze chcące zostać w swoim domu"
+          ],
+          "slowa_kluczowe": [
+            "adaptacja mieszkania",
+            "dostosowanie mieszkania",
+            "samodzielność",
+            "senior",
+            "ergonomia",
+            "upadki",
+            "bariery w domu",
+            "pozostanie w domu",
+            "niepełnosprawność ruchowa",
+            "opieka domowa",
+            "likwidacja progów"
+          ],
+          "spoza_biblioteki": false,
+          "opis_niepelny": false,
+          "ma_film": false,
+          "ma_pdf": false,
+          "kto_moze_wdrozyc": [
+            "OPS",
+            "miejskie dzienne domy pomocy społecznej",
+            "DPS",
+            "centra aktywności seniorów",
+            "NGO"
+          ]
+        },
+        "reason": "Tanio dostosowuje mieszkanie do ograniczeń seniora, żeby mógł zostać w domu.",
+        "quote": "dostosowania mieszkania seniora do jego ograniczeń niskim kosztem",
+        "summary_segments": [
+          {
+            "text": "Usługa ",
+            "highlight": false
+          },
+          {
+            "text": "dostosowania mieszkania",
+            "highlight": true
+          },
+          {
+            "text": " seniora do jego ograniczeń niskim kosztem, połączona z treningiem poruszania się w nowej przestrzeni i wsparciem psychologicznym dla seniora i bliskich.",
+            "highlight": false
+          }
+        ],
+        "matched_keywords": ["adaptacja mieszkania", "dostosowanie mieszkania"]
+      }
+    ],
+    "more": [
+      {
+        "id": "bawita",
+        "nazwa": "BaWita",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": "IWS",
+        "sprawdzona_przez_rops": true,
+        "opis_krotki": "Drewniana tablica manipulacyjna z siedmioma ruchomymi elementami, służąca do ćwiczenia pamięci, sprawności rąk i planowania dnia u osób z zaburzeniami otępiennymi.",
+        "dla_kogo": [
+          "osoby starsze z demencją we wczesnym stadium",
+          "osoby po udarze lub wylewie wymagające rehabilitacji pamięci"
+        ],
+        "slowa_kluczowe": [
+          "demencja",
+          "otępienie",
+          "alzheimer",
+          "pamięć",
+          "rehabilitacja",
+          "udar",
+          "senior",
+          "terapia zajęciowa",
+          "zaburzenia pamięci",
+          "ćwiczenia manualne",
+          "choroba otępienna"
+        ],
+        "spoza_biblioteki": false,
+        "opis_niepelny": false,
+        "ma_film": true,
+        "ma_pdf": true,
+        "kto_moze_wdrozyc": [
+          "placówki wsparcia dziennego seniorów",
+          "DPS",
+          "miejskie dzienne domy pomocy społecznej",
+          "warsztaty terapii zajęciowej",
+          "osoby indywidualne"
+        ]
+      }
+    ],
+    "match_quality": "strong",
+    "no_match_reason": null,
+    "picked_by": "ai"
+  },
+  "response_no_match": {
+    "description_segments": [
+      {
+        "text": "W gminie nie ma żłobka i rodzice nie mogą wrócić do pracy.",
+        "highlight": false
+      }
+    ],
+    "challenge": null,
+    "innovations": [],
+    "more": [],
+    "match_quality": "weak",
+    "no_match_reason": "W Bibliotece ROPS nie ma jeszcze innowacji o opiece nad małymi dziećmi. Zgłoś potrzebę, a trafi na Mapę Wyzwań.",
+    "picked_by": "ai"
+  }
+}
