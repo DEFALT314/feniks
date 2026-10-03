@@ -86,10 +86,11 @@ describe("runMatch", () => {
         },
       ],
       no_match_reason: null,
+      challenge_id: "uslugi-opiekuncze",
     });
     const { response, stats } = await runMatch(
       request,
-      deps({ rerank: (d, c) => rerank(d, c, { client }) }),
+      deps({ rerank: (d, c, ch) => rerank(d, c, { client }, ch) }),
     );
     expect(MatchResponse.safeParse(response).success).toBe(true);
     expect(response.picked_by).toBe("ai");
@@ -108,12 +109,13 @@ describe("runMatch", () => {
     });
   });
 
-  it("takes the challenge from the area of the recommended innovation, not the plain best text match", async () => {
-    const { response } = await runMatch(request, deps({ rerank: undefined }));
-    expect(response.challenge?.area_id).toBe("seniorzy");
+  it("without the AI shows no challenge: a wrong one is worse than none", async () => {
+    const { response, stats } = await runMatch(request, deps({ rerank: undefined }));
+    expect(response.challenge).toBeNull();
+    expect(stats.challenge_id).toBeNull();
   });
 
-  it("takes the challenge chosen by the AI over the vector heuristic", async () => {
+  it("takes the challenge chosen by the AI", async () => {
     const rerankFake: MatchDeps["rerank"] = async (_d, candidates, challenges) => {
       expect(challenges.map((c) => c.id)).toEqual(["uslugi-opiekuncze", "przejscie-z-placowki"]);
       return {
@@ -124,33 +126,6 @@ describe("runMatch", () => {
     };
     const { response } = await runMatch(request, deps({ rerank: rerankFake }));
     expect(response.challenge?.challenge_id).toBe("przejscie-z-placowki");
-  });
-
-  it("never shows a challenge from another area than the recommendations", async () => {
-    const { chooseChallenge } = await import("./pipeline");
-    const areas = [
-      {
-        id: "rodzina-piecza",
-        nazwa: "Rodzina i piecza zastępcza",
-        kategorie_biblioteki: ["dla-dzieci-mlodziezy-i-rodziny"],
-        wyzwania: [{ id: "nierozdzielanie-rodzenstwa", tekst: "Nierozdzielanie rodzeństwa" }],
-      },
-      {
-        id: "seniorzy",
-        nazwa: "Seniorzy",
-        kategorie_biblioteki: ["dla-seniorow"],
-        wyzwania: [{ id: "aktywizacja", tekst: "Szersza oferta aktywizacji seniorów" }],
-      },
-    ];
-    const hits = [
-      { ref_id: "nierozdzielanie-rodzenstwa", similarity: 0.79 },
-      { ref_id: "aktywizacja", similarity: 0.73 },
-    ];
-    expect(chooseChallenge(hits, areas, ["dla-seniorow"])?.challenge_id).toBe("aktywizacja");
-    // the recommendation's area has no challenge among the hits: nothing rather than off-topic
-    expect(chooseChallenge(hits.slice(0, 1), areas, ["dla-seniorow"])).toBeNull();
-    // no recommendations: the best match
-    expect(chooseChallenge(hits, areas, [])?.challenge_id).toBe("nierozdzielanie-rodzenstwa");
   });
 
   it("never shows or sends the phone number", async () => {
