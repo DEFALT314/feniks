@@ -13,7 +13,7 @@ from `app/layout.tsx`.
 | `Naglowek.dc.html`, `Stopka.dc.html` | header, footer | Komponenty UI i układ strony (P2) |
 | `Main.dc.html` | `/` | Strona główna (P2) |
 | `Logowanie.dc.html` | `/login`: e-mail i hasło | Strona główna i wygląd logowania (P2), logika P4 |
-| `Rejestracja.dc.html` | `/register`: e-mail, hasło, wybór roli | Strona główna i wygląd logowania (P2), logika P4 |
+| `Rejestracja.dc.html` | `/register`: e-mail i hasło | Strona główna i wygląd logowania (P2), logika P4 |
 | `Dopasuj.dc.html` | `/match` | Strona /match (P3) |
 | `Biblioteka.dc.html` | `/library` | Biblioteka (P1) |
 | `Karta.dc.html` | `/library/[id]` | Karta innowacji (P1) |
