@@ -120,19 +120,37 @@
   --sidebar-ring: var(--brick);
 }
 
+/* "A+" mode (header toggle): larger text and higher contrast for low-vision users */
+html[data-a11y-plus] {
+  font-size: 112.5%;
+  --ink-muted: #151a23;
+  --line: #6b7487;
+  --field-border: #151a23;
+}
+
 @layer base {
   * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
+    @apply border-border;
   }
   html {
     @apply font-sans;
   }
+  body {
+    @apply bg-background text-foreground text-lg leading-relaxed;
+  }
   h1,
   h2,
   h3 {
-    @apply font-heading;
+    @apply font-heading tracking-tight;
+  }
+  a {
+    @apply text-navy hover:text-navy-strong underline underline-offset-[3px];
+  }
+  /* Keyboard focus: 3px brick outline on every element (design/makiety/System.dc.html) */
+  :focus-visible {
+    @apply outline-ring outline-3 outline-offset-2;
+  }
+  ::selection {
+    @apply bg-highlight text-ink;
   }
 }
