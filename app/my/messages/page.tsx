@@ -8,8 +8,9 @@ import { loadThread, loadThreads } from "@/lib/messaging";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 import { LiveRefresh } from "./_components/live-refresh";
+import { MessageList } from "./_components/message-list";
 import { ReplyForm } from "./_components/reply-form";
-import { historyLine, time, when } from "./_lib/format";
+import { historyLine, when } from "./_lib/format";
 
 export const metadata: Metadata = { title: "Wiadomości – HubMI.pl" };
 
@@ -102,20 +103,7 @@ export default async function MessagesPage({ searchParams }: PageProps<"/my/mess
                   </span>
                 ) : null}
               </div>
-              <ol aria-label="Wiadomości" className="flex flex-col">
-                {thread.messages.map((m) => (
-                  <li
-                    key={m.id}
-                    className="border-border flex flex-col gap-1 border-b py-4 last:border-b-0"
-                  >
-                    <span className="text-[0.9375rem]">
-                      <strong>{m.mine ? "Ty" : (m.autor_nazwa ?? "ROPS")}</strong>{" "}
-                      <span className="text-muted-foreground">· {time(m.created_at)}</span>
-                    </span>
-                    <p className="whitespace-pre-line">{m.tresc}</p>
-                  </li>
-                ))}
-              </ol>
+              <MessageList messages={thread.messages} />
               <ReplyForm threadId={thread.id}>
                 {thread.i_am_author && thread.idea_id ? (
                   <Link
