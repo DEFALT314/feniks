@@ -49,6 +49,19 @@ Wspólne: `lib/contracts/` (każdy edytuje tylko plik swojego modułu), `data/ro
 10. **Praca:** małe zmiany, commity po polsku, PR do `main` z linkiem do podglądu Vercel, zielone CI
     (typecheck, lint, test axe). Scalanie robi P4 co godzinę w oknie :00–:10.
 
+## Zadania (GitHub Issues)
+Każda osoba ma etykietę P1–P4; kamienie milowe M1–M6 to kolejność. Start sesji: `/zadanie P3` (swoja etykieta).
+1. `gh issue list --label P3 --state open --json number,title,milestone,labels` i wybierz zadanie z najwcześniejszego
+   kamienia, bez etykiety `w toku`. Przy remisie najpierw to, które w sekcji „Blokuje” ma innych ludzi.
+2. `gh issue view <nr>`: przeczytaj checklistę i sekcję **Zależności**. Dla każdego „Blokowane przez #X” sprawdź
+   `gh issue view X --json state`. Otwarte → nie czekaj: pracuj na `lib/contracts/fixtures/`, a w PR napisz, co podmienić.
+   Brak nawet kontraktu → weź inne niezablokowane zadanie.
+3. `gh issue edit <nr> --add-label "w toku"`, gałąź `p3/<nr>-krotki-opis`. Pokaż człowiekowi plan w 3–6 punktach
+   i zacznij po jego „ok”.
+4. Koniec: PR z `Closes #<nr>` i odhaczoną checklistą. Blokuje Cię coś spoza listy → komentarz w issue,
+   etykieta `zablokowane`, napisz do właściciela.
+Nie zamykaj i nie edytuj cudzych issues poza komentarzem.
+
 ## Dane i testy
 - `data/rops/*.json` to źródło danych startowych; `supabase/seed.sql` generuje skrypt z `scripts/seed/`.
 - Kanwa Kreatora czytana statycznie z `data/rops/canvas_innowacji.json`.
