@@ -31,4 +31,39 @@ delete from public.notifications n
 using auth.users u
 where n.user_id = u.id and u.email like 'demo.%@example.org';
 
+-- Three sent ideas from design/makiety/Admin.dc.html, so the ROPS queue is not empty in the demo
+-- (#5). Reset to the mockup state: one passed to the expert, one new, one sent back for changes.
+delete from public.ideas where id in (
+  'd1000000-0000-4000-8000-000000000001', 'd1000000-0000-4000-8000-000000000002',
+  'd1000000-0000-4000-8000-000000000003');
+
+insert into public.ideas (id, autor_id, tytul, istota, opis, dla_kogo, etap, obszar_id, wyslany_at)
+select d.id::uuid, u.id, d.tytul, d.istota, d.opis, d.dla_kogo, d.etap, d.obszar_id, now() - d.ago::interval
+from (values
+  ('d1000000-0000-4000-8000-000000000001', 'demo.fundacja@example.org', 'Sąsiedzki dyżur po wypisie',
+   'Wolontariusze z sąsiedztwa odwiedzają seniorów przez dwa tygodnie po powrocie ze szpitala.',
+   'Po wypisie ze szpitala senior często zostaje sam. Sąsiedzi-wolontariusze robią zakupy, przypominają o lekach i dają znać OPS, gdy dzieje się coś niepokojącego.',
+   'samotni seniorzy po pobycie w szpitalu', 'pomysl', 'seniorzy', '30 minutes'),
+  ('d1000000-0000-4000-8000-000000000002', 'demo.mieszkaniec@example.org', 'Kawiarenka cyfrowa w bibliotece',
+   'Raz w tygodniu młodzież uczy seniorów obsługi telefonu i spraw urzędowych przez internet.',
+   'Spotkania w gminnej bibliotece przy kawie: e-recepta, bankowość, rozmowa wideo z rodziną.',
+   'seniorzy, którzy nie korzystają z internetu', 'pomysl', 'seniorzy', '2 hours'),
+  ('d1000000-0000-4000-8000-000000000003', 'demo.fundacja@example.org', 'Mapa miejsc przyjaznych osobom w spektrum autyzmu',
+   'Mapa sklepów, urzędów i przychodni z cichymi godzinami i przeszkolonym personelem.',
+   null, 'osoby w spektrum autyzmu i ich rodziny', 'prototyp', 'niepelnosprawnosc', '1 day')
+) as d (id, email, tytul, istota, opis, dla_kogo, etap, obszar_id, ago)
+join auth.users u on u.email = d.email;
+
+insert into public.idea_reviews (idea_id, status, komentarz, reviewer_id, ekspert_id, created_at)
+select d.idea_id::uuid, d.status, d.komentarz, rops.id, ekspert.id, now() - d.ago::interval
+from (values
+  ('d1000000-0000-4000-8000-000000000001', 'w_weryfikacji', 'Przypisujemy mentorkę, odezwie się w wątku.', true, '10 minutes'),
+  ('d1000000-0000-4000-8000-000000000003', 'do_poprawy', 'Prosimy dopisać, kto będzie sprawdzał miejsca na mapie.', false, '20 hours')
+) as d (idea_id, status, komentarz, with_expert, ago)
+join auth.users ru on ru.email = 'demo.rops@example.org'
+join public.profiles rops on rops.id = ru.id
+left join auth.users eu on eu.email = 'demo.ekspert@example.org' and d.with_expert
+left join public.profiles ekspert on ekspert.id = eu.id
+where exists (select 1 from public.ideas i where i.id = d.idea_id::uuid);
+
 commit;

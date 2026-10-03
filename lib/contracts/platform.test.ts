@@ -28,3 +28,19 @@ describe("P4 contracts", () => {
     );
   });
 });
+
+describe("ReviewIdeaInput rules", () => {
+  it("needs a comment for do_poprawy and odrzucony, and an expert for w_weryfikacji", () => {
+    expect(ReviewIdeaInput.safeParse({ status: "do_poprawy" }).success).toBe(false);
+    expect(
+      ReviewIdeaInput.safeParse({ status: "do_poprawy", komentarz: "Dopisz koszty" }).success,
+    ).toBe(true);
+    expect(ReviewIdeaInput.safeParse({ status: "w_weryfikacji" }).success).toBe(false);
+    expect(
+      ReviewIdeaInput.safeParse({
+        status: "w_weryfikacji",
+        ekspert_id: "44444444-4444-4444-8444-444444444444",
+      }).success,
+    ).toBe(true);
+  });
+});
