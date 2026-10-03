@@ -15,6 +15,9 @@ vi.mock("@/lib/ai/usage", async (original) => ({
   dailyQuotaForCurrentUser: () => quota(),
 }));
 
+const currentUser = vi.fn();
+vi.mock("@/lib/auth", () => ({ getCurrentUser: () => currentUser() }));
+
 const { POST: hintsRoute } = await import("./hints/route");
 const { POST: applicationRoute } = await import("./application/route");
 const { GET: callsRoute } = await import("./calls/route");
@@ -33,6 +36,7 @@ const post = (body: unknown, fixedIp?: string) =>
   });
 
 beforeEach(() => {
+  currentUser.mockReset().mockResolvedValue({ id: "u1", role: "mieszkaniec" });
   quota.mockReset().mockResolvedValue({ ok: true, left: null });
   generate.mockReset();
   vi.stubEnv("LLM_BASE_URL", "http://llm");
@@ -41,6 +45,16 @@ beforeEach(() => {
 });
 
 describe("AI creator endpoints", () => {
+  it.each([
+    ["hints", () => hintsRoute],
+    ["application", () => applicationRoute],
+  ] as const)("refuses a guest before asking the model (%s)", async (_name, route) => {
+    currentUser.mockResolvedValue(null);
+    const res = await route()(post({ idea, call_id: "x" }));
+    expect(res.status).toBe(401);
+    expect(generate).not.toHaveBeenCalled();
+  });
+
   it("GET /api/ai/calls lists the demo calls", async () => {
     const body = await callsRoute().json();
     expect(CallList.safeParse(body).success).toBe(true);
