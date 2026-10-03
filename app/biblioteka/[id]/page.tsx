@@ -119,7 +119,7 @@ export default async function Strona({ params }: PageProps<"/biblioteka/[id]">) 
               <ul className="m-0 flex list-none flex-col gap-1 p-0">
                 {wyzwania.map(({ obszar, wyzwanie }) => (
                   <li key={wyzwanie.id}>
-                    <Link href={`/mapa-wyzwan#${obszar.id}`} className={LINK}>
+                    <Link href={`/mapa-wyzwan?obszar=${obszar.id}#obszar`} className={LINK}>
                       {obszar.nazwa}: {wyzwanie.tekst}
                     </Link>
                   </li>
