@@ -4,7 +4,7 @@ import { MatchResponse } from "@/lib/contracts/match";
 
 vi.mock("server-only", () => ({}));
 
-const { runMatch } = await import("./pipeline");
+const { retrievalHeader, runMatch } = await import("./pipeline");
 const { rerank } = await import("./rerank");
 type MatchDeps = import("./pipeline").MatchDeps;
 
@@ -181,6 +181,24 @@ describe("runMatch", () => {
     expect(vectorSearch).not.toHaveBeenCalled();
     expect(response.challenge).toBeNull();
     expect(response.innovations[0].innovation.id).toBe("merkury");
+  });
+
+  it("reports how the candidates were found (X-Match-Retrieval)", async () => {
+    const description = "Seniorzy nie umieją obsłużyć bankomatu i paczkomatu.";
+    const run = async (overrides: Partial<MatchDeps>) =>
+      retrievalHeader(
+        (await runMatch({ description }, deps({ rerank: undefined, ...overrides }))).retrieval,
+      );
+    expect(await run({})).toBe("hybrid");
+    expect(await run({ embedQuery: async () => null })).toBe("keywords; reason=no-embed");
+    expect(await run({ vectorSearch: async () => [] })).toBe("keywords; reason=no-vectors");
+    expect(
+      await run({
+        vectorSearch: async () => {
+          throw new Error("function match_embeddings does not exist");
+        },
+      }),
+    ).toBe("keywords; reason=vector-error");
   });
 
   it("ignores vector hits for innovations that are not in the visible catalog", async () => {
