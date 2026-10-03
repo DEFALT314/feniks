@@ -1,43 +1,43 @@
 # HubMI.pl – Małopolski Hub Innowacji Społecznych
 
-HackYeah 2026, zadanie ROPS Kraków. Zasady pracy, stos i właściciele folderów: [CLAUDE.md](CLAUDE.md).
-Opis danych: [docs/MATERIALY_ROPS.md](docs/MATERIALY_ROPS.md).
+HackYeah 2026, ROPS Kraków challenge. Working rules, stack and folder owners: [CLAUDE.md](CLAUDE.md).
+Data description: [docs/MATERIALY_ROPS.md](docs/MATERIALY_ROPS.md).
 
-## Uruchomienie lokalne
+## Running locally
 
-Wymagania: Node.js 22+, pnpm 10 (`corepack enable`).
+Requirements: Node.js 22+, pnpm 10 (`corepack enable`).
 
 ```bash
 git clone git@github.com:DEFALT314/feniks.git && cd feniks
 pnpm install
-cp .env.example .env.local   # uzupełnij klucze (menedżer haseł, nie czat)
+cp .env.example .env.local   # fill in the keys (password manager, not chat)
 pnpm dev                     # http://localhost:3000
 ```
 
-Bez kluczy Supabase aplikacja też się uruchomi (strony-zaślepki).
+The app also starts without Supabase keys (placeholder pages).
 
-## Polecenia
+## Commands
 
-| Polecenie | Co robi |
+| Command | What it does |
 |---|---|
-| `pnpm dev` | serwer deweloperski |
-| `pnpm typecheck` | sprawdzenie typów (to samo co w CI) |
-| `pnpm lint` | ESLint (to samo co w CI) |
+| `pnpm dev` | development server |
+| `pnpm typecheck` | type check (same as CI) |
+| `pnpm lint` | ESLint (same as CI) |
 | `pnpm format` | Prettier |
-| `pnpm build` | build produkcyjny |
-| `pnpm db:push` | wgranie migracji na bazę w chmurze (robi P4) |
-| `pnpm db:types` | typy bazy do `lib/supabase/types.ts` (robi P4) |
+| `pnpm build` | production build |
+| `pnpm db:push` | push migrations to the cloud database (done by P4) |
+| `pnpm db:types` | database types into `lib/supabase/types.ts` (done by P4) |
 
-Baza: projekt Supabase w chmurze (Frankfurt). Jednorazowo: `pnpm exec supabase login` i
+Database: a Supabase cloud project (Frankfurt). One-time setup: `pnpm exec supabase login` and
 `pnpm exec supabase link --project-ref <ref>`.
 
-## Struktura
+## Structure
 
-- `app/` – strony i endpointy (`app/api/...`), foldery według modułów z CLAUDE.md
-- `components/ui/` – wspólne komponenty (P2)
-- `lib/supabase/` – klienci Supabase: `server.ts` (sesja użytkownika), `client.ts` (przeglądarka),
-  `service.ts` (klucz serwisowy, tylko cron, demo, skrypty)
-- `lib/contracts/` – kontrakty endpointów (zod) i fixtures, opis w `lib/contracts/README.md`
-- `proxy.ts` – odświeża sesję Supabase (w Next.js 16 zastępuje `middleware.ts`), nie jest zabezpieczeniem
-- `supabase/migrations/` – migracje `<YYYYMMDDHHMM>_<modul>_<opis>.sql`
-- `data/rops/` – dane ROPS (tylko do odczytu)
+- `app/` – pages and endpoints (`app/api/...`), folders by module as in CLAUDE.md
+- `components/ui/` – shared components (P2)
+- `lib/supabase/` – Supabase clients: `server.ts` (user session), `client.ts` (browser),
+  `service.ts` (service key, only cron, demo, scripts)
+- `lib/contracts/` – endpoint contracts (zod) and fixtures, described in `lib/contracts/README.md`
+- `proxy.ts` – refreshes the Supabase session (replaces `middleware.ts` in Next.js 16), not a security boundary
+- `supabase/migrations/` – migrations `<YYYYMMDDHHMM>_<module>_<description>.sql`
+- `data/rops/` – ROPS data (read-only)
