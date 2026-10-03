@@ -1,7 +1,7 @@
 // Contract for module VII, Middleman (P3): a "service card" that translates an innovation into
 // a service a municipality can order and fund.
 //   POST /api/ai/middleman   draft a card for an innovation and an institution
-// The /moje/middleman page (P3) uses it; the innovation card links to it with ?innowacja=<id>.
+// The /my/middleman page (P3) uses it; the innovation card links to it with ?innovation=<id>.
 // Sample data: lib/contracts/fixtures/middleman.json. After 17:00, changes only by adding fields.
 //
 // AI never gives costs or numbers: cost.estimate stays null for the institution to fill in.

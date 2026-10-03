@@ -1,4 +1,4 @@
-// Contract for AI in the idea creator (P3 endpoints, used by P2's /moje/kreator):
+// Contract for AI in the idea creator (P3 endpoints, used by P2's /my/creator):
 //   POST /api/ai/podpowiedz  hints for the idea card fields
 //   POST /api/ai/wniosek     draft of a grant application for an open call
 //   POST /api/ai/obraz       visualisation of the idea
