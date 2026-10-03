@@ -1,20 +1,20 @@
-# Kontrakty modułów
+# Module contracts
 
-Każdy moduł opisuje tu swoje endpointy: schemat zod w `lib/contracts/<modul>.ts` i przykładowe dane
-w `lib/contracts/fixtures/<modul>.json`. Edytujesz tylko plik swojego modułu.
+Each module describes its endpoints here: a zod schema in `lib/contracts/<module>.ts` and sample data
+in `lib/contracts/fixtures/<module>.json`. Edit only your own module's file.
 
-| Plik | Właściciel |
+| File | Owner |
 |---|---|
 | `knowledge-base.ts` | P1 |
 | `idea-creator.ts`, `innovation-tester.ts` | P2 |
 | `match.ts`, `ai.ts`, `middleman.ts` | P3 |
 | `admin.ts`, `messages.ts`, `notifications.ts` | P4 |
 
-## Zasady
-- Eksportuj schemat wejścia i wyjścia oraz typy (`z.infer`).
-- Fixtures muszą przechodzić walidację schematu (przykład w `_example.ts`).
-- Endpoint właściciela jeszcze nie działa? Pracuj na fixtures.
-- Po 17:00 kontrakty zmieniamy tylko przez **dodanie** pól (opcjonalnych).
+## Rules
+- Export the input and output schemas and their types (`z.infer`).
+- Fixtures must pass schema validation (example in `_example.ts`).
+- The owner's endpoint doesn't work yet? Work on fixtures.
+- After 17:00, contracts change only by **adding** (optional) fields.
 
-## Wzór
-Zobacz `_example.ts` i `fixtures/_example.json`.
+## Template
+See `_example.ts` and `fixtures/_example.json`.
