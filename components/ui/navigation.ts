@@ -57,6 +57,11 @@ export function isActivePath(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+/** Visible unread count on the header bell: capped so the badge stays two digits wide. */
+export function notificationsBadge(unread: number): string {
+  return unread > 99 ? "99+" : String(unread);
+}
+
 export function notificationsLabel(unread: number): string {
   return unread > 0 ? `Powiadomienia: ${unread} nowe` : "Powiadomienia: brak nowych";
 }

@@ -3,13 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { useId, useState } from "react";
+import { useId } from "react";
 import { cn } from "@/lib/utils";
+import { pressClass } from "./button";
 import { isActivePath, roleLabel, type CurrentUser, type NavItem } from "./navigation";
 import { dropdownClass, useDisclosure } from "./use-disclosure";
 
 const linkClass =
   "flex min-h-12 items-center rounded-lg px-3 transition-colors text-[1.0625rem] text-ink no-underline hover:bg-navy-soft hover:text-ink aria-[current=page]:font-bold aria-[current=page]:text-navy";
+
+const ICON_SWAP =
+  "absolute inset-0 size-5 transition-[opacity,scale,filter] duration-(--duration-fast) ease-[cubic-bezier(0.2,0,0,1)] motion-reduce:transition-none";
+const ICON_OUT = "scale-25 opacity-0 blur-[4px]";
 
 function Links({ items, pathname }: { items: NavItem[]; pathname: string }) {
   return (
@@ -48,9 +53,6 @@ export function MobileMenu({
   >();
   const panelId = useId();
   const pathname = usePathname();
-  const Icon = open ? X : Menu;
-  // The icon swap animates only after the first toggle, not on page load
-  const [swapped, setSwapped] = useState(false);
 
   return (
     <div ref={wrapperRef} className={className}>
@@ -59,24 +61,25 @@ export function MobileMenu({
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
-        onClick={() => {
-          setSwapped(true);
-          toggle();
-        }}
-        className="border-input text-ink hover:border-navy aria-expanded:border-navy aria-expanded:bg-navy flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] border bg-white px-2.5 text-base font-bold transition-colors aria-expanded:text-white"
+        onClick={toggle}
+        className={cn(
+          "border-input text-ink hover:border-navy aria-expanded:border-navy aria-expanded:bg-navy flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] border bg-white px-2.5 text-base font-bold transition-[background-color,border-color,color,scale] aria-expanded:text-white",
+          pressClass,
+        )}
       >
-        <Icon
-          key={open ? "close" : "menu"}
-          aria-hidden="true"
-          className={cn("size-5", swapped && "t-icon-in")}
-        />
+        {/* Icon swap: both icons stay in the slot and cross-fade, so the outgoing one leaves too.
+            A transition, not a keyframe: nothing plays on page load and a quick double tap reverses. */}
+        <span aria-hidden="true" className="relative size-5 shrink-0">
+          <Menu className={cn(ICON_SWAP, open && ICON_OUT)} />
+          <X className={cn(ICON_SWAP, !open && ICON_OUT)} />
+        </span>
         Menu
       </button>
       <div
         id={panelId}
         hidden={state === "closed"}
         inert={state === "closing"}
-        data-origin="top-center"
+        data-motion="slide"
         className={cn(
           dropdownClass(state),
           "border-border absolute inset-x-0 top-full z-50 border-b bg-white shadow-[0_16px_40px_-16px_rgba(21,26,35,0.35)]",
