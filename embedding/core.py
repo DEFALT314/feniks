@@ -29,7 +29,7 @@ PREFIX = {"query": "query: ", "passage": "passage: "}
 MAX_TEXTS = 256
 MAX_CHARS = 4000
 MAX_TOKENS = 512
-MODEL_RELEASE_URL = "https://github.com/DEFALT314/feniks/releases/download/embed-model-v1"
+MODEL_RELEASE_URL = "https://github.com/dominikjurkowski-hub/feniks/releases/download/embed-model-v1"
 # A new model means a new release tag and new checksums (sha256sum embedding/model/*).
 MODEL_SHA256 = {
     "model.onnx": "d2dd6ed3409a7d24b74cf2c2e3f085dd3d80e89ba084a03cf9699f800953717c",

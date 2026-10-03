@@ -35,7 +35,7 @@ curl -X POST $EMBED_URL -H "X-Embed-Token: $EMBED_TOKEN" -H 'content-type: appli
 ## Plik modelu
 
 Model (188 MB) nie mieści się jako plik w repozytorium (limit GitHuba 100 MB), więc jest
-załącznikiem do [GitHub Release `embed-model-v1`](https://github.com/DEFALT314/feniks/releases/tag/embed-model-v1).
+załącznikiem do [GitHub Release `embed-model-v1`](https://github.com/dominikjurkowski-hub/feniks/releases/tag/embed-model-v1).
 Funkcja pobiera go przy zimnym starcie i sprawdza sumy SHA-256 zapisane w `embedding/core.py`.
 Źródło: [sdadas/mmlw-e5-base](https://huggingface.co/sdadas/mmlw-e5-base), Apache-2.0.
 
