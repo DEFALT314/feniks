@@ -12,6 +12,7 @@ import {
   MOTION_WAIT_ATTRIBUTE,
   parseCount,
   parseKinds,
+  REACT_FIBER_KEY,
   revealDelay,
 } from "./motion-core";
 
@@ -30,6 +31,11 @@ import {
 
 const seen = new WeakSet<Element>();
 
+// React marks every element it has hydrated or rendered with an internal "__reactFiber$…" key.
+function isHydrated(el: Element): boolean {
+  return Object.keys(el).some((key) => key.startsWith(REACT_FIBER_KEY));
+}
+
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function rise(distance: number): Keyframe[] {
@@ -45,7 +51,6 @@ function children(el: Element): HTMLElement[] {
 
 function sweep(marks: HTMLElement[], delay: number, stagger: number) {
   marks.forEach((mark, i) => {
-    mark.style.backgroundRepeat = "no-repeat";
     mark.animate([{ backgroundSize: "0% 100%" }, { backgroundSize: "100% 100%" }], {
       duration: DURATION.mark,
       delay: delay + i * stagger,
@@ -77,13 +82,20 @@ function countUp(el: HTMLElement) {
   requestAnimationFrame(frame);
 }
 
-type Waiting = { el: Element; play: () => void; cancel: () => void };
+type Waiting = { el: Element; play: () => void; cancel: () => void; ready?: () => boolean };
 
 // Waits until the element's top passes 88% of the screen height, like ScrollTrigger "top 88%":
 // also when the reader jumps past it (End key, anchor link). `cancel` shows it as it is and lets
 // the next run pick it up again.
-function whenVisible(el: Element, play: () => void, waiting: Waiting[], cancel = () => {}) {
-  waiting.push({ el, play, cancel });
+// `ready` holds it back longer, e.g. until React has hydrated an element whose text will change.
+function whenVisible(
+  el: Element,
+  play: () => void,
+  waiting: Waiting[],
+  cancel = () => {},
+  ready?: () => boolean,
+) {
+  waiting.push({ el, play, cancel, ready });
 }
 
 function playScreen(): () => void {
@@ -128,7 +140,16 @@ function playScreen(): () => void {
       );
     }
 
-    if (kinds.includes("licznik")) whenVisible(el, () => countUp(el), waiting);
+    // The counter rewrites the text. The layout hydrates before a streamed page, so changing the
+    // text of a page that React has not hydrated yet would fail hydration and re-render the page.
+    if (kinds.includes("licznik"))
+      whenVisible(
+        el,
+        () => countUp(el),
+        waiting,
+        undefined,
+        () => isHydrated(el),
+      );
 
     if (kinds.includes("slupki")) {
       whenVisible(
@@ -147,7 +168,6 @@ function playScreen(): () => void {
     }
 
     if (kinds.includes("postep") && el.firstElementChild instanceof HTMLElement) {
-      el.firstElementChild.style.transformOrigin = "left center";
       el.firstElementChild.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], {
         duration: DURATION.progress,
         delay: 300,
@@ -161,12 +181,18 @@ function playScreen(): () => void {
 
   const check = () => {
     frame = 0;
+    let pending = false;
     for (const entry of [...waiting]) {
       if (hasReached(entry.el.getBoundingClientRect().top, window.innerHeight)) {
+        if (entry.ready && !entry.ready()) {
+          pending = true;
+          continue;
+        }
         waiting.splice(waiting.indexOf(entry), 1);
         entry.play();
       }
     }
+    if (pending) schedule();
   };
   const schedule = () => {
     frame ||= requestAnimationFrame(check);
