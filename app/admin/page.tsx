@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { isDemoMode } from "@/lib/auth/demo-accounts";
 import { createClient } from "@/lib/supabase/server";
-import { AdminTabs } from "./_components/admin-tabs";
+import { ADMIN_TABS, AdminTabs } from "./_components/admin-tabs";
 import { ReviewForm } from "./_components/review-form";
 import { describeAudit, formatSentAt, formatTime } from "./_lib/format";
 import { loadExperts, loadIdeaDetail, loadIdeaQueue, loadRecentAudit } from "./_lib/queue";
@@ -55,7 +55,9 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
           </div>
           <AdminTabs
             current="/admin"
-            tabs={[{ label: `Nowe pomysły (${openQueue.length})`, href: "/admin" }]}
+            tabs={ADMIN_TABS.map((t) =>
+              t.href === "/admin" ? { ...t, label: `${t.label} (${openQueue.length})` } : t,
+            )}
           />
         </div>
       </div>

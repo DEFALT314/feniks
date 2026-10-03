@@ -2,8 +2,14 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 // Panel sections from design/makiety/Admin.dc.html. Other owners add their sub-pages here
-// (P1: /admin/innovations, /admin/trends; P4: /admin/calls) when they exist.
+// (P4: /admin/calls) when they exist.
 type Tab = { label: string; href: string };
+
+export const ADMIN_TABS: Tab[] = [
+  { label: "Nowe pomysły", href: "/admin" },
+  { label: "Biblioteka", href: "/admin/library" },
+  { label: "Potrzeby w regionie", href: "/admin/trends" },
+];
 
 export function AdminTabs({ current, tabs }: { current: string; tabs: Tab[] }) {
   return (
