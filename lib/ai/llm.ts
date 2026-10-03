@@ -33,7 +33,10 @@ export class LlmError extends Error {
   }
 }
 
-export function createLlmClient(env: NodeJS.ProcessEnv = process.env): LlmClient {
+export function createLlmClient(
+  env: NodeJS.ProcessEnv = process.env,
+  timeoutMs = 30_000,
+): LlmClient {
   const { LLM_BASE_URL, LLM_MODEL, LLM_API_KEY } = env;
   if (!LLM_BASE_URL || !LLM_MODEL || !LLM_API_KEY) {
     throw new LlmError("LLM_BASE_URL, LLM_MODEL and LLM_API_KEY must be set", "config");
@@ -41,7 +44,7 @@ export function createLlmClient(env: NodeJS.ProcessEnv = process.env): LlmClient
   const client = new OpenAI({
     baseURL: LLM_BASE_URL,
     apiKey: LLM_API_KEY,
-    timeout: 30_000,
+    timeout: timeoutMs,
     maxRetries: 1,
   });
   return {
@@ -90,6 +93,7 @@ export type GenerateJsonOptions = {
   cacheSecret?: string; // defaults to LLM_API_KEY, which only the server knows
   temperature?: number;
   maxTokens?: number;
+  timeoutMs?: number; // per request; long answers (an SVG drawing) need more than the default 30 s
 };
 
 export async function generateJson<T>(
@@ -97,7 +101,7 @@ export async function generateJson<T>(
   messages: ChatMessage[],
   options: GenerateJsonOptions = {},
 ): Promise<T> {
-  const client = options.client ?? createLlmClient();
+  const client = options.client ?? createLlmClient(process.env, options.timeoutMs);
   const settings = {
     temperature: options.temperature ?? 0.2,
     maxTokens: options.maxTokens ?? 2000,

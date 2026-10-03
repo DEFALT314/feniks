@@ -45,6 +45,23 @@ export const HintResponse = z.object({
 });
 export type HintResponse = z.infer<typeof HintResponse>;
 
+// --- GET /api/ai/nabory ---
+// Open calls ("nabory") to choose from. Until P4 adds a calls table, these are demo calls
+// (demo: true, labelled "Dane demonstracyjne" in the UI).
+
+export const CallSummary = z.object({
+  id: z.string(),
+  name: z.string(),
+  organizer: z.string(),
+  goal: z.string(), // what the call funds, plain Polish
+  deadline: z.string().nullable(), // ISO date
+  demo: z.boolean(),
+});
+export type CallSummary = z.infer<typeof CallSummary>;
+
+export const CallList = z.object({ calls: z.array(CallSummary) });
+export type CallList = z.infer<typeof CallList>;
+
 // --- /api/ai/wniosek ---
 
 export const ApplicationRequest = z.object({
@@ -90,6 +107,7 @@ export type ImageResponse = z.infer<typeof ImageResponse>;
 
 // Sample data checked against the schemas: a mistake in fixtures shows up immediately.
 export const aiFixtures = {
+  callList: CallList.parse(fixture.call_list),
   hintRequest: HintRequest.parse(fixture.hint_request),
   hintResponse: HintResponse.parse(fixture.hint_response),
   applicationRequest: ApplicationRequest.parse(fixture.application_request),
