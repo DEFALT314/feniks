@@ -93,7 +93,7 @@ export type GenerateJsonOptions = {
   cacheSecret?: string; // defaults to LLM_API_KEY, which only the server knows
   temperature?: number;
   maxTokens?: number;
-  timeoutMs?: number; // per request; long answers (an SVG drawing) need more than the default 30 s
+  timeoutMs?: number; // per request; raise it for long answers (default 30 s)
 };
 
 export async function generateJson<T>(

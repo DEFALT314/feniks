@@ -1,7 +1,6 @@
 // Contract for AI in the idea creator (P3 endpoints, used by P2's /my/creator):
 //   POST /api/ai/hints        hints for the idea card fields
 //   POST /api/ai/application  draft of a grant application for an open call
-//   POST /api/ai/image        visualisation of the idea
 //   GET  /api/ai/calls        open calls to choose from
 // Sample data: lib/contracts/fixtures/ai.json. After 17:00, changes only by adding fields.
 //
@@ -92,20 +91,6 @@ export const ApplicationResponse = z.object({
 });
 export type ApplicationResponse = z.infer<typeof ApplicationResponse>;
 
-// --- /api/ai/image ---
-
-export const ImageRequest = z.object({
-  idea: IdeaDraft,
-  regenerate: z.boolean().optional(), // "Wygeneruj ponownie"
-});
-export type ImageRequest = z.infer<typeof ImageRequest>;
-
-export const ImageResponse = z.object({
-  image_url: z.string(), // Supabase Storage URL
-  alt_text: z.string(), // "Opis obrazu dla czytnika ekranu", Polish
-});
-export type ImageResponse = z.infer<typeof ImageResponse>;
-
 // Sample data checked against the schemas: a mistake in fixtures shows up immediately.
 export const aiFixtures = {
   callList: CallList.parse(fixture.call_list),
@@ -113,6 +98,4 @@ export const aiFixtures = {
   hintResponse: HintResponse.parse(fixture.hint_response),
   applicationRequest: ApplicationRequest.parse(fixture.application_request),
   applicationResponse: ApplicationResponse.parse(fixture.application_response),
-  imageRequest: ImageRequest.parse(fixture.image_request),
-  imageResponse: ImageResponse.parse(fixture.image_response),
 };

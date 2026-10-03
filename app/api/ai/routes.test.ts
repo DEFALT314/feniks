@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { ApplicationResponse, CallList, HintResponse, ImageResponse } from "@/lib/contracts/ai";
+import { ApplicationResponse, CallList, HintResponse } from "@/lib/contracts/ai";
 
 vi.mock("server-only", () => ({}));
 
@@ -11,7 +11,6 @@ vi.mock("@/lib/ai/llm", async (original) => ({
 
 const { POST: hintsRoute } = await import("./hints/route");
 const { POST: applicationRoute } = await import("./application/route");
-const { POST: imageRoute } = await import("./image/route");
 const { GET: callsRoute } = await import("./calls/route");
 const { LlmError } = await import("@/lib/ai/llm");
 
@@ -57,16 +56,6 @@ describe("AI creator endpoints", () => {
     expect(missing.status).toBe(404);
   });
 
-  it("image answers with a data URL and alt text", async () => {
-    generate.mockResolvedValue({
-      svg: '<svg viewBox="0 0 2 2"><rect width="2" height="2"/></svg>',
-      alt_text: "Prostokąt.",
-    });
-    const body = await (await imageRoute(post({ idea }))).json();
-    expect(ImageResponse.safeParse(body).success).toBe(true);
-    expect(body.image_url).toMatch(/^data:image\/svg\+xml;base64,/);
-  });
-
   it("rejects an invalid body in plain Polish", async () => {
     const res = await hintsRoute(post({ idea: { title: "" } }));
     expect(res.status).toBe(400);
@@ -90,7 +79,9 @@ describe("AI creator endpoints", () => {
   it("limits AI requests per IP across the creator endpoints", async () => {
     generate.mockResolvedValue({ hints: [] });
     for (let n = 0; n < 30; n++) await hintsRoute(post({ idea }, "172.16.0.1"));
-    const res = await imageRoute(post({ idea }, "172.16.0.1"));
+    const res = await applicationRoute(
+      post({ idea, call_id: "nabor-demo-seniorzy-2026" }, "172.16.0.1"),
+    );
     expect(res.status).toBe(429);
   });
 });

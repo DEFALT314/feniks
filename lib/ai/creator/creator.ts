@@ -1,5 +1,5 @@
-// AI for the idea creator (#18): hints, application draft, visualisation.
-// All three go through generateJson (personal data removed, JSON validated, one retry) and are
+// AI for the idea creator (#18): hints and application draft.
+// Both go through generateJson (personal data removed, JSON validated, one retry) and are
 // shown with the „Propozycja AI” label; the user applies them with a click (P2's UI).
 import { z } from "zod";
 import demoCalls from "@/data/derived/demo-calls.json";
@@ -12,11 +12,9 @@ import {
   type HintRequest,
   type HintResponse,
   type IdeaDraft,
-  type ImageResponse,
 } from "@/lib/contracts/ai";
 import { generateJson, type GenerateJsonOptions } from "../llm";
 import { hasPlaceholder, removeInventedNumbers } from "./guards";
-import { sanitizeSvg, svgDataUrl } from "./svg";
 
 export const CALLS = CallSummary.array().parse(demoCalls.calls);
 
@@ -136,30 +134,4 @@ Return json: {"sections": [{"key": "goal"|"audience"|"activities"|"results"|"bud
     ];
   });
   return { call_id: call.id, sections };
-}
-
-// --- visualisation (simple SVG drawn by the language model, free; see lib/ai/creator/svg.ts) ---
-
-export async function visualisation(
-  idea: IdeaDraft,
-  options: GenerateJsonOptions = {},
-): Promise<ImageResponse> {
-  const Schema = z.object({ svg: z.string().min(20), alt_text: z.string().min(5) });
-  const out = await generateJson(
-    Schema,
-    [
-      {
-        role: "system",
-        content: `You draw a friendly, simple flat illustration of a social-innovation idea as SVG (viewBox 0 0 640 400,
-max 20 shapes, compact path data, soft colours, no text except optional short Polish labels, no people's faces in detail, no logos).
-Also write alt text in Polish (one sentence describing what the picture shows).
-Return json: {"svg": "<svg ...>...</svg>", "alt_text": "..."}`,
-      },
-      { role: "user", content: `Idea:\n${ideaText(idea)}` },
-    ],
-    { temperature: 0.6, maxTokens: 3500, timeoutMs: 90_000, ...options },
-  );
-  const svg = sanitizeSvg(out.svg);
-  if (!svg) throw new Error("the model did not return a usable SVG");
-  return { image_url: svgDataUrl(svg), alt_text: out.alt_text.trim() };
 }
