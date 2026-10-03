@@ -11,6 +11,7 @@ import {
   navItemsFor,
   notificationsBadge,
   notificationsLabel,
+  withoutDuplicates,
   type CurrentUser,
 } from "./navigation";
 import { SiteNav } from "./site-nav";
@@ -55,9 +56,12 @@ export function SiteHeader({
           aria-label="HubMI – strona główna"
           className="text-ink hover:text-ink min-w-0 py-2.5 no-underline"
         >
-          <Logo taglineClassName="hidden xl:block" />
+          {/* The tagline explains HubMI to first-time visitors; signed-in users get the room for
+              their main task in the menu instead, so it stays one row at 1280 px (#75) */}
+          <Logo taglineClassName={user ? "hidden 2xl:block" : "hidden xl:block"} />
         </Link>
-        <SiteNav items={items} className="hidden min-w-0 lg:flex" />
+        {/* With A+ the one-row menu needs a wider screen; below that the "Menu" button takes over */}
+        <SiteNav items={items} className="a11y-plus:max-2xl:hidden hidden min-w-0 lg:flex" />
         <div className="ml-auto flex flex-wrap items-center justify-end gap-2 pb-2 sm:gap-2.5 sm:pb-0">
           <TextSizeToggle initialOn={a11yPlus} />
           {user ? (
@@ -79,7 +83,11 @@ export function SiteHeader({
                   ) : null}
                 </Link>
               )}
-              <AccountMenu user={user} items={accountItems} className="hidden lg:block" />
+              <AccountMenu
+                user={user}
+                items={accountItems}
+                className="a11y-plus:max-2xl:hidden hidden lg:block"
+              />
             </>
           ) : (
             <Link
@@ -92,7 +100,12 @@ export function SiteHeader({
               Zaloguj się
             </Link>
           )}
-          <MobileMenu user={user} items={items} accountItems={accountItems} className="lg:hidden" />
+          <MobileMenu
+            user={user}
+            items={items}
+            accountItems={withoutDuplicates(accountItems, items)}
+            className="a11y-plus:max-2xl:block lg:hidden"
+          />
         </div>
       </div>
     </header>

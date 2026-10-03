@@ -23,6 +23,8 @@ vi.mock("@/lib/ai/usage", async (original) => ({
 // Open calls come from the calls table; the tests use the demo list (same ids as seed_demo.sql)
 const calls = vi.fn();
 vi.mock("@/lib/ai/creator/open-calls", () => ({ openCalls: () => calls() }));
+const currentUser = vi.fn();
+vi.mock("@/lib/auth", () => ({ getCurrentUser: () => currentUser() }));
 
 const { POST: hintsRoute } = await import("./hints/route");
 const { POST: applicationRoute } = await import("./application/route");
@@ -43,6 +45,7 @@ const post = (body: unknown, fixedIp?: string) =>
   });
 
 beforeEach(async () => {
+  currentUser.mockReset().mockResolvedValue({ id: "u1", role: "mieszkaniec" });
   const { CALLS } = await import("@/lib/ai/creator/creator");
   calls.mockReset().mockResolvedValue(CALLS);
   quota.mockReset().mockResolvedValue({ ok: true, left: null });
@@ -53,6 +56,16 @@ beforeEach(async () => {
 });
 
 describe("AI creator endpoints", () => {
+  it.each([
+    ["hints", () => hintsRoute],
+    ["application", () => applicationRoute],
+  ] as const)("refuses a guest before asking the model (%s)", async (_name, route) => {
+    currentUser.mockResolvedValue(null);
+    const res = await route()(post({ idea, call_id: "x" }));
+    expect(res.status).toBe(401);
+    expect(generate).not.toHaveBeenCalled();
+  });
+
   it("GET /api/ai/calls lists the demo calls", async () => {
     const body = await (await callsRoute()).json();
     expect(CallList.safeParse(body).success).toBe(true);
