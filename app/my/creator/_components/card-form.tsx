@@ -36,10 +36,12 @@ export function IdeaCard({
   idea,
   calls,
   justSent,
+  testPanel,
 }: {
   idea: MyIdea;
   calls: CallSummary[];
   justSent: "first" | "again" | null; // confirmation after "Wyślij do ROPS" (?sent= in the URL)
+  testPanel?: ReactNode; // "Test z mieszkańcami" from the Innovation tester (#36)
 }) {
   // Local text state: the title may be empty while typing; only valid values are saved
   const [draft, setDraft] = useState<Draft>({
@@ -164,6 +166,7 @@ export function IdeaCard({
             beforeSend={autosave.flush}
             justSent={justSent}
           />
+          {testPanel}
         </aside>
       </div>
     </main>
