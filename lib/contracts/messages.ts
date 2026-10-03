@@ -17,8 +17,9 @@ export type Participant = z.infer<typeof Participant>;
 export const Message = z.object({
   id: z.uuid(),
   thread_id: z.uuid(),
-  autor_id: z.uuid(),
+  autor_id: z.uuid().nullable(), // null when the author's account was deleted
   autor_nazwa: z.string().nullable(),
+  autor_rola: Role.optional(), // role when the message was written
   tresc: z.string(),
   created_at: z.iso.datetime({ offset: true }),
 });

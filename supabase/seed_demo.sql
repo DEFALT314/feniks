@@ -66,4 +66,33 @@ left join auth.users eu on eu.email = 'demo.ekspert@example.org' and d.with_expe
 left join public.profiles ekspert on ekspert.id = eu.id
 where exists (select 1 from public.ideas i where i.id = d.idea_id::uuid);
 
+-- Conversation from design/makiety/Wiadomosci.dc.html on the first idea (#8). Threads started by
+-- demo accounts are removed first; idea threads go away with the ideas above (cascade).
+delete from public.threads th
+using auth.users u
+where th.created_by = u.id and u.email like 'demo.%@example.org';
+
+insert into public.threads (id, temat, idea_id, created_by, created_at, last_message_at)
+select 'd2000000-0000-4000-8000-000000000001', 'Sąsiedzki dyżur po wypisie',
+  'd1000000-0000-4000-8000-000000000001', u.id, now() - interval '15 minutes', now() - interval '2 minutes'
+from auth.users u where u.email = 'demo.rops@example.org'
+  and exists (select 1 from public.ideas where id = 'd1000000-0000-4000-8000-000000000001');
+
+insert into public.thread_participants (thread_id, user_id, nazwa, rola, last_read_at)
+select 'd2000000-0000-4000-8000-000000000001', p.id, p.nazwa_wyswietlana, p.role, now() - interval '5 minutes'
+from auth.users u join public.profiles p on p.id = u.id
+where u.email in ('demo.rops@example.org', 'demo.ekspert@example.org', 'demo.fundacja@example.org')
+  and exists (select 1 from public.threads where id = 'd2000000-0000-4000-8000-000000000001');
+
+insert into public.messages (thread_id, autor_id, autor_nazwa, autor_rola, tresc, created_at)
+select 'd2000000-0000-4000-8000-000000000001', p.id, p.nazwa_wyswietlana, p.role, d.tresc, now() - d.ago::interval
+from (values
+  ('demo.rops@example.org', 'Dziękujemy za fiszkę. Pomysł dobrze uzupełnia innowację „Organizator kompleksowej opieki w miejscu zamieszkania”. Prosimy dopisać, jak wolontariusze będą współpracować z ośrodkiem pomocy społecznej. Przypisaliśmy mentorkę.', '10 minutes'),
+  ('demo.ekspert@example.org', 'Chętnie pomogę. Proponuję krótką rozmowę w tym tygodniu, przygotuję listę pytań do OPS.', '6 minutes'),
+  ('demo.fundacja@example.org', 'Dziękujemy! Uzupełnimy fiszkę do jutra.', '2 minutes')
+) as d (email, tresc, ago)
+join auth.users u on u.email = d.email
+join public.profiles p on p.id = u.id
+where exists (select 1 from public.threads where id = 'd2000000-0000-4000-8000-000000000001');
+
 commit;
