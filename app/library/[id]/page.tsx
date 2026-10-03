@@ -82,8 +82,18 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
               <Badge variant="success">Sprawdzona przez ROPS</Badge>
             ) : null}
             {i.opis_niepelny ? <Badge variant="warning">Opis niepełny</Badge> : null}
+            {i.spoza_biblioteki ? (
+              <Badge variant="neutral">Z inkubatora ROPS, spoza Biblioteki online</Badge>
+            ) : null}
             {program ? <span className="text-ink-muted text-base">{program}</span> : null}
           </div>
+          {i.spoza_biblioteki ? (
+            <p className="text-ink-muted max-w-[760px] text-base">
+              Ta innowacja powstała w programie prowadzonym przez ROPS, ale nie ma jej w Bibliotece
+              innowacji na stronie ROPS. Opis pochodzi ze strony programu. Link do źródła jest w
+              ramce z materiałami.
+            </p>
+          ) : null}
         </div>
       </div>
 
@@ -252,13 +262,15 @@ function MaterialsPanel({ innovation: i }: { innovation: Innovation }) {
       ) : (
         <p className="text-ink-muted py-3">Brak materiałów do pobrania.</p>
       )}
-      <p className="pt-3 text-base">
-        <a href={i.url} target="_blank" rel="noopener noreferrer" className={`${LINK} ${TARGET}`}>
-          {i.spoza_biblioteki ? "Źródło na stronie programu" : "Pełna karta na stronie ROPS"}
-          <span aria-hidden="true">&nbsp;↗</span>
-          <span className="sr-only"> (otwiera się w nowej karcie)</span>
-        </a>
-      </p>
+      {i.url ? (
+        <p className="pt-3 text-base">
+          <a href={i.url} target="_blank" rel="noopener noreferrer" className={`${LINK} ${TARGET}`}>
+            {i.spoza_biblioteki ? "Źródło na stronie programu" : "Pełna karta na stronie ROPS"}
+            <span aria-hidden="true">&nbsp;↗</span>
+            <span className="sr-only"> (otwiera się w nowej karcie)</span>
+          </a>
+        </p>
+      ) : null}
     </div>
   );
 }

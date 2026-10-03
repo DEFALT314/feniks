@@ -146,6 +146,8 @@ export function search(
     )
     .map(({ i }) => i);
 
+  counts.z_biblioteki = results.filter((i) => !i.spoza_biblioteki).length;
+
   const pageCount = Math.max(1, Math.ceil(results.length / pageSize));
   const page = Math.min(filters.page, pageCount);
   return {
