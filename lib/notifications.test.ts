@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { addNotification } from "./notifications";
+import { addNotification, notifyIdeaSent } from "./notifications";
 import { mockRpcClient } from "./test/supabase-mock";
 
 vi.mock("server-only", () => ({}));
@@ -69,5 +69,60 @@ describe("addNotification", () => {
     await expect(
       addNotification({ userIds: [ANNA], typ: "x", tytul: "y" }, client),
     ).rejects.toThrow("Failed to add notification: Wymagane logowanie");
+  });
+});
+
+describe("notifyIdeaSent", () => {
+  it("notifies ROPS in the app and e-mails the ROPS inbox with a panel link", async () => {
+    const { client, rpc } = mockRpcClient({ data: 2 });
+    const sendEmail = vi.fn(async () => ({ sent: true as const, id: "m1" }));
+
+    const result = await notifyIdeaSent(
+      { ideaId: "i1", tytul: "Kawiarenka", autorNazwa: "Stanisław" },
+      client,
+      { sendEmail, env: { ROPS_NOTIFY_EMAIL: "rops@example.pl", SITE_URL: "https://hubmi.pl" } },
+    );
+
+    expect(result).toEqual({ notified: 2, emailSent: true });
+    expect(rpc).toHaveBeenCalledWith(
+      "dodaj_powiadomienie",
+      expect.objectContaining({
+        p_role: ["rops_redaktor", "rops_admin"],
+        p_typ: "pomysl_wyslany",
+        p_link: "/admin?idea=i1",
+      }),
+    );
+    expect(sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: "rops@example.pl",
+        subject: "Nowy pomysł do oceny: Kawiarenka",
+        action: { label: "Otwórz w Panelu ROPS", url: "https://hubmi.pl/admin?idea=i1" },
+      }),
+      expect.anything(),
+    );
+  });
+
+  it("falls back to the SMTP inbox and skips the e-mail when nothing is configured", async () => {
+    const sendEmail = vi.fn(async () => ({ sent: true as const, id: "m1" }));
+    await notifyIdeaSent({ ideaId: "i1", tytul: "A" }, mockRpcClient({ data: 1 }).client, {
+      sendEmail,
+      env: { SMTP_USER: "hubmi@gmail.com" },
+    });
+    expect(sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ to: "hubmi@gmail.com" }),
+      expect.anything(),
+    );
+
+    const none = vi.fn();
+    const r = await notifyIdeaSent(
+      { ideaId: "i1", tytul: "A" },
+      mockRpcClient({ data: 1 }).client,
+      {
+        sendEmail: none,
+        env: {},
+      },
+    );
+    expect(r.emailSent).toBe(false);
+    expect(none).not.toHaveBeenCalled();
   });
 });

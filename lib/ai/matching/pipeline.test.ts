@@ -113,6 +113,46 @@ describe("runMatch", () => {
     expect(response.challenge?.area_id).toBe("seniorzy");
   });
 
+  it("takes the challenge chosen by the AI over the vector heuristic", async () => {
+    const rerankFake: MatchDeps["rerank"] = async (_d, candidates, challenges) => {
+      expect(challenges.map((c) => c.id)).toEqual(["uslugi-opiekuncze", "przejscie-z-placowki"]);
+      return {
+        picks: [{ id: candidates[0].id, reason: "Pomaga.", quote: null }],
+        noMatchReason: null,
+        challengeId: "przejscie-z-placowki",
+      };
+    };
+    const { response } = await runMatch(request, deps({ rerank: rerankFake }));
+    expect(response.challenge?.challenge_id).toBe("przejscie-z-placowki");
+  });
+
+  it("never shows a challenge from another area than the recommendations", async () => {
+    const { chooseChallenge } = await import("./pipeline");
+    const areas = [
+      {
+        id: "rodzina-piecza",
+        nazwa: "Rodzina i piecza zastępcza",
+        kategorie_biblioteki: ["dla-dzieci-mlodziezy-i-rodziny"],
+        wyzwania: [{ id: "nierozdzielanie-rodzenstwa", tekst: "Nierozdzielanie rodzeństwa" }],
+      },
+      {
+        id: "seniorzy",
+        nazwa: "Seniorzy",
+        kategorie_biblioteki: ["dla-seniorow"],
+        wyzwania: [{ id: "aktywizacja", tekst: "Szersza oferta aktywizacji seniorów" }],
+      },
+    ];
+    const hits = [
+      { ref_id: "nierozdzielanie-rodzenstwa", similarity: 0.79 },
+      { ref_id: "aktywizacja", similarity: 0.73 },
+    ];
+    expect(chooseChallenge(hits, areas, ["dla-seniorow"])?.challenge_id).toBe("aktywizacja");
+    // the recommendation's area has no challenge among the hits: nothing rather than off-topic
+    expect(chooseChallenge(hits.slice(0, 1), areas, ["dla-seniorow"])).toBeNull();
+    // no recommendations: the best match
+    expect(chooseChallenge(hits, areas, [])?.challenge_id).toBe("nierozdzielanie-rodzenstwa");
+  });
+
   it("never shows or sends the phone number", async () => {
     const { client, calls } = fakeLlm({ picks: [], no_match_reason: "Brak." });
     const { response } = await runMatch(
@@ -241,6 +281,27 @@ describe("rerank", () => {
     const { client, calls } = fakeLlm({ picks: [{ id: "wymyslona", reason: "x", quote: null }] });
     await expect(rerank("seniorzy", candidates, { client })).rejects.toThrow();
     expect(calls).toHaveLength(2);
+  });
+
+  it("names a challenge only from the Challenges Map list, or none", async () => {
+    const challenges = [
+      { id: "uslugi-opiekuncze", area: "Seniorzy", text: "Dostęp do usług opiekuńczych" },
+    ];
+    const ok = fakeLlm({ picks: [], challenge_id: "uslugi-opiekuncze" });
+    expect(
+      (await rerank("seniorzy", candidates, { client: ok.client }, challenges)).challengeId,
+    ).toBe("uslugi-opiekuncze");
+    expect(ok.calls[0][1].content).toContain("Challenges Map (json)");
+
+    const none = fakeLlm({ picks: [], challenge_id: "none" });
+    expect(
+      (await rerank("seniorzy", candidates, { client: none.client }, challenges)).challengeId,
+    ).toBeNull();
+
+    const invented = fakeLlm({ picks: [], challenge_id: "wymyslone" });
+    await expect(
+      rerank("seniorzy", candidates, { client: invented.client }, challenges),
+    ).rejects.toThrow();
   });
 
   it("tells the model to choose only from the list and gives it the candidates", async () => {

@@ -3,7 +3,10 @@ import { Atkinson_Hyperlegible_Next, Bricolage_Grotesque } from "next/font/googl
 import { SiteFooter } from "@/components/ui/site-footer";
 import { SiteHeader } from "@/components/ui/site-header";
 import { A11Y_PLUS_SCRIPT } from "@/components/ui/text-size-toggle";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { getCurrentUser, headerName } from "@/lib/auth";
+import { unreadCount } from "@/lib/notification-feed";
+import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
 // Body text: designed for low-vision readers (design/makiety/System.dc.html).
@@ -28,9 +31,9 @@ export const metadata: Metadata = {
 
 // Every page renders its own <main id="main-content">, the target of the skip link.
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  // TODO(P4): pass the unread notification count (#7)
   const current = await getCurrentUser();
   const user = current ? { name: headerName(current), role: current.role } : null;
+  const unread = current ? await unreadCount(await createClient()) : 0;
   return (
     <html
       lang="pl"
@@ -47,7 +50,14 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         >
           Przejdź do treści
         </a>
-        <SiteHeader user={user} demoMode={process.env.DEMO_MODE === "true"} />
+        <SiteHeader
+          user={user}
+          unreadNotifications={unread}
+          demoMode={process.env.DEMO_MODE === "true"}
+          bell={
+            current ? <NotificationBell userId={current.id} initialUnread={unread} /> : undefined
+          }
+        />
         <div className="flex flex-1 flex-col">{children}</div>
         <SiteFooter />
       </body>
