@@ -6,7 +6,7 @@ import { ChoiceTile } from "./choice-tile";
 import { SiteHeader } from "./site-header";
 import { Steps } from "./steps";
 
-vi.mock("next/navigation", () => ({ usePathname: () => "/biblioteka/bawita" }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/library/bawita" }));
 
 // The opening <a> tag that links to href (attribute order is up to React)
 function linkTag(html: string, href: string) {
@@ -69,8 +69,8 @@ describe("ChoiceTile", () => {
 describe("SiteHeader", () => {
   it("shows the login link and public menu to visitors", () => {
     const html = renderToStaticMarkup(<SiteHeader user={null} />);
-    expect(html).toContain('href="/logowanie"');
-    expect(html).not.toContain("/moje/kreator");
+    expect(html).toContain('href="/login"');
+    expect(html).not.toContain("/my/creator");
     expect(html).not.toContain("Wersja pokazowa");
   });
 
@@ -78,11 +78,11 @@ describe("SiteHeader", () => {
     const html = renderToStaticMarkup(
       <SiteHeader user={{ name: "Stanisław", role: "jst" }} unreadNotifications={2} demoMode />,
     );
-    expect(linkTag(html, "/biblioteka")).toContain('aria-current="page"');
+    expect(linkTag(html, "/library")).toContain('aria-current="page"');
     expect(html.match(/aria-current="page"/g)).toHaveLength(1);
     expect(html).toContain('aria-label="Powiadomienia: 2 nowe"');
     expect(html).toContain("gmina (JST)");
-    expect(html).toContain("/moje/middleman");
+    expect(html).toContain("/my/middleman");
     expect(html).toContain("Wersja pokazowa");
   });
 });
