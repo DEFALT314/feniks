@@ -179,3 +179,9 @@ html[data-a11y-plus] ::placeholder {
     @apply bg-highlight text-ink;
   }
 }
+
+/* Motion (components/ui/motion.tsx): entrance elements stay hidden until the first frame of their
+   animation; MOTION_WAIT_SCRIPT sets the attribute before paint and removes it after 2.5 s anyway. */
+html[data-ruch-czeka] [data-ruch~="wejscie"] > * {
+  opacity: 0;
+}

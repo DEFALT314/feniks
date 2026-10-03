@@ -95,7 +95,7 @@ export default async function Home() {
     <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
       <section className="border-line border-b bg-white">
         <div className={`${WRAP} flex flex-wrap items-center gap-12 py-12 sm:py-[72px]`}>
-          <div className="flex flex-[1_1_520px] flex-col gap-[22px]">
+          <div data-ruch="wejscie" className="flex flex-[1_1_520px] flex-col gap-[22px]">
             <p className="text-ink-muted text-[0.9375rem] font-bold">
               Małopolski Hub Innowacji Społecznych
             </p>
@@ -118,6 +118,7 @@ export default async function Home() {
 
           {example.length ? (
             <figure
+              data-ruch="wejscie zakresl"
               aria-labelledby="example-heading"
               className="m-0 flex flex-[1_1_420px] flex-col gap-4 rounded-xl border border-[#b8c0cd] bg-white p-7"
             >
@@ -160,11 +161,16 @@ export default async function Home() {
       </section>
 
       <section aria-label="Dane na start" className={`${WRAP} py-10`}>
-        <dl className="m-0 grid grid-cols-2 gap-x-10 gap-y-6 lg:grid-cols-4">
+        <dl data-ruch="pokaz" className="m-0 grid grid-cols-2 gap-x-10 gap-y-6 lg:grid-cols-4">
           {statItems.map((s) => (
             <div key={s.label} className="flex flex-col-reverse justify-end">
               <dt className="text-ink-muted font-normal">{s.label}</dt>
-              <dd className="font-heading m-0 text-[2.5rem] leading-[1.1] font-bold">{s.value}</dd>
+              <dd
+                data-ruch="licznik"
+                className="font-heading m-0 text-[2.5rem] leading-[1.1] font-bold tabular-nums"
+              >
+                {s.value}
+              </dd>
             </div>
           ))}
         </dl>
@@ -174,7 +180,7 @@ export default async function Home() {
         <h2 id="start-heading" className={H2}>
           Od czego zaczynasz?
         </h2>
-        <ul className="m-0 grid list-none gap-5 p-0 md:grid-cols-3">
+        <ul data-ruch="pokaz" className="m-0 grid list-none gap-5 p-0 md:grid-cols-3">
           {ENTRIES.map((e) => (
             <li key={e.href} className="flex">
               <Link
@@ -206,7 +212,10 @@ export default async function Home() {
               nikogo.
             </p>
           </div>
-          <ul className="m-0 grid flex-[2_1_520px] list-disc gap-x-8 gap-y-3 pl-[22px] sm:grid-cols-2">
+          <ul
+            data-ruch="pokaz"
+            className="m-0 grid flex-[2_1_520px] list-disc gap-x-8 gap-y-3 pl-[22px] sm:grid-cols-2"
+          >
             {AI_RULES.map((rule) => (
               <li key={rule}>{rule}</li>
             ))}
@@ -233,7 +242,7 @@ export default async function Home() {
               </span>
             </Link>
           </div>
-          <ul className="m-0 grid list-none gap-5 p-0 md:grid-cols-3">
+          <ul data-ruch="pokaz" className="m-0 grid list-none gap-5 p-0 md:grid-cols-3">
             {featured.map((i) => (
               <li key={i.id} className="flex">
                 <Link href={`/library/${i.id}`} className={`${CARD_LINK} w-full gap-2 p-6`}>

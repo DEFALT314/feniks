@@ -48,7 +48,10 @@ export function Wizard({
   return (
     <main id="main-content" className="flex-1" onClickCapture={saveBeforeLeaving}>
       <div className="border-border border-b bg-white">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-2.5 px-4 py-5 sm:px-10">
+        <div
+          data-ruch="wejscie"
+          className="mx-auto flex max-w-[1200px] flex-col gap-2.5 px-4 py-5 sm:px-10"
+        >
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <h1 className="font-sans text-lg font-bold">Pomysł: {idea.tytul}</h1>
             <p className="text-muted-foreground text-base">
@@ -56,6 +59,7 @@ export function Wizard({
             </p>
           </div>
           <div
+            data-ruch="postep"
             role="progressbar"
             aria-label="Postęp kreatora"
             aria-valuemin={1}
@@ -91,6 +95,7 @@ export function Wizard({
         </div>
 
         <section
+          data-ruch="pokaz"
           aria-label="Pytanie"
           className="flex max-w-[680px] min-w-0 flex-[999_1_480px] flex-col gap-6"
         >
