@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – rejestracja</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}.btn-p:hover{background:#172C6B;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}.btn-s:hover{background:#E8EDFA;color:#172C6B}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+label{font-weight:700}
+input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+.acc{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;background:#fff;text-decoration:none;color:#151A23;min-height:64px}
+.acc:hover{border-color:#1F3A8A;background:#F3F6FD;color:#151A23}
+.av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 40px;color:#FFFFFF}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;font-weight:400;cursor:pointer}
+.opt input{accent-color:#1F3A8A;width:22px;height:22px;margin-top:3px;flex:none}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6; min-height: 1250px; display: flex; flex-direction: column; align-items: center; padding: 72px 24px">
+  <a href="Main.dc.html" aria-label="HubMI – strona główna" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #151A23; margin-bottom: 32px">
+    <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14.5" cy="9" r="5.5" fill="#1F3A8A"></circle><circle cx="33.5" cy="9" r="5.5" fill="#C2452B"></circle><path d="M23.4 44 C 12 36.5, 3.5 29, 5.5 21.5 C 7 16.5, 13.5 15.5, 17.5 18.5 C 20.3 20.6, 22.3 23, 23.4 25.5 Z" fill="#1F3A8A"></path><path d="M24.6 44 C 36 36.5, 44.5 29, 42.5 21.5 C 41 16.5, 34.5 15.5, 30.5 18.5 C 27.7 20.6, 25.7 23, 24.6 25.5 Z" fill="#C2452B"></path></svg>
+    <span style="display: flex; flex-direction: column; line-height: 1.05"><span class="h" style="font-size: 28px">HubMI</span><span style="font-size: 14px; color: #4B5565">innowacje społeczne Małopolski</span></span>
+  </a>
+  <main class="card" aria-labelledby="rej" style="width: 100%; max-width: 520px; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+    <h1 id="rej" class="h" style="font-size: 34px">Załóż konto</h1>
+    <form style="display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-direction: column; gap: 6px"><label for="r-mail">Adres e-mail</label><input id="r-mail" type="email" autocomplete="email"></div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="r-haslo">Hasło</label>
+        <div style="position: relative"><input id="r-haslo" type="password" autocomplete="new-password" aria-describedby="r-haslo-op" style="padding-right: 96px"><button type="button" aria-pressed="false" aria-controls="r-haslo" style="position: absolute; right: 6px; top: 6px; bottom: 6px; padding: 0 14px; border: 0; border-radius: 8px; background: #E8EDFA; color: #1F3A8A; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Pokaż</button></div>
+        <span id="r-haslo-op" class="muted" style="font-size: 16px">Co najmniej 10 znaków.</span>
+      </div>
+      <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+        <legend style="font-weight: 700; margin-bottom: 6px">Kim jesteś?</legend>
+        <label class="opt" style="border: 2px solid #1F3A8A"><input type="radio" name="rola" checked> <span>Mieszkanka lub mieszkaniec</span></label>
+        <label class="opt"><input type="radio" name="rola"> <span>Organizacja pozarządowa</span></label>
+        <label class="opt"><input type="radio" name="rola"> <span>Gmina lub instytucja publiczna</span></label>
+        <label class="opt"><input type="radio" name="rola"> <span>Ekspertka lub ekspert</span></label>
+        <span class="muted" style="font-size: 16px">Konta organizacji, gmin i ekspertów zatwierdza ROPS. Do tego czasu korzystasz z konta jak mieszkaniec.</span>
+      </fieldset>
+      <label style="display: flex; gap: 10px; align-items: flex-start; font-weight: 400"><input type="checkbox" style="accent-color: #1F3A8A; width: 22px; height: 22px; margin-top: 3px; flex: none"> <span>Akceptuję <a href="#regulamin">regulamin</a> i <a href="#rodo">informację o danych osobowych</a>.</span></label>
+      <button type="submit" class="btn btn-p" style="width: 100%">Załóż konto</button>
+    </form>
+    <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Masz już konto? <a href="Logowanie.dc.html" style="font-weight: 700">Zaloguj się</a></p>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1250}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
