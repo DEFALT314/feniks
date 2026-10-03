@@ -18,6 +18,7 @@ describe("P3 contracts: fixtures pass validation", () => {
     ["call list", A.CallList, aiFixture.call_list],
     ["service card request", MM.ServiceCardRequest, middlemanFixture.request],
     ["service card", MM.ServiceCard, middlemanFixture.card],
+    ["service card edit", MM.ServiceCardEdit, middlemanFixture.edit],
   ] as const)("%s", (_, schema, data) => {
     expect(schema.safeParse(data).success).toBe(true);
   });

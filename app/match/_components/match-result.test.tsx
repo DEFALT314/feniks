@@ -40,7 +40,7 @@ describe("MatchResult", () => {
       'href="/library/organizator-kompleksowej-opieki-w-miejscu-zamieszkania"',
     );
     expect(html).toContain(
-      'href="/my/middleman?innowacja=organizator-kompleksowej-opieki-w-miejscu-zamieszkania"',
+      'href="/my/middleman?innovation=organizator-kompleksowej-opieki-w-miejscu-zamieszkania"',
     );
     expect(html).toContain('href="/challenge-map?area=seniorzy#area"');
   });
