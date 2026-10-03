@@ -71,6 +71,49 @@ describe("sendEmail", () => {
   });
 });
 
+describe("sendEmail over SMTP", () => {
+  const smtpEnv = { SMTP_USER: "hubmi.demo@gmail.com", SMTP_PASS: "app-pass", RESEND_API_KEY: "k" };
+
+  it("prefers SMTP when configured and sends from the SMTP account", async () => {
+    const smtpSend = vi.fn(async () => ({ messageId: "<m1@gmail>" }));
+    const fetchImpl = okFetch();
+
+    const result = await sendEmail(message, smtpEnv, fetchImpl, smtpSend);
+
+    expect(result).toEqual({ sent: true, id: "<m1@gmail>" });
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(smtpSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        from: "HubMI.pl <hubmi.demo@gmail.com>",
+        to: "anna@gmail.com",
+        subject: "Ocena pomysłu",
+      }),
+    );
+  });
+
+  it("reports SMTP errors without throwing", async () => {
+    const smtpSend = vi.fn(async () => {
+      throw new Error("Invalid login");
+    });
+    expect(await sendEmail(message, smtpEnv, okFetch(), smtpSend)).toEqual({
+      sent: false,
+      reason: "Invalid login",
+    });
+  });
+
+  it("still skips demo addresses", async () => {
+    const smtpSend = vi.fn(async () => ({ messageId: "x" }));
+    const result = await sendEmail(
+      { ...message, to: "demo.ngo@example.org" },
+      smtpEnv,
+      okFetch(),
+      smtpSend,
+    );
+    expect(result).toEqual({ sent: false, reason: "undeliverable-address" });
+    expect(smtpSend).not.toHaveBeenCalled();
+  });
+});
+
 describe("renderEmail", () => {
   it("escapes user text in HTML", () => {
     const { html } = renderEmail(message);

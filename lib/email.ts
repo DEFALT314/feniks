@@ -1,9 +1,30 @@
 import "server-only";
+import nodemailer from "nodemailer";
 
-// Transactional e-mail through Resend (RESEND_API_KEY). Server-side only.
-// Without a verified domain Resend delivers only to the account owner's address; set EMAIL_FROM
-// once a domain is verified (e.g. "HubMI.pl <powiadomienia@hubmi.pl>").
-const DEFAULT_FROM = "HubMI.pl <onboarding@resend.dev>";
+// Transactional e-mail, server-side only. Preferred: SMTP (SMTP_HOST, SMTP_PORT, SMTP_USER,
+// SMTP_PASS), e.g. a Gmail account with an app password, which delivers to any address for free.
+// Fallback: Resend (RESEND_API_KEY), which without a verified domain reaches only the account owner.
+// EMAIL_FROM overrides the sender (e.g. "HubMI.pl <powiadomienia@hubmi.pl>" once a domain exists).
+const RESEND_FROM = "HubMI.pl <onboarding@resend.dev>";
+
+export type SmtpSend = (mail: {
+  from: string;
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+}) => Promise<{ messageId?: string }>;
+
+function smtpSender(env: Env): SmtpSend {
+  const port = Number(env.SMTP_PORT || 465);
+  const transport = nodemailer.createTransport({
+    host: env.SMTP_HOST || "smtp.gmail.com",
+    port,
+    secure: port === 465,
+    auth: { user: env.SMTP_USER, pass: env.SMTP_PASS },
+  });
+  return (mail) => transport.sendMail(mail);
+}
 
 export type EmailMessage = {
   to: string;
@@ -54,12 +75,26 @@ export async function sendEmail(
   message: EmailMessage,
   env: Env = process.env,
   fetchImpl: typeof fetch = fetch,
+  smtpSend?: SmtpSend,
 ): Promise<EmailResult> {
-  if (!env.RESEND_API_KEY) return { sent: false, reason: "not-configured" };
+  const useSmtp = Boolean(env.SMTP_USER && env.SMTP_PASS);
+  if (!useSmtp && !env.RESEND_API_KEY) return { sent: false, reason: "not-configured" };
   if (!isDeliverable(message.to)) return { sent: false, reason: "undeliverable-address" };
 
   const { html, text } = renderEmail(message);
   try {
+    if (useSmtp) {
+      const send = smtpSend ?? smtpSender(env);
+      const info = await send({
+        from: env.EMAIL_FROM || `HubMI.pl <${env.SMTP_USER}>`,
+        to: message.to,
+        subject: message.subject,
+        html,
+        text,
+      });
+      return { sent: true, id: info.messageId ?? "smtp" };
+    }
+
     const res = await fetchImpl("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -67,7 +102,7 @@ export async function sendEmail(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: env.EMAIL_FROM || DEFAULT_FROM,
+        from: env.EMAIL_FROM || RESEND_FROM,
         to: [message.to],
         subject: message.subject,
         html,
