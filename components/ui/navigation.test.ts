@@ -3,6 +3,7 @@ import {
   accountItemsFor,
   isActivePath,
   navItemsFor,
+  notificationsBadge,
   notificationsLabel,
   roleLabel,
 } from "./navigation";
@@ -74,6 +75,13 @@ describe("labels", () => {
   it("describes unread notifications for screen readers", () => {
     expect(notificationsLabel(0)).toBe("Powiadomienia: brak nowych");
     expect(notificationsLabel(2)).toBe("Powiadomienia: 2 nowe");
+  });
+
+  it("caps the visible unread badge at 99+ so it never grows wider", () => {
+    expect(notificationsBadge(7)).toBe("7");
+    expect(notificationsBadge(99)).toBe("99");
+    expect(notificationsBadge(100)).toBe("99+");
+    expect(notificationsBadge(1234)).toBe("99+");
   });
 
   it("names roles in plain Polish", () => {

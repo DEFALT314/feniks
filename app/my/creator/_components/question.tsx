@@ -123,7 +123,7 @@ function QuestionInput({ field, answer, onChange }: QuestionProps) {
             </Field>
           ) : null}
           {field.typ === "wiele_wyborow_max3" ? (
-            <p aria-live="polite" className="text-muted-foreground text-base">
+            <p aria-live="polite" className="text-muted-foreground text-base tabular-nums">
               Zaznaczono {choices.length} z 3.
             </p>
           ) : null}

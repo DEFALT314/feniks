@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { useId } from "react";
 import { cn } from "@/lib/utils";
+import { pressClass } from "./button";
 import { isActivePath, roleLabel, type CurrentUser, type NavItem } from "./navigation";
 import { dropdownClass, useDisclosure } from "./use-disclosure";
 
@@ -37,7 +38,10 @@ export function AccountMenu({
         aria-expanded={open}
         aria-controls={panelId}
         onClick={toggle}
-        className="text-ink hover:bg-navy-soft aria-expanded:bg-navy-soft flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] px-2.5 text-left leading-tight transition-colors"
+        className={cn(
+          "text-ink hover:bg-navy-soft aria-expanded:bg-navy-soft flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] px-2.5 text-left leading-tight transition-[background-color,color,scale]",
+          pressClass,
+        )}
       >
         {/* 1024–1279 px: initial only, so the menu stays in one row; name and role from 1280 px */}
         <span
@@ -68,7 +72,7 @@ export function AccountMenu({
         data-origin="top-right"
         className={cn(
           dropdownClass(state),
-          "border-border absolute top-full right-0 z-50 mt-2 w-64 rounded-xl border bg-white p-2 shadow-[0_16px_40px_-16px_rgba(21,26,35,0.35)]",
+          "border-border absolute top-full right-0 z-50 mt-2 w-64 rounded-[18px] border bg-white p-2 shadow-[0_16px_40px_-16px_rgba(21,26,35,0.35)]",
         )}
       >
         <p className="border-border mb-2 border-b px-3 pt-1 pb-2.5 leading-tight">

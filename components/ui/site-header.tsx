@@ -6,7 +6,13 @@ import { buttonVariants } from "./button";
 import { Logo } from "./logo";
 import { AccountMenu } from "./account-menu";
 import { MobileMenu } from "./mobile-menu";
-import { accountItemsFor, navItemsFor, notificationsLabel, type CurrentUser } from "./navigation";
+import {
+  accountItemsFor,
+  navItemsFor,
+  notificationsBadge,
+  notificationsLabel,
+  type CurrentUser,
+} from "./navigation";
 import { SiteNav } from "./site-nav";
 import { TextSizeToggle } from "./text-size-toggle";
 
@@ -63,9 +69,9 @@ export function SiteHeader({
                   {unreadNotifications > 0 ? (
                     <span
                       aria-hidden="true"
-                      className="bg-brick absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white"
+                      className="bg-brick absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white tabular-nums"
                     >
-                      {unreadNotifications}
+                      {notificationsBadge(unreadNotifications)}
                     </span>
                   ) : null}
                 </Link>
