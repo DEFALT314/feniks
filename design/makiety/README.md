@@ -8,6 +8,8 @@ from `app/layout.tsx`.
 | Mockup | Screen | Issue (owner) |
 |---|---|---|
 | `System.dc.html` | colors, typography, buttons, fields, tags | Makiety i system wizualny (P2) |
+| `Logo.dc.html` | logo (wariant C „Razem”), pliki w `design/logo/` | Komponenty UI i układ strony (P2) |
+| `Cover.dc.html` | okładka projektu (`design/okladka.png`) | Kompletne zgłoszenie (P1) |
 | `Naglowek.dc.html`, `Stopka.dc.html` | header, footer | Komponenty UI i układ strony (P2) |
 | `Main.dc.html` | `/` | Strona główna (P2) |
 | `Logowanie.dc.html` | `/login`, "Wejdź jako…" | Strona główna (P2), Konta demo (P4) |

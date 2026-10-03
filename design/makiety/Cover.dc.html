@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – okładka projektu</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+h1,p{margin:0}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1}
+.mark{background:linear-gradient(transparent 60%,#FFE08A 60%,#FFE08A 90%,transparent 90%);padding:0 .05em}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:20px;padding:36px 40px}
+.tag{display:inline-flex;padding:6px 16px;border-radius:999px;font-size:22px;font-weight:700;background:#E3F2EA;color:#1D6B48}
+</style>
+</helmet>
+<div style="width: 1920px; height: 1080px; overflow: hidden; position: relative; font-family: 'Atkinson Hyperlegible Next', system-ui, sans-serif; color: #151A23; background: #F6F7F9; line-height: 1.4">
+  <div aria-hidden="true" style="position: absolute; right: -320px; top: -300px; width: 1180px; height: 1180px; border-radius: 50%; border: 2px solid #D9DDE4"></div>
+
+  <div style="position: absolute; left: 140px; top: 0; bottom: 0; width: 900px; display: flex; flex-direction: column; justify-content: center; gap: 44px">
+    <h1 class="h" style="font-size: 150px; color: #1F3A8A; display: flex; align-items: center; gap: 28px"><svg style="flex:none" width="132" height="132" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14.5" cy="9" r="5.5" fill="#1F3A8A"></circle><circle cx="33.5" cy="9" r="5.5" fill="#C2452B"></circle><path d="M23.4 44 C 12 36.5, 3.5 29, 5.5 21.5 C 7 16.5, 13.5 15.5, 17.5 18.5 C 20.3 20.6, 22.3 23, 23.4 25.5 Z" fill="#1F3A8A"></path><path d="M24.6 44 C 36 36.5, 44.5 29, 42.5 21.5 C 41 16.5, 34.5 15.5, 30.5 18.5 C 27.7 20.6, 25.7 23, 24.6 25.5 Z" fill="#C2452B"></path></svg><span>HubMI<span style="color: #C2452B">.</span>pl</span></h1>
+    <p class="h" style="font-size: 64px; font-weight: 600; line-height: 1.1">Twój problem. <span class="mark">Sprawdzone</span> rozwiązanie.</p>
+  </div>
+
+  <div style="position: absolute; left: 1200px; top: 0; bottom: 0; width: 600px; display: flex; flex-direction: column; justify-content: center">
+    <div class="card"><p style="font-size: 32px">„Mama wraca ze szpitala i mieszka sama.”</p></div>
+    <div aria-hidden="true" style="width: 2px; height: 72px; background: #1F3A8A; margin-left: 80px"></div>
+    <div class="card" style="border: 2px solid #1F3A8A">
+      <p class="h" style="font-size: 38px; line-height: 1.15">Organizator kompleksowej opieki w miejscu zamieszkania</p>
+    </div>
+  </div>
+
+  <p style="position: absolute; left: 140px; bottom: 72px; font-size: 22px; font-weight: 700; color: #4B5565">Małopolski Hub Innowacji Społecznych</p>
+  <p style="position: absolute; right: 140px; bottom: 72px; font-size: 22px; font-weight: 700; color: #4B5565">HackYeah 2026</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1920,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
