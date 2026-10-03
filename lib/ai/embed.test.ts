@@ -15,6 +15,18 @@ describe("embedUrl", () => {
     );
     expect(embedUrl(env({}))).toBeNull();
   });
+
+  it("uses the public production domain in production, not the protected deployment URL", () => {
+    const production = env({
+      VERCEL_ENV: "production",
+      VERCEL_URL: "feniks-abc123.vercel.app",
+      VERCEL_PROJECT_PRODUCTION_URL: "feniks-hub.vercel.app",
+    });
+    expect(embedUrl(production)).toBe("https://feniks-hub.vercel.app/api/embed");
+    expect(embedUrl(env({ VERCEL_ENV: "preview", VERCEL_URL: "feniks-abc123.vercel.app" }))).toBe(
+      "https://feniks-abc123.vercel.app/api/embed",
+    );
+  });
 });
 
 describe("embedQuery", () => {

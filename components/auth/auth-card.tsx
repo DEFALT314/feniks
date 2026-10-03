@@ -7,14 +7,19 @@ export function AuthCard({
   headingId,
   children,
   footer,
+  aside,
 }: {
   title: string;
   headingId: string;
   children: ReactNode;
   footer?: ReactNode;
+  aside?: ReactNode; // shown next to the card, e.g. demo accounts in demo mode
 }) {
   return (
-    <main id="main-content" className="flex w-full justify-center px-4 pt-14 pb-[72px]">
+    <main
+      id="main-content"
+      className="mx-auto flex w-full max-w-[1200px] flex-wrap items-start justify-center gap-8 px-4 pt-14 pb-[72px] sm:px-10"
+    >
       <Card
         role="region"
         aria-labelledby={headingId}
@@ -26,6 +31,7 @@ export function AuthCard({
         {children}
         {footer ? <p className="border-border border-t pt-5 text-center">{footer}</p> : null}
       </Card>
+      {aside}
     </main>
   );
 }

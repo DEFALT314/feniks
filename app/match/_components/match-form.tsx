@@ -13,6 +13,7 @@ import {
   validate,
   type Phase,
 } from "../_lib/request";
+import { ResultSkeleton } from "./ai-progress";
 import { MatchResult } from "./match-result";
 
 const SELECT =
@@ -142,7 +143,14 @@ export function MatchForm({ initialDescription }: { initialDescription: string }
             {error}
           </p>
         ) : null}
-        {phase === "searching" ? <p role="status">Szukam w Bibliotece ROPS…</p> : null}
+        {phase === "searching" ? (
+          <>
+            <p role="status" className="sr-only">
+              Szukam w Bibliotece ROPS…
+            </p>
+            <ResultSkeleton />
+          </>
+        ) : null}
         {result ? <MatchResult result={result} choosing={phase === "choosing"} /> : null}
       </section>
     </>
