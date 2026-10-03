@@ -32,7 +32,7 @@ const INSTRUCTIONS: Record<CanvasField["typ"], string> = {
 export function Question({ field, answer, onChange, disabled = false }: QuestionProps) {
   const title = field.pytanie ?? field.nazwa;
   return (
-    <fieldset disabled={disabled} className="flex min-w-0 flex-col gap-3">
+    <fieldset data-ruch="wybor" disabled={disabled} className="flex min-w-0 flex-col gap-3">
       <legend className="font-heading mb-1.5 text-[2rem] leading-tight font-bold tracking-tight">
         {title}
       </legend>
