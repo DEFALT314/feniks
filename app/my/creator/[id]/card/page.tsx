@@ -10,11 +10,22 @@ export const metadata: Metadata = {
   title: "Fiszka pomysłu – HubMI.pl",
 };
 
-export default async function CardPage({ params }: PageProps<"/my/creator/[id]/card">) {
-  const { id } = await params;
+export default async function CardPage({
+  params,
+  searchParams,
+}: PageProps<"/my/creator/[id]/card">) {
+  const [{ id }, { sent }] = await Promise.all([params, searchParams]);
   const user = await getCurrentUser();
   if (!user) return <SignInPrompt next={`/my/creator/${id}/card`} />;
   const idea = await getMyIdea(await createClient(), user.id, id);
   if (!idea) return <IdeaNotFound />;
-  return <IdeaCard key={idea.id} idea={idea} calls={CALLS} />;
+  // key: a refreshed copy from the database (e.g. after browser Back) replaces the local state
+  return (
+    <IdeaCard
+      key={idea.updated_at}
+      idea={idea}
+      calls={CALLS}
+      justSent={sent === "first" || sent === "again" ? sent : null}
+    />
+  );
 }

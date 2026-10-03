@@ -12,14 +12,17 @@ import { cardHints, STAGE_LABELS } from "../_lib/canvas";
 import type { MyIdea } from "../_lib/ideas";
 import {
   authorStatus,
+  canSubmit,
   matchDescription,
   missingForSubmission,
   toIdeaDraft,
 } from "../_lib/submission";
-import { saveStatusText, useAutosave } from "../_lib/use-autosave";
+import { useAutosave } from "../_lib/use-autosave";
 import { AiHints, type CardField } from "./ai-hints";
 import { ApplicationDraft } from "./application-draft";
+import { SaveStatusText, useSavedNavigation } from "./save-status";
 import { SimilarInnovation } from "./similar-innovation";
+import { LockedNotice } from "./states";
 import { SubmitPanel } from "./submit-panel";
 
 // Longest text each card field accepts (lib/contracts/idea-creator.ts, Idea)
@@ -29,7 +32,15 @@ type Draft = Record<CardField, string>;
 
 // The idea card ("fiszka", design/makiety/Fiszka.dc.html): fields saved as you type, AI hints,
 // a grant application draft, a similar innovation from the ROPS Library and sending to ROPS.
-export function IdeaCard({ idea, calls }: { idea: MyIdea; calls: CallSummary[] }) {
+export function IdeaCard({
+  idea,
+  calls,
+  justSent,
+}: {
+  idea: MyIdea;
+  calls: CallSummary[];
+  justSent: "first" | "again" | null; // confirmation after "Wyślij do ROPS" (?sent= in the URL)
+}) {
   // Local text state: the title may be empty while typing; only valid values are saved
   const [draft, setDraft] = useState<Draft>({
     tytul: idea.tytul,
@@ -43,6 +54,8 @@ export function IdeaCard({ idea, calls }: { idea: MyIdea; calls: CallSummary[] }
   const card = { ...draft, etap: stage, obszar_id: idea.obszar_id };
   const titleError = draft.tytul.trim() === "" ? "Wpisz tytuł pomysłu." : undefined;
   const status = authorStatus(idea.wyslany_at, idea.status);
+  const editable = canSubmit(idea.wyslany_at, idea.status);
+  const saveBeforeLeaving = useSavedNavigation(autosave);
 
   const change = (key: CardField, value: string, delay = 600) => {
     const text = value.slice(0, MAX[key]);
@@ -55,7 +68,7 @@ export function IdeaCard({ idea, calls }: { idea: MyIdea; calls: CallSummary[] }
   };
 
   return (
-    <main id="main-content" className="flex-1">
+    <main id="main-content" className="flex-1" onClickCapture={saveBeforeLeaving}>
       <div className="border-border border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-2.5 px-4 pt-8 pb-7 sm:px-10">
           <Link href={`/my/creator/${idea.id}`} className="text-base">
@@ -63,13 +76,7 @@ export function IdeaCard({ idea, calls }: { idea: MyIdea; calls: CallSummary[] }
           </Link>
           <h1 className="text-[2.5rem] leading-tight font-bold">{draft.tytul || idea.tytul}</h1>
           <p className="text-muted-foreground text-base">
-            {status.label} ·{" "}
-            <span
-              role="status"
-              className={autosave.status === "error" ? "text-danger font-bold" : undefined}
-            >
-              {saveStatusText(autosave.status, autosave.error)}
-            </span>
+            {status.label} · <SaveStatusText autosave={autosave} />
           </p>
         </div>
       </div>
@@ -80,63 +87,69 @@ export function IdeaCard({ idea, calls }: { idea: MyIdea; calls: CallSummary[] }
           className="flex max-w-[700px] min-w-0 flex-[999_1_520px] flex-col gap-5"
         >
           <h2 className="text-[1.625rem] font-bold">Fiszka</h2>
-          <Field label="Tytuł" error={titleError}>
-            {(control) => (
-              <Input
-                {...control}
-                maxLength={MAX.tytul}
-                value={draft.tytul}
-                onChange={(e) => change("tytul", e.target.value)}
-              />
-            )}
-          </Field>
-          <TextField
-            label="Opis"
-            hint="Jaki problem rozwiązujecie i jak?"
-            rows={4}
-            max={MAX.opis}
-            value={draft.opis}
-            onChange={(v) => change("opis", v)}
-            fromCanvas={hints.opis}
-          />
-          <TextField
-            label="Istota"
-            hint="Jedno zdanie: co zmienia się dla ludzi."
-            rows={2}
-            max={MAX.istota}
-            value={draft.istota}
-            onChange={(v) => change("istota", v)}
-            fromCanvas={hints.istota}
-          />
-          <TextField
-            label="Dla kogo"
-            rows={2}
-            max={MAX.dla_kogo}
-            value={draft.dla_kogo}
-            onChange={(v) => change("dla_kogo", v)}
-            fromCanvas={hints.dla_kogo}
-          />
-          <fieldset className="flex flex-col gap-2">
-            <legend className="mb-1.5 font-bold">Etap</legend>
-            <div className="grid gap-2 sm:grid-cols-2">
-              {IdeaStage.options.map((option) => (
-                <ChoiceTile
-                  key={option}
-                  size="compact"
-                  name="etap"
-                  value={option}
-                  title={STAGE_LABELS[option]}
-                  checked={stage === option}
-                  onChange={() => {
-                    setStage(option);
-                    autosave.schedule("etap", { etap: option }, 0);
-                  }}
+          {editable ? null : <LockedNotice />}
+          <fieldset disabled={!editable} className="flex min-w-0 flex-col gap-5">
+            <legend className="sr-only">Pola fiszki</legend>
+            <Field label="Tytuł" error={titleError}>
+              {(control) => (
+                <Input
+                  {...control}
+                  maxLength={MAX.tytul}
+                  value={draft.tytul}
+                  onChange={(e) => change("tytul", e.target.value)}
                 />
-              ))}
-            </div>
+              )}
+            </Field>
+            <TextField
+              label="Opis"
+              hint="Jaki problem rozwiązujecie i jak?"
+              rows={4}
+              max={MAX.opis}
+              value={draft.opis}
+              onChange={(v) => change("opis", v)}
+              fromCanvas={hints.opis}
+            />
+            <TextField
+              label="Istota"
+              hint="Jedno zdanie: co zmienia się dla ludzi."
+              rows={2}
+              max={MAX.istota}
+              value={draft.istota}
+              onChange={(v) => change("istota", v)}
+              fromCanvas={hints.istota}
+            />
+            <TextField
+              label="Dla kogo"
+              rows={2}
+              max={MAX.dla_kogo}
+              value={draft.dla_kogo}
+              onChange={(v) => change("dla_kogo", v)}
+              fromCanvas={hints.dla_kogo}
+            />
+            <fieldset className="flex flex-col gap-2">
+              <legend className="mb-1.5 font-bold">Etap</legend>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {IdeaStage.options.map((option) => (
+                  <ChoiceTile
+                    key={option}
+                    size="compact"
+                    name="etap"
+                    value={option}
+                    title={STAGE_LABELS[option]}
+                    checked={stage === option}
+                    onChange={() => {
+                      setStage(option);
+                      autosave.schedule("etap", { etap: option }, 0);
+                    }}
+                  />
+                ))}
+              </div>
+            </fieldset>
           </fieldset>
 
-          <AiHints draft={toIdeaDraft(card)} onUse={(field, text) => change(field, text, 0)} />
+          {editable ? (
+            <AiHints draft={toIdeaDraft(card)} onUse={(field, text) => change(field, text, 0)} />
+          ) : null}
           <ApplicationDraft calls={calls} draft={toIdeaDraft(card)} />
         </section>
 
@@ -149,6 +162,7 @@ export function IdeaCard({ idea, calls }: { idea: MyIdea; calls: CallSummary[] }
             comment={idea.komentarz}
             missing={missingForSubmission(card)}
             beforeSend={autosave.flush}
+            justSent={justSent}
           />
         </aside>
       </div>

@@ -11,7 +11,7 @@ import { fields } from "./_lib/canvas";
 import {
   createIdea,
   getMyIdea,
-  markSent,
+  sendIdea,
   saveAnswer,
   saveCard,
   type SaveResult,
@@ -38,13 +38,15 @@ export async function saveCanvasAnswer(
   fieldId: string,
   answer: CanvasAnswer | null,
 ): Promise<SaveResult> {
-  if (!(await getCurrentUser())) return SIGN_IN;
-  return saveAnswer(await createClient(), ideaId, fieldId, answer);
+  const user = await getCurrentUser();
+  if (!user) return SIGN_IN;
+  return saveAnswer(await createClient(), user.id, ideaId, fieldId, answer);
 }
 
 export async function saveIdeaCard(ideaId: string, input: IdeaCardInput): Promise<SaveResult> {
-  if (!(await getCurrentUser())) return SIGN_IN;
-  return saveCard(await createClient(), ideaId, input);
+  const user = await getCurrentUser();
+  if (!user) return SIGN_IN;
+  return saveCard(await createClient(), user.id, ideaId, input);
 }
 
 export async function sendToRops(ideaId: string): Promise<SubmitState> {
@@ -54,15 +56,14 @@ export async function sendToRops(ideaId: string): Promise<SubmitState> {
   const state = await submitIdea(
     {
       loadIdea: (id) => getMyIdea(db, user.id, id),
-      markSent: (id) => markSent(db, id),
+      send: (id) => sendIdea(db, id),
       addNotification: (n) => addNotification(n, db),
       writeAudit: (e) => writeAudit(e, db),
     },
     ideaId,
   );
-  if (state.status === "sent") {
-    revalidatePath("/my/creator");
-    revalidatePath(`/my/creator/${ideaId}/card`);
-  }
-  return state;
+  if (state.status !== "sent") return state;
+  revalidatePath("/my/creator");
+  // Reload the card with the new status; ?sent= keeps the confirmation on screen
+  redirect(`/my/creator/${ideaId}/card?sent=${state.resent ? "again" : "first"}`);
 }

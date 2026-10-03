@@ -12,6 +12,7 @@ type QuestionProps = {
   field: CanvasField;
   answer: CanvasAnswer | undefined;
   onChange: (answer: CanvasAnswer) => void;
+  disabled?: boolean; // read-only while ROPS has the idea
 };
 
 const OTHER = "inne";
@@ -28,10 +29,10 @@ const INSTRUCTIONS: Record<CanvasField["typ"], string> = {
 };
 
 // One canvas field = one screen (design/makiety/Kreator.dc.html). Every change is saved right away.
-export function Question({ field, answer, onChange }: QuestionProps) {
+export function Question({ field, answer, onChange, disabled = false }: QuestionProps) {
   const title = field.pytanie ?? field.nazwa;
   return (
-    <fieldset className="flex min-w-0 flex-col gap-3">
+    <fieldset disabled={disabled} className="flex min-w-0 flex-col gap-3">
       <legend className="font-heading mb-1.5 text-[2rem] leading-tight font-bold tracking-tight">
         {title}
       </legend>

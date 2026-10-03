@@ -17,7 +17,8 @@ type State =
 
 // The match endpoint needs at least 10 characters of description
 const MIN_LENGTH = 10;
-const RECHECK_AFTER_MS = 1500;
+// Checks while typing wait for a longer pause: /api/match allows 120 searches per hour per IP
+const RECHECK_AFTER_MS = 2500;
 
 async function findSimilar(text: string): Promise<State> {
   const result = await postJson("/api/match", { description: text, ai: false }, MatchResponse);
@@ -35,15 +36,21 @@ export function SimilarInnovation({ description }: { description: string }) {
   const [state, setState] = useState<State>({ status: "too-short" });
 
   useEffect(() => {
-    if (description.length < MIN_LENGTH || description === lastChecked.current) return;
+    if (description === lastChecked.current) return;
     let current = true; // a newer description makes this answer stale
     // The saved card is checked at once; typed changes wait for a pause in typing
     const delay = description === opened.current ? 0 : RECHECK_AFTER_MS;
     const timer = setTimeout(async () => {
-      lastChecked.current = description;
+      if (description.length < MIN_LENGTH) {
+        lastChecked.current = description;
+        return setState({ status: "too-short" });
+      }
       setState({ status: "loading" });
       const next = await findSimilar(description);
-      if (current) setState(next);
+      if (!current) return;
+      // Remember only answers that were shown; a failed check is tried again on the next change
+      if (next.status !== "error") lastChecked.current = description;
+      setState(next);
     }, delay);
     return () => {
       current = false;

@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { IdeaStatus } from "@/lib/contracts/admin";
@@ -22,11 +21,19 @@ type Props = {
   comment: string | null;
   missing: string[]; // empty required card fields, from the current (unsaved) draft
   beforeSend: () => Promise<boolean>; // saves pending card edits first
+  justSent: "first" | "again" | null; // after a successful send the page reloads with ?sent=
 };
 
-// "Wyślij do ROPS" (#35): sets wyslany_at and notifies ROPS (server action sendToRops)
-export function SubmitPanel({ ideaId, sentAt, status, comment, missing, beforeSend }: Props) {
-  const router = useRouter();
+// "Wyślij do ROPS" (#35): sendToRops sends the idea, notifies ROPS and reloads the card with ?sent=
+export function SubmitPanel({
+  ideaId,
+  sentAt,
+  status,
+  comment,
+  missing,
+  beforeSend,
+  justSent,
+}: Props) {
   const [state, send, pending] = useActionState<SubmitState>(
     async () => {
       if (!(await beforeSend())) {
@@ -36,11 +43,6 @@ export function SubmitPanel({ ideaId, sentAt, status, comment, missing, beforeSe
     },
     { status: "idle" },
   );
-
-  // Show the new status from the server after sending
-  useEffect(() => {
-    if (state.status === "sent") router.refresh();
-  }, [state, router]);
 
   const label = authorStatus(sentAt, status);
   const allowed = canSubmit(sentAt, status) && state.status !== "sent";
@@ -82,10 +84,10 @@ export function SubmitPanel({ ideaId, sentAt, status, comment, missing, beforeSe
         </form>
       ) : null}
       <div aria-live="polite">
-        {state.status === "sent" ? (
+        {justSent && sentAt ? (
           <p role="status" className="text-success font-bold">
-            {state.resent ? "Wysłano poprawioną wersję do ROPS." : "Wysłano do ROPS."} Dostaniesz
-            powiadomienie, gdy zespół oceni pomysł.
+            {justSent === "again" ? "Wysłano poprawioną wersję do ROPS." : "Wysłano do ROPS."}{" "}
+            Dostaniesz powiadomienie, gdy zespół oceni pomysł.
           </p>
         ) : null}
         {state.status === "error" ? (

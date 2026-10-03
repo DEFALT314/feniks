@@ -7,7 +7,9 @@ import { Steps } from "@/components/ui/steps";
 import type { CanvasAnswer, CanvasField, IdeaWithCanvas } from "@/lib/contracts/idea-creator";
 import { saveCanvasAnswer } from "../actions";
 import { answeredCount, fieldIndex, fields, sectionOf, sections } from "../_lib/canvas";
-import { saveStatusText, useAutosave } from "../_lib/use-autosave";
+import { useAutosave } from "../_lib/use-autosave";
+import { LockedNotice } from "./states";
+import { SaveStatusText, useSavedNavigation } from "./save-status";
 import { Question } from "./question";
 
 const stepHref = (ideaId: string, fieldId: string) => `/my/creator/${ideaId}?step=${fieldId}`;
@@ -16,7 +18,15 @@ const stepHref = (ideaId: string, fieldId: string) => `/my/creator/${ideaId}?ste
 const TYPED: CanvasField["typ"][] = ["tekst_lista", "jeden_wybor_plus_tekst", "lista_partnerow"];
 
 // The canvas wizard: one question per screen, saved after every change (design/makiety/Kreator.dc.html)
-export function Wizard({ idea, stepId }: { idea: IdeaWithCanvas; stepId: string | undefined }) {
+export function Wizard({
+  idea,
+  stepId,
+  editable,
+}: {
+  idea: IdeaWithCanvas;
+  stepId: string | undefined;
+  editable: boolean; // false while ROPS has the idea
+}) {
   const ideaId = idea.id;
   const [answers, setAnswers] = useState(idea.answers);
   const autosave = useAutosave<CanvasAnswer>((fieldId, answer) =>
@@ -33,21 +43,16 @@ export function Wizard({ idea, stepId }: { idea: IdeaWithCanvas; stepId: string 
     const typed = TYPED.includes(field.typ) || ("other" in answer && answer.other !== undefined);
     autosave.schedule(field.id, answer, typed ? 600 : 0);
   };
+  const saveBeforeLeaving = useSavedNavigation(autosave);
 
   return (
-    <main id="main-content" className="flex-1">
+    <main id="main-content" className="flex-1" onClickCapture={saveBeforeLeaving}>
       <div className="border-border border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-2.5 px-4 py-5 sm:px-10">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <h1 className="font-sans text-lg font-bold">Pomysł: {idea.tytul}</h1>
             <p className="text-muted-foreground text-base">
-              Krok {index + 1} z {fields.length} ·{" "}
-              <span
-                role="status"
-                className={autosave.status === "error" ? "text-danger font-bold" : undefined}
-              >
-                {saveStatusText(autosave.status, autosave.error)}
-              </span>
+              Krok {index + 1} z {fields.length} · <SaveStatusText autosave={autosave} />
             </p>
           </div>
           <div
@@ -90,7 +95,14 @@ export function Wizard({ idea, stepId }: { idea: IdeaWithCanvas; stepId: string 
           className="flex max-w-[680px] min-w-0 flex-[999_1_480px] flex-col gap-6"
         >
           {/* key: a new question starts with fresh local state (partners list) */}
-          <Question key={field.id} field={field} answer={answers[field.id]} onChange={save} />
+          {editable ? null : <LockedNotice />}
+          <Question
+            key={field.id}
+            field={field}
+            answer={answers[field.id]}
+            onChange={save}
+            disabled={!editable}
+          />
 
           <nav
             aria-label="Nawigacja kreatora"
