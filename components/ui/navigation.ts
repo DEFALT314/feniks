@@ -9,6 +9,7 @@ const PUBLIC_ITEMS: NavItem[] = [
   { label: "Dopasuj rozwiązanie", href: "/match" },
   { label: "Biblioteka", href: "/library" },
   { label: "Mapa wyzwań", href: "/challenge-map" },
+  { label: "Wiedza", href: "/resources" },
 ];
 
 // Personal pages live in the account menu ("Imię ▾"), so the main menu fits in one row (#75)
@@ -27,14 +28,22 @@ const ROLE_LABELS: Record<Role, string> = {
   rops_admin: "administracja ROPS",
 };
 
-// Main menu per design/makiety/Naglowek.dc.html: public pages for everyone, "Panel ROPS" for ROPS
-// staff. Short enough to stay in one row from 1024 px up, for every role (#75).
+// The one personal page each role came for, shown in the main menu so it is not hidden behind the
+// account menu: residents and organisations submit ideas, municipalities adapt innovations into a
+// service, experts test, ROPS staff work in the panel.
+const MAIN_TASK: Record<Role, NavItem> = {
+  mieszkaniec: { label: "Moje pomysły", href: "/my/creator" },
+  ngo: { label: "Moje pomysły", href: "/my/creator" },
+  jst: { label: "Karta usługi", href: "/my/middleman" },
+  ekspert: { label: "Testy", href: "/my/tester" },
+  rops_redaktor: { label: "Panel ROPS", href: "/admin" },
+  rops_admin: { label: "Panel ROPS", href: "/admin" },
+};
+
+// Main menu per design/makiety/Naglowek.dc.html: public pages for everyone, plus the role's main
+// task when signed in. Short enough to stay in one row from 1024 px up, for every role (#75).
 export function navItemsFor(role: Role | null): NavItem[] {
-  const items = [...PUBLIC_ITEMS];
-  if (role === "rops_redaktor" || role === "rops_admin") {
-    items.push({ label: "Panel ROPS", href: "/admin" });
-  }
-  return items;
+  return role ? [...PUBLIC_ITEMS, MAIN_TASK[role]] : [...PUBLIC_ITEMS];
 }
 
 // Account menu of a signed-in user: personal pages, "Karta usługi" for municipalities and NGOs,
@@ -46,6 +55,12 @@ export function accountItemsFor(role: Role | null): NavItem[] {
     items.push({ label: "Karta usługi", href: "/my/middleman" });
   items.push({ label: "Twój profil", href: "/my/profile" });
   return items;
+}
+
+/** Account items that the main menu does not already show (the phone menu lists both). */
+export function withoutDuplicates(accountItems: NavItem[], mainItems: NavItem[]): NavItem[] {
+  const shown = new Set(mainItems.map((i) => i.href));
+  return accountItems.filter((i) => !shown.has(i.href));
 }
 
 export function roleLabel(role: Role): string {

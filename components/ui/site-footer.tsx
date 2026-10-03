@@ -21,7 +21,7 @@ export function SiteFooter() {
         <nav aria-label="Stopka" className="flex flex-[1_1_220px] flex-col gap-1.5">
           <Link href="/accessibility">Deklaracja dostępności</Link>
           <Link href="/library">Biblioteka innowacji ROPS</Link>
-          <Link href="/resources">Raporty i publikacje</Link>
+          <Link href="/resources">Wiedza o innowacjach: poradniki i raporty</Link>
         </nav>
       </div>
     </footer>
