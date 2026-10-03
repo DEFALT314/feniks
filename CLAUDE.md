@@ -54,7 +54,11 @@ Wspólne: `lib/contracts/` (każdy edytuje tylko plik swojego modułu), `data/ro
     walidacja, uprawnienia) ma testy jednostkowe w tym samym PR, żeby uniknąć regresji. Naprawiasz błąd →
     najpierw test, który go odtwarza, potem poprawka. Testy obok kodu (`*.test.ts`), bez sieci i prawdziwej
     bazy (AI i Supabase zastępujesz atrapami albo fixtures). Nie usuwaj ani nie wyłączaj cudzych testów, żeby
-    przeszło CI.
+    przeszło CI. PR z nowym kodem bez testów jednostkowych nie jest gotowy.
+12. **Kod po angielsku:** nazwy zmiennych, funkcji, typów, komponentów, plików i folderów, komentarze
+    i nazwy testów piszesz po angielsku (np. `lib/matching/score.ts`, `MatchCard.tsx`, a nie `wynik.ts`).
+    Po polsku zostaje tylko to, co widzi użytkownik: teksty interfejsu i adresy stron (foldery tras w `app/`,
+    np. `app/biblioteka/`). Istniejących polskich nazw nie zmieniasz przy okazji, tylko w osobnym PR.
 
 ## Zadania (GitHub Issues)
 Każda osoba ma etykietę P1–P4 (P1 Radek, P2 Paweł, P3 Konrad, P4 Domik); kamienie milowe M1–M6 to kolejność. Start sesji: `/zadanie P3` (swoja etykieta).
