@@ -16,10 +16,18 @@ import {
 type Role = MessagingDeps["me"]["role"];
 
 function deps(
-  opts: { role?: Role; participants?: string[]; emails?: string[]; rpcError?: boolean } = {},
+  opts: {
+    role?: Role;
+    participants?: string[];
+    emails?: string[];
+    rpcError?: boolean;
+    notifyError?: string;
+  } = {},
 ) {
   const rpc = vi.fn(async (fn: string) => {
     if (opts.rpcError) return { data: null, error: { message: "denied" } };
+    if (fn === "notify_thread" && opts.notifyError)
+      return { data: null, error: { message: "notify failed", code: opts.notifyError } };
     if (fn === "thread_reply_emails")
       return { data: (opts.emails ?? []).map((email) => ({ email })), error: null };
     if (fn === "start_thread") return { data: "t-new", error: null };
@@ -50,6 +58,37 @@ function deps(
 }
 
 describe("announceMessage", () => {
+  it("before the migration, falls back to notifying ROPS and the thread the old way", async () => {
+    const { d } = deps({ role: "ngo", participants: ["me", "author"], notifyError: "PGRST202" });
+    d.addNotification = vi.fn(async () => 1);
+
+    await announceMessage(d, "t1", "Kawiarenka", "Dziękujemy");
+
+    expect(d.addNotification).toHaveBeenCalledWith({
+      typ: "wiadomosc",
+      tytul: "Redakcja ROPS: nowa wiadomość w rozmowie „Kawiarenka”",
+      link: "/my/messages?thread=t1",
+      userIds: ["author"],
+      role: ["rops_redaktor", "rops_admin"],
+    });
+  });
+
+  it("does not fall back on other database errors", async () => {
+    const { d, rpc } = deps({ role: "ngo" });
+    rpc.mockImplementation(async () => ({
+      data: null,
+      error: { code: "42501", message: "denied" },
+    }));
+    d.addNotification = vi.fn(async () => 1);
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    await announceMessage(d, "t1", "Kawiarenka", "Dziękujemy");
+
+    expect(d.addNotification).not.toHaveBeenCalled();
+    expect(log).toHaveBeenCalled();
+    log.mockRestore();
+  });
+
   it("ROPS reply: notifies the others and e-mails the author", async () => {
     const { d, rpc } = deps({ emails: ["anna@gmail.com"] });
 
