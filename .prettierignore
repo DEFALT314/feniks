@@ -1,0 +1,7 @@
+data/
+docs/
+scripts/
+*.md
+pnpm-lock.yaml
+supabase/.temp/
+.next/
