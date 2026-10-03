@@ -1,0 +1,5 @@
+model/
+.venv/
+__pycache__/
+.pytest_cache/
+test_app.py
