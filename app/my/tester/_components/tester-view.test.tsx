@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { testerFixture, type TesterTest } from "@/lib/contracts/innovation-tester";
+import { planTestDefaults } from "../_lib/model";
 import { PlanTestPanel } from "./plan-test-panel";
 import { TesterView } from "./tester-view";
 
@@ -48,6 +49,14 @@ describe("TesterView", () => {
     expect(card(html, ideaTest.id)).toContain("Średnia ocena: 4,5 z 5");
     expect(card(html, ideaTest.id)).toContain("(2 oceny)");
     expect(card(html, ideaTest.id)).toContain("Lista telefonów do OPS na lodówce.");
+    // "Co poprawić?" answers are shown to the author as proposed improvements
+    expect(card(html, ideaTest.id)).toContain("Propozycja usprawnienia:");
+  });
+
+  it("asks testers for a concrete improvement, with examples", () => {
+    const html = render();
+    expect(html).toContain("Co poprawić?");
+    expect(html).toContain("Zaproponuj usprawnienie");
   });
 
   it("hides tests the user can no longer join", () => {
@@ -76,6 +85,23 @@ describe("PlanTestPanel", () => {
     expect(html).toMatch(/<button[^>]*aria-expanded="false"[^>]*>Zaplanuj test<\/button>/);
     expect(html).toMatch(/<form[^>]*hidden=""/);
     expect(html).not.toContain("Zaplanowane testy");
+  });
+
+  it("starts from the idea's title and essence, so residents know what they test", () => {
+    const defaults = planTestDefaults({
+      tytul: "Kawiarenka cyfrowa",
+      istota: "Młodzież uczy seniorów.",
+    });
+    expect(defaults).toMatchObject({
+      tytul: "Kawiarenka cyfrowa – test z mieszkańcami",
+      opis: "Młodzież uczy seniorów.",
+      miejsce: "",
+    });
+    expect(planTestDefaults({ tytul: "x".repeat(200), istota: null }).tytul).toHaveLength(200);
+    const html = renderToStaticMarkup(
+      <PlanTestPanel ideaId={ideaTest.id} testCount={0} defaults={defaults} />,
+    );
+    expect(html).toContain('value="Kawiarenka cyfrowa – test z mieszkańcami"');
   });
 
   it("links to the feedback when tests exist", () => {

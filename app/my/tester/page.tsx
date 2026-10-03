@@ -9,7 +9,7 @@ import { loadTester } from "./_lib/tests";
 export const metadata: Metadata = {
   title: "Tester innowacji – HubMI.pl",
   description:
-    "Zapisz się na test nowego rozwiązania, wypróbuj je i powiedz autorom, co działa, a co poprawić.",
+    "Zapisz się na test nowego rozwiązania, wypróbuj je, oceń i zaproponuj autorom usprawnienia.",
 };
 
 export default async function TesterPage() {

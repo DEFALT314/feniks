@@ -3,7 +3,7 @@ import { NUMBER_PLACEHOLDER, removeInventedNumbers } from "./guards";
 
 vi.mock("server-only", () => ({}));
 
-const { applicationDraft, hints, CALLS } = await import("./creator");
+const { alternatives, applicationDraft, hints, CALLS } = await import("./creator");
 
 function fakeLlm(...answers: object[]) {
   const calls: { role: string; content: string }[][] = [];
@@ -91,5 +91,36 @@ describe("applicationDraft", () => {
     const { client, calls } = fakeLlm();
     expect(await applicationDraft({ idea, call_id: "nie-ma" }, { client })).toBeNull();
     expect(calls).toHaveLength(0);
+  });
+});
+
+describe("alternatives", () => {
+  it("returns at most 3 approaches, trimmed, without invented numbers", async () => {
+    const { client, calls } = fakeLlm({
+      alternatives: [
+        {
+          title: " Uczniowie ",
+          text: "Dyżur pełni 30 uczniów.",
+          why: "Szkoły szukają wolontariatu.",
+        },
+        { title: "Telefon", text: "Codzienny telefon przez 2 tygodnie.", why: null },
+        { title: "", text: "puste", why: null },
+        { title: "Apteka", text: "Farmaceuta daje ulotkę.", why: "Spotyka seniora po wypisie." },
+        { title: "Czwarta", text: "Za dużo.", why: null },
+      ],
+    });
+    const out = await alternatives({ idea }, { client });
+    expect(out.alternatives).toEqual([
+      {
+        title: "Uczniowie",
+        text: `Dyżur pełni ${NUMBER_PLACEHOLDER} uczniów.`,
+        why: "Szkoły szukają wolontariatu.",
+      },
+      // "2 tygodnie" is in the user's description, so it stays
+      { title: "Telefon", text: "Codzienny telefon przez 2 tygodnie.", why: null },
+      { title: "Apteka", text: "Farmaceuta daje ulotkę.", why: "Spotyka seniora po wypisie." },
+    ]);
+    expect(calls[0][0].content).toContain("unusual");
+    expect(calls[0][1].content).toContain(idea.title);
   });
 });

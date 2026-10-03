@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { aiFixtures } from "@/lib/contracts/ai";
+import { AiAlternatives, alternativeText, alternativesAnnouncement } from "./ai-alternatives";
 import { AiHints } from "./ai-hints";
 import { ApplicationDraft } from "./application-draft";
 import { SubmitPanel } from "./submit-panel";
@@ -58,8 +59,11 @@ describe("ApplicationDraft", () => {
     expect(html).toMatch(new RegExp(`id="${reasonId}"[^>]*>Najpierw opisz pomysł`));
   });
 
-  it("renders nothing without calls", () => {
-    expect(renderToStaticMarkup(<ApplicationDraft calls={[]} draft={draft} />)).toBe("");
+  it("explains that no call is open instead of disappearing", () => {
+    const html = renderToStaticMarkup(<ApplicationDraft calls={[]} draft={draft} />);
+    expect(html).toContain("Teraz nie ma otwartych naborów");
+    expect(html).not.toContain("<select");
+    expect(html).not.toContain("Przygotuj szkic");
   });
 });
 
@@ -109,5 +113,32 @@ describe("SubmitPanel", () => {
     );
     expect(html).toContain("Wysłano do ROPS.");
     expect(html).not.toContain("Wyślij");
+  });
+});
+
+describe("AiAlternatives", () => {
+  it("offers unusual approaches without changing anything on its own", () => {
+    const html = renderToStaticMarkup(<AiAlternatives draft={draft} onAdd={() => {}} />);
+    expect(html).toMatch(/<button[^>]*>Pokaż inne podejścia<\/button>/);
+    expect(html).toContain("nietuzinkowe");
+    expect(html).not.toContain("aria-live");
+  });
+
+  it("needs a description before asking", () => {
+    const html = renderToStaticMarkup(
+      <AiAlternatives draft={{ ...draft, description: "" }} onAdd={() => {}} />,
+    );
+    const button = html.match(/<button[^>]*>Pokaż inne podejścia<\/button>/)![0];
+    const reasonId = button.match(/aria-describedby="([^"]+)"/)![1];
+    expect(html).toMatch(new RegExp(`id="${reasonId}"[^>]*>Najpierw wpisz tytuł i opis`));
+  });
+
+  it("adds a labelled approach to the description and announces results briefly", () => {
+    const [first] = aiFixtures.alternativesResponse.alternatives;
+    expect(alternativeText(first)).toBe(`Inne podejście – ${first.title}: ${first.text}`);
+    expect(alternativesAnnouncement(aiFixtures.alternativesResponse.alternatives)).toBe(
+      "Gotowe: 3 inne podejścia od asystenta AI. Propozycja AI.",
+    );
+    expect(alternativesAnnouncement([])).toContain("nie ma teraz");
   });
 });
