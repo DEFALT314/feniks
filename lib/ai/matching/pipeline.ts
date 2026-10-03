@@ -13,7 +13,7 @@ import { buildIndex, informativeStems, search, type Bm25Index } from "./bm25";
 import { COVERED_BELOW, coveredProbability } from "./coverage";
 import { fuse, type Ranked } from "./fusion";
 import { highlight, stemsOf } from "./highlight";
-import { RERANK_CANDIDATES, type RerankResult } from "./rerank";
+import { RERANK_CANDIDATES, type ChallengeOption, type RerankResult } from "./rerank";
 import { stemsMatch, tokenize } from "./text";
 
 export type VectorHit = { ref_id: string; similarity: number };
@@ -34,7 +34,11 @@ export type MatchDeps = {
     kind: "innovation" | "challenge",
     count: number,
   ) => Promise<VectorHit[]>;
-  rerank?: (description: string, candidates: Innovation[]) => Promise<RerankResult>;
+  rerank?: (
+    description: string,
+    candidates: Innovation[],
+    challenges: ChallengeOption[],
+  ) => Promise<RerankResult>;
 };
 
 // How the candidates were found; sent as the X-Match-Retrieval header so a silent fallback to
@@ -53,11 +57,15 @@ export type MatchStats = {
 };
 
 const MORE = 5;
-const CHALLENGE_CANDIDATES = 10;
+// All challenges (48 today): their texts are short, so their vectors lie close together (0.76–0.79
+// for "Nikt mnie nie odwiedza…") and the right area's challenges often miss a top 10. Ranking them
+// all is cheap and lets the area of the recommendation decide.
+const CHALLENGE_CANDIDATES = 100;
 
-// Short challenge texts alone can mislead ("wraca ze szpitala" resembled "po opuszczeniu placówki" in
-// the homelessness area), so the best challenge is taken from an area whose Library categories
-// include the recommended innovations; the plain best match is the fallback.
+// The challenge comes from the area of the top recommendation (then of any recommendation): a short
+// challenge text alone can mislead ("siedzę sam w mieszkaniu" was closest to "Nierozdzielanie
+// rodzeństwa przy umieszczaniu w pieczy"). With recommendations but no matching area, no challenge
+// is better than an off-topic one; without recommendations the plain best match is shown.
 export function chooseChallenge(
   hits: VectorHit[],
   areas: AreaWithChallenges[],
@@ -68,14 +76,11 @@ export function chooseChallenge(
     const found = area?.wyzwania.find((w) => w.id === hit.ref_id);
     return area && found ? [{ area, found }] : [];
   });
-  const preferred =
-    located.find(({ area }) =>
-      pickedCategories.slice(0, 1).some((c) => area.kategorie_biblioteki.includes(c)),
-    ) ??
-    located.find(({ area }) =>
-      pickedCategories.some((c) => area.kategorie_biblioteki.includes(c)),
-    ) ??
-    located[0];
+  const inArea = (categories: string[]) =>
+    located.find(({ area }) => categories.some((c) => area.kategorie_biblioteki.includes(c)));
+  const preferred = pickedCategories.length
+    ? (inArea(pickedCategories.slice(0, 1)) ?? inArea(pickedCategories))
+    : located[0];
   return preferred
     ? {
         area_id: preferred.area.id,
@@ -85,6 +90,24 @@ export function chooseChallenge(
       }
     : null;
 }
+function challengeById(
+  areas: AreaWithChallenges[],
+  id: string | null | undefined,
+): MatchResponse["challenge"] {
+  for (const area of id ? areas : []) {
+    const found = area.wyzwania.find((w) => w.id === id);
+    if (found) {
+      return {
+        area_id: area.id,
+        area_name: area.nazwa,
+        challenge_id: found.id,
+        challenge_text: found.tekst,
+      };
+    }
+  }
+  return null;
+}
+
 const indexCache = new WeakMap<Innovation[], { catalog: Innovation[]; index: Bm25Index }>();
 
 function catalogIndex(innovations: Innovation[]) {
@@ -151,7 +174,10 @@ export async function runMatch(
   const candidates = ranked.slice(0, RERANK_CANDIDATES).map((r) => byId.get(r.id)!);
   let ai: RerankResult | null = null;
   if (deps.rerank && candidates.length) {
-    ai = await deps.rerank(description, candidates).catch((e) => {
+    const challenges = deps.areas.flatMap((a) =>
+      a.wyzwania.map((w) => ({ id: w.id, area: a.nazwa, text: w.tekst })),
+    );
+    ai = await deps.rerank(description, candidates, challenges).catch((e) => {
       console.error("rerank failed, ranking only:", (e as Error).message);
       return null;
     });
@@ -167,11 +193,13 @@ export async function runMatch(
       }));
   if (ai && !ai.picks.length) weak = true;
 
-  const challenge = chooseChallenge(
-    challengeHits,
-    deps.areas,
-    picks.map((p) => byId.get(p.id)!.kategoria_id),
-  );
+  const challenge =
+    challengeById(deps.areas, ai?.challengeId) ??
+    chooseChallenge(
+      challengeHits,
+      deps.areas,
+      picks.map((p) => byId.get(p.id)!.kategoria_id),
+    );
 
   const innovations: MatchedInnovation[] = picks.map((p) => {
     const i = byId.get(p.id)!;
