@@ -85,11 +85,13 @@ function InnovationCard({
   first,
   ai,
   preliminary,
+  serviceCard,
 }: {
   match: MatchedInnovation;
   first: boolean;
   ai: boolean;
   preliminary: boolean;
+  serviceCard: boolean;
 }) {
   const i = match.innovation;
   const tag = origin(match);
@@ -142,12 +144,14 @@ function InnovationCard({
           <Link href={`/library/${i.id}`} className={buttonVariants()}>
             Zobacz kartę<span className="sr-only">: {i.nazwa}</span>
           </Link>
-          <Link
-            href={`/my/middleman?innovation=${i.id}`}
-            className={buttonVariants({ variant: "secondary" })}
-          >
-            Przygotuj dla mojej gminy
-          </Link>
+          {serviceCard ? (
+            <Link
+              href={`/my/middleman?innovation=${i.id}`}
+              className={buttonVariants({ variant: "secondary" })}
+            >
+              Przygotuj kartę usługi<span className="sr-only">: {i.nazwa}</span>
+            </Link>
+          ) : null}
         </div>
       ) : (
         <Link
@@ -259,7 +263,17 @@ function AiNote() {
   return <span className="text-navy text-[0.9375rem] font-bold">(Propozycja AI)</span>;
 }
 
-export function MatchResult({ result, choosing }: { result: MatchResponse; choosing: boolean }) {
+// serviceCard: whether to offer "Przygotuj kartę usługi" (Middleman). It is for municipalities and
+// organisations; residents and experts can't use it, visitors see it and are asked to sign in.
+export function MatchResult({
+  result,
+  choosing,
+  serviceCard = true,
+}: {
+  result: MatchResponse;
+  choosing: boolean;
+  serviceCard?: boolean;
+}) {
   const ai = result.picked_by === "ai";
   const weak = result.match_quality === "weak";
   const crisis = detectCrisis(result.description_segments.map((s) => s.text).join(""));
@@ -317,6 +331,7 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
                   first={n === 0}
                   ai={ai}
                   preliminary={choosing}
+                  serviceCard={serviceCard}
                 />
               ))}
             </div>
