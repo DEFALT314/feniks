@@ -73,4 +73,27 @@ describe("PATCH innovation card", () => {
     });
     expect((await editInnovation(client, "bawita", { kategoria_id: "zla" })).status).toBe(400);
   });
+
+  it("logs the changed fields after a successful edit", async () => {
+    const { client } = fakeClient();
+    const onSaved = vi.fn(async () => 1);
+    await editInnovation(client, "bawita", { opis_krotki: "x", opublikowana: false }, onSaved);
+    expect(onSaved).toHaveBeenCalledWith(["opis_krotki", "opublikowana"]);
+  });
+
+  it("does not log a rejected edit", async () => {
+    const { client } = fakeClient({ role: "ngo" });
+    const onSaved = vi.fn(async () => 1);
+    await editInnovation(client, "bawita", { opis_krotki: "x" }, onSaved);
+    expect(onSaved).not.toHaveBeenCalled();
+  });
+
+  it("a failing change log does not undo a saved edit", async () => {
+    const { client } = fakeClient();
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const result = await editInnovation(client, "bawita", { opis_krotki: "x" }, async () => {
+      throw new Error("audit down");
+    });
+    expect(result.status).toBe(200);
+  });
 });
