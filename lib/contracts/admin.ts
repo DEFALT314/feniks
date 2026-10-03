@@ -3,11 +3,11 @@ import fixture from "./fixtures/admin.json";
 import { Role } from "./shared";
 
 // Module VI: ROPS admin panel (P4).
-// GET  /api/admin/pomysly?status=nowy        → IdeaQueue
-// POST /api/admin/pomysly/[id]/ocena          ReviewIdeaInput → IdeaReview
-// GET  /api/admin/role                        → RoleRequest[]
-// POST /api/admin/role                        RoleDecisionInput → { ok: true }
-// GET  /api/admin/nabory                      → Call[] (P3 also reads it for the grant application generator)
+// GET  /api/admin/ideas?status=nowy       → IdeaQueue
+// POST /api/admin/ideas/[id]/review       ReviewIdeaInput → IdeaReview
+// GET  /api/admin/roles                   → RoleRequest[]
+// POST /api/admin/roles                   RoleDecisionInput → { ok: true }
+// GET  /api/admin/calls                   → Call[] (P3 also reads it for the grant application generator)
 
 // Idea status shown to the author (P2 reads it from idea_reviews; no review = "nowy").
 // "w_weryfikacji" = passed to an expert, no decision yet (design/makiety/Admin.dc.html).

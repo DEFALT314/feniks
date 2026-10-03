@@ -63,6 +63,11 @@ Shared: `lib/contracts/` (everyone edits only their own module's file), `data/ro
     Only what the user sees stays in Polish (interface texts, labels, messages, page titles), plus database
     column names and existing contract data fields. Don't rename existing Polish names in passing, only in a
     separate PR.
+13. **Sync with `main` before a PR and before saying "done":** others merge all the time. Run `git fetch origin`
+    and merge or rebase `origin/main` into your branch, then rerun typecheck, lint, tests and build on the result.
+    Check what changed on `main` since you started (`git log HEAD..origin/main`): renamed files, routes,
+    contracts or components you use. Fix conflicts and broken references before opening the PR, and again
+    before merging it or reporting the task as done.
 
 ## Tasks (GitHub Issues)
 Each person has a label P1–P4 (P1 Radek, P2 Paweł, P3 Konrad, P4 Dominik); milestones M1–M6 give the order. Session start: `/zadanie P3` (your own label).
@@ -73,7 +78,7 @@ Each person has a label P1–P4 (P1 Radek, P2 Paweł, P3 Konrad, P4 Dominik); mi
    Not even a contract yet → take another unblocked task.
 3. `gh issue edit <nr> --add-label "w toku"`, branch `p3/<nr>-short-description`. Show the human a 3–6 point plan
    and start after their "ok".
-4. Done: PR with `Closes #<nr>` and the checklist ticked. Blocked by something outside the list → comment on the issue,
+4. Done: sync with `main` (rule 13), then PR with `Closes #<nr>` and the checklist ticked. Blocked by something outside the list → comment on the issue,
    label `zablokowane`, message the owner.
 Don't close or edit other people's issues beyond commenting.
 
