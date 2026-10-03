@@ -9,10 +9,10 @@ vi.mock("@/lib/ai/llm", async (original) => ({
   generateJson: (...args: unknown[]) => generate(...args),
 }));
 
-const { POST: hintsRoute } = await import("./podpowiedz/route");
-const { POST: applicationRoute } = await import("./wniosek/route");
-const { POST: imageRoute } = await import("./obraz/route");
-const { GET: callsRoute } = await import("./nabory/route");
+const { POST: hintsRoute } = await import("./hints/route");
+const { POST: applicationRoute } = await import("./application/route");
+const { POST: imageRoute } = await import("./image/route");
+const { GET: callsRoute } = await import("./calls/route");
 const { LlmError } = await import("@/lib/ai/llm");
 
 const idea = {
@@ -35,7 +35,7 @@ beforeEach(() => {
 });
 
 describe("AI creator endpoints", () => {
-  it("GET /api/ai/nabory lists the demo calls", async () => {
+  it("GET /api/ai/calls lists the demo calls", async () => {
     const body = await callsRoute().json();
     expect(CallList.safeParse(body).success).toBe(true);
     expect(body.calls.every((c: { demo: boolean }) => c.demo)).toBe(true);
