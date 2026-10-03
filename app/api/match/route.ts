@@ -1,11 +1,12 @@
 // POST /api/match – Matchmaking (module I). Contract: lib/contracts/match.ts. Owner: P3.
 // Pipeline: lib/ai/matching/pipeline.ts. Uses the session client (RLS), never the service key.
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-import { getInnovations } from "@/app/biblioteka/_lib/data";
-import { getChallengeAreas } from "@/app/mapa-wyzwan/_lib/data";
+import { getInnovations } from "@/app/library/_lib/data";
+import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { supabaseCache } from "@/lib/ai/cache";
 import { embedQuery } from "@/lib/ai/embed";
-import { runMatch, type MatchDeps } from "@/lib/ai/matching/pipeline";
+import { runMatch, type MatchDeps, type VectorHit } from "@/lib/ai/matching/pipeline";
 import { rerank } from "@/lib/ai/matching/rerank";
 import { clientIp, createRateLimiter } from "@/lib/ai/rate-limit";
 import { MatchRequest } from "@/lib/contracts/match";
@@ -37,6 +38,9 @@ export async function POST(request: Request) {
   }
 
   const supabase = databaseConfigured() ? await createClient() : null;
+  // match_embeddings and match_queries come from 202610031900_ai_tables.sql, which is not in the
+  // generated lib/supabase/types.ts yet (P4 regenerates it); untyped until then.
+  const db = supabase as unknown as SupabaseClient | null;
   const [innovations, areas] = await Promise.all([getInnovations(), getChallengeAreas()]);
 
   const deps: MatchDeps = {
@@ -44,18 +48,18 @@ export async function POST(request: Request) {
     areas,
     embedQuery: (text) => (supabase ? embedQuery(text) : Promise.resolve(null)),
     vectorSearch: async (vector, kind, count) => {
-      const { data, error } = await supabase!.rpc("match_embeddings", {
+      const { data, error } = await db!.rpc("match_embeddings", {
         query: `[${vector.join(",")}]`,
         match_kind: kind,
         match_count: count,
       });
       if (error) throw new Error(error.message);
-      return data ?? [];
+      return (data ?? []) as VectorHit[];
     },
     rerank:
       parsed.data.ai !== false && llmConfigured()
         ? (description, candidates) =>
-            rerank(description, candidates, supabase ? { cache: supabaseCache(supabase) } : {})
+            rerank(description, candidates, db ? { cache: supabaseCache(db) } : {})
         : undefined,
   };
 
@@ -63,7 +67,7 @@ export async function POST(request: Request) {
 
   // Statistics for trends: area, challenge and quality only; the description is never stored.
   if (supabase) {
-    const { error } = await supabase.from("match_queries").insert(stats);
+    const { error } = await db!.from("match_queries").insert(stats);
     if (error) console.error("match_queries insert failed:", error.message);
   }
   return NextResponse.json(response);

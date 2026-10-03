@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { innovationsFromFiles } from "@/app/biblioteka/_lib/from-files";
+import { innovationsFromFiles } from "@/app/library/_lib/from-files";
 import { buildIndex, informativeStems, search } from "./bm25";
 import { coveredProbability } from "./coverage";
 import { fuse, normalize } from "./fusion";
