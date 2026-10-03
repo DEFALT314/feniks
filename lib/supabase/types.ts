@@ -994,6 +994,7 @@ export type Database = {
         Returns: number
       }
       idea_author_email: { Args: { p_idea_id: string }; Returns: string }
+      idea_editable: { Args: { p_idea_id: string }; Returns: boolean }
       is_idea_author: { Args: { p_idea_id: string }; Returns: boolean }
       is_rops: { Args: never; Returns: boolean }
       is_signed_up: { Args: { p_test_id: string }; Returns: boolean }
@@ -1032,6 +1033,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      wyslij_pomysl: { Args: { p_idea_id: string }; Returns: string }
       zapisz_audit: {
         Args: { p_akcja: string; p_obiekt: string; p_szczegoly?: Json }
         Returns: number
