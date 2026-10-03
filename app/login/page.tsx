@@ -1,18 +1,20 @@
+import { DemoAccountList } from "@/components/auth/demo-account-list";
 import { LoginForm } from "@/components/auth/login-form";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getCurrentUser, headerName } from "@/lib/auth";
+import { isDemoMode } from "@/lib/auth/demo-accounts";
 import { safeNextPath } from "@/lib/auth/validation";
 
 export const metadata = { title: "Logowanie – HubMI.pl" };
 
 // Layout per design/makiety/Logowanie.dc.html. Sign-in logic: P4 (lib/auth); styling: P2.
-// The "Wejdź jako…" demo column comes with #3.
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
   const next = safeNextPath(typeof params.next === "string" ? params.next : null);
   const linkError = params.error === "link";
+  const demoError = params.error === "demo";
   const user = await getCurrentUser();
 
   return (
@@ -44,6 +46,11 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
             <p className="text-muted-foreground">
               Bez hasła. Wyślemy 6-cyfrowy kod, ważny przez 10 minut.
             </p>
+            {demoError ? (
+              <p role="alert" className="text-danger font-bold">
+                Nie udało się wejść na konto pokazowe. Spróbuj ponownie.
+              </p>
+            ) : null}
             {linkError ? (
               <p role="alert" className="text-danger font-bold">
                 Link z maila wygasł albo został już użyty. Wyślij nowy kod.
@@ -64,6 +71,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
           </>
         )}
       </Card>
+      {isDemoMode() ? <DemoAccountList /> : null}
     </main>
   );
 }
