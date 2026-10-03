@@ -56,7 +56,7 @@ a.card{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) va
 a.card:hover{border-color:#8A99C7;box-shadow:0 8px 20px -10px rgba(21,26,35,.22)}
 input:not([type=radio]):not([type=checkbox]),textarea,select{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) var(--ease)}
 input:not([type=radio]):not([type=checkbox]):hover,textarea:hover,select:hover{border-color:#4B5565}
-input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A}
+input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{outline:none;border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A,0 0 0 5px rgba(31,58,138,.18)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:1ms!important;animation-delay:0ms!important;transition-property:color,background-color,border-color,box-shadow,text-decoration-color!important}
   .btn:active{transform:none}
@@ -98,7 +98,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
         </fieldset>
         <fieldset>
           <legend>Sprawdzenie</legend>
-          <label class="opt"><input type="checkbox"> Wybrane do upowszechniania <span class="cnt">27</span></label>
+          <label class="opt"><input type="checkbox"> Z inkubatora ROPS (IWS, MIIS, Inkubator Dostępności) <span class="cnt">27</span></label>
         </fieldset>
         <fieldset>
           <legend>Materiały</legend>
@@ -111,11 +111,11 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
           <h2 id="wyniki" style="font-size: 18px">Dla seniorów: 20 w Bibliotece i kolejne z inkubatorów ROPS</h2>
           <span class="muted" style="font-size: 16px">Sortowanie: najlepiej pasujące</span>
         </div>
-        <article class="row"><a class="t" href="Karta.dc.html">Senior CUDER</a><p>Gra karciana, która przez rozmowę o zdrowiu, emocjach i relacjach wzmacnia motywację seniorów i ich więzi z bliskimi.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag tag-ok">Wybrana do upowszechniania</span><span class="muted" style="font-size: 15px">kluby seniora, domy opieki · film</span></div></article>
+        <article class="row"><a class="t" href="Karta.dc.html">Senior CUDER</a><p>Gra karciana, która przez rozmowę o zdrowiu, emocjach i relacjach wzmacnia motywację seniorów i ich więzi z bliskimi.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag">Z inkubatora MIIS</span><span class="muted" style="font-size: 15px">kluby seniora, domy opieki · film</span></div></article>
         <article class="row"><a class="t" href="Karta.dc.html">Centrum antydepresyjne</a><p>Wsparcie seniorów z depresją w ich domach z udziałem psów i kotów; obejmuje też bliskich.</p><span class="muted" style="font-size: 15px">autor: Gmina Miechów · gminy, NGO, podmioty ekonomii społecznej</span></article>
-        <article class="row"><a class="t" href="Karta.dc.html">Merkury</a><p>Symulator bankomatu, paczkomatu, parkomatu i kasy samoobsługowej do ćwiczeń w domu.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag tag-ok">Wybrana do upowszechniania</span><span class="muted" style="font-size: 15px">NGO, kluby seniora · film</span></div></article>
+        <article class="row"><a class="t" href="Karta.dc.html">Merkury</a><p>Symulator bankomatu, paczkomatu, parkomatu i kasy samoobsługowej do ćwiczeń w domu.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag">Z inkubatora IWS</span><span class="muted" style="font-size: 15px">NGO, kluby seniora · film</span></div></article>
         <article class="row"><a class="t" href="Karta.dc.html">Terapeuta przestrzeni</a><p>Tanie dostosowanie mieszkania seniora i trening poruszania się w nowej przestrzeni.</p><span class="muted" style="font-size: 15px">OPS, dzienne domy pomocy, DPS</span></article>
-        <article class="row"><a class="t" href="Karta.dc.html">BaWita</a><p>Drewniana tablica do ćwiczenia pamięci i sprawności rąk dla osób z zaburzeniami otępiennymi.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag tag-ok">Wybrana do upowszechniania</span><span class="muted" style="font-size: 15px">placówki wsparcia dziennego, DPS · film</span></div></article>
+        <article class="row"><a class="t" href="Karta.dc.html">BaWita</a><p>Drewniana tablica do ćwiczenia pamięci i sprawności rąk dla osób z zaburzeniami otępiennymi.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag">Z inkubatora IWS</span><span class="muted" style="font-size: 15px">placówki wsparcia dziennego, DPS · film</span></div></article>
         <article class="row"><a class="t" href="Karta.dc.html">Agrotreningi – metody pracy z osobami starszymi na obszarach wiejskich</a><p class="muted">Znamy nazwę, program i autora. Pełny opis uzupełni ROPS.</p><span class="tag tag-warn" style="align-self: flex-start">Opis niepełny</span></article>
         <nav aria-label="Strony wyników" style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; padding-top: 24px">
           <a href="#s1" aria-current="page" style="min-width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; background: #1F3A8A; color: #FFFFFF; text-decoration: none; font-weight: 700">1</a>
