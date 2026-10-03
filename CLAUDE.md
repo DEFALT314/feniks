@@ -19,7 +19,7 @@ the app were going to be deployed at ROPS. The user interface is in Polish, in p
 | P1 Radek – Content and Knowledge base | `app/biblioteka/`, `app/mapa-wyzwan/`, `app/zasoby/`, `app/api/zasoby/`, `scripts/seed/`, `supabase/seed.sql`, `docs/`, `pitch/` |
 | P2 Paweł – Interface and Idea creator | `components/ui/`, `app/layout.tsx`, `app/page.tsx`, `app/logowanie/`, `app/moje/kreator/`, `app/moje/tester/`, `app/api/kreator/`, `app/api/tester/`, `styles/`, `design/` |
 | P3 Konrad – AI and matching | `app/dopasuj/`, `app/moje/middleman/`, `app/api/match/`, `app/api/ai/`, `lib/ai/`, `hf-space/`, `scripts/embed.py`, `evals/`, `data/derived/` |
-| P4 Domik – Platform and ROPS | `middleware.ts`, `lib/auth/`, `lib/supabase/`, `app/admin/`, `app/moje/wiadomosci/`, `app/api/admin/`, `app/api/wiadomosci/`, `app/api/powiadomienia/`, `app/api/cron/`, `app/api/demo/`, `lib/powiadomienia.ts`, `lib/audit.ts`, `supabase/migrations/*_wspolne.sql`, `supabase/seed_demo.sql`, `.github/`, Vercel configuration |
+| P4 Dominik – Platform and ROPS | `middleware.ts`, `lib/auth/`, `lib/supabase/`, `app/admin/`, `app/moje/wiadomosci/`, `app/api/admin/`, `app/api/wiadomosci/`, `app/api/powiadomienia/`, `app/api/cron/`, `app/api/demo/`, `lib/powiadomienia.ts`, `lib/audit.ts`, `supabase/migrations/*_wspolne.sql`, `supabase/seed_demo.sql`, `.github/`, Vercel configuration |
 
 Shared: `lib/contracts/` (everyone edits only their own module's file), `data/rops/` (read-only).
 
@@ -62,7 +62,7 @@ Shared: `lib/contracts/` (everyone edits only their own module's file), `data/ro
     Polish names in passing, only in a separate PR.
 
 ## Tasks (GitHub Issues)
-Each person has a label P1–P4 (P1 Radek, P2 Paweł, P3 Konrad, P4 Domik); milestones M1–M6 give the order. Session start: `/zadanie P3` (your own label).
+Each person has a label P1–P4 (P1 Radek, P2 Paweł, P3 Konrad, P4 Dominik); milestones M1–M6 give the order. Session start: `/zadanie P3` (your own label).
 1. `gh issue list --label P3 --state open --json number,title,milestone,labels` and pick a task from the earliest
    milestone, without the `w toku` label. On a tie, first the one whose "Blokuje" (Blocks) section lists other people.
 2. `gh issue view <nr>`: read the checklist and the **Zależności** (Dependencies) section. For each "Blokowane przez #X" (Blocked by) check
