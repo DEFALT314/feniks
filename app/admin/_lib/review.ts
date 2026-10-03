@@ -76,7 +76,23 @@ export async function reviewIdea(
 
   const statusLabel = STATUS_LABELS[review.status];
   const headline = AUTHOR_MESSAGES[review.status](idea.tytul);
-  const authorLink = `/my/creator/${idea.id}`;
+
+  // The comment goes to the idea's conversation (#8), with the expert added, so the author can
+  // answer. Falls back to the idea card if the thread cannot be written.
+  const threadText =
+    review.komentarz ??
+    (review.ekspert_id ? "Przekazujemy pomysł ekspertowi do konsultacji." : null);
+  let threadId: string | null = null;
+  if (threadText) {
+    const { data } = await deps.supabase.rpc("start_thread", {
+      p_temat: idea.tytul,
+      p_tresc: threadText,
+      p_idea_id: idea.id,
+      p_uczestnicy: review.ekspert_id ? [review.ekspert_id] : undefined,
+    });
+    threadId = typeof data === "string" ? data : null;
+  }
+  const authorLink = threadId ? `/my/messages?thread=${threadId}` : `/my/creator/${idea.id}`;
 
   // Side effects must not undo a saved decision: log failures and carry on.
   const results = await Promise.allSettled([
@@ -100,7 +116,7 @@ export async function reviewIdea(
           userIds: [review.ekspert_id],
           typ: "pomysl_przekazany",
           tytul: `ROPS przekazał Ci pomysł „${idea.tytul}” do konsultacji.`,
-          link: "/my/messages",
+          link: threadId ? `/my/messages?thread=${threadId}` : "/my/messages",
         })
       : Promise.resolve(),
   ]);
@@ -118,7 +134,10 @@ export async function reviewIdea(
         `Status: ${statusLabel.toLowerCase()}.`,
         ...(review.komentarz ? [`Wiadomość od ROPS: ${review.komentarz}`] : []),
       ],
-      action: { label: "Zobacz pomysł", url: `${deps.siteUrl}${authorLink}` },
+      action: {
+        label: threadId ? "Zobacz i odpowiedz" : "Zobacz pomysł",
+        url: `${deps.siteUrl}${authorLink}`,
+      },
     });
     emailSent = sent.sent;
   }

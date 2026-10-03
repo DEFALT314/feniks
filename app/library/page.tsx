@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { LibraryFilters, type InnovationSummary } from "@/lib/contracts/knowledge-base";
 import { getAvailableFilters, getInnovations } from "./_lib/data";
 import { search } from "./_lib/search";
@@ -12,9 +14,6 @@ export const metadata: Metadata = {
 };
 
 // Colors and layout per design/makiety/Biblioteka.dc.html (theme tokens from app/globals.css)
-const BUTTON =
-  "inline-flex min-h-[50px] items-center justify-center gap-2 rounded-[10px] px-[22px] text-[1.0625rem] font-bold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick";
-const BADGE = "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-sm font-bold";
 
 export default async function LibraryPage({ searchParams }: PageProps<"/library">) {
   const params = await searchParams;
@@ -54,7 +53,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
                 placeholder="np. samotność seniorów"
                 className="border-field-border focus-visible:outline-brick min-h-[50px] flex-[1_1_320px] rounded-[10px] border bg-white px-3.5 py-3 text-lg focus-visible:outline-3 focus-visible:outline-offset-2"
               />
-              <button type="submit" className={`${BUTTON} bg-navy hover:bg-navy-strong text-white`}>
+              <button type="submit" className={buttonVariants()}>
                 Szukaj
               </button>
             </div>
@@ -83,14 +82,14 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
                 </FilterOption>
               ))}
             </FilterGroup>
-            <FilterGroup legend="Sprawdzenie">
+            <FilterGroup legend="Polecane">
               <FilterOption
                 name="verified"
                 value="1"
                 checked={filters.verified}
                 count={list.liczniki.sprawdzona}
               >
-                Wybrane do upowszechniania
+                Sprawdzone przez ROPS
               </FilterOption>
             </FilterGroup>
             <FilterGroup legend="Materiały">
@@ -103,13 +102,13 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
                 Jest film
               </FilterOption>
               <FilterOption name="pdf" value="1" checked={filters.pdf} count={list.liczniki.pdf}>
-                Jest opis modelu (PDF)
+                Jest opis do pobrania (PDF)
               </FilterOption>
             </FilterGroup>
             {filters.group ? <input type="hidden" name="group" value={filters.group} /> : null}
             {filters.label ? <input type="hidden" name="label" value={filters.label} /> : null}
             <div className="flex flex-wrap gap-3">
-              <button type="submit" className={`${BUTTON} border-navy text-navy border bg-white`}>
+              <button type="submit" className={buttonVariants({ variant: "secondary" })}>
                 Pokaż wyniki
               </button>
               <Link
@@ -134,7 +133,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
 
             {list.wyniki.length === 0 ? (
               <div className="flex flex-col gap-3 py-8">
-                <p>Nic nie pasuje do tych filtrów.</p>
+                <p>Nic nie znaleźliśmy. Spróbuj wybrać mniej filtrów.</p>
                 <p>
                   Spróbuj innych słów albo{" "}
                   <Link href="/match" className="text-navy underline">
@@ -263,18 +262,10 @@ function ResultRow({ innovation: i }: { innovation: InnovationSummary }) {
         <p>{i.opis_krotki}</p>
       )}
       <div className="flex flex-wrap items-center gap-2">
-        {i.sprawdzona_przez_rops ? (
-          <span className={`${BADGE} bg-success-soft text-success`}>
-            Wybrana do upowszechniania
-          </span>
-        ) : null}
-        {i.opis_niepelny ? (
-          <span className={`${BADGE} bg-warning-soft text-warning`}>Opis niepełny</span>
-        ) : null}
+        {i.sprawdzona_przez_rops ? <Badge variant="success">Sprawdzona przez ROPS</Badge> : null}
+        {i.opis_niepelny ? <Badge variant="warning">Opis niepełny</Badge> : null}
         {i.spoza_biblioteki ? (
-          <span className={`${BADGE} bg-neutral-soft text-ink-muted`}>
-            Z inkubatora ROPS, spoza Biblioteki online
-          </span>
+          <Badge variant="neutral">Z inkubatora ROPS, spoza Biblioteki online</Badge>
         ) : null}
         {meta ? <span className="text-ink-muted text-[0.9375rem]">{meta}</span> : null}
       </div>
