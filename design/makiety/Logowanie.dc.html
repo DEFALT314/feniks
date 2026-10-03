@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <title>HubMI – logowanie</title>
 <script src="./support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="./ruch.js"></script>
 </head>
 <body>
 <x-dc>
@@ -59,7 +62,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
 </helmet>
 <div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
   <dc-import name="Naglowek" active="start" rola="mieszkaniec" kto="Gość" hint-size="100%,112px"></dc-import>
-  <main class="wrap" style="padding-top: 56px; padding-bottom: 72px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+  <main data-ruch="wejscie" class="wrap" style="padding-top: 56px; padding-bottom: 72px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
     <section class="card" aria-labelledby="zaloguj" style="flex: 1 1 460px; padding: 36px; display: flex; flex-direction: column; gap: 18px">
       <h1 id="zaloguj" class="h" style="font-size: 36px">Zaloguj się kodem z maila</h1>
       <p class="muted">Bez hasła. Wyślemy 6-cyfrowy kod, ważny przez 10 minut.</p>
@@ -73,7 +76,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
         <button type="button" class="btn btn-s" disabled style="opacity: 0.6; cursor: not-allowed; justify-content: flex-start">Konto służbowe ROPS</button>
       </div>
     </section>
-    <section aria-labelledby="demo" style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
+    <section data-ruch="pokaz" aria-labelledby="demo" style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
       <h2 id="demo" class="h" style="font-size: 28px">Wersja pokazowa: wejdź jako…</h2>
       <p class="muted">Fikcyjne konta z różnymi uprawnieniami. Działa tylko w wersji pokazowej.</p>
       <a class="acc" href="Dopasuj.dc.html"><span class="av" style="background: #1F3A8A">S</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>Stanisław</strong><span class="muted" style="font-size: 16px">mieszkaniec, opiekuje się chorą mamą</span></span></a>

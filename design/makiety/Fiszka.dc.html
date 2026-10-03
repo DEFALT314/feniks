@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <title>HubMI – fiszka pomysłu i wniosek</title>
 <script src="./support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="./ruch.js"></script>
 </head>
 <body>
 <x-dc>
@@ -64,14 +67,14 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
   <dc-import name="Naglowek" active="kreator" rola="ngo" kto="Fundacja Dobry Start" hint-size="100%,112px"></dc-import>
   <main>
     <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
-      <div class="wrap" style="padding-top: 32px; padding-bottom: 28px; display: flex; flex-direction: column; gap: 10px">
+      <div data-ruch="wejscie" class="wrap" style="padding-top: 32px; padding-bottom: 28px; display: flex; flex-direction: column; gap: 10px">
         <a href="Kreator.dc.html" style="font-size: 16px">← Wróć do kreatora</a>
         <h1 class="h" style="font-size: 40px">Sąsiedzki dyżur po wypisie</h1>
         <span class="muted" style="font-size: 16px">Szkic · obszar: Seniorzy, usługi opiekuńcze w gminie</span>
       </div>
     </div>
     <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 48px; padding-top: 32px; padding-bottom: 64px">
-      <section aria-label="Fiszka" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 18px; max-width: 700px">
+      <section data-ruch="pokaz" aria-label="Fiszka" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 18px; max-width: 700px">
         <h2 class="h" style="font-size: 26px">Fiszka</h2>
         <div class="f"><label for="f-tyt">Tytuł</label><input id="f-tyt" value="Sąsiedzki dyżur po wypisie"></div>
         <div class="f"><label for="f-opis">Opis</label><textarea id="f-opis" rows="3">Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala: zakupy, leki, rozmowa i kontakt z ośrodkiem pomocy społecznej.</textarea></div>
@@ -87,7 +90,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
           <div class="ai" style="border-left-color: #8A4B00"><span class="lbl">Rezultaty</span><p>[Liczba seniorów objętych wsparciem] · [liczba przeszkolonych wolontariuszy]. Uzupełnij sam, AI nie podaje liczb.</p></div>
         </div>
       </section>
-      <aside style="flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 20px">
+      <aside data-ruch="pokaz" style="flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 20px">
         <div class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
           <span class="lbl">Coś podobnego już działa</span>
           <strong style="font-size: 19px">Organizator kompleksowej opieki w miejscu zamieszkania</strong>
