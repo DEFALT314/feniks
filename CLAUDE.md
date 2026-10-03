@@ -16,10 +16,10 @@ the app were going to be deployed at ROPS. The user interface is in Polish, in p
 ## Folder owners (don't edit other people's folders; need a change → message the owner)
 | Person | Folders |
 |---|---|
-| P1 Radek – Content and Knowledge base | `app/biblioteka/`, `app/mapa-wyzwan/`, `app/zasoby/`, `app/api/zasoby/`, `scripts/seed/`, `supabase/seed.sql`, `docs/`, `pitch/` |
-| P2 Paweł – Interface and Idea creator | `components/ui/`, `app/layout.tsx`, `app/page.tsx`, `app/logowanie/`, `app/moje/kreator/`, `app/moje/tester/`, `app/api/kreator/`, `app/api/tester/`, `styles/`, `design/` |
-| P3 Konrad – AI and matching | `app/dopasuj/`, `app/moje/middleman/`, `app/api/match/`, `app/api/ai/`, `lib/ai/`, `hf-space/`, `scripts/embed.py`, `evals/`, `data/derived/` |
-| P4 Dominik – Platform and ROPS | `middleware.ts`, `lib/auth/`, `lib/supabase/`, `app/admin/`, `app/moje/wiadomosci/`, `app/api/admin/`, `app/api/wiadomosci/`, `app/api/powiadomienia/`, `app/api/cron/`, `app/api/demo/`, `lib/powiadomienia.ts`, `lib/audit.ts`, `supabase/migrations/*_wspolne.sql`, `supabase/seed_demo.sql`, `.github/`, Vercel configuration |
+| P1 Radek – Content and Knowledge base | `app/library/`, `app/challenge-map/`, `app/resources/`, `app/api/innovations/`, `scripts/seed/`, `supabase/seed.sql`, `docs/`, `pitch/` |
+| P2 Paweł – Interface and Idea creator | `components/ui/`, `app/layout.tsx`, `app/page.tsx`, `app/login/`, `app/my/creator/`, `app/my/tester/`, `app/api/creator/`, `app/api/tester/`, `styles/`, `design/` |
+| P3 Konrad – AI and matching | `app/match/`, `app/my/middleman/`, `app/api/match/`, `app/api/ai/`, `lib/ai/`, `hf-space/`, `scripts/embed.py`, `evals/`, `data/derived/` |
+| P4 Dominik – Platform and ROPS | `proxy.ts`, `lib/auth/`, `lib/supabase/`, `app/admin/`, `app/my/messages/`, `app/api/admin/`, `app/api/messages/`, `app/api/notifications/`, `app/api/cron/`, `app/api/demo/`, `lib/notifications.ts`, `lib/audit.ts`, `supabase/migrations/*_shared.sql`, `supabase/seed_demo.sql`, `.github/`, Vercel configuration |
 
 Shared: `lib/contracts/` (everyone edits only their own module's file), `data/rops/` (read-only).
 
@@ -58,9 +58,11 @@ Shared: `lib/contracts/` (everyone edits only their own module's file), `data/ro
     CI pass. A PR with new code and no unit tests is not ready.
 12. **English everywhere except the UI:** variable, function, type, component, file and folder names, comments,
     test names, commit messages and this file are in English (e.g. `lib/matching/score.ts`, `MatchCard.tsx`, not `wynik.ts`).
-    Only what the user sees stays in Polish: interface texts and page addresses (route folders in `app/`,
-    e.g. `app/biblioteka/`), plus database column names and existing contract fields. Don't rename existing
-    Polish names in passing, only in a separate PR.
+    Page addresses are in English too: route folders in `app/` (e.g. `app/library/`, not `app/biblioteka/`),
+    API paths, query parameters (`?category=`, not `?kategoria=`) and anchors (`#main-content`, not `#tresc`).
+    Only what the user sees stays in Polish (interface texts, labels, messages, page titles), plus database
+    column names and existing contract data fields. Don't rename existing Polish names in passing, only in a
+    separate PR.
 
 ## Tasks (GitHub Issues)
 Each person has a label P1–P4 (P1 Radek, P2 Paweł, P3 Konrad, P4 Dominik); milestones M1–M6 give the order. Session start: `/zadanie P3` (your own label).

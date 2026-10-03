@@ -6,15 +6,15 @@ export type CurrentUser = { name: string; role: Role };
 export type NavItem = { label: string; href: string };
 
 const PUBLIC_ITEMS: NavItem[] = [
-  { label: "Dopasuj rozwiązanie", href: "/dopasuj" },
-  { label: "Biblioteka", href: "/biblioteka" },
-  { label: "Mapa wyzwań", href: "/mapa-wyzwan" },
+  { label: "Dopasuj rozwiązanie", href: "/match" },
+  { label: "Biblioteka", href: "/library" },
+  { label: "Mapa wyzwań", href: "/challenge-map" },
 ];
 
 const SIGNED_IN_ITEMS: NavItem[] = [
-  { label: "Moje pomysły", href: "/moje/kreator" },
-  { label: "Testy", href: "/moje/tester" },
-  { label: "Wiadomości", href: "/moje/wiadomosci" },
+  { label: "Moje pomysły", href: "/my/creator" },
+  { label: "Testy", href: "/my/tester" },
+  { label: "Wiadomości", href: "/my/messages" },
 ];
 
 const ROLE_LABELS: Record<Role, string> = {
@@ -32,7 +32,7 @@ export function navItemsFor(role: Role | null): NavItem[] {
   if (!role) return PUBLIC_ITEMS;
   const items = [...PUBLIC_ITEMS, ...SIGNED_IN_ITEMS];
   if (role === "jst" || role === "ngo")
-    items.push({ label: "Karta usługi", href: "/moje/middleman" });
+    items.push({ label: "Karta usługi", href: "/my/middleman" });
   if (role === "rops_redaktor" || role === "rops_admin") {
     items.push({ label: "Panel ROPS", href: "/admin" });
   }
@@ -43,7 +43,7 @@ export function roleLabel(role: Role): string {
   return ROLE_LABELS[role];
 }
 
-// A menu item is active on its own page and on every page below it (/biblioteka/abc → Biblioteka)
+// A menu item is active on its own page and on every page below it (/library/abc → Biblioteka)
 export function isActivePath(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }

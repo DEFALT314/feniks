@@ -10,16 +10,16 @@ from `app/layout.tsx`.
 | `System.dc.html` | colors, typography, buttons, fields, tags | Makiety i system wizualny (P2) |
 | `Naglowek.dc.html`, `Stopka.dc.html` | header, footer | Komponenty UI i układ strony (P2) |
 | `Main.dc.html` | `/` | Strona główna (P2) |
-| `Logowanie.dc.html` | `/logowanie`, "Wejdź jako…" | Strona główna (P2), Konta demo (P4) |
-| `Dopasuj.dc.html` | `/dopasuj` | Strona /dopasuj (P3) |
-| `Biblioteka.dc.html` | `/biblioteka` | Biblioteka (P1) |
-| `Karta.dc.html` | `/biblioteka/[id]` | Karta innowacji (P1) |
-| `MapaWyzwan.dc.html` | `/mapa-wyzwan` | Mapa Wyzwań (P1) |
-| `Kreator.dc.html`, `Fiszka.dc.html` | `/moje/kreator` | Kreator (P2) |
-| `Tester.dc.html` | `/moje/tester` | Tester (P2) |
-| `Wiadomosci.dc.html` | `/moje/wiadomosci` | Komunikacja (P4) |
+| `Logowanie.dc.html` | `/login`, "Wejdź jako…" | Strona główna (P2), Konta demo (P4) |
+| `Dopasuj.dc.html` | `/match` | Strona /match (P3) |
+| `Biblioteka.dc.html` | `/library` | Biblioteka (P1) |
+| `Karta.dc.html` | `/library/[id]` | Karta innowacji (P1) |
+| `MapaWyzwan.dc.html` | `/challenge-map` | Mapa Wyzwań (P1) |
+| `Kreator.dc.html`, `Fiszka.dc.html` | `/my/creator` | Kreator (P2) |
+| `Tester.dc.html` | `/my/tester` | Tester (P2) |
+| `Wiadomosci.dc.html` | `/my/messages` | Komunikacja (P4) |
 | `Admin.dc.html` | `/admin` | Panel ROPS (P4) |
-| `Middleman.dc.html` | `/moje/middleman` | Middleman (P3) |
+| `Middleman.dc.html` | `/my/middleman` | Middleman (P3) |
 
 Colors: navy `#1F3A8A`, brick `#C2452B` (focus and accents only), green `#1D6B48`, background `#F6F7F9`,
 text `#151A23`, secondary text `#4B5565`, lines `#D9DDE4`. Fonts: Bricolage Grotesque (headings), Atkinson Hyperlegible
@@ -31,4 +31,4 @@ Motion: `ruch.js` (GSAP 3.13 + ScrollTrigger from a CDN) plays the motion on eve
 attributes (`wejscie`, `pokaz`, `licznik`, `slupki`, `postep`, `zakresl`, `tok`, `wybor`, `odswiez`; each one is
 described at the top of the file). Hover, press and focus states stay in CSS. In the app, the same sequences go into
 components through `useGSAP()` from `@gsap/react` (scope = the container ref, `gsap.matchMedia()` for
-`prefers-reduced-motion`). The `/dopasuj` moment is a single timeline that replays when the user clicks "Dopasuj".
+`prefers-reduced-motion`). The `/match` moment is a single timeline that replays when the user clicks "Dopasuj".
