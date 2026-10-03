@@ -1,0 +1,618 @@
+{
+ "zrodlo": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf",
+ "tytul": "Mapa Wyzwań Społecznych",
+ "wydawca": "ROPS w Krakowie, Dział Innowacji Społecznych (konsultacja: Dział Badań i Analiz)",
+ "kontekst": "Załącznik nr 2 do regulaminu projektu „Inkubator Włączenia Społecznego 2.0” (FERS 2021–2027, Działanie 5.1). Dane ogólnopolskie, nie tylko małopolskie. 44 strony, 8 obszarów; każdy obszar ma: definicję, analizę danych zastanych, kluczowe wyzwania, fikcyjną personę (cele i potrzeby, wyzwania, motywacje) i listę raportów do pogłębienia.",
+ "pobrano": "2026-10-03",
+ "uwaga": "Opisy streszczone własnymi słowami. Nazwy obszarów i person jak w dokumencie. Persony są fikcyjne – można ich użyć jako scenariuszy demo.",
+ "obszary": [
+  {
+   "id": "rodzina-piecza",
+   "nr": 1,
+   "nazwa": "Rodzina i piecza zastępcza",
+   "strony": "3–7",
+   "kategorie_biblioteki": [
+    "dla-dzieci-mlodziezy-i-rodziny"
+   ],
+   "definicja": "Wsparcie rodzin, które mają trudność z opieką i wychowaniem dzieci, oraz piecza zastępcza, gdy dziecko nie może zostać z rodzicami biologicznymi.",
+   "dane": [
+    "W 2023 r. liczba dzieci w pieczy zastępczej wzrosła o 3,5% względem 2022 r. (GUS).",
+    "Za mało rodzin zastępczych spowalnia deinstytucjonalizację.",
+    "Do placówek trafiają też dzieci poniżej 10 lat, a placówki bywają przepełnione.",
+    "Duża część dzieci w pieczy to dzieci starsze, z licznego rodzeństwa lub z niepełnosprawnością (NIK 2022)."
+   ],
+   "kluczowe_wyzwania": [
+    {
+     "id": "wiecej-rodzin-zastepczych",
+     "tekst": "Więcej pozytywnie zweryfikowanych kandydatów na rodziny zastępcze"
+    },
+    {
+     "id": "wspolpraca-powiatow",
+     "tekst": "Lepsza współpraca między powiatami w systemie pieczy"
+    },
+    {
+     "id": "nierozdzielanie-rodzenstwa",
+     "tekst": "Nierozdzielanie rodzeństwa przy umieszczaniu w pieczy"
+    },
+    {
+     "id": "krotszy-pobyt",
+     "tekst": "Krótszy pobyt w pieczy i szybsze przejście do docelowej formy opieki"
+    },
+    {
+     "id": "spojny-system-adopcyjny",
+     "tekst": "Spójne standardy pracy ośrodków adopcyjnych"
+    }
+   ],
+   "persona": {
+    "imie": "Ania i Staś",
+    "opis": "Rodzeństwo z dysfunkcyjnej rodziny, 7 i 12 lat; Ania ma zespół Downa, Staś słabo słyszy; wielokrotnie zmieniali rodziny zastępcze i placówki.",
+    "cele": [
+     "zamieszkać razem w rodzinie zastępczej",
+     "dostać wsparcie specjalistyczne",
+     "nauczyć się budować relacje"
+    ],
+    "wyzwania": [
+     "niepełnosprawność obojga dzieci",
+     "trudne doświadczenia z domu",
+     "brak stabilnego miejsca"
+    ],
+    "motywacje": [
+     "mieć prawdziwą rodzinę",
+     "nie być rozdzielonymi",
+     "być akceptowanym przez rówieśników"
+    ]
+   },
+   "slowa_kluczowe": [
+    "piecza zastępcza",
+    "rodzina zastępcza",
+    "adopcja",
+    "rodzeństwo",
+    "dom dziecka",
+    "placówka opiekuńczo-wychowawcza",
+    "dysfunkcyjna rodzina",
+    "kompetencje rodzicielskie",
+    "deinstytucjonalizacja",
+    "PCPR"
+   ]
+  },
+  {
+   "id": "bezdomnosc",
+   "nr": 2,
+   "nazwa": "Bezdomność",
+   "strony": "8–11",
+   "kategorie_biblioteki": [
+    "dla-osob-w-kryzysie-bezdomnosci"
+   ],
+   "definicja": "Najostrzejsza forma wykluczenia: brak własnego schronienia spełniającego minimalne warunki. Zwykle ma wiele przyczyn naraz: ubóstwo, bezrobocie, uzależnienia, przemoc, eksmisje, rozpad rodziny, kryzysy psychiczne.",
+   "dane": [
+    "Rośnie liczba młodych osób w kryzysie bezdomności (0–25 lat).",
+    "Młodzi bezdomni są mało widoczni i trudni do policzenia.",
+    "Niepełnoletność utrudnia instytucjonalne wsparcie nastolatków.",
+    "Luka we wsparciu po opuszczeniu placówki opiekuńczo-wychowawczej."
+   ],
+   "kluczowe_wyzwania": [
+    {
+     "id": "mlodzi-bezdomni",
+     "tekst": "Oferta wsparcia dopasowana do młodych dorosłych i nastolatków"
+    },
+    {
+     "id": "niewidzialnosc",
+     "tekst": "Docieranie do „niewidzialnych” młodych osób w kryzysie bezdomności"
+    },
+    {
+     "id": "przejscie-z-placowki",
+     "tekst": "Ciągłość pomocy po opuszczeniu placówki opiekuńczo-wychowawczej"
+    },
+    {
+     "id": "wiezi",
+     "tekst": "Budowanie więzi i sieci wsparcia osób bez rodziny"
+    }
+   ],
+   "persona": {
+    "imie": "Kuba",
+    "opis": "22 lata, były wychowanek placówki, nocuje rotacyjnie u znajomych, objawy uzależnienia, nie utrzymał mieszkania wspieranego.",
+    "cele": [
+     "nocleg i jedzenie na najbliższe dni",
+     "dostęp do prądu i telefonu",
+     "zachować schludny wygląd"
+    ],
+    "wyzwania": [
+     "znalezienie noclegu",
+     "brak osób wspierających w dorosłości"
+    ],
+    "motywacje": [
+     "żeby nikt nie zauważył braku domu",
+     "zmienić swoje życie"
+    ]
+   },
+   "slowa_kluczowe": [
+    "bezdomność",
+    "kryzys bezdomności",
+    "noclegownia",
+    "schronisko",
+    "młodzi bezdomni",
+    "usamodzielnienie",
+    "mieszkanie wspierane",
+    "uzależnienie",
+    "eksmisja",
+    "streetworking"
+   ]
+  },
+  {
+   "id": "niepelnosprawnosc",
+   "nr": 3,
+   "nazwa": "Niepełnosprawność",
+   "strony": "12–16",
+   "kategorie_biblioteki": [
+    "dla-osob-o-ograniczonej-mobilnosci",
+    "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+    "dla-osob-z-niepelnosprawnoscia-intelektualna"
+   ],
+   "definicja": "Trwałe ograniczenie sprawności, które utrudnia pracę i samodzielne życie; może być wrodzone albo nabyte. Trudności są nie tylko medyczne, ale też ekonomiczne, prawne, komunikacyjne, edukacyjne i technologiczne.",
+   "dane": [
+    "Wskaźnik zatrudnienia osób z niepełnosprawnością (16–64 lata) pod koniec 2023 r.: 30,1% (BDL GUS).",
+    "NSP 2021: 5,4 mln osób z niepełnosprawnością, 14,3% ludności.",
+    "Badanie PFRON 2024: najważniejsze potrzeby to mieszkalnictwo, czas wolny, rehabilitacja, praca i informacja; najmniej zaspokojony jest dostęp do informacji.",
+    "Krytyczny moment: przejście z edukacji do dorosłości i pracy."
+   ],
+   "kluczowe_wyzwania": [
+    {
+     "id": "rynek-pracy",
+     "tekst": "Większy dostęp do rynku pracy"
+    },
+    {
+     "id": "edukacja",
+     "tekst": "Wykształcenie dające samodzielność i rozwój zawodowy"
+    },
+    {
+     "id": "relacje",
+     "tekst": "Samodzielne relacje społeczne i towarzyskie"
+    },
+    {
+     "id": "wsparcie-emocjonalne",
+     "tekst": "Wsparcie emocjonalne"
+    },
+    {
+     "id": "dostepnosc",
+     "tekst": "Wsparcie techniczne, infrastruktura i dostępność"
+    },
+    {
+     "id": "mobilnosc",
+     "tekst": "Samodzielne przemieszczanie się i korzystanie z usług bez asysty"
+    },
+    {
+     "id": "opieka-medyczna",
+     "tekst": "Dostęp do opieki medycznej, fizjoterapii i pomocy w codziennych czynnościach"
+    },
+    {
+     "id": "zainteresowania",
+     "tekst": "Rozwój zainteresowań"
+    },
+    {
+     "id": "mieszkania",
+     "tekst": "Mieszkania dostosowane do ograniczeń funkcjonalnych"
+    }
+   ],
+   "persona": {
+    "imie": "Krystian",
+    "opis": "38 lat, mieszka sam w małej miejscowości, porażenie czterokończynowe, nie mówi; pracuje zdalnie, obsługuje komputer wzrokiem.",
+    "cele": [
+     "robić codzienne rzeczy bez obciążania innych",
+     "mieć znajomych",
+     "rozwijać się zawodowo"
+    ],
+    "wyzwania": [
+     "samotność",
+     "samoobsługa i wyjście z domu",
+     "utrzymanie zdrowia"
+    ],
+    "motywacje": [
+     "mieć w życiu coś więcej niż pracę",
+     "wychodzić z domu, kiedy chce",
+     "decydować o sobie"
+    ]
+   },
+   "slowa_kluczowe": [
+    "niepełnosprawność",
+    "osoba z niepełnosprawnością",
+    "wózek",
+    "niewidomy",
+    "głuchy",
+    "dostępność",
+    "bariery architektoniczne",
+    "asystent osobisty",
+    "mieszkanie wspomagane",
+    "praca",
+    "rehabilitacja",
+    "komunikacja alternatywna"
+   ]
+  },
+  {
+   "id": "ubostwo",
+   "nr": 4,
+   "nazwa": "Ubóstwo",
+   "strony": "17–21",
+   "kategorie_biblioteki": [
+    "dla-rynku-pracy",
+    "dla-osob-w-kryzysie-bezdomnosci"
+   ],
+   "definicja": "Brak środków na zaspokojenie podstawowych potrzeb; najczęściej dotyka odbiorców świadczeń, rolników i mieszkańców wsi poza aglomeracjami.",
+   "dane": [
+    "Ubóstwo skrajne w 2023 r.: 6,6% gospodarstw domowych, wzrost o 2 pp. (GUS).",
+    "Progi 2023 dla 1 osoby: ustawowe 776 zł, skrajne 913 zł, relatywne 1092 zł.",
+    "Ubóstwo skrajne wśród rolników 14,1%, wśród utrzymujących się z niezarobkowych źródeł 17,9%.",
+    "Zjawisko pracujących biednych (working poor).",
+    "30% Polaków deklaruje lęk przed biedą, najwięcej od 2015 r. (Raport o biedzie 2023)."
+   ],
+   "kluczowe_wyzwania": [
+    {
+     "id": "ubostwo-dzieci",
+     "tekst": "Ubóstwo dzieci – dobra wczesna opieka i edukacja"
+    },
+    {
+     "id": "ubostwo-seniorow",
+     "tekst": "Ubóstwo seniorów"
+    },
+    {
+     "id": "ubostwo-onp",
+     "tekst": "Ubóstwo osób z niepełnosprawnościami"
+    },
+    {
+     "id": "pracujacy-biedni",
+     "tekst": "Ubóstwo osób pracujących, np. drobnych rolników"
+    },
+    {
+     "id": "bezrobotni-bezdomni",
+     "tekst": "Bezrobotni i bezdomni – zatrudnienie socjalne, spółdzielnie socjalne"
+    },
+    {
+     "id": "uchodzcy",
+     "tekst": "Ubóstwo uchodźców z Ukrainy"
+    },
+    {
+     "id": "ubostwo-energetyczne",
+     "tekst": "Ubóstwo energetyczne"
+    },
+    {
+     "id": "niedozywienie",
+     "tekst": "Głód i niedożywienie"
+    }
+   ],
+   "persona": {
+    "imie": "Tomek",
+    "opis": "60 lat, renta rolnicza, wykształcenie techniczne, do niedawna mieszkał z matką; nie pracuje.",
+    "cele": [
+     "bezpieczeństwo finansowe i zdrowotne",
+     "praca dorywcza",
+     "opał na zimę"
+    ],
+    "wyzwania": [
+     "samotność i brak wsparcia",
+     "rezygnacja, beznadzieja",
+     "ryzyko alkoholizmu"
+    ],
+    "motywacje": [
+     "spotkać ludzi",
+     "mieć pewność jedzenia i ciepła zimą"
+    ]
+   },
+   "slowa_kluczowe": [
+    "ubóstwo",
+    "bieda",
+    "niskie dochody",
+    "ubóstwo energetyczne",
+    "opał",
+    "niedożywienie",
+    "pomoc żywnościowa",
+    "bezrobocie",
+    "spółdzielnia socjalna",
+    "zasiłek",
+    "renta",
+    "wieś"
+   ]
+  },
+  {
+   "id": "cudzoziemcy",
+   "nr": 5,
+   "nazwa": "Integracja cudzoziemców",
+   "strony": "22–26",
+   "kategorie_biblioteki": [
+    "dla-cudzoziemcow"
+   ],
+   "definicja": "Polityki włączające, które dają migrantom równe szanse w życiu gospodarczym, społecznym, kulturalnym i politycznym gminy oraz równy dostęp do usług publicznych.",
+   "dane": [
+    "Integracja to proces wielostronny, nie asymilacja.",
+    "Model lokalny: partycypacja migrantów i organizacji, działania oparte na diagnozie, koordynacja przez wiodącą jednostkę samorządu, stabilne finansowanie zamiast krótkich projektów."
+   ],
+   "kluczowe_wyzwania": [
+    {
+     "id": "rowny-dostep",
+     "tekst": "Równy dostęp migrantów do usług społecznych"
+    },
+    {
+     "id": "uslugi-indywidualne",
+     "tekst": "Usługi dopasowane do migrantów: tłumacz, asysta kulturowa, indywidualne programy"
+    },
+    {
+     "id": "wlaczenie-kulturowe",
+     "tekst": "Włączenie kulturowe, w tym dzieci i młodzieży"
+    },
+    {
+     "id": "rynek-pracy-cudzoziemcy",
+     "tekst": "Rynek pracy otwarty na cudzoziemców: język branżowy, uznawanie kwalifikacji"
+    },
+    {
+     "id": "edukacja-dzieci",
+     "tekst": "Integracja dzieci migrantów w szkole"
+    },
+    {
+     "id": "stereotypy",
+     "tekst": "Przeciwdziałanie stereotypom"
+    },
+    {
+     "id": "zdrowie-psychiczne-migrantow",
+     "tekst": "Zdrowie psychiczne cudzoziemców"
+    }
+   ],
+   "persona": {
+    "imie": "Swietłana",
+    "opis": "37 lat, z Ukrainy, dwoje dzieci (4 i 9 lat), mąż został w Ukrainie; nauczycielka historii, w Polsce szuka pracy poza zawodem.",
+    "cele": [
+     "bezpieczeństwo rodziny",
+     "praca i mieszkanie",
+     "przedszkole i szkoła dla dzieci"
+    ],
+    "wyzwania": [
+     "wynajem mieszkania",
+     "adaptacja dzieci, które nie mówią po polsku",
+     "odnalezienie się w Polsce"
+    ],
+    "motywacje": [
+     "duża wewnętrzna motywacja do zmiany"
+    ]
+   },
+   "slowa_kluczowe": [
+    "cudzoziemcy",
+    "migranci",
+    "uchodźcy",
+    "Ukraina",
+    "język polski",
+    "asystent międzykulturowy",
+    "tłumacz",
+    "integracja",
+    "szkoła",
+    "uznawanie kwalifikacji"
+   ]
+  },
+  {
+   "id": "zdrowie",
+   "nr": 6,
+   "nazwa": "Zdrowie",
+   "strony": "27–31",
+   "kategorie_biblioteki": [
+    "dla-zdrowia-i-medycyny"
+   ],
+   "definicja": "Edukacja zdrowotna, dostęp do opieki medycznej, profilaktyka i zdrowe środowisko jako podstawa zdrowia fizycznego i psychicznego.",
+   "dane": [
+    "Choroba niedokrwienna serca pozostaje największym wyzwaniem systemu ochrony zdrowia; udary to druga przyczyna zgonów.",
+    "Rośnie zachorowalność na nowotwory oraz chorobę Alzheimera i inne otępienia.",
+    "Pandemia nasiliła samotność starszych osób mieszkających samotnie.",
+    "Palenie i zła dieta to główne przyczyny wyższej umieralności."
+   ],
+   "kluczowe_wyzwania": [
+    {
+     "id": "edukacja-zdrowotna",
+     "tekst": "Świadomość i edukacja: zdrowy styl życia, profilaktyka, dieta, ruch"
+    },
+    {
+     "id": "rowny-dostep-zdrowie",
+     "tekst": "Równy dostęp do dobrej opieki zdrowotnej"
+    },
+    {
+     "id": "opieka-dlugoterminowa",
+     "tekst": "Dostosowanie opieki do starzejącego się społeczeństwa, w tym opieka długoterminowa"
+    },
+    {
+     "id": "zdrowie-mlodych",
+     "tekst": "Promocja zdrowia dzieci i młodzieży"
+    },
+    {
+     "id": "swiadomosc-psychiczna",
+     "tekst": "Świadomość zdrowia psychicznego i walka ze stygmatyzacją"
+    }
+   ],
+   "persona": {
+    "imie": "Stanisław",
+    "opis": "56 lat, pracuje na etacie i opiekuje się chorą matką; zaniedbuje własne zdrowie (otyłość, choroba serca), wycofany społecznie.",
+    "cele": [
+     "pogodzić pracę z opieką nad matką",
+     "więcej energii i lepsze zdrowie",
+     "wzmocnić relacje"
+    ],
+    "wyzwania": [
+     "fizyczne i emocjonalne obciążenie opieką",
+     "niepokój o zdrowie"
+    ],
+    "motywacje": [
+     "bezpieczeństwo matki",
+     "chwila dla siebie"
+    ]
+   },
+   "slowa_kluczowe": [
+    "zdrowie",
+    "profilaktyka",
+    "opiekun rodzinny",
+    "opieka długoterminowa",
+    "choroba przewlekła",
+    "rehabilitacja",
+    "otyłość",
+    "serce",
+    "cukrzyca",
+    "dostęp do lekarza",
+    "telemedycyna"
+   ]
+  },
+  {
+   "id": "zdrowie-psychiczne",
+   "nr": 7,
+   "nazwa": "Zdrowie psychiczne",
+   "strony": "32–38",
+   "kategorie_biblioteki": [
+    "dla-zdrowia-i-medycyny",
+    "dla-dzieci-mlodziezy-i-rodziny"
+   ],
+   "definicja": "Równowaga emocjonalna, psychiczna i społeczna: radzenie sobie ze stresem, dobre relacje, podejmowanie decyzji – a nie tylko brak choroby.",
+   "dane": [
+    "Rośnie liczba prób samobójczych wśród dzieci i młodzieży.",
+    "Nadmierne korzystanie z internetu wiąże się z depresją i zaburzeniami odżywiania; FOMO dotyczy co trzeciego młodego Polaka.",
+    "Psychiatria to ok. 3% wydatków NFZ.",
+    "Stygmatyzacja i słaby dostęp sprawiają, że problemy są niedoszacowane."
+   ],
+   "kluczowe_wyzwania": [
+    {
+     "id": "edukacja-prozdrowotna",
+     "tekst": "Edukacja o zdrowiu psychicznym dzieci, młodzieży i seniorów"
+    },
+    {
+     "id": "kompetencje-rodzicow",
+     "tekst": "Rodzice, którzy rozpoznają sygnały kryzysu u dzieci"
+    },
+    {
+     "id": "opieka-srodowiskowa",
+     "tekst": "Przejście z opieki instytucjonalnej na środowiskową"
+    },
+    {
+     "id": "destygmatyzacja",
+     "tekst": "Mniej stygmatyzacji, łatwiejsze sięganie po pomoc"
+    }
+   ],
+   "persona": [
+    {
+     "imie": "Mateusz",
+     "opis": "17 lat, liceum w dużym mieście, większość czasu w sieci, po rozstaniu odczuwa pustkę i stany depresyjne.",
+     "cele": [
+      "cele poza światem wirtualnym",
+      "wsparcie w emocjach",
+      "przynależność do grupy"
+     ],
+     "wyzwania": [
+      "mało kontaktów z rówieśnikami",
+      "dużo czasu przy komputerze",
+      "trudność z emocjami"
+     ],
+     "motywacje": [
+      "poczucie bycia ważnym",
+      "akceptacja",
+      "bezpieczeństwo w kryzysie"
+     ]
+    },
+    {
+     "imie": "Karina",
+     "opis": "41 lat, duże miasto, niedawna diagnoza choroby afektywnej dwubiegunowej, pod opieką psychiatry, wraca na rynek pracy.",
+     "cele": [
+      "stabilne zatrudnienie",
+      "wsparcie w aktywizacji zawodowej"
+     ],
+     "wyzwania": [
+      "powrót po szpitalu",
+      "wstyd po diagnozie",
+      "lęk przed odrzuceniem"
+     ],
+     "motywacje": [
+      "powrót do normalnego życia",
+      "odbudowa wiary w siebie"
+     ]
+    }
+   ],
+   "slowa_kluczowe": [
+    "zdrowie psychiczne",
+    "depresja",
+    "kryzys psychiczny",
+    "samobójstwo",
+    "młodzież",
+    "stres",
+    "izolacja",
+    "uzależnienie od internetu",
+    "terapia",
+    "psycholog",
+    "CZP",
+    "stygmatyzacja"
+   ]
+  },
+  {
+   "id": "seniorzy",
+   "nr": 8,
+   "nazwa": "Seniorzy",
+   "strony": "39–43",
+   "kategorie_biblioteki": [
+    "dla-seniorow"
+   ],
+   "definicja": "Dostosowanie się do starzejącego się społeczeństwa: opieka zdrowotna i opiekuńcza, godna, bezpieczna i możliwie samodzielna starość bez izolacji i dyskryminacji.",
+   "dane": [
+    "Największe problemy seniorów: zdrowie, samotność, finanse, cyfryzacja.",
+    "Wielu seniorów mieszka w budynkach z barierami architektonicznymi.",
+    "Wielolekowość (polipragmazja) to poważne ryzyko.",
+    "Samotność jest powiązana z gorszą sytuacją materialną."
+   ],
+   "kluczowe_wyzwania": [
+    {
+     "id": "uslugi-dla-starzejacych",
+     "tekst": "Instytucje i usługi zdrowotne dopasowane do starzejącego się społeczeństwa, także z nowymi technologiami"
+    },
+    {
+     "id": "projektowanie-uniwersalne",
+     "tekst": "Projektowanie uniwersalne przestrzeni i mieszkań, mieszkalnictwo senioralne"
+    },
+    {
+     "id": "wielolekowosc",
+     "tekst": "Odpowiedzialne przyjmowanie leków i suplementów"
+    },
+    {
+     "id": "aktywizacja",
+     "tekst": "Szersza oferta aktywizacji i integracji seniorów"
+    },
+    {
+     "id": "kompetencje-cyfrowe",
+     "tekst": "Kompetencje cyfrowe seniorów"
+    },
+    {
+     "id": "uslugi-opiekuncze",
+     "tekst": "Dostęp do usług opiekuńczych w gminie, w tym specjalistycznych"
+    }
+   ],
+   "persona": {
+    "imie": "Janina",
+    "opis": "73 lata, mieszka sama w małym mieście, niedawno owdowiała, rzadko wychodzi, wiele chorób i leków.",
+    "cele": [
+     "mniej samotności, więcej aktywności",
+     "poczucie wartości",
+     "świadome dbanie o zdrowie i leki"
+    ],
+    "wyzwania": [
+     "samotność",
+     "nadużywanie leków i suplementów",
+     "życie po stracie męża"
+    ],
+    "motywacje": [
+     "radość z prostych rzeczy",
+     "organizacja dnia",
+     "wyjście do ludzi"
+    ]
+   },
+   "slowa_kluczowe": [
+    "senior",
+    "osoba starsza",
+    "samotność",
+    "demencja",
+    "opieka domowa",
+    "usługi opiekuńcze",
+    "wielolekowość",
+    "kompetencje cyfrowe",
+    "bariery architektoniczne",
+    "wdowa",
+    "DDP",
+    "klub seniora"
+   ]
+  }
+ ]
+}
