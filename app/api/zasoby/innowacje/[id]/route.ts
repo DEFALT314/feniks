@@ -1,21 +1,21 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { edytujInnowacje, type KlientEdycji } from "./edycja";
+import { editInnovation, type EditClient } from "./edit";
 
-// PATCH /api/zasoby/innowacje/[id]: edycja karty z panelu ROPS (kontrakt: EdycjaInnowacji → Innowacja)
+// PATCH /api/zasoby/innowacje/[id]: editing a card from the ROPS panel (contract: InnovationEdit → Innovation)
 export async function PATCH(request: Request, ctx: RouteContext<"/api/zasoby/innowacje/[id]">) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    return NextResponse.json({ blad: "Baza danych nie jest skonfigurowana." }, { status: 503 });
+    return NextResponse.json({ error: "Baza danych nie jest skonfigurowana." }, { status: 503 });
   }
   const { id } = await ctx.params;
-  let dane: unknown;
+  let input: unknown;
   try {
-    dane = await request.json();
+    input = await request.json();
   } catch {
-    return NextResponse.json({ blad: "Treść żądania musi być w formacie JSON." }, { status: 400 });
+    return NextResponse.json({ error: "Treść żądania musi być w formacie JSON." }, { status: 400 });
   }
-  const klient = (await createClient()) as unknown as KlientEdycji;
-  const wynik = await edytujInnowacje(klient, id, dane);
-  // Dziennik zmian: zapiszAudit z lib/audit.ts (P4), gdy będzie gotowe
-  return NextResponse.json(wynik.body, { status: wynik.status });
+  const client = (await createClient()) as unknown as EditClient;
+  const result = await editInnovation(client, id, input);
+  // Change log: zapiszAudit from lib/audit.ts (P4), once it is ready
+  return NextResponse.json(result.body, { status: result.status });
 }

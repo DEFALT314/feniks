@@ -1,38 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { pobierzKategorie } from "@/app/biblioteka/_lib/dane";
-import { pobierzObszary } from "./_lib/dane";
-import type { ObszarPelny } from "./_lib/z-plikow";
+import { getCategories } from "@/app/biblioteka/_lib/data";
+import { getChallengeAreas } from "./_lib/data";
+import type { FullChallengeArea } from "./_lib/from-files";
 
 export const metadata: Metadata = {
   title: "Mapa wyzwań społecznych – HubMI.pl",
   description: "8 obszarów i 48 kluczowych wyzwań społecznych Małopolski według ROPS w Krakowie.",
 };
 
-const FOKUS =
+const FOCUS =
   "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#C2452B]";
-const LINK = `text-[#1F3A8A] underline underline-offset-[3px] hover:text-[#172C6B] ${FOKUS}`;
+const LINK = `text-[#1F3A8A] underline underline-offset-[3px] hover:text-[#172C6B] ${FOCUS}`;
 
-function liczbaWyzwan(n: number): string {
+// Polish plural forms: 1 wyzwanie, 2–4 wyzwania, 5+ wyzwań
+function formatChallengeCount(n: number): string {
   if (n === 1) return "1 wyzwanie";
-  const r10 = n % 10;
-  const r100 = n % 100;
-  return r10 >= 2 && r10 <= 4 && (r100 < 12 || r100 > 14) ? `${n} wyzwania` : `${n} wyzwań`;
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  return mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? `${n} wyzwania` : `${n} wyzwań`;
 }
 
-// Link do Biblioteki: kategorie powiązane z obszarem + słowa z wyzwania
-function adresInnowacji(obszar: ObszarPelny, tekst: string): string {
-  const p = new URLSearchParams({ q: tekst });
-  for (const k of obszar.kategorie_biblioteki) p.append("kategoria", k);
+// Link to the Library: categories linked to the area + words from the challenge
+function innovationsUrl(area: FullChallengeArea, text: string): string {
+  const p = new URLSearchParams({ q: text });
+  for (const k of area.kategorie_biblioteki) p.append("kategoria", k);
   return `/biblioteka?${p.toString()}`;
 }
 
-export default async function Strona({ searchParams }: PageProps<"/mapa-wyzwan">) {
-  const { obszar: wybranyId } = await searchParams;
-  const [obszary, kategorie] = await Promise.all([pobierzObszary(), pobierzKategorie()]);
-  const wybrany = obszary.find((o) => o.id === wybranyId) ?? obszary[0];
-  const nazwaKategorii = (id: string) => kategorie.find((k) => k.id === id)?.nazwa ?? id;
-  const lacznieWyzwan = obszary.reduce((s, o) => s + o.wyzwania.length, 0);
+export default async function ChallengeMapPage({ searchParams }: PageProps<"/mapa-wyzwan">) {
+  const { obszar: selectedId } = await searchParams;
+  const [areas, categories] = await Promise.all([getChallengeAreas(), getCategories()]);
+  const selected = areas.find((o) => o.id === selectedId) ?? areas[0];
+  const categoryName = (id: string) => categories.find((k) => k.id === id)?.nazwa ?? id;
+  const totalChallenges = areas.reduce((s, o) => s + o.wyzwania.length, 0);
 
   return (
     <main id="tresc" className="bg-[#F6F7F9] text-lg leading-relaxed text-[#151A23]">
@@ -42,31 +43,31 @@ export default async function Strona({ searchParams }: PageProps<"/mapa-wyzwan">
             Mapa wyzwań społecznych
           </h1>
           <p className="max-w-[820px] text-[#4B5565]">
-            {obszary.length} obszarów i {lacznieWyzwan} wyzwań opisanych przez Dział Innowacji
+            {areas.length} obszarów i {totalChallenges} wyzwań opisanych przez Dział Innowacji
             Społecznych ROPS. Każdy problem zgłoszony w HubMI przypisujemy do obszaru i wyzwania,
             żeby było widać, czego najbardziej potrzebuje region.
           </p>
           <nav aria-label="Obszary" className="mt-2">
             <ul className="m-0 grid list-none grid-cols-1 gap-2.5 p-0 sm:grid-cols-2 lg:grid-cols-4">
-              {obszary.map((o) => {
-                const aktywny = o.id === wybrany.id;
+              {areas.map((o) => {
+                const active = o.id === selected.id;
                 return (
                   <li key={o.id}>
                     <Link
                       href={`/mapa-wyzwan?obszar=${o.id}#obszar`}
-                      aria-current={aktywny ? "true" : undefined}
-                      className={`flex min-h-[84px] flex-col gap-0.5 rounded-[10px] px-[18px] py-4 text-[#151A23] no-underline hover:border-[#1F3A8A] ${FOKUS} ${
-                        aktywny
+                      aria-current={active ? "true" : undefined}
+                      className={`flex min-h-[84px] flex-col gap-0.5 rounded-[10px] px-[18px] py-4 text-[#151A23] no-underline hover:border-[#1F3A8A] ${FOCUS} ${
+                        active
                           ? "border-2 border-[#1F3A8A] bg-[#E8EDFA]"
                           : "border border-[#D9DDE4] bg-white"
                       }`}
                     >
                       <strong>{o.nazwa}</strong>
                       <span
-                        className={`text-[15px] ${aktywny ? "text-[#1F3A8A]" : "text-[#4B5565]"}`}
+                        className={`text-[15px] ${active ? "text-[#1F3A8A]" : "text-[#4B5565]"}`}
                       >
-                        {liczbaWyzwan(o.wyzwania.length)}
-                        {aktywny ? " · wybrany" : ""}
+                        {formatChallengeCount(o.wyzwania.length)}
+                        {active ? " · wybrany" : ""}
                       </span>
                     </Link>
                   </li>
@@ -84,39 +85,39 @@ export default async function Strona({ searchParams }: PageProps<"/mapa-wyzwan">
           className="flex min-w-0 flex-[999_1_560px] scroll-mt-4 flex-col gap-3"
         >
           <h2 id="obszar-tytul" className="text-[34px] leading-tight font-bold tracking-tight">
-            {wybrany.nazwa}
+            {selected.nazwa}
           </h2>
-          {wybrany.definicja ? <p>{wybrany.definicja}</p> : null}
+          {selected.definicja ? <p>{selected.definicja}</p> : null}
 
           <h3 className="mt-3 text-[15px] font-bold text-[#4B5565]">Kluczowe wyzwania</h3>
           <ul className="m-0 list-none p-0">
-            {wybrany.wyzwania.map((w) => (
+            {selected.wyzwania.map((w) => (
               <li
                 key={w.id}
                 className="flex flex-wrap items-baseline justify-between gap-4 border-b border-[#D9DDE4] py-3.5"
               >
                 <span>{w.tekst}</span>
-                <Link href={adresInnowacji(wybrany, w.tekst)} className={LINK}>
+                <Link href={innovationsUrl(selected, w.tekst)} className={LINK}>
                   Innowacje<span className="sr-only"> dla wyzwania: {w.tekst}</span>
                 </Link>
               </li>
             ))}
           </ul>
 
-          {wybrany.dane.length > 0 ? (
+          {selected.dane.length > 0 ? (
             <>
               <h3 className="mt-6 text-[15px] font-bold text-[#4B5565]">Co mówią dane</h3>
               <ul className="m-0 list-disc pl-[22px]">
-                {wybrany.dane.map((d) => (
+                {selected.dane.map((d) => (
                   <li key={d}>{d}</li>
                 ))}
               </ul>
             </>
           ) : null}
-          {wybrany.zrodlo_url ? (
+          {selected.zrodlo_url ? (
             <p className="mt-4 text-base">
               <a
-                href={wybrany.zrodlo_url}
+                href={selected.zrodlo_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={LINK}
@@ -129,7 +130,7 @@ export default async function Strona({ searchParams }: PageProps<"/mapa-wyzwan">
         </section>
 
         <div className="flex max-w-[380px] flex-[1_1_300px] flex-col gap-5 self-start">
-          {wybrany.persony.map((p) => (
+          {selected.persony.map((p) => (
             <aside
               key={p.id}
               aria-labelledby={`${p.id}-imie`}
@@ -154,7 +155,7 @@ export default async function Strona({ searchParams }: PageProps<"/mapa-wyzwan">
               ) : null}
               <Link
                 href={`/dopasuj?opis=${encodeURIComponent(p.opis ?? "")}`}
-                className={`mt-1.5 inline-flex min-h-[50px] items-center justify-center rounded-[10px] border border-[#1F3A8A] bg-white px-[22px] text-[17px] font-bold text-[#1F3A8A] no-underline ${FOKUS}`}
+                className={`mt-1.5 inline-flex min-h-[50px] items-center justify-center rounded-[10px] border border-[#1F3A8A] bg-white px-[22px] text-[17px] font-bold text-[#1F3A8A] no-underline ${FOCUS}`}
               >
                 Dopasuj dla: {p.imie}
               </Link>
@@ -194,7 +195,7 @@ export default async function Strona({ searchParams }: PageProps<"/mapa-wyzwan">
               </tr>
             </thead>
             <tbody>
-              {obszary.map((o) => (
+              {areas.map((o) => (
                 <tr key={o.id} className="border-b border-[#D9DDE4] last:border-b-0">
                   <th scope="row" className="px-4 py-3 font-normal">
                     <Link href={`/mapa-wyzwan?obszar=${o.id}#obszar`} className={LINK}>
@@ -204,7 +205,7 @@ export default async function Strona({ searchParams }: PageProps<"/mapa-wyzwan">
                   <td className="px-4 py-3">{o.wyzwania.length}</td>
                   <td className="px-4 py-3">{o.persony.map((p) => p.imie).join(", ")}</td>
                   <td className="px-4 py-3">
-                    {o.kategorie_biblioteki.map(nazwaKategorii).join("; ")}
+                    {o.kategorie_biblioteki.map(categoryName).join("; ")}
                   </td>
                 </tr>
               ))}

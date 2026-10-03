@@ -6,7 +6,7 @@ Zasada: **każde zadanie zaczynamy od `git pull`** (na gałęzi: `git pull` na m
 ## Moje foldery (CLAUDE.md)
 `app/biblioteka/`, `app/mapa-wyzwan/`, `app/zasoby/`, `app/api/zasoby/`, `scripts/seed/`, `supabase/seed.sql`,
 `docs/`, `pitch/`, migracja `supabase/migrations/<YYYYMMDDHHMM>_zasobnik_tabele.sql`,
-`lib/contracts/zasobnik.ts` + `lib/contracts/fixtures/zasobnik.json`.
+`lib/contracts/knowledge-base.ts` + `lib/contracts/fixtures/knowledge-base.json`.
 
 ## Co wiemy o danych (sprawdzone)
 | Plik | Zawartość | Uwagi do seedu |
@@ -36,7 +36,7 @@ Zasada: **każde zadanie zaczynamy od `git pull`** (na gałęzi: `git pull` na m
 ## Etap 1 – po szkielecie P4 (ok. 16:00–19:00)
 ✅ Zrobione: `/biblioteka`, `/biblioteka/[id]`, `PATCH /api/zasoby/innowacje/[id]`, `/mapa-wyzwan`, `/zasoby`; vitest i testy (`pnpm test`).
 Strony działają też bez bazy: bez zmiennych Supabase dane idą wprost z `data/rops`.
-1. ✅ `lib/contracts/zasobnik.ts` + `lib/contracts/fixtures/zasobnik.json` (generuje `npx tsx scripts/seed/build_fixtures.ts`), sprawdzone zod i `tsc --strict`.
+1. ✅ `lib/contracts/knowledge-base.ts` + `lib/contracts/fixtures/knowledge-base.json` (generuje `npx tsx scripts/seed/build_fixtures.ts`), sprawdzone zod i `tsc --strict`.
 2. `/biblioteka`: filtry (kategoria, grupa docelowa, program/etykieta, „Sprawdzona przez ROPS”), wyszukiwanie po nazwie
    i słowach kluczowych, licznik wyników, filtry w URL (searchParams, Server Component), dopisek „opis niepełny” dla rekordów spoza.
 3. `/biblioteka/[id]`: opis, problem, dla kogo, kto może wdrożyć, czy działa, materiały, „Zobacz pełną kartę w ROPS”,
