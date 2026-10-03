@@ -36,6 +36,23 @@ describe("dropdown panels", () => {
   });
 });
 
+describe("MobileMenu", () => {
+  const html = renderToStaticMarkup(<MobileMenu user={user} items={items} accountItems={items} />);
+
+  it("keeps both icons in the slot so the swap cross-fades both ways", () => {
+    const icons = html.match(/<svg[^>]*>/g) ?? [];
+    expect(icons).toHaveLength(2);
+    // Closed: the menu icon shows, the close icon rests at the swap's starting point
+    expect(icons[0]).not.toContain("opacity-0");
+    expect(icons[1]).toContain("scale-25 opacity-0 blur-[4px]");
+  });
+
+  it("slides its full-width panel instead of scaling it", () => {
+    const panel = html.match(/<div[^>]*class="t-dropdown [^"]*"[^>]*>/)?.[0] ?? "";
+    expect(panel).toContain('data-motion="slide"');
+  });
+});
+
 describe("SiteNav", () => {
   const html = renderToStaticMarkup(<SiteNav items={items} />);
 

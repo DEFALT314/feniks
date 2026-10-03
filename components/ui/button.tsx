@@ -2,11 +2,17 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+// Press feedback from the mockups (`.btn:active` scales to .985 in design/makiety/System.dc.html).
+// Shared by every pressable control that isn't a <Button> (header triggers, rating tiles), so they
+// all respond the same way. Tailwind 4 animates the `scale` property, not `transform`, so the
+// control's `transition-[…]` must list `scale`.
+const pressClass = "active:scale-[0.98] motion-reduce:active:scale-100";
+
 // Buttons from design/makiety/System.dc.html. Use `buttonVariants()` to style a <Link> as a button.
 // Each variant sets its own border color: `cn` can't merge our custom theme colors, so don't override
 // colors through className; add a variant instead.
 const buttonVariants = cva(
-  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[10px] border font-bold whitespace-nowrap no-underline transition-[background-color,border-color,color,box-shadow,transform] select-none active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100 motion-reduce:transition-colors motion-reduce:active:scale-100 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+  `inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[10px] border font-bold whitespace-nowrap no-underline transition-[background-color,border-color,color,box-shadow,scale] select-none ${pressClass} disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100 motion-reduce:transition-colors [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5`,
   {
     variants: {
       variant: {
@@ -45,4 +51,4 @@ function Button({ className, variant, size, ...props }: ButtonProps) {
   );
 }
 
-export { Button, buttonVariants, type ButtonProps };
+export { Button, buttonVariants, pressClass, type ButtonProps };

@@ -36,7 +36,12 @@ function Steps({ label, steps, currentId, className }: StepsProps) {
                 )}
               >
                 <span>{step.label}</span>
-                <span className={cn("text-[0.9375rem]", !current && "text-muted-foreground")}>
+                <span
+                  className={cn(
+                    "text-[0.9375rem] tabular-nums",
+                    !current && "text-muted-foreground",
+                  )}
+                >
                   <span className="sr-only">wypełniono </span>
                   {step.done}/{step.total}
                 </span>
