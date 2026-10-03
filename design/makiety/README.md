@@ -31,8 +31,11 @@ Next (body text). The data in the mockups is sample data: the app uses real data
 labeled "Dane demonstracyjne" (demo data). Mockup changes: P2 edits the Claude Design artifact "HubMI.pl – makiety",
 then exports it here.
 
-Motion: `ruch.js` (GSAP 3.13 + ScrollTrigger from a CDN) plays the motion on every screen based on `data-ruch`
+Motion: `ruch.js` (GSAP 3.13 + ScrollTrigger from a CDN) plays the motion on every mockup based on `data-ruch`
 attributes (`wejscie`, `pokaz`, `licznik`, `slupki`, `postep`, `zakresl`, `tok`, `wybor`, `odswiez`; each one is
-described at the top of the file). Hover, press and focus states stay in CSS. In the app, the same sequences go into
-components through `useGSAP()` from `@gsap/react` (scope = the container ref, `gsap.matchMedia()` for
-`prefers-reduced-motion`). The `/match` moment is a single timeline that replays when the user clicks "Dopasuj".
+described at the top of the file). Hover, press and focus states stay in CSS. GSAP's license is not MIT, Apache, BSD
+or ISC (rule 9 in CLAUDE.md), so the app does not use it: `components/ui/motion.tsx` plays the same attributes with
+the same timings through the browser's Web Animations API. In a page, put the same `data-ruch` attribute on the same
+element as in the mockup; nothing else is needed (bars for `slupki` get `data-ruch-bar`, the list for `odswiez` is
+named by `data-ruch-lista`). `prefers-reduced-motion` turns all of it off. `tok` (the `/match` moment) is not
+supported yet.

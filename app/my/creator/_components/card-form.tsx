@@ -72,7 +72,10 @@ export function IdeaCard({
   return (
     <main id="main-content" className="flex-1" onClickCapture={saveBeforeLeaving}>
       <div className="border-border border-b bg-white">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-2.5 px-4 pt-8 pb-7 sm:px-10">
+        <div
+          data-ruch="wejscie"
+          className="mx-auto flex max-w-[1200px] flex-col gap-2.5 px-4 pt-8 pb-7 sm:px-10"
+        >
           <Link href={`/my/creator/${idea.id}`} className="text-base">
             ← Wróć do kreatora
           </Link>
@@ -85,6 +88,7 @@ export function IdeaCard({
 
       <div className="mx-auto flex max-w-[1200px] flex-wrap gap-12 px-4 pt-8 pb-16 sm:px-10">
         <section
+          data-ruch="pokaz"
           aria-label="Fiszka"
           className="flex max-w-[700px] min-w-0 flex-[999_1_520px] flex-col gap-5"
         >
@@ -155,7 +159,7 @@ export function IdeaCard({
           <ApplicationDraft calls={calls} draft={toIdeaDraft(card)} />
         </section>
 
-        <aside className="flex max-w-[380px] flex-[1_1_320px] flex-col gap-5">
+        <aside data-ruch="pokaz" className="flex max-w-[380px] flex-[1_1_320px] flex-col gap-5">
           <SimilarInnovation description={matchDescription(card)} />
           <SubmitPanel
             ideaId={idea.id}

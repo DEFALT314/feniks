@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Atkinson_Hyperlegible_Next, Bricolage_Grotesque } from "next/font/google";
 import { SiteFooter } from "@/components/ui/site-footer";
 import { SiteHeader } from "@/components/ui/site-header";
+import { Motion } from "@/components/ui/motion";
+import { MOTION_WAIT_SCRIPT } from "@/components/ui/motion-core";
 import { A11Y_PLUS_SCRIPT } from "@/components/ui/text-size-toggle";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { getCurrentUser, headerName } from "@/lib/auth";
@@ -42,6 +44,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: A11Y_PLUS_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: MOTION_WAIT_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col">
         <a
@@ -60,6 +63,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         />
         <div className="flex flex-1 flex-col">{children}</div>
         <SiteFooter />
+        <Motion />
       </body>
     </html>
   );
