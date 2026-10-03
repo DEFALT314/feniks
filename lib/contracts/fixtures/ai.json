@@ -51,16 +51,6 @@
       }
     ]
   },
-  "image_request": {
-    "idea": {
-      "title": "Sąsiedzki dyżur po wypisie",
-      "description": "Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala."
-    }
-  },
-  "image_response": {
-    "image_url": "https://example.supabase.co/storage/v1/object/public/ai-obrazy/demo/sasiedzki-dyzur.png",
-    "alt_text": "Ilustracja: wolontariuszka przynosi zakupy starszemu mężczyźnie, który siedzi w fotelu w swoim mieszkaniu."
-  },
   "call_list": {
     "calls": [
       {
