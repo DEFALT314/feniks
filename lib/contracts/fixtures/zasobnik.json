@@ -1,0 +1,1063 @@
+{
+  "kategorie": [
+    {
+      "id": "dla-seniorow",
+      "nazwa": "Dla seniorów",
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-seniorow"
+    },
+    {
+      "id": "dla-dzieci-mlodziezy-i-rodziny",
+      "nazwa": "Dla dzieci, młodzieży i rodziny",
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-dzieci-mlodziezy-i-rodziny"
+    },
+    {
+      "id": "dla-osob-o-ograniczonej-mobilnosci",
+      "nazwa": "Dla osób o ograniczonej mobilności",
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-osob-o-ograniczonej-mobilnosci"
+    },
+    {
+      "id": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+      "nazwa": "Dla osób z niepełnosprawnością sensoryczną",
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-osob-z-niepelnosprawnoscia-sensoryczna"
+    },
+    {
+      "id": "dla-zdrowia-i-medycyny",
+      "nazwa": "Dla zdrowia i medycyny",
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-zdrowia-i-medycyny"
+    },
+    {
+      "id": "dla-rynku-pracy",
+      "nazwa": "Dla rynku pracy",
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-rynku-pracy"
+    },
+    {
+      "id": "dla-cudzoziemcow",
+      "nazwa": "Dla cudzoziemców",
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-cudzoziemcow"
+    },
+    {
+      "id": "dla-osob-w-kryzysie-bezdomnosci",
+      "nazwa": "Dla osób w kryzysie bezdomności",
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-osob-w-kryzysie-bezdomnosci"
+    },
+    {
+      "id": "dla-osob-z-niepelnosprawnoscia-intelektualna",
+      "nazwa": "Dla osób z niepełnosprawnością intelektualną",
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-osob-z-niepelnosprawnoscia-intelektualna"
+    },
+    {
+      "id": "inne",
+      "nazwa": "Inne",
+      "url": null
+    }
+  ],
+  "lista_innowacji": {
+    "wyniki": [
+      {
+        "id": "bawita",
+        "nazwa": "BaWita",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": "IWS",
+        "sprawdzona_przez_rops": true,
+        "opis_krotki": "Drewniana tablica manipulacyjna z siedmioma ruchomymi elementami, służąca do ćwiczenia pamięci, sprawności rąk i planowania dnia u osób z zaburzeniami otępiennymi.",
+        "dla_kogo": [
+          "osoby starsze z demencją we wczesnym stadium",
+          "osoby po udarze lub wylewie wymagające rehabilitacji pamięci"
+        ],
+        "slowa_kluczowe": [
+          "demencja",
+          "otępienie",
+          "alzheimer",
+          "pamięć",
+          "rehabilitacja",
+          "udar",
+          "senior",
+          "terapia zajęciowa",
+          "zaburzenia pamięci",
+          "ćwiczenia manualne",
+          "choroba otępienna"
+        ],
+        "spoza_biblioteki": false,
+        "opis_niepelny": false,
+        "ma_film": true
+      },
+      {
+        "id": "terapeuta-przestrzeni",
+        "nazwa": "Terapeuta przestrzeni",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": null,
+        "sprawdzona_przez_rops": false,
+        "opis_krotki": "Usługa dostosowania mieszkania seniora do jego ograniczeń niskim kosztem, połączona z treningiem poruszania się w nowej przestrzeni i wsparciem psychologicznym dla seniora i bliskich.",
+        "dla_kogo": [
+          "seniorzy mieszkający samodzielnie lub z rodziną",
+          "osoby starsze chcące zostać w swoim domu"
+        ],
+        "slowa_kluczowe": [
+          "adaptacja mieszkania",
+          "dostosowanie mieszkania",
+          "samodzielność",
+          "senior",
+          "ergonomia",
+          "upadki",
+          "bariery w domu",
+          "pozostanie w domu",
+          "niepełnosprawność ruchowa",
+          "opieka domowa",
+          "likwidacja progów"
+        ],
+        "spoza_biblioteki": false,
+        "opis_niepelny": false,
+        "ma_film": false
+      },
+      {
+        "id": "straznik",
+        "nazwa": "Strażnik",
+        "kategoria_id": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+        "etykieta": "Inkubator Dostępności",
+        "sprawdzona_przez_rops": true,
+        "opis_krotki": "Aplikacja na telefon rozpoznająca dźwięk alarmów (np. czujnik czadu, alarm pożarowy) i ostrzegająca osobę niesłyszącą wibracją, latarką lub telefonem pod wskazany numer, z historią zdarzeń.",
+        "dla_kogo": [
+          "osoby głuche",
+          "osoby niedosłyszące",
+          "osoby głuchoniewidome"
+        ],
+        "slowa_kluczowe": [
+          "głuchota",
+          "niesłyszący",
+          "niedosłyszący",
+          "alarm pożarowy",
+          "czujnik czadu",
+          "tlenek węgla",
+          "bezpieczeństwo",
+          "aplikacja",
+          "wibracje",
+          "powiadomienia",
+          "hotel",
+          "bezpieczeństwo w domu"
+        ],
+        "spoza_biblioteki": false,
+        "opis_niepelny": false,
+        "ma_film": true
+      },
+      {
+        "id": "innowacyjna-terapia-zajeciowa-w-domu-osoby-starszej",
+        "nazwa": "Innowacyjna terapia zajęciowa w domu osoby starszej",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": "MIIS",
+        "sprawdzona_przez_rops": false,
+        "opis_krotki": "Usługa terapii zajęciowej w domu seniora: ergoterapia, biblioterapia, muzykoterapia, hortiterapia, terapia kulinarna, trening pamięci oraz warsztaty zapobiegania upadkom.",
+        "dla_kogo": [
+          "osoby starsze o ograniczonej sprawności, które nie dotrą do placówki",
+          "seniorzy zagrożeni izolacją społeczną"
+        ],
+        "slowa_kluczowe": [
+          "terapia zajęciowa",
+          "senior",
+          "w domu",
+          "samotność",
+          "izolacja",
+          "ergoterapia",
+          "muzykoterapia",
+          "trening pamięci",
+          "upadki",
+          "aktywizacja seniorów",
+          "osoba leżąca",
+          "opieka domowa"
+        ],
+        "spoza_biblioteki": true,
+        "opis_niepelny": false,
+        "ma_film": false
+      },
+      {
+        "id": "agrotreningi-metody-pracy-z-osobami-starszymi-na-obszarach-wiejskich",
+        "nazwa": "Agrotreningi – metody pracy z osobami starszymi na obszarach wiejskich",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": "MIIS",
+        "sprawdzona_przez_rops": false,
+        "opis_krotki": "Zestaw metod pracy z osobami starszymi mieszkającymi na wsi, przetestowany w MIIS. Dostępny spis podaje tylko tytuł, typ (usługa) i autora; szczegółów metod brak.",
+        "dla_kogo": [
+          "osoby starsze mieszkające na obszarach wiejskich"
+        ],
+        "slowa_kluczowe": [
+          "senior",
+          "wieś",
+          "obszary wiejskie",
+          "aktywizacja seniorów",
+          "metody pracy",
+          "trening",
+          "praca z seniorami",
+          "gospodarstwo",
+          "agroterapia",
+          "senior na wsi"
+        ],
+        "spoza_biblioteki": true,
+        "opis_niepelny": true,
+        "ma_film": false
+      }
+    ],
+    "liczba": 5,
+    "dostepne_filtry": {
+      "kategorie": [
+        {
+          "id": "dla-seniorow",
+          "nazwa": "Dla seniorów",
+          "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-seniorow"
+        },
+        {
+          "id": "dla-dzieci-mlodziezy-i-rodziny",
+          "nazwa": "Dla dzieci, młodzieży i rodziny",
+          "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-dzieci-mlodziezy-i-rodziny"
+        },
+        {
+          "id": "dla-osob-o-ograniczonej-mobilnosci",
+          "nazwa": "Dla osób o ograniczonej mobilności",
+          "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-osob-o-ograniczonej-mobilnosci"
+        },
+        {
+          "id": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+          "nazwa": "Dla osób z niepełnosprawnością sensoryczną",
+          "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-osob-z-niepelnosprawnoscia-sensoryczna"
+        },
+        {
+          "id": "dla-zdrowia-i-medycyny",
+          "nazwa": "Dla zdrowia i medycyny",
+          "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-zdrowia-i-medycyny"
+        },
+        {
+          "id": "dla-rynku-pracy",
+          "nazwa": "Dla rynku pracy",
+          "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-rynku-pracy"
+        },
+        {
+          "id": "dla-cudzoziemcow",
+          "nazwa": "Dla cudzoziemców",
+          "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-cudzoziemcow"
+        },
+        {
+          "id": "dla-osob-w-kryzysie-bezdomnosci",
+          "nazwa": "Dla osób w kryzysie bezdomności",
+          "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-osob-w-kryzysie-bezdomnosci"
+        },
+        {
+          "id": "dla-osob-z-niepelnosprawnoscia-intelektualna",
+          "nazwa": "Dla osób z niepełnosprawnością intelektualną",
+          "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-osob-z-niepelnosprawnoscia-intelektualna"
+        },
+        {
+          "id": "inne",
+          "nazwa": "Inne",
+          "url": null
+        }
+      ],
+      "grupy": [
+        "osoby głuche",
+        "osoby głuchoniewidome",
+        "osoby niedosłyszące",
+        "osoby po udarze lub wylewie wymagające rehabilitacji pamięci",
+        "osoby starsze chcące zostać w swoim domu",
+        "osoby starsze mieszkające na obszarach wiejskich",
+        "osoby starsze o ograniczonej sprawności, które nie dotrą do placówki",
+        "osoby starsze z demencją we wczesnym stadium",
+        "seniorzy mieszkający samodzielnie lub z rodziną",
+        "seniorzy zagrożeni izolacją społeczną"
+      ],
+      "etykiety": [
+        "IWS",
+        "Inkubator Dostępności",
+        "MIIS",
+        "MIWS"
+      ]
+    }
+  },
+  "innowacja": {
+    "id": "bawita",
+    "nazwa": "BaWita",
+    "kategoria_id": "dla-seniorow",
+    "etykieta": "IWS",
+    "sprawdzona_przez_rops": true,
+    "opis_krotki": "Drewniana tablica manipulacyjna z siedmioma ruchomymi elementami, służąca do ćwiczenia pamięci, sprawności rąk i planowania dnia u osób z zaburzeniami otępiennymi.",
+    "dla_kogo": [
+      "osoby starsze z demencją we wczesnym stadium",
+      "osoby po udarze lub wylewie wymagające rehabilitacji pamięci"
+    ],
+    "slowa_kluczowe": [
+      "demencja",
+      "otępienie",
+      "alzheimer",
+      "pamięć",
+      "rehabilitacja",
+      "udar",
+      "senior",
+      "terapia zajęciowa",
+      "zaburzenia pamięci",
+      "ćwiczenia manualne",
+      "choroba otępienna"
+    ],
+    "spoza_biblioteki": false,
+    "opis_niepelny": false,
+    "ma_film": true,
+    "problem": "Coraz więcej seniorów z otępieniem, a mało narzędzi rehabilitacyjnych przeznaczonych dla dorosłych.",
+    "kto_moze_wdrozyc": [
+      "placówki wsparcia dziennego seniorów",
+      "DPS",
+      "miejskie dzienne domy pomocy społecznej",
+      "warsztaty terapii zajęciowej",
+      "osoby indywidualne"
+    ],
+    "czy_dziala": "Test potwierdził poprawę pamięci proceduralnej, małej motoryki, mowy oraz funkcjonowania społecznego.",
+    "materialy": {
+      "opis_pdf": "https://rops.krakow.pl/mpliki/IS/BIBLIOTEKA_INNOWACJI_SPOECZNYCH/ROPS_Folder_IN_BaWita_v15_www.pdf",
+      "film": "https://www.youtube.com/watch?v=o7UhDlebLJo",
+      "pakiet_zip": "https://rops.krakow.pl/pliki/IS/bibloteka/bawita.zip",
+      "zasady_wykorzystania": null,
+      "inne": []
+    },
+    "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-seniorow,bawita",
+    "do_matchmakingu": true,
+    "program": null,
+    "zrodlo": null,
+    "pewnosc": null,
+    "opublikowana": true,
+    "updated_at": "2026-10-03T12:00:00.000Z"
+  },
+  "innowacje": [
+    {
+      "id": "bawita",
+      "nazwa": "BaWita",
+      "kategoria_id": "dla-seniorow",
+      "etykieta": "IWS",
+      "sprawdzona_przez_rops": true,
+      "opis_krotki": "Drewniana tablica manipulacyjna z siedmioma ruchomymi elementami, służąca do ćwiczenia pamięci, sprawności rąk i planowania dnia u osób z zaburzeniami otępiennymi.",
+      "dla_kogo": [
+        "osoby starsze z demencją we wczesnym stadium",
+        "osoby po udarze lub wylewie wymagające rehabilitacji pamięci"
+      ],
+      "slowa_kluczowe": [
+        "demencja",
+        "otępienie",
+        "alzheimer",
+        "pamięć",
+        "rehabilitacja",
+        "udar",
+        "senior",
+        "terapia zajęciowa",
+        "zaburzenia pamięci",
+        "ćwiczenia manualne",
+        "choroba otępienna"
+      ],
+      "spoza_biblioteki": false,
+      "opis_niepelny": false,
+      "ma_film": true,
+      "problem": "Coraz więcej seniorów z otępieniem, a mało narzędzi rehabilitacyjnych przeznaczonych dla dorosłych.",
+      "kto_moze_wdrozyc": [
+        "placówki wsparcia dziennego seniorów",
+        "DPS",
+        "miejskie dzienne domy pomocy społecznej",
+        "warsztaty terapii zajęciowej",
+        "osoby indywidualne"
+      ],
+      "czy_dziala": "Test potwierdził poprawę pamięci proceduralnej, małej motoryki, mowy oraz funkcjonowania społecznego.",
+      "materialy": {
+        "opis_pdf": "https://rops.krakow.pl/mpliki/IS/BIBLIOTEKA_INNOWACJI_SPOECZNYCH/ROPS_Folder_IN_BaWita_v15_www.pdf",
+        "film": "https://www.youtube.com/watch?v=o7UhDlebLJo",
+        "pakiet_zip": "https://rops.krakow.pl/pliki/IS/bibloteka/bawita.zip",
+        "zasady_wykorzystania": null,
+        "inne": []
+      },
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-seniorow,bawita",
+      "do_matchmakingu": true,
+      "program": null,
+      "zrodlo": null,
+      "pewnosc": null,
+      "opublikowana": true,
+      "updated_at": "2026-10-03T12:00:00.000Z"
+    },
+    {
+      "id": "terapeuta-przestrzeni",
+      "nazwa": "Terapeuta przestrzeni",
+      "kategoria_id": "dla-seniorow",
+      "etykieta": null,
+      "sprawdzona_przez_rops": false,
+      "opis_krotki": "Usługa dostosowania mieszkania seniora do jego ograniczeń niskim kosztem, połączona z treningiem poruszania się w nowej przestrzeni i wsparciem psychologicznym dla seniora i bliskich.",
+      "dla_kogo": [
+        "seniorzy mieszkający samodzielnie lub z rodziną",
+        "osoby starsze chcące zostać w swoim domu"
+      ],
+      "slowa_kluczowe": [
+        "adaptacja mieszkania",
+        "dostosowanie mieszkania",
+        "samodzielność",
+        "senior",
+        "ergonomia",
+        "upadki",
+        "bariery w domu",
+        "pozostanie w domu",
+        "niepełnosprawność ruchowa",
+        "opieka domowa",
+        "likwidacja progów"
+      ],
+      "spoza_biblioteki": false,
+      "opis_niepelny": false,
+      "ma_film": false,
+      "problem": "Senior czuje, że nie radzi sobie sam w domu, co obniża jakość życia i zwiększa ryzyko trafienia do placówki całodobowej.",
+      "kto_moze_wdrozyc": [
+        "OPS",
+        "miejskie dzienne domy pomocy społecznej",
+        "DPS",
+        "centra aktywności seniorów",
+        "NGO"
+      ],
+      "czy_dziala": "W teście wzrosła samodzielność seniorów, zwłaszcza samotnych; zmiany były tanie, ale potrzebne jest wsparcie psychologiczne.",
+      "materialy": {
+        "opis_pdf": null,
+        "film": null,
+        "pakiet_zip": "https://rops.krakow.pl/pliki/IS/bibloteka/terapeutaprzestrzeni.zip",
+        "zasady_wykorzystania": "https://rops.krakow.pl/mpliki/IS/BIBLIOTEKA_INNOWACJI_SPOECZNYCH/Zasady_wykorzystania_innowacji_MIIS.pdf",
+        "inne": []
+      },
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-seniorow,terapeuta-przestrzeni",
+      "do_matchmakingu": true,
+      "program": null,
+      "zrodlo": null,
+      "pewnosc": null,
+      "opublikowana": true,
+      "updated_at": "2026-10-03T12:00:00.000Z"
+    },
+    {
+      "id": "straznik",
+      "nazwa": "Strażnik",
+      "kategoria_id": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+      "etykieta": "Inkubator Dostępności",
+      "sprawdzona_przez_rops": true,
+      "opis_krotki": "Aplikacja na telefon rozpoznająca dźwięk alarmów (np. czujnik czadu, alarm pożarowy) i ostrzegająca osobę niesłyszącą wibracją, latarką lub telefonem pod wskazany numer, z historią zdarzeń.",
+      "dla_kogo": [
+        "osoby głuche",
+        "osoby niedosłyszące",
+        "osoby głuchoniewidome"
+      ],
+      "slowa_kluczowe": [
+        "głuchota",
+        "niesłyszący",
+        "niedosłyszący",
+        "alarm pożarowy",
+        "czujnik czadu",
+        "tlenek węgla",
+        "bezpieczeństwo",
+        "aplikacja",
+        "wibracje",
+        "powiadomienia",
+        "hotel",
+        "bezpieczeństwo w domu"
+      ],
+      "spoza_biblioteki": false,
+      "opis_niepelny": false,
+      "ma_film": true,
+      "problem": "Osoby głuche i niedosłyszące nie słyszą sygnałów alarmowych i są narażone na niebezpieczeństwo.",
+      "kto_moze_wdrozyc": [
+        "hotele",
+        "pensjonaty",
+        "akademiki",
+        "osoby prywatne"
+      ],
+      "czy_dziala": "Aplikacja skutecznie wykrywa sygnał alarmowy i powiadamia użytkownika w dostępny dla niego sposób, także budząc go.",
+      "materialy": {
+        "opis_pdf": "https://rops.krakow.pl/mpliki/IS/BIBLIOTEKA_INNOWACJI_SPOECZNYCH/Straznik.pdf",
+        "film": "https://www.youtube.com/watch?v=zYVr0zMAqWE",
+        "pakiet_zip": "https://rops.krakow.pl/pliki/IS/bibloteka/straznik.zip",
+        "zasady_wykorzystania": null,
+        "inne": []
+      },
+      "url": "https://rops.krakow.pl/innowacje-spoleczne/biblioteka-innowacji-spolecznych/dla-osob-z-niepelnosprawnoscia-sensoryczna,straznik",
+      "do_matchmakingu": true,
+      "program": null,
+      "zrodlo": null,
+      "pewnosc": null,
+      "opublikowana": true,
+      "updated_at": "2026-10-03T12:00:00.000Z"
+    },
+    {
+      "id": "innowacyjna-terapia-zajeciowa-w-domu-osoby-starszej",
+      "nazwa": "Innowacyjna terapia zajęciowa w domu osoby starszej",
+      "kategoria_id": "dla-seniorow",
+      "etykieta": "MIIS",
+      "sprawdzona_przez_rops": false,
+      "opis_krotki": "Usługa terapii zajęciowej w domu seniora: ergoterapia, biblioterapia, muzykoterapia, hortiterapia, terapia kulinarna, trening pamięci oraz warsztaty zapobiegania upadkom.",
+      "dla_kogo": [
+        "osoby starsze o ograniczonej sprawności, które nie dotrą do placówki",
+        "seniorzy zagrożeni izolacją społeczną"
+      ],
+      "slowa_kluczowe": [
+        "terapia zajęciowa",
+        "senior",
+        "w domu",
+        "samotność",
+        "izolacja",
+        "ergoterapia",
+        "muzykoterapia",
+        "trening pamięci",
+        "upadki",
+        "aktywizacja seniorów",
+        "osoba leżąca",
+        "opieka domowa"
+      ],
+      "spoza_biblioteki": true,
+      "opis_niepelny": false,
+      "ma_film": false,
+      "problem": "Seniorzy, którzy nie wychodzą z domu, nie mają dostępu do zajęć aktywizujących; zostaje im opieka lub placówka.",
+      "kto_moze_wdrozyc": [
+        "ośrodki pomocy społecznej",
+        "organizacje pozarządowe"
+      ],
+      "czy_dziala": "Półroczny test pokazał poprawę samodzielności i samopoczucia uczestników oraz mniejszą potrzebę opieki instytucjonalnej.",
+      "materialy": {
+        "opis_pdf": "https://cdn.innowacjespoleczne.pl/Attachments/i002/123/MODEL%20Innowacyjna%20terapia%20zaj%C4%99ciowa%20w%20domu%20osoby%20starszej.pdf",
+        "film": null,
+        "pakiet_zip": null,
+        "zasady_wykorzystania": null,
+        "inne": []
+      },
+      "url": "https://cdn.innowacjespoleczne.pl/Attachments/i002/123/MODEL%20Innowacyjna%20terapia%20zaj%C4%99ciowa%20w%20domu%20osoby%20starszej.pdf",
+      "do_matchmakingu": true,
+      "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+      "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 oraz model innowacji na innowacjespoleczne.pl (licencja CC BY 4.0)",
+      "pewnosc": "pewne",
+      "opublikowana": true,
+      "updated_at": "2026-10-03T12:00:00.000Z"
+    },
+    {
+      "id": "agrotreningi-metody-pracy-z-osobami-starszymi-na-obszarach-wiejskich",
+      "nazwa": "Agrotreningi – metody pracy z osobami starszymi na obszarach wiejskich",
+      "kategoria_id": "dla-seniorow",
+      "etykieta": "MIIS",
+      "sprawdzona_przez_rops": false,
+      "opis_krotki": "Zestaw metod pracy z osobami starszymi mieszkającymi na wsi, przetestowany w MIIS. Dostępny spis podaje tylko tytuł, typ (usługa) i autora; szczegółów metod brak.",
+      "dla_kogo": [
+        "osoby starsze mieszkające na obszarach wiejskich"
+      ],
+      "slowa_kluczowe": [
+        "senior",
+        "wieś",
+        "obszary wiejskie",
+        "aktywizacja seniorów",
+        "metody pracy",
+        "trening",
+        "praca z seniorami",
+        "gospodarstwo",
+        "agroterapia",
+        "senior na wsi"
+      ],
+      "spoza_biblioteki": true,
+      "opis_niepelny": true,
+      "ma_film": false,
+      "problem": "Seniorzy na wsi mają mniej możliwości aktywizacji i wsparcia niż w mieście (wniosek z tytułu innowacji).",
+      "kto_moze_wdrozyc": [],
+      "czy_dziala": null,
+      "materialy": {
+        "opis_pdf": null,
+        "film": null,
+        "pakiet_zip": null,
+        "zasady_wykorzystania": null,
+        "inne": []
+      },
+      "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+      "do_matchmakingu": false,
+      "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+      "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł i autor; brak opisu)",
+      "pewnosc": "prawdopodobne",
+      "opublikowana": true,
+      "updated_at": "2026-10-03T12:00:00.000Z"
+    }
+  ],
+  "obszary": [
+    {
+      "id": "rodzina-piecza",
+      "nr": 1,
+      "nazwa": "Rodzina i piecza zastępcza",
+      "definicja": "Wsparcie rodzin, które mają trudność z opieką i wychowaniem dzieci, oraz piecza zastępcza, gdy dziecko nie może zostać z rodzicami biologicznymi.",
+      "dane": [
+        "W 2023 r. liczba dzieci w pieczy zastępczej wzrosła o 3,5% względem 2022 r. (GUS).",
+        "Za mało rodzin zastępczych spowalnia deinstytucjonalizację.",
+        "Do placówek trafiają też dzieci poniżej 10 lat, a placówki bywają przepełnione.",
+        "Duża część dzieci w pieczy to dzieci starsze, z licznego rodzeństwa lub z niepełnosprawnością (NIK 2022)."
+      ],
+      "slowa_kluczowe": [
+        "piecza zastępcza",
+        "rodzina zastępcza",
+        "adopcja",
+        "rodzeństwo",
+        "dom dziecka",
+        "placówka opiekuńczo-wychowawcza",
+        "dysfunkcyjna rodzina",
+        "kompetencje rodzicielskie",
+        "deinstytucjonalizacja",
+        "PCPR"
+      ],
+      "kategorie_biblioteki": [
+        "dla-dzieci-mlodziezy-i-rodziny"
+      ],
+      "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
+    },
+    {
+      "id": "bezdomnosc",
+      "nr": 2,
+      "nazwa": "Bezdomność",
+      "definicja": "Najostrzejsza forma wykluczenia: brak własnego schronienia spełniającego minimalne warunki. Zwykle ma wiele przyczyn naraz: ubóstwo, bezrobocie, uzależnienia, przemoc, eksmisje, rozpad rodziny, kryzysy psychiczne.",
+      "dane": [
+        "Rośnie liczba młodych osób w kryzysie bezdomności (0–25 lat).",
+        "Młodzi bezdomni są mało widoczni i trudni do policzenia.",
+        "Niepełnoletność utrudnia instytucjonalne wsparcie nastolatków.",
+        "Luka we wsparciu po opuszczeniu placówki opiekuńczo-wychowawczej."
+      ],
+      "slowa_kluczowe": [
+        "bezdomność",
+        "kryzys bezdomności",
+        "noclegownia",
+        "schronisko",
+        "młodzi bezdomni",
+        "usamodzielnienie",
+        "mieszkanie wspierane",
+        "uzależnienie",
+        "eksmisja",
+        "streetworking"
+      ],
+      "kategorie_biblioteki": [
+        "dla-osob-w-kryzysie-bezdomnosci"
+      ],
+      "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
+    },
+    {
+      "id": "niepelnosprawnosc",
+      "nr": 3,
+      "nazwa": "Niepełnosprawność",
+      "definicja": "Trwałe ograniczenie sprawności, które utrudnia pracę i samodzielne życie; może być wrodzone albo nabyte. Trudności są nie tylko medyczne, ale też ekonomiczne, prawne, komunikacyjne, edukacyjne i technologiczne.",
+      "dane": [
+        "Wskaźnik zatrudnienia osób z niepełnosprawnością (16–64 lata) pod koniec 2023 r.: 30,1% (BDL GUS).",
+        "NSP 2021: 5,4 mln osób z niepełnosprawnością, 14,3% ludności.",
+        "Badanie PFRON 2024: najważniejsze potrzeby to mieszkalnictwo, czas wolny, rehabilitacja, praca i informacja; najmniej zaspokojony jest dostęp do informacji.",
+        "Krytyczny moment: przejście z edukacji do dorosłości i pracy."
+      ],
+      "slowa_kluczowe": [
+        "niepełnosprawność",
+        "osoba z niepełnosprawnością",
+        "wózek",
+        "niewidomy",
+        "głuchy",
+        "dostępność",
+        "bariery architektoniczne",
+        "asystent osobisty",
+        "mieszkanie wspomagane",
+        "praca",
+        "rehabilitacja",
+        "komunikacja alternatywna"
+      ],
+      "kategorie_biblioteki": [
+        "dla-osob-o-ograniczonej-mobilnosci",
+        "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+        "dla-osob-z-niepelnosprawnoscia-intelektualna"
+      ],
+      "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
+    },
+    {
+      "id": "ubostwo",
+      "nr": 4,
+      "nazwa": "Ubóstwo",
+      "definicja": "Brak środków na zaspokojenie podstawowych potrzeb; najczęściej dotyka odbiorców świadczeń, rolników i mieszkańców wsi poza aglomeracjami.",
+      "dane": [
+        "Ubóstwo skrajne w 2023 r.: 6,6% gospodarstw domowych, wzrost o 2 pp. (GUS).",
+        "Progi 2023 dla 1 osoby: ustawowe 776 zł, skrajne 913 zł, relatywne 1092 zł.",
+        "Ubóstwo skrajne wśród rolników 14,1%, wśród utrzymujących się z niezarobkowych źródeł 17,9%.",
+        "Zjawisko pracujących biednych (working poor).",
+        "30% Polaków deklaruje lęk przed biedą, najwięcej od 2015 r. (Raport o biedzie 2023)."
+      ],
+      "slowa_kluczowe": [
+        "ubóstwo",
+        "bieda",
+        "niskie dochody",
+        "ubóstwo energetyczne",
+        "opał",
+        "niedożywienie",
+        "pomoc żywnościowa",
+        "bezrobocie",
+        "spółdzielnia socjalna",
+        "zasiłek",
+        "renta",
+        "wieś"
+      ],
+      "kategorie_biblioteki": [
+        "dla-rynku-pracy",
+        "dla-osob-w-kryzysie-bezdomnosci"
+      ],
+      "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
+    },
+    {
+      "id": "cudzoziemcy",
+      "nr": 5,
+      "nazwa": "Integracja cudzoziemców",
+      "definicja": "Polityki włączające, które dają migrantom równe szanse w życiu gospodarczym, społecznym, kulturalnym i politycznym gminy oraz równy dostęp do usług publicznych.",
+      "dane": [
+        "Integracja to proces wielostronny, nie asymilacja.",
+        "Model lokalny: partycypacja migrantów i organizacji, działania oparte na diagnozie, koordynacja przez wiodącą jednostkę samorządu, stabilne finansowanie zamiast krótkich projektów."
+      ],
+      "slowa_kluczowe": [
+        "cudzoziemcy",
+        "migranci",
+        "uchodźcy",
+        "Ukraina",
+        "język polski",
+        "asystent międzykulturowy",
+        "tłumacz",
+        "integracja",
+        "szkoła",
+        "uznawanie kwalifikacji"
+      ],
+      "kategorie_biblioteki": [
+        "dla-cudzoziemcow"
+      ],
+      "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
+    },
+    {
+      "id": "zdrowie",
+      "nr": 6,
+      "nazwa": "Zdrowie",
+      "definicja": "Edukacja zdrowotna, dostęp do opieki medycznej, profilaktyka i zdrowe środowisko jako podstawa zdrowia fizycznego i psychicznego.",
+      "dane": [
+        "Choroba niedokrwienna serca pozostaje największym wyzwaniem systemu ochrony zdrowia; udary to druga przyczyna zgonów.",
+        "Rośnie zachorowalność na nowotwory oraz chorobę Alzheimera i inne otępienia.",
+        "Pandemia nasiliła samotność starszych osób mieszkających samotnie.",
+        "Palenie i zła dieta to główne przyczyny wyższej umieralności."
+      ],
+      "slowa_kluczowe": [
+        "zdrowie",
+        "profilaktyka",
+        "opiekun rodzinny",
+        "opieka długoterminowa",
+        "choroba przewlekła",
+        "rehabilitacja",
+        "otyłość",
+        "serce",
+        "cukrzyca",
+        "dostęp do lekarza",
+        "telemedycyna"
+      ],
+      "kategorie_biblioteki": [
+        "dla-zdrowia-i-medycyny"
+      ],
+      "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
+    },
+    {
+      "id": "zdrowie-psychiczne",
+      "nr": 7,
+      "nazwa": "Zdrowie psychiczne",
+      "definicja": "Równowaga emocjonalna, psychiczna i społeczna: radzenie sobie ze stresem, dobre relacje, podejmowanie decyzji – a nie tylko brak choroby.",
+      "dane": [
+        "Rośnie liczba prób samobójczych wśród dzieci i młodzieży.",
+        "Nadmierne korzystanie z internetu wiąże się z depresją i zaburzeniami odżywiania; FOMO dotyczy co trzeciego młodego Polaka.",
+        "Psychiatria to ok. 3% wydatków NFZ.",
+        "Stygmatyzacja i słaby dostęp sprawiają, że problemy są niedoszacowane."
+      ],
+      "slowa_kluczowe": [
+        "zdrowie psychiczne",
+        "depresja",
+        "kryzys psychiczny",
+        "samobójstwo",
+        "młodzież",
+        "stres",
+        "izolacja",
+        "uzależnienie od internetu",
+        "terapia",
+        "psycholog",
+        "CZP",
+        "stygmatyzacja"
+      ],
+      "kategorie_biblioteki": [
+        "dla-zdrowia-i-medycyny",
+        "dla-dzieci-mlodziezy-i-rodziny"
+      ],
+      "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
+    },
+    {
+      "id": "seniorzy",
+      "nr": 8,
+      "nazwa": "Seniorzy",
+      "definicja": "Dostosowanie się do starzejącego się społeczeństwa: opieka zdrowotna i opiekuńcza, godna, bezpieczna i możliwie samodzielna starość bez izolacji i dyskryminacji.",
+      "dane": [
+        "Największe problemy seniorów: zdrowie, samotność, finanse, cyfryzacja.",
+        "Wielu seniorów mieszka w budynkach z barierami architektonicznymi.",
+        "Wielolekowość (polipragmazja) to poważne ryzyko.",
+        "Samotność jest powiązana z gorszą sytuacją materialną."
+      ],
+      "slowa_kluczowe": [
+        "senior",
+        "osoba starsza",
+        "samotność",
+        "demencja",
+        "opieka domowa",
+        "usługi opiekuńcze",
+        "wielolekowość",
+        "kompetencje cyfrowe",
+        "bariery architektoniczne",
+        "wdowa",
+        "DDP",
+        "klub seniora"
+      ],
+      "kategorie_biblioteki": [
+        "dla-seniorow"
+      ],
+      "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
+    }
+  ],
+  "obszar_szczegoly": {
+    "id": "seniorzy",
+    "nr": 8,
+    "nazwa": "Seniorzy",
+    "definicja": "Dostosowanie się do starzejącego się społeczeństwa: opieka zdrowotna i opiekuńcza, godna, bezpieczna i możliwie samodzielna starość bez izolacji i dyskryminacji.",
+    "dane": [
+      "Największe problemy seniorów: zdrowie, samotność, finanse, cyfryzacja.",
+      "Wielu seniorów mieszka w budynkach z barierami architektonicznymi.",
+      "Wielolekowość (polipragmazja) to poważne ryzyko.",
+      "Samotność jest powiązana z gorszą sytuacją materialną."
+    ],
+    "slowa_kluczowe": [
+      "senior",
+      "osoba starsza",
+      "samotność",
+      "demencja",
+      "opieka domowa",
+      "usługi opiekuńcze",
+      "wielolekowość",
+      "kompetencje cyfrowe",
+      "bariery architektoniczne",
+      "wdowa",
+      "DDP",
+      "klub seniora"
+    ],
+    "kategorie_biblioteki": [
+      "dla-seniorow"
+    ],
+    "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf",
+    "wyzwania": [
+      {
+        "id": "uslugi-dla-starzejacych",
+        "obszar_id": "seniorzy",
+        "tekst": "Instytucje i usługi zdrowotne dopasowane do starzejącego się społeczeństwa, także z nowymi technologiami"
+      },
+      {
+        "id": "projektowanie-uniwersalne",
+        "obszar_id": "seniorzy",
+        "tekst": "Projektowanie uniwersalne przestrzeni i mieszkań, mieszkalnictwo senioralne"
+      },
+      {
+        "id": "wielolekowosc",
+        "obszar_id": "seniorzy",
+        "tekst": "Odpowiedzialne przyjmowanie leków i suplementów"
+      },
+      {
+        "id": "aktywizacja",
+        "obszar_id": "seniorzy",
+        "tekst": "Szersza oferta aktywizacji i integracji seniorów"
+      },
+      {
+        "id": "kompetencje-cyfrowe",
+        "obszar_id": "seniorzy",
+        "tekst": "Kompetencje cyfrowe seniorów"
+      },
+      {
+        "id": "uslugi-opiekuncze",
+        "obszar_id": "seniorzy",
+        "tekst": "Dostęp do usług opiekuńczych w gminie, w tym specjalistycznych"
+      }
+    ],
+    "persony": [
+      {
+        "id": "persona-seniorzy",
+        "obszar_id": "seniorzy",
+        "imie": "Janina",
+        "opis": "73 lata, mieszka sama w małym mieście, niedawno owdowiała, rzadko wychodzi, wiele chorób i leków.",
+        "cele": [
+          "mniej samotności, więcej aktywności",
+          "poczucie wartości",
+          "świadome dbanie o zdrowie i leki"
+        ],
+        "wyzwania": [
+          "samotność",
+          "nadużywanie leków i suplementów",
+          "życie po stracie męża"
+        ],
+        "motywacje": [
+          "radość z prostych rzeczy",
+          "organizacja dnia",
+          "wyjście do ludzi"
+        ]
+      }
+    ],
+    "innowacje": [
+      {
+        "id": "bawita",
+        "nazwa": "BaWita",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": "IWS",
+        "sprawdzona_przez_rops": true,
+        "opis_krotki": "Drewniana tablica manipulacyjna z siedmioma ruchomymi elementami, służąca do ćwiczenia pamięci, sprawności rąk i planowania dnia u osób z zaburzeniami otępiennymi.",
+        "dla_kogo": [
+          "osoby starsze z demencją we wczesnym stadium",
+          "osoby po udarze lub wylewie wymagające rehabilitacji pamięci"
+        ],
+        "slowa_kluczowe": [
+          "demencja",
+          "otępienie",
+          "alzheimer",
+          "pamięć",
+          "rehabilitacja",
+          "udar",
+          "senior",
+          "terapia zajęciowa",
+          "zaburzenia pamięci",
+          "ćwiczenia manualne",
+          "choroba otępienna"
+        ],
+        "spoza_biblioteki": false,
+        "opis_niepelny": false,
+        "ma_film": true
+      },
+      {
+        "id": "terapeuta-przestrzeni",
+        "nazwa": "Terapeuta przestrzeni",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": null,
+        "sprawdzona_przez_rops": false,
+        "opis_krotki": "Usługa dostosowania mieszkania seniora do jego ograniczeń niskim kosztem, połączona z treningiem poruszania się w nowej przestrzeni i wsparciem psychologicznym dla seniora i bliskich.",
+        "dla_kogo": [
+          "seniorzy mieszkający samodzielnie lub z rodziną",
+          "osoby starsze chcące zostać w swoim domu"
+        ],
+        "slowa_kluczowe": [
+          "adaptacja mieszkania",
+          "dostosowanie mieszkania",
+          "samodzielność",
+          "senior",
+          "ergonomia",
+          "upadki",
+          "bariery w domu",
+          "pozostanie w domu",
+          "niepełnosprawność ruchowa",
+          "opieka domowa",
+          "likwidacja progów"
+        ],
+        "spoza_biblioteki": false,
+        "opis_niepelny": false,
+        "ma_film": false
+      },
+      {
+        "id": "innowacyjna-terapia-zajeciowa-w-domu-osoby-starszej",
+        "nazwa": "Innowacyjna terapia zajęciowa w domu osoby starszej",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": "MIIS",
+        "sprawdzona_przez_rops": false,
+        "opis_krotki": "Usługa terapii zajęciowej w domu seniora: ergoterapia, biblioterapia, muzykoterapia, hortiterapia, terapia kulinarna, trening pamięci oraz warsztaty zapobiegania upadkom.",
+        "dla_kogo": [
+          "osoby starsze o ograniczonej sprawności, które nie dotrą do placówki",
+          "seniorzy zagrożeni izolacją społeczną"
+        ],
+        "slowa_kluczowe": [
+          "terapia zajęciowa",
+          "senior",
+          "w domu",
+          "samotność",
+          "izolacja",
+          "ergoterapia",
+          "muzykoterapia",
+          "trening pamięci",
+          "upadki",
+          "aktywizacja seniorów",
+          "osoba leżąca",
+          "opieka domowa"
+        ],
+        "spoza_biblioteki": true,
+        "opis_niepelny": false,
+        "ma_film": false
+      },
+      {
+        "id": "agrotreningi-metody-pracy-z-osobami-starszymi-na-obszarach-wiejskich",
+        "nazwa": "Agrotreningi – metody pracy z osobami starszymi na obszarach wiejskich",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": "MIIS",
+        "sprawdzona_przez_rops": false,
+        "opis_krotki": "Zestaw metod pracy z osobami starszymi mieszkającymi na wsi, przetestowany w MIIS. Dostępny spis podaje tylko tytuł, typ (usługa) i autora; szczegółów metod brak.",
+        "dla_kogo": [
+          "osoby starsze mieszkające na obszarach wiejskich"
+        ],
+        "slowa_kluczowe": [
+          "senior",
+          "wieś",
+          "obszary wiejskie",
+          "aktywizacja seniorów",
+          "metody pracy",
+          "trening",
+          "praca z seniorami",
+          "gospodarstwo",
+          "agroterapia",
+          "senior na wsi"
+        ],
+        "spoza_biblioteki": true,
+        "opis_niepelny": true,
+        "ma_film": false
+      }
+    ]
+  },
+  "zasoby": [
+    {
+      "id": "r01",
+      "typ": "raport",
+      "rok": 2026,
+      "tytul": "Wyzwania i potrzeby sektora opiekuńczego w Małopolsce. Perspektywa opiekunów oraz podmiotów realizujących opiekę",
+      "opis": null,
+      "tagi": [
+        "seniorzy"
+      ],
+      "url": "https://rops.krakow.pl/pliki-do-pobrania/wpis,2026-i-wyzwania-i-potrzeby-sektora-opiekunczego-w-malopolsce-perspektywa-opiekunow-oraz-podmiotow-realizujacych-opieke,1479"
+    },
+    {
+      "id": "r02",
+      "typ": "raport",
+      "rok": 2025,
+      "tytul": "Usługi społeczne w Małopolsce – deficyty, potrzeby, potencjał rozwojowy. Zaktualizowane wnioski z diagnozy",
+      "opis": null,
+      "tagi": [],
+      "url": "https://rops.krakow.pl/pliki-do-pobrania/wpis,2025-uslugi-spoleczne-w-malopolsce-deficyty-potrzeby-potencjal-rozwojowy-zaktualizowane-wnioski-z-diagnozy,1348"
+    },
+    {
+      "id": "r03",
+      "typ": "raport",
+      "rok": 2025,
+      "tytul": "Mieszkania wspomagane i treningowe w Małopolsce jako priorytet w rozwoju usług społecznych i deinstytucjonalizacji",
+      "opis": null,
+      "tagi": [
+        "deinstytucjonalizacja",
+        "usługi społeczne"
+      ],
+      "url": "https://rops.krakow.pl/pliki-do-pobrania/wpis,2025-mieszkania-wspomagane-i-treningowe-w-malopolsce-jako-priorytet-w-rozwoju-uslug-spolecznych-i-deinstytucjonalizacji,1310"
+    },
+    {
+      "id": "p01",
+      "typ": "publikacja",
+      "rok": 2023,
+      "tytul": "Połącz kropki, czyli o sile innowacji społecznych w obszarze włączenia społecznego",
+      "opis": "Prezentacja innowacji z Inkubatora Włączenia Społecznego.",
+      "tagi": [],
+      "url": "https://rops.krakow.pl/mpliki/IS/PUBLIKACJE_INKUBATOROW/Pocz_kropki_Publikacja_IWS.pdf"
+    },
+    {
+      "id": "p02",
+      "typ": "publikacja",
+      "rok": 2022,
+      "tytul": "Innowacje społeczne dla dostępności",
+      "opis": "Rozwiązania przetestowane w Inkubatorze Dostępności.",
+      "tagi": [],
+      "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/Innowacje_spoleczne_dla_dostepnosci.pdf"
+    }
+  ],
+  "edycja_innowacji": {
+    "opis_krotki": "Poprawiony opis z panelu ROPS.",
+    "sprawdzona_przez_rops": true
+  }
+}
