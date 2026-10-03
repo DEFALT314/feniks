@@ -11,13 +11,10 @@ import {
   signUpWithPassword,
   type AuthFormState,
 } from "./login";
-import { safeNextPath } from "./validation";
+import { requestOrigin, safeNextPath } from "./validation";
 
 async function siteOrigin() {
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
-  const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
-  return `${proto}://${host}`;
+  return requestOrigin(await headers());
 }
 
 export async function signIn(_prev: AuthFormState, formData: FormData): Promise<AuthFormState> {

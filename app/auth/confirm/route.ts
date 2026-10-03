@@ -1,11 +1,14 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
-import { safeNextPath } from "@/lib/auth/validation";
+import { requestOrigin, safeNextPath } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/server";
 
 // Link from an e-mail (password reset). Supabase sends either ?code= (PKCE) or ?token_hash=&type=.
 export async function GET(request: NextRequest) {
-  const { searchParams, origin } = request.nextUrl;
+  const { searchParams } = request.nextUrl;
+  // Not request.nextUrl.origin: it can differ from the host the browser used (e.g. 127.0.0.1 vs localhost),
+  // and the session cookie set here only exists on that host.
+  const origin = requestOrigin(request.headers);
   const next = safeNextPath(searchParams.get("next"));
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");

@@ -15,9 +15,10 @@ const json = (body: unknown) =>
     body: JSON.stringify(body),
   });
 
-const form = (konto: string) =>
+const form = (konto: string, host = "localhost") =>
   new Request("http://localhost/api/demo/login", {
     method: "POST",
+    headers: { host },
     body: new URLSearchParams({ konto }),
   });
 
@@ -56,6 +57,11 @@ describe("POST /api/demo/login", () => {
     const res = await POST(form("mieszkaniec"));
     expect(res.status).toBe(303);
     expect(res.headers.get("location")).toBe("http://localhost/match");
+  });
+
+  it("redirects on the host the browser used", async () => {
+    const res = await POST(form("mieszkaniec", "127.0.0.1:3000"));
+    expect(res.headers.get("location")).toBe("http://127.0.0.1:3000/match");
   });
 
   it("sends a failed form submit back to /login with an error", async () => {

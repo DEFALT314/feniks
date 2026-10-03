@@ -46,3 +46,14 @@ export function safeNextPath(next: string | null | undefined, fallback = "/"): s
   if (/[\u0000-\u001f]/.test(next)) return fallback;
   return next;
 }
+
+/**
+ * The address the user's browser used, from the request headers (behind Vercel's proxy:
+ * x-forwarded-*). Redirects must stay on that host, or the session cookie set for it is lost.
+ */
+export function requestOrigin(headers: { get(name: string): string | null }): string {
+  const host = headers.get("x-forwarded-host") ?? headers.get("host") ?? "localhost:3000";
+  const isLocal = /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(host);
+  const proto = headers.get("x-forwarded-proto") ?? (isLocal ? "http" : "https");
+  return `${proto}://${host}`;
+}
