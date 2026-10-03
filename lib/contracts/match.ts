@@ -15,6 +15,9 @@ export const MatchRequest = z.object({
   description: z.string().trim().min(10).max(2000), // "Co się dzieje? Napisz własnymi słowami"
   role: MatchRole.optional(), // "Pytam jako"
   municipality: z.string().trim().max(200).optional(), // e.g. "Przykładowa Wola (gmina wiejska)"
+  // false = ranking only, answered in well under a second; the page shows it first and then asks
+  // again with ai: true for the AI picks and reasons (the free LLM tier takes 8–25 s per new query).
+  ai: z.boolean().optional(), // default true
 });
 export type MatchRequest = z.infer<typeof MatchRequest>;
 

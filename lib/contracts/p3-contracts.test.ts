@@ -30,6 +30,11 @@ describe("match contract", () => {
     expect(M.MatchRequest.safeParse({ description: "a".repeat(2001) }).success).toBe(false);
   });
 
+  it("ai is optional and boolean", () => {
+    expect(M.MatchRequest.safeParse({ ...matchFixture.request, ai: false }).success).toBe(true);
+    expect(M.MatchRequest.safeParse({ ...matchFixture.request, ai: "nie" }).success).toBe(false);
+  });
+
   it("allows at most three recommended innovations", () => {
     const four = Array(4).fill(matchFixture.response.innovations[0]);
     expect(M.MatchResponse.safeParse({ ...matchFixture.response, innovations: four }).success).toBe(
