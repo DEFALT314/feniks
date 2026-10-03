@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { innovationsFromFiles } from "@/app/biblioteka/_lib/from-files";
+import { innovationsFromFiles } from "@/app/library/_lib/from-files";
 import { MatchResponse } from "@/lib/contracts/match";
 
 vi.mock("server-only", () => ({}));
