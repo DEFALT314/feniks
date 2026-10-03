@@ -86,3 +86,16 @@ export async function runTwoPhase(
   // If the AI phase fails, keep the ranking: it is still a useful answer.
   report("done", full.ok ? full.data : fast.data, null);
 }
+
+// "Zgłoś potrzebę": opens the "Napisz do ROPS" form (P4, /my/messages/new) prefilled with the
+// challenge as the topic and the description the user typed. The description is the redacted one
+// from the response (no phone, e-mail, PESEL); nothing is sent until the user clicks "Wyślij".
+export function reportNeedHref(result: MatchResponse): string {
+  const c = result.challenge;
+  const topic = c
+    ? `Potrzeba: ${c.area_name}${c.challenge_text ? ` – ${c.challenge_text}` : ""}`
+    : "Potrzeba, na którą nie znalazłem rozwiązania";
+  const text = result.description_segments.map((s) => s.text).join("");
+  const params = new URLSearchParams({ topic: topic.slice(0, 200), text: text.slice(0, 5000) });
+  return `/my/messages/new?${params}`;
+}

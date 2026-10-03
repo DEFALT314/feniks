@@ -58,13 +58,14 @@ describe("MatchResult", () => {
       'href="/my/middleman?innovation=organizator-kompleksowej-opieki-w-miejscu-zamieszkania"',
     );
     expect(html).toContain('href="/challenge-map?area=seniorzy#area"');
+    expect(html).toContain('href="/my/messages/new?topic=Potrzeba');
   });
 
   it("without a match explains why and stresses reporting the need", () => {
     const html = render(fixture.response_no_match as MatchResponse);
     expect(html).toContain("nie ma jeszcze innowacji o opiece nad małymi dziećmi");
     expect(html).toContain("Wygląda na to, że takiego rozwiązania jeszcze nie ma.");
-    const link = html.match(/<a[^>]*href="\/my\/messages"[^>]*>/)?.[0] ?? "";
+    const link = html.match(/<a[^>]*href="\/my\/messages\/new[^"]*"[^>]*>/)?.[0] ?? "";
     expect(link).toContain("bg-primary");
   });
 
