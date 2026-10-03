@@ -13,9 +13,27 @@ const EMPTY: Draft = { tytul: "", opis: "", miejsce: "", termin: "", miejsca: ""
 
 // "Test z mieszkańcami" on the idea card: the author plans a test, residents sign up and rate it
 // in the Innovation tester (/my/tester), where the author reads the feedback.
-export function PlanTestPanel({ ideaId, testCount }: { ideaId: string; testCount: number }) {
+// Residents can't open someone else's idea, so the test starts with the idea's title and essence:
+// the sign-up card then says what is being tested.
+export function planTestDefaults(idea: { tytul: string; istota: string | null }): Draft {
+  return {
+    ...EMPTY,
+    tytul: `${idea.tytul} – test z mieszkańcami`.slice(0, 200),
+    opis: idea.istota ?? "",
+  };
+}
+
+export function PlanTestPanel({
+  ideaId,
+  testCount,
+  defaults = EMPTY,
+}: {
+  ideaId: string;
+  testCount: number;
+  defaults?: Draft;
+}) {
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState<Draft>(EMPTY);
+  const [draft, setDraft] = useState<Draft>(defaults);
   const [titleError, setTitleError] = useState(false);
   const [message, setMessage] = useState<{ error: boolean; text: string } | null>(null);
   const [pending, startTransition] = useTransition();
@@ -44,7 +62,7 @@ export function PlanTestPanel({ ideaId, testCount }: { ideaId: string; testCount
         liczba_miejsc: draft.miejsca ? Number(draft.miejsca) : null,
       });
       if (result.ok) {
-        setDraft(EMPTY);
+        setDraft(defaults);
         setOpen(false);
         setMessage({ error: false, text: "Test zaplanowany. Mieszkańcy widzą go w Testerze." });
         toggle.current?.focus();
@@ -92,7 +110,10 @@ export function PlanTestPanel({ ideaId, testCount }: { ideaId: string; testCount
             />
           )}
         </Field>
-        <Field label="Na czym polega?" hint="Co uczestnicy zrobią i ile to potrwa.">
+        <Field
+          label="Na czym polega?"
+          hint="Co uczestnicy zrobią i ile to potrwa. Mieszkańcy zobaczą ten opis przy zapisie."
+        >
           {(control) => (
             <Textarea
               {...control}
