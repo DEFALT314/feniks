@@ -14,16 +14,16 @@ const accountHrefs = (role: RoleOrNull) => accountItemsFor(role).map((i) => i.hr
 
 describe("navItemsFor", () => {
   it("shows only public pages to signed-out visitors", () => {
-    expect(hrefs(null)).toEqual(["/match", "/library", "/challenge-map"]);
+    expect(hrefs(null)).toEqual(["/match", "/library", "/challenge-map", "/resources"]);
   });
 
   it("keeps personal pages out of the main menu so it fits in one row", () => {
-    expect(hrefs("mieszkaniec")).toEqual(["/match", "/library", "/challenge-map"]);
+    expect(hrefs("mieszkaniec")).toEqual(["/match", "/library", "/challenge-map", "/resources"]);
     expect(hrefs("jst")).not.toContain("/my/messages");
   });
 
   it.each(["rops_redaktor", "rops_admin"] as const)("adds the ROPS panel for %s", (role) => {
-    expect(hrefs(role)).toEqual(["/match", "/library", "/challenge-map", "/admin"]);
+    expect(hrefs(role)).toEqual(["/match", "/library", "/challenge-map", "/resources", "/admin"]);
   });
 
   it.each(["mieszkaniec", "ngo", "jst", "ekspert"] as const)("has no ROPS panel for %s", (role) => {

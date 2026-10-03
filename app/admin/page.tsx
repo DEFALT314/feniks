@@ -74,7 +74,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
           className="flex min-w-0 flex-[999_1_560px] flex-col gap-3"
         >
           <h2 id="queue-heading" className="font-heading text-2xl font-bold">
-            Nowe pomysły
+            Pomysły wysłane do ROPS
           </h2>
           <nav aria-label="Filtr statusu" className="flex flex-wrap gap-2">
             {FILTERS.map((f) => {

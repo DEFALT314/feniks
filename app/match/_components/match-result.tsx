@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import type { MatchResponse, MatchedInnovation, TextSegment } from "@/lib/contracts/match";
 import { cn } from "@/lib/utils";
 import { AiProgress } from "./ai-progress";
+import { detectCrisis, type Crisis } from "../_lib/crisis";
 import { reportNeedHref } from "../_lib/request";
 
 // The result of /match, laid out as in design/makiety/Dopasuj.dc.html: description → challenge → innovations.
@@ -84,11 +85,13 @@ function InnovationCard({
   first,
   ai,
   preliminary,
+  serviceCard,
 }: {
   match: MatchedInnovation;
   first: boolean;
   ai: boolean;
   preliminary: boolean;
+  serviceCard: boolean;
 }) {
   const i = match.innovation;
   const tag = origin(match);
@@ -131,7 +134,7 @@ function InnovationCard({
         </p>
       ) : null}
       {i.kto_moze_wdrozyc.length ? (
-        <dl className="grid grid-cols-[120px_1fr] gap-x-3 gap-y-1 text-base">
+        <dl className="grid grid-cols-1 gap-x-3 gap-y-1 text-base sm:grid-cols-[120px_1fr]">
           <dt className="text-ink-muted">Kto wdraża</dt>
           <dd>{i.kto_moze_wdrozyc.join(", ")}</dd>
         </dl>
@@ -141,12 +144,14 @@ function InnovationCard({
           <Link href={`/library/${i.id}`} className={buttonVariants()}>
             Zobacz kartę<span className="sr-only">: {i.nazwa}</span>
           </Link>
-          <Link
-            href={`/my/middleman?innovation=${i.id}`}
-            className={buttonVariants({ variant: "secondary" })}
-          >
-            Przygotuj dla mojej gminy
-          </Link>
+          {serviceCard ? (
+            <Link
+              href={`/my/middleman?innovation=${i.id}`}
+              className={buttonVariants({ variant: "secondary" })}
+            >
+              Przygotuj kartę usługi<span className="sr-only">: {i.nazwa}</span>
+            </Link>
+          ) : null}
         </div>
       ) : (
         <Link
@@ -211,16 +216,70 @@ function MoreInnovations({ result }: { result: MatchResponse }) {
   );
 }
 
+const PHONE = "text-navy font-bold whitespace-nowrap underline underline-offset-[3px]";
+
+// Shown above the result when the description reads like an emergency (app/match/_lib/crisis.ts).
+export function CrisisHelp({ kind }: { kind: Crisis }) {
+  return (
+    <div
+      role="note"
+      aria-label="Pilna pomoc"
+      className="border-danger mb-8 rounded-xl border-2 border-l-8 bg-white px-6 py-5"
+    >
+      <p className="font-bold">
+        Jeśli komuś teraz grozi niebezpieczeństwo, zadzwoń pod numer{" "}
+        <a href="tel:112" className={PHONE}>
+          112
+        </a>
+        .
+      </p>
+      {kind === "violence" ? (
+        <p className="mt-2">
+          Pomoc dla osób doznających przemocy w rodzinie: Niebieska Linia,{" "}
+          <a href="tel:800120002" className={PHONE}>
+            800 120 002
+          </a>{" "}
+          (bezpłatnie). Możesz też poprosić o pomoc ośrodek pomocy społecznej w swojej gminie.
+        </p>
+      ) : (
+        <p className="mt-2">
+          Wsparcie w kryzysie psychicznym, bezpłatnie i całą dobę:{" "}
+          <a href="tel:800702222" className={PHONE}>
+            800 70 2222
+          </a>
+          . Dzieci i młodzież:{" "}
+          <a href="tel:116111" className={PHONE}>
+            116 111
+          </a>
+          .
+        </p>
+      )}
+    </div>
+  );
+}
+
 // Every AI sentence carries the label (CLAUDE.md, rule 5), not only the heading of the result.
 function AiNote() {
   return <span className="text-navy text-[0.9375rem] font-bold">(Propozycja AI)</span>;
 }
 
-export function MatchResult({ result, choosing }: { result: MatchResponse; choosing: boolean }) {
+// serviceCard: whether to offer "Przygotuj kartę usługi" (Middleman). It is for municipalities and
+// organisations; residents and experts can't use it, visitors see it and are asked to sign in.
+export function MatchResult({
+  result,
+  choosing,
+  serviceCard = true,
+}: {
+  result: MatchResponse;
+  choosing: boolean;
+  serviceCard?: boolean;
+}) {
   const ai = result.picked_by === "ai";
   const weak = result.match_quality === "weak";
+  const crisis = detectCrisis(result.description_segments.map((s) => s.text).join(""));
   return (
     <>
+      {crisis ? <CrisisHelp kind={crisis} /> : null}
       <div className="mb-7 flex flex-wrap items-baseline justify-between gap-3">
         <h2 id="result-title" className="text-[2rem] leading-tight font-bold">
           Wynik
@@ -272,6 +331,7 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
                   first={n === 0}
                   ai={ai}
                   preliminary={choosing}
+                  serviceCard={serviceCard}
                 />
               ))}
             </div>
@@ -293,11 +353,16 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
       <Card className="mt-2 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 px-6 py-5">
         <p className="max-w-[560px]">
           {weak ? (
-            <strong>Wygląda na to, że takiego rozwiązania jeszcze nie ma. </strong>
+            <strong>
+              {result.innovations.length
+                ? "Te innowacje pasują tylko częściowo. "
+                : "Wygląda na to, że takiego rozwiązania jeszcze nie ma. "}
+            </strong>
           ) : (
             "Nic nie pasuje? "
           )}
-          Zgłoś potrzebę do ROPS. Trafi na Mapę Wyzwań i pomoże zaplanować kolejne nabory.
+          Napisz o tym do ROPS. Przygotujemy wiadomość z Twoim opisem, a Ty zdecydujesz, czy ją
+          wysłać.
         </p>
         <Link
           href={reportNeedHref(result)}
@@ -307,9 +372,8 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
         </Link>
       </Card>
       <p className="text-ink-muted mt-4 text-[0.9375rem]">
-        Model wybiera wyłącznie spośród innowacji z Biblioteki ROPS i podkreśla słowa, które
-        zdecydowały o dopasowaniu. Twojego opisu nie zapisujemy, do statystyk trafia tylko obszar i
-        wyzwanie.
+        AI wybiera tylko spośród innowacji z Biblioteki ROPS. Twojego opisu nie zapisujemy. Do
+        statystyk trafia tylko obszar i wyzwanie.
       </p>
     </>
   );

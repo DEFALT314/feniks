@@ -18,15 +18,15 @@ export function jsonError(message: string, status: number, headers?: Record<stri
 }
 
 // Parses the body with the schema and applies the rate limit; returns the data or an error response.
+// `invalid` is the message for a body that fails the schema, worded for the form that sent it.
 export async function readAiRequest<T>(
   request: Request,
   schema: z.ZodType<T>,
+  invalid = "Uzupełnij tytuł i opis pomysłu, a potem spróbuj ponownie.",
 ): Promise<{ data: T } | { response: NextResponse }> {
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
-    return {
-      response: jsonError("Uzupełnij tytuł i opis pomysłu, a potem spróbuj ponownie.", 400),
-    };
+    return { response: jsonError(invalid, 400) };
   }
   if (!llmConfigured()) {
     return { response: jsonError("Asystent AI jest teraz niedostępny. Spróbuj później.", 503) };

@@ -23,7 +23,7 @@ export type DecisionResult = { ok: true; message: string } | { ok: false; messag
 const LABELS: Record<PendingRequest["wnioskowana_rola"], string> = {
   ngo: "organizacja pozarządowa",
   jst: "gmina lub instytucja publiczna",
-  ekspert: "ekspert",
+  ekspert: "ekspertka lub ekspert",
 };
 
 export async function decideRoleRequest(
@@ -35,7 +35,11 @@ export async function decideRoleRequest(
     return { ok: false, message: "Decyzje o rolach podejmuje ROPS." };
   }
   const parsed = RoleDecisionInput.safeParse(input);
-  if (!parsed.success) return { ok: false, message: "Niepoprawne dane decyzji." };
+  if (!parsed.success)
+    return {
+      ok: false,
+      message: "Nie udało się odczytać decyzji. Odśwież stronę i spróbuj ponownie.",
+    };
   const { user_id, zatwierdz } = parsed.data;
 
   // Matches the database guard: only rops_admin may change a role
@@ -49,7 +53,7 @@ export async function decideRoleRequest(
   const { error } = zatwierdz
     ? await deps.approve(user_id, request.wnioskowana_rola)
     : await deps.reject(user_id);
-  if (error) return { ok: false, message: "Nie udało się zapisać decyzji." };
+  if (error) return { ok: false, message: "Nie udało się zapisać decyzji. Spróbuj ponownie." };
 
   const label = LABELS[request.wnioskowana_rola];
   const who = request.nazwa_wyswietlana ?? "użytkownik";

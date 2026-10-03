@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { announce } from "@/components/ui/announcer";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { focusElement, useFocusFirstError } from "@/components/ui/focus";
 import { Input, Textarea } from "@/components/ui/input";
 import type { CallSummary } from "@/lib/contracts/ai";
 import type { InstitutionProfile, ServiceCard, ServiceCardEdit } from "@/lib/contracts/middleman";
+import { askRopsUrl } from "@/app/library/_lib/format";
 import { AiProgress } from "@/app/match/_components/ai-progress";
 import { fromLines, MUNICIPALITY_OPTIONS, toLines, TYPE_OPTIONS } from "../_lib/institution";
 import { ServiceCardBody, ServiceCardFacts } from "./service-card-view";
@@ -15,11 +17,20 @@ import { ServiceCardBody, ServiceCardFacts } from "./service-card-view";
 const SELECT =
   "border-input text-ink hover:border-ink-muted focus:border-navy w-full rounded-[10px] border bg-white px-3.5 py-3 text-lg transition-[border-color,box-shadow] duration-200 focus:shadow-[0_0_0_1px_var(--navy)]";
 
+const LINK = "text-navy hover:text-navy-strong underline underline-offset-[3px]";
+
 const STEPS = [
   "Czytam kartę innowacji…",
   "Dopasowuję usługę do Twojej instytucji…",
   "Opisuję, jak to działa krok po kroku…",
   "Sprawdzam ryzyka i pierwsze kroki…",
+];
+
+// The whole path in three steps, so a first-time visitor knows where the card ends up.
+export const HOW_IT_WORKS = [
+  "Wybierz innowację i opisz swoją instytucję.",
+  "AI przygotuje szkic usługi, a Ty go poprawisz.",
+  "Wyślij go do ROPS. Odpowiedź przyjdzie w Wiadomościach.",
 ];
 
 // Ids of the elements that take focus after an action replaced the control the user pressed
@@ -153,9 +164,22 @@ export function MiddlemanWorkbench(props: Props) {
             Karta usługi dla Twojej gminy
           </h1>
           <p className="text-ink-muted max-w-[820px]">
-            Wybierz innowację i opisz instytucję. Przygotujemy szkic usługi w języku, w którym gmina
-            ją zamawia i finansuje. Ty decydujesz, co w nim zostaje.
+            Zamień innowację z Biblioteki w szkic usługi, którą Twoja instytucja może zamówić i
+            sfinansować. Ty decydujesz, co w nim zostaje.
           </p>
+          <ol aria-label="Jak to działa" className="flex max-w-[1000px] flex-wrap gap-x-8 gap-y-2">
+            {HOW_IT_WORKS.map((text, n) => (
+              <li key={text} className="flex items-baseline gap-2.5 text-base">
+                <span
+                  aria-hidden="true"
+                  className="border-navy text-navy flex size-6 shrink-0 items-center justify-center rounded-full border-2 text-[0.8125rem] font-bold"
+                >
+                  {n + 1}
+                </span>
+                {text}
+              </li>
+            ))}
+          </ol>
           <div ref={formRef} className="flex max-w-[1000px] flex-col gap-4">
             <div className="flex flex-wrap items-end gap-4">
               <Field label="Innowacja" className="flex-[1_1_320px]">
@@ -209,7 +233,7 @@ export function MiddlemanWorkbench(props: Props) {
                   </select>
                 )}
               </Field>
-              <Field label="Gmina" className="flex-[1_1_220px]">
+              <Field label="Rodzaj gminy lub powiat" className="flex-[1_1_220px]">
                 {(p) => (
                   <select
                     {...p}
@@ -274,7 +298,29 @@ export function MiddlemanWorkbench(props: Props) {
 
       <div className="mx-auto max-w-[1200px] px-4 pt-8 pb-16 sm:px-10">
         {/* Errors and progress are announced through announce(); no live region of their own */}
-        {error ? <p className="text-danger mb-5 font-bold">{error}</p> : null}
+        {error ? (
+          <div className="mb-5 flex flex-col gap-2">
+            <p className="text-danger font-bold">{error}</p>
+            {/* Not a dead end: the innovation card and a question to ROPS work without the AI */}
+            <p>
+              W tym czasie możesz{" "}
+              <Link href={`/library/${innovationId}`} className={LINK}>
+                przeczytać kartę wybranej innowacji
+              </Link>{" "}
+              albo{" "}
+              <Link
+                href={askRopsUrl(
+                  innovationId,
+                  props.innovations.find((i) => i.id === innovationId)?.nazwa ?? "",
+                )}
+                className={LINK}
+              >
+                zapytać o nią ROPS
+              </Link>
+              .
+            </p>
+          </div>
+        ) : null}
         {busy === "drafting" ? (
           <AiProgress title="AI przygotowuje szkic karty usługi" steps={STEPS} note={null} />
         ) : null}
@@ -307,7 +353,7 @@ export function MiddlemanWorkbench(props: Props) {
                   </p>
                 ) : (
                   <Button type="button" onClick={send} disabled={busy !== null || editing}>
-                    {busy === "sending" ? "Wysyłam…" : "Wyślij do ROPS do konsultacji"}
+                    {busy === "sending" ? "Wysyłam…" : "Poproś ROPS o opinię"}
                   </Button>
                 )}
                 {!sent && !editing ? (
@@ -364,7 +410,9 @@ export function MiddlemanWorkbench(props: Props) {
                   </a>{" "}
                   <span className="text-ink-muted text-base">
                     · {c.based_on.nazwa} ·{" "}
-                    {c.status === "wyslana_do_rops" ? "wysłana do ROPS" : `szkic ${c.version}`}
+                    {c.status === "wyslana_do_rops"
+                      ? "wysłana do ROPS"
+                      : `szkic, wersja ${c.version}`}
                   </span>
                 </li>
               ))}

@@ -40,7 +40,7 @@ export function ServiceCardBody({ card }: { card: ServiceCard }) {
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <Badge variant="ai">Propozycja AI, do sprawdzenia przez {institutionShort(card)}</Badge>
         <span className="text-ink-muted text-[0.9375rem]">
-          {sent ? "wysłana do ROPS · " : ""}szkic {card.version}
+          {sent ? "wysłana do ROPS · " : ""}wersja {card.version}
         </span>
       </div>
       <h2 id="card-title" className="text-[1.875rem] leading-tight font-bold">
@@ -159,8 +159,9 @@ export function ServiceCardFacts({ card, calls }: { card: ServiceCard; calls: Ca
         </div>
       ) : null}
       <p className="text-ink-muted text-[0.9375rem]">
-        Szkic powstaje z karty innowacji i profilu instytucji. Model nie podaje kosztów ani liczb;
-        puste pola uzupełniasz Ty. Ocena dopasowania i materiały pochodzą z danych ROPS, nie z AI.
+        AI pisze szkic tylko na podstawie karty innowacji i opisu Twojej instytucji. Nie podaje
+        kosztów ani liczb – te pola uzupełniasz Ty. Dopasowanie i materiały pochodzą z danych ROPS,
+        nie od AI.
       </p>
     </div>
   );

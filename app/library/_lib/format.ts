@@ -9,6 +9,16 @@ export function formatResultCount(n: number): string {
   return `${n} innowacji`;
 }
 
+// Where the results come from, so the count matches the "115 innowacji w Bibliotece ROPS" on the
+// home page: "W tym 115 z Biblioteki innowacji ROPS i 43 z innych programów ROPS."
+export function sourceBreakdown(total: number, fromLibrary: number | undefined): string | null {
+  if (fromLibrary === undefined || fromLibrary === total) return null;
+  if (fromLibrary === 0) {
+    return "Wszystkie pochodzą z innych programów ROPS i zwykle mają krótszy opis.";
+  }
+  return `W tym ${fromLibrary} z Biblioteki innowacji ROPS i ${total - fromLibrary} z innych programów ROPS (zwykle z krótszym opisem).`;
+}
+
 // What the visitor searched for, in words: "Dla seniorów · „pamięć” · z filmem"
 export function filterSummary(filters: LibraryFilters, categories: Category[]): string {
   const selected = categories.filter((k) => filters.category.includes(k.id)).map((k) => k.nazwa);

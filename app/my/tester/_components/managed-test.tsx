@@ -57,7 +57,7 @@ export function ManagedTest({ test, feedback }: { test: TesterTest; feedback: Te
                 ) : null}
                 {uwaga.co_poprawic ? (
                   <p>
-                    <strong>Co poprawić:</strong> {uwaga.co_poprawic}
+                    <strong>Propozycja usprawnienia:</strong> {uwaga.co_poprawic}
                   </p>
                 ) : null}
               </li>

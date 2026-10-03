@@ -270,6 +270,95 @@ html[data-ruch-czeka] [data-ruch~="wejscie"] > * {
   opacity: 0;
 }
 
+/* ── Text fields: focus and error (design/makiety/System.dc.html, every input, textarea, select) ──
+   A focused field gets a navy edge (1px border + 1px ring) and a soft navy halo instead of the brick
+   outline other controls use: brick next to a field reads like the error red. An invalid field keeps
+   a red edge, focused or not, so focus never hides the error. The second pixel of the edge is a ring,
+   not a 2px border, so the text inside doesn't move. Unlayered on purpose: it must win over the
+   `border-*` utilities that selects across the app carry. */
+:is(
+  input:not(
+    [type="radio"],
+    [type="checkbox"],
+    [type="range"],
+    [type="file"],
+    [type="color"],
+    [type="submit"],
+    [type="button"],
+    [type="reset"],
+    [type="image"]
+  ),
+  textarea,
+  select
+) {
+  --field-edge: var(--navy);
+  transition-property: border-color, box-shadow;
+  transition-duration: var(--duration-quick);
+  transition-timing-function: var(--ease-smooth-out);
+}
+:is(
+  input:not(
+    [type="radio"],
+    [type="checkbox"],
+    [type="range"],
+    [type="file"],
+    [type="color"],
+    [type="submit"],
+    [type="button"],
+    [type="reset"],
+    [type="image"]
+  ),
+  textarea,
+  select
+)[aria-invalid="true"] {
+  --field-edge: var(--danger);
+  border-color: var(--danger);
+  box-shadow: 0 0 0 1px var(--danger);
+}
+:is(
+  input:not(
+    [type="radio"],
+    [type="checkbox"],
+    [type="range"],
+    [type="file"],
+    [type="color"],
+    [type="submit"],
+    [type="button"],
+    [type="reset"],
+    [type="image"]
+  ),
+  textarea,
+  select
+):focus {
+  /* Transparent, not none: forced-colours mode drops box-shadow but paints this outline */
+  outline: 2px solid transparent;
+  border-color: var(--field-edge);
+  box-shadow:
+    0 0 0 1px var(--field-edge),
+    0 0 0 5px color-mix(in oklab, var(--field-edge) 18%, transparent);
+}
+/* A+ mode: a thicker edge and a stronger halo for low-vision users */
+html[data-a11y-plus]
+  :is(
+    input:not(
+      [type="radio"],
+      [type="checkbox"],
+      [type="range"],
+      [type="file"],
+      [type="color"],
+      [type="submit"],
+      [type="button"],
+      [type="reset"],
+      [type="image"]
+    ),
+    textarea,
+    select
+  ):focus {
+  box-shadow:
+    0 0 0 2px var(--field-edge),
+    0 0 0 6px color-mix(in oklab, var(--field-edge) 30%, transparent);
+}
+
 /* ── Transitions (transitions.dev recipes, tuned to the tokens above) ─────────────────────────── */
 
 /* Menu dropdown: grows from its trigger, closes faster and quieter than it opens. State comes from

@@ -91,6 +91,18 @@ describe("MiddlemanWorkbench focus and announcements", () => {
     await click(button("Przygotuj szkic"));
     expect(announce).toHaveBeenLastCalledWith("Spróbuj za chwilę.");
     expect(container.textContent).toContain("Spróbuj za chwilę.");
+    // not a dead end: the card and a question to ROPS work without the AI
+    const id = card.based_on.id;
+    expect(container.querySelector(`a[href="/library/${id}"]`)).not.toBeNull();
+    const ask = container.querySelector<HTMLAnchorElement>('a[href^="/my/messages/new?"]')!;
+    expect(ask.getAttribute("href")).toContain(`innovation=${id}`);
+  });
+
+  it("explains the path from the draft to the answer from ROPS", () => {
+    renderWorkbench();
+    const steps = container.querySelector('ol[aria-label="Jak to działa"]')!;
+    expect(steps.querySelectorAll("li")).toHaveLength(3);
+    expect(steps.textContent).toContain("Odpowiedź przyjdzie w Wiadomościach");
   });
 
   it("moves focus into the edit form and back to 'Edytuj szkic' on cancel and save", async () => {
@@ -114,7 +126,7 @@ describe("MiddlemanWorkbench focus and announcements", () => {
   it("after sending focuses the confirmation that replaced the button", async () => {
     reply({ ...card, status: "wyslana_do_rops" });
     renderWorkbench({ cards: [card], open: true });
-    await click(button("Wyślij do ROPS"));
+    await click(button("Poproś ROPS o opinię"));
     expect(document.activeElement?.id).toBe(FOCUS.sent);
     expect(document.activeElement?.textContent).toMatch(/Wysłano do ROPS/);
   });

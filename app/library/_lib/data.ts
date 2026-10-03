@@ -2,7 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { Category, type Innovation, type InnovationList } from "@/lib/contracts/knowledge-base";
-import { innovationFromRow } from "./row";
+import { innovationsFromRows } from "./row";
 import { innovationsFromFiles, categoriesFromFiles } from "./from-files";
 
 const isDatabaseConfigured = () =>
@@ -17,7 +17,7 @@ export const getInnovations = cache(async (): Promise<Innovation[]> => {
     console.error("Zasobnik: baza niedostępna, używam data/rops", error?.message);
     return innovationsFromFiles();
   }
-  return data.map(innovationFromRow);
+  return innovationsFromRows(data);
 });
 
 export const getCategories = cache(async (): Promise<Category[]> => {

@@ -137,7 +137,8 @@ export async function saveCall(
   }
   const c = parsed.data;
   const before = editingId ? await getCall(deps.supabase, editingId) : null;
-  if (editingId && !before) return { status: "error", message: "Nie znaleziono tego naboru." };
+  if (editingId && !before)
+    return { status: "error", message: "Nie znaleźliśmy tego naboru. Wróć do listy naborów." };
 
   const row = {
     nazwa: c.nazwa,
@@ -158,7 +159,7 @@ export async function saveCall(
       status: "error",
       message: duplicate
         ? "Nabór o tym identyfikatorze już istnieje."
-        : "Nie udało się zapisać naboru.",
+        : "Nie udało się zapisać naboru. Spróbuj ponownie za chwilę.",
     };
   }
 

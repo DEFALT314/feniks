@@ -18,7 +18,7 @@ type TextKey = {
 const CHECKBOXES = [
   ["opublikowana", "Opublikowana w Bibliotece"],
   ["sprawdzona_przez_rops", "Sprawdzona przez ROPS (wybrana do upowszechniania)"],
-  ["do_matchmakingu", "Pokazuj w wynikach „Mam problem” (dopasowanie)"],
+  ["do_matchmakingu", "Pokazuj w wynikach „Dopasuj rozwiązanie”"],
 ] as const;
 
 // Edits a card through PATCH /api/innovations/[id]; only changed fields are sent
@@ -33,7 +33,7 @@ export function EditForm({
   const [form, setForm] = useState<InnovationForm>(() => formFromInnovation(innovation));
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const formRef = useRef<HTMLFormElement>(null);
-  // A repeated error ("Nic nie zmieniono.") is not read again by a live region: focus it instead
+  // A repeated error ("Nie ma zmian do zapisania.") is not read again by a live region: focus it instead
   useFocusFirstError(formRef, status.kind === "error" ? status : undefined);
 
   const update = (changes: Partial<InnovationForm>) => {
@@ -49,7 +49,7 @@ export function EditForm({
     e.preventDefault();
     const changes = editFromForm(saved, form);
     if (Object.keys(changes).length === 0) {
-      setStatus({ kind: "error", message: "Nic nie zmieniono." });
+      setStatus({ kind: "error", message: "Nie ma zmian do zapisania." });
       return;
     }
     setStatus({ kind: "saving" });
@@ -156,9 +156,7 @@ export function EditForm({
         </Button>
         <p role="status" aria-live="polite" className="m-0 text-base font-bold">
           {status.kind === "saved" ? (
-            <span className="text-success">
-              Zapisano. Karta w Bibliotece jest już zaktualizowana.
-            </span>
+            <span className="text-success">Zapisano. Zmiany już widać w Bibliotece.</span>
           ) : null}
           {status.kind === "error" ? (
             <span data-form-error className="text-danger">

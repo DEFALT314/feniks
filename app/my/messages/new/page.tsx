@@ -44,7 +44,7 @@ export default async function NewMessagePage({ searchParams }: PageProps<"/my/me
       <p className="text-muted-foreground">
         {fromRops
           ? "Odbiorca dostanie powiadomienie w aplikacji i mailem. Odpowiedź zobaczysz w Wiadomościach."
-          : "Zadaj pytanie albo opisz potrzebę. Możesz napisać do zespołu ROPS, do eksperta (mentora) albo do organizacji lub gminy, z którą chcesz współpracować."}
+          : "Zadaj pytanie albo opisz, czego potrzebujesz. Możesz napisać do zespołu ROPS, do eksperta (mentora) albo do organizacji lub gminy, z którą chcesz współpracować."}
       </p>
       <Card>
         <NewThreadForm

@@ -10,7 +10,7 @@ export function DemoAccountList() {
         Wersja pokazowa: wejdź jako…
       </h2>
       <p className="text-muted-foreground">
-        Fikcyjne konta z różnymi uprawnieniami. Działa tylko w wersji pokazowej.
+        Fikcyjne osoby i instytucje. Kliknij jedną z nich, żeby wejść bez hasła.
       </p>
       <ul className="flex flex-col gap-3">
         {DEMO_ACCOUNTS.map((account) => (

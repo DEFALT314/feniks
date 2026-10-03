@@ -1,8 +1,8 @@
 // GET /api/ai/calls – open calls for the application generator (#18). Contract: CallList in lib/contracts/ai.ts.
-// Demo calls from data/derived/demo-calls.json until P4 adds a calls table.
+// Published calls from the calls table (ROPS edits them in /admin/calls).
 import { NextResponse } from "next/server";
-import { CALLS } from "@/lib/ai/creator/creator";
+import { openCalls } from "@/lib/ai/creator/open-calls";
 
-export function GET() {
-  return NextResponse.json({ calls: CALLS });
+export async function GET() {
+  return NextResponse.json({ calls: await openCalls() });
 }
