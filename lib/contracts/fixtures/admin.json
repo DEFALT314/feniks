@@ -1,0 +1,51 @@
+{
+  "kolejka": [
+    {
+      "idea_id": "a1b2c3d4-0000-4000-8000-000000000001",
+      "tytul": "Sąsiedzka kawiarenka dla seniorów",
+      "istota": "Cotygodniowe spotkania seniorów w świetlicy, prowadzone przez młodzież z wolontariatu.",
+      "autor_nazwa": "Anna z Wieliczki",
+      "obszar_id": "seniorzy",
+      "wyslany_at": "2026-10-03T17:40:00+02:00",
+      "status": "nowy"
+    },
+    {
+      "idea_id": "a1b2c3d4-0000-4000-8000-000000000002",
+      "tytul": "Transport na żądanie dla osób z niepełnosprawnością",
+      "istota": null,
+      "autor_nazwa": "Stowarzyszenie „Razem” (fikcyjne)",
+      "obszar_id": null,
+      "wyslany_at": "2026-10-03T16:55:00+02:00",
+      "status": "do_poprawy"
+    }
+  ],
+  "ocena": {
+    "id": "b2c3d4e5-0000-4000-8000-000000000001",
+    "idea_id": "a1b2c3d4-0000-4000-8000-000000000002",
+    "status": "do_poprawy",
+    "komentarz": "Proszę dopisać, kto zapewni pojazd i ile osób skorzysta w pierwszym roku.",
+    "reviewer_id": "55555555-5555-4555-8555-555555555555",
+    "ekspert_id": null,
+    "created_at": "2026-10-03T18:05:00+02:00"
+  },
+  "prosby_o_role": [
+    {
+      "user_id": "22222222-2222-4222-8222-222222222222",
+      "nazwa_wyswietlana": "Fundacja Przykładowa (fikcyjna)",
+      "obecna_rola": "mieszkaniec",
+      "wnioskowana_rola": "ngo",
+      "instytucja_id": null,
+      "instytucja_nazwa": null
+    }
+  ],
+  "nabory": [
+    {
+      "id": "c3d4e5f6-0000-4000-8000-000000000001",
+      "nazwa": "Przykładowy nabór na innowacje społeczne (fikcyjny)",
+      "url": "https://example.org/nabor",
+      "termin_od": "2026-10-01",
+      "termin_do": "2026-11-30",
+      "obszary": ["seniorzy"]
+    }
+  ]
+}
