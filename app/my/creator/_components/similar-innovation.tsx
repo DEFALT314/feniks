@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { announce } from "@/components/ui/announcer";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { InnovationSummary } from "@/lib/contracts/knowledge-base";
@@ -30,9 +31,13 @@ async function findSimilar(text: string): Promise<State> {
 // "Coś podobnego już działa" (#35): the closest innovation from the ROPS Library, from P3's
 // POST /api/match (ranking only, ai: false, so it answers in under a second).
 // Checked when the card opens and again once the author stops typing (not on every keystroke).
+// Not a live region: it updates while the author types the description, and reading it out would
+// talk over their typing (WCAG 4.1.3). Only a newly found innovation is announced, and only when
+// focus is not in a text field.
 export function SimilarInnovation({ description }: { description: string }) {
   const lastChecked = useRef<string | null>(null);
   const opened = useRef(description); // the saved card, checked at once when the page opens
+  const lastFound = useRef<string | null>(null);
   const [state, setState] = useState<State>({ status: "too-short" });
 
   useEffect(() => {
@@ -52,6 +57,10 @@ export function SimilarInnovation({ description }: { description: string }) {
       // Remember only answers that were shown; a failed check is tried again on the next change
       if (next.status !== "error") lastChecked.current = description;
       setState(next);
+      if (next.status === "found" && next.innovation.id !== lastFound.current && !isTyping()) {
+        announce(`Coś podobnego już działa: ${next.innovation.nazwa}.`);
+      }
+      if (next.status === "found") lastFound.current = next.innovation.id;
     }, delay);
     return () => {
       current = false;
@@ -65,20 +74,18 @@ export function SimilarInnovation({ description }: { description: string }) {
       aria-labelledby="similar-heading"
       className="flex flex-col gap-2.5 p-[22px]"
     >
-      <h2 id="similar-heading" className="text-muted-foreground text-[0.9375rem] font-bold">
+      <h2 id="similar-heading" className="text-muted-foreground text-base font-bold">
         Coś podobnego już działa
       </h2>
-      <div aria-live="polite" className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-2.5">
         {state.status === "too-short" ? (
           <p className="text-base">
             Opisz pomysł w fiszce, a sprawdzimy, czy w Bibliotece ROPS jest coś podobnego.
           </p>
         ) : null}
-        {state.status === "loading" ? <p role="status">Szukamy w Bibliotece ROPS…</p> : null}
+        {state.status === "loading" ? <p>Szukamy w Bibliotece ROPS…</p> : null}
         {state.status === "error" ? (
-          <p role="alert" className="text-danger text-base font-bold">
-            {state.message}
-          </p>
+          <p className="text-danger text-base font-bold">{state.message}</p>
         ) : null}
         {state.status === "none" ? (
           <p className="text-base">
@@ -97,11 +104,19 @@ export function SimilarInnovation({ description }: { description: string }) {
               Twój pomysł może ją uzupełnić. Warto porozmawiać z autorami, zanim wyślesz fiszkę.
             </p>
             <Link href={`/library/${state.innovation.id}`} className="font-bold">
-              Zobacz kartę
+              Zobacz kartę<span className="sr-only">: {state.innovation.nazwa}</span>
             </Link>
           </>
         ) : null}
       </div>
     </Card>
+  );
+}
+
+/** True while the author is typing in a text field, when an announcement would interrupt them. */
+export function isTyping(): boolean {
+  const el = document.activeElement;
+  return (
+    el instanceof HTMLTextAreaElement || (el instanceof HTMLInputElement && el.type === "text")
   );
 }

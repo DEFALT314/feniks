@@ -4,7 +4,9 @@ import type { Notification } from "@/lib/contracts/notifications";
 export type BellState = {
   unread: number;
   items: Notification[] | null; // null until the list is loaded (first open)
-  announcement: string; // text for the aria-live region
+  announcement: string; // text for the global live region (announce())
+  // Bumped with every announcement, so the same text ("Nowe powiadomienie: …") is read again
+  announcementId: number;
 };
 
 export type BellAction =
@@ -25,6 +27,7 @@ export function bellReducer(state: BellState, action: BellAction): BellState {
         unread: state.unread + (action.item.przeczytane ? 0 : 1),
         items: state.items ? [action.item, ...state.items].slice(0, MAX_ITEMS) : null,
         announcement: `Nowe powiadomienie: ${action.item.tytul}`,
+        announcementId: state.announcementId + 1,
       };
     }
     case "updated": {
@@ -60,9 +63,37 @@ const TIME = new Intl.DateTimeFormat("pl-PL", {
   timeZone: "Europe/Warsaw",
 });
 
+const DAY = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Warsaw" });
+const DATE = new Intl.DateTimeFormat("pl-PL", {
+  day: "numeric",
+  month: "long",
+  timeZone: "Europe/Warsaw",
+});
+
+// Older notifications get their day too: "14:00" alone does not say whether it was today.
 export function shortTime(iso: string, now = new Date()): string {
-  const minutes = Math.round((now.getTime() - new Date(iso).getTime()) / 60000);
+  const date = new Date(iso);
+  const minutes = Math.round((now.getTime() - date.getTime()) / 60000);
   if (minutes < 1) return "przed chwilą";
   if (minutes < 60) return `${minutes} min temu`;
-  return TIME.format(new Date(iso));
+  if (DAY.format(date) === DAY.format(now)) return `dziś, ${TIME.format(date)}`;
+  if (DAY.format(date) === DAY.format(new Date(now.getTime() - 86400000)))
+    return `wczoraj, ${TIME.format(date)}`;
+  return `${DATE.format(date)}, ${TIME.format(date)}`;
+}
+
+function plural(n: number, one: string, few: string, many: string): string {
+  if (n === 1) return one;
+  const tens = n % 100;
+  const units = n % 10;
+  return units >= 2 && units <= 4 && (tens < 12 || tens > 14) ? few : many;
+}
+
+/** Read out when the opened list has loaded ("Wczytujemy…" itself is not announced). */
+export function loadedSummary(items: number, unread: number): string {
+  if (items === 0) return "Nie masz jeszcze powiadomień.";
+  const list = `${items} ${plural(items, "powiadomienie", "powiadomienia", "powiadomień")}`;
+  return unread > 0
+    ? `${list}, w tym ${unread} ${plural(unread, "nowe", "nowe", "nowych")}.`
+    : `${list}, wszystkie przeczytane.`;
 }

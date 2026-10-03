@@ -40,7 +40,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       footer={
         <>
           Nie masz konta?{" "}
-          <Link href={registerHref} className="font-bold">
+          <Link href={registerHref} className="inline-flex min-h-11 items-center font-bold">
             Załóż konto
           </Link>
         </>

@@ -77,12 +77,13 @@ function IdeaSummary({ idea }: { idea: MyIdea }) {
           className={buttonVariants({ variant: "primary", size: "sm" })}
         >
           {done === fields.length ? "Przejrzyj kanwę" : "Dokończ kanwę"}
+          <span className="sr-only">: {idea.tytul}</span>
         </Link>
         <Link
           href={`/my/creator/${idea.id}/card`}
           className={buttonVariants({ variant: "secondary", size: "sm" })}
         >
-          Fiszka
+          Fiszka<span className="sr-only">: {idea.tytul}</span>
         </Link>
       </div>
     </Card>

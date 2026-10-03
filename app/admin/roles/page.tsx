@@ -5,10 +5,11 @@ import { roleLabel } from "@/components/ui/navigation";
 import { Role } from "@/lib/contracts/shared";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
+import { FlashMessage } from "@/components/ui/param-focus";
 import { REQUESTABLE_LABELS, RequestableRole } from "@/app/my/profile/_lib/role-request";
 import { decideRole } from "./actions";
 
-export const metadata: Metadata = { title: "Prośby o rolę – Panel ROPS" };
+export const metadata: Metadata = { title: "Prośby o rolę – Panel ROPS – HubMI.pl" };
 
 type Row = {
   id: string;
@@ -44,11 +45,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/roles">) 
           Organizacje, gminy i eksperci proszą o rolę w swoim profilu. Po zatwierdzeniu dostają
           dodatkowe narzędzia, a o decyzji informuje ich powiadomienie.
         </p>
-        <p role="status" aria-live="polite" className="m-0 font-bold empty:hidden">
-          {typeof msg === "string" ? (
-            <span className={ok === "1" ? "text-success" : "text-danger"}>{msg}</span>
-          ) : null}
-        </p>
+        <FlashMessage message={typeof msg === "string" ? msg : null} ok={ok === "1"} />
 
         {requests.length === 0 ? (
           <p className="border-border rounded-xl border bg-white p-6">

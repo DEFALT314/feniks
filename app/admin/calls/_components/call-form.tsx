@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { useFocusFirstError } from "@/components/ui/focus";
 import { Input, Textarea } from "@/components/ui/input";
 import type { Call } from "@/lib/contracts/admin";
 import type { CallFormState } from "@/lib/calls";
@@ -17,10 +18,18 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
     { status: "idle" },
   );
   const e = state.fieldErrors ?? {};
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusFirstError(formRef, state.status === "error" ? state : undefined);
 
   return (
-    <form action={action} className="flex flex-col gap-4" key={call?.id ?? "new"}>
-      <Field label="Nazwa naboru" error={e.nazwa}>
+    <form
+      ref={formRef}
+      action={action}
+      className="flex flex-col gap-4"
+      key={call?.id ?? "new"}
+      noValidate
+    >
+      <Field label="Nazwa naboru" error={e.nazwa} required>
         {(p) => <Input {...p} name="nazwa" required defaultValue={call?.nazwa} />}
       </Field>
       <Field
@@ -29,6 +38,7 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
           call ? "Nie zmienia się po dodaniu." : "Małe litery i myślniki, np. nabor-seniorzy-2027."
         }
         error={e.id}
+        required={!call}
       >
         {(p) => (
           <Input {...p} name="id" required defaultValue={call?.id} readOnly={Boolean(call)} />
@@ -99,7 +109,7 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
           {pending ? "Zapisujemy…" : call ? "Zapisz zmiany" : "Dodaj nabór"}
         </Button>
         {call ? (
-          <Link href="/admin/calls" className="text-base">
+          <Link href="/admin/calls" className="inline-flex min-h-11 items-center text-base">
             Anuluj
           </Link>
         ) : null}
@@ -114,7 +124,9 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
           </strong>
         ) : null}
         {state.status === "error" && state.message ? (
-          <strong className="text-danger">{state.message}</strong>
+          <strong data-form-error className="text-danger">
+            {state.message}
+          </strong>
         ) : null}
       </p>
     </form>

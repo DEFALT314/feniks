@@ -6,8 +6,11 @@ import { focusElement } from "./focus";
 
 const MAIN = "main-content";
 
-/** The page's h1, or <main> when a page has none. */
+/** The #hash target when the URL has one, else the page's h1, else <main>. */
 export function pageStart(doc: Document = document): HTMLElement | null {
+  const hash = decodeURIComponent(doc.location?.hash.slice(1) ?? "");
+  const target = hash ? doc.getElementById(hash) : null;
+  if (target) return target;
   const main = doc.getElementById(MAIN);
   return main?.querySelector<HTMLElement>("h1") ?? main;
 }

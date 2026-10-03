@@ -1,24 +1,17 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { A11Y_PLUS_ATTRIBUTE, A11Y_PLUS_COOKIE } from "./a11y-plus";
 import { Button } from "./button";
 
 // "A+": larger text and higher contrast (styles: html[data-a11y-plus] in app/globals.css).
 // The choice is kept in a cookie, so the server renders the page and this button in the right state
 // (app/layout.tsx), and in localStorage for pages opened before the cookie existed
 // (A11Y_PLUS_SCRIPT runs before first paint). Other open tabs follow through the storage event.
-export const A11Y_PLUS_COOKIE = "hubmi-a11y-plus";
 const STORAGE_KEY = A11Y_PLUS_COOKIE;
-const ATTRIBUTE = "data-a11y-plus";
+const ATTRIBUTE = A11Y_PLUS_ATTRIBUTE;
 const CHANGE_EVENT = "hubmi-a11y-plus-change";
 const YEAR_SECONDS = 60 * 60 * 24 * 365;
-
-export const A11Y_PLUS_SCRIPT = `try{if(localStorage.getItem("${STORAGE_KEY}")==="1")document.documentElement.setAttribute("${ATTRIBUTE}","")}catch(e){}`;
-
-/** Server side: is A+ on for this request (cookie value)? */
-export function a11yPlusFromCookie(value: string | undefined): boolean {
-  return value === "1";
-}
 
 function apply(on: boolean) {
   document.documentElement.toggleAttribute(ATTRIBUTE, on);

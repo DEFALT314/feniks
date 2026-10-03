@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useTransition, type FormEvent, type RefObject } from "react";
+import { useRef, useState, useTransition, type FormEvent, type RefObject } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field } from "@/components/ui/field";
+import { useFocusFirstError } from "@/components/ui/focus";
 import { Textarea } from "@/components/ui/input";
 import type { TesterTest } from "@/lib/contracts/innovation-tester";
 import { rateTest } from "../actions";
@@ -24,6 +25,10 @@ export function RatingForm({
   const [worked, setWorked] = useState(test.moja_ocena?.co_dzialalo ?? "");
   const [improve, setImprove] = useState(test.moja_ocena?.co_poprawic ?? "");
   const [scoreError, setScoreError] = useState(false);
+  // Each failed submit is a new value, so focus moves to the first score again (WCAG 3.3.1)
+  const [failedAttempt, setFailedAttempt] = useState(0);
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusFirstError(formRef, failedAttempt || undefined);
   const [message, setMessage] = useState<{ error: boolean; text: string } | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -32,6 +37,7 @@ export function RatingForm({
     setMessage(null);
     if (score === null) {
       setScoreError(true);
+      setFailedAttempt((n) => n + 1);
       return;
     }
     const again = test.moja_ocena !== null;
@@ -55,21 +61,20 @@ export function RatingForm({
 
   return (
     <Card className="border-t-navy border-t-4">
-      <form onSubmit={submit} noValidate className="flex flex-col gap-4">
+      <form ref={formRef} onSubmit={submit} noValidate className="flex flex-col gap-4">
         <h2
           id="rating-heading"
           ref={headingRef}
           tabIndex={-1}
-          className="text-[1.375rem] leading-snug font-bold focus-visible:outline-none"
+          className="text-[1.375rem] leading-snug font-bold"
         >
           Oceń: {test.przedmiot.typ === "innowacja" ? test.przedmiot.nazwa : test.tytul}
         </h2>
-        <fieldset
-          data-ruch="wybor"
-          aria-describedby={scoreError ? "rating-score-error" : undefined}
-          className="flex flex-col gap-2"
-        >
-          <legend className="mb-2 font-bold">Na ile pomaga? (1 – wcale, 5 – bardzo)</legend>
+        <fieldset data-ruch="wybor" className="flex flex-col gap-2">
+          <legend className="mb-2 font-bold">
+            Na ile pomaga? (1 – wcale, 5 – bardzo)
+            <span className="text-muted-foreground font-normal"> (wymagane)</span>
+          </legend>
           {scoreError ? (
             <p id="rating-score-error" className="text-danger text-base font-bold">
               Wybierz ocenę od 1 do 5.
@@ -86,6 +91,10 @@ export function RatingForm({
                   name={`score-${test.id}`}
                   value={value}
                   checked={score === value}
+                  required
+                  aria-describedby={scoreError ? "rating-score-error" : undefined}
+                  // Radios can't be aria-invalid: the first one is the focus target for the error
+                  data-form-error={scoreError && value === SCORES[0] ? true : undefined}
                   onChange={() => {
                     setScore(value);
                     setScoreError(false);

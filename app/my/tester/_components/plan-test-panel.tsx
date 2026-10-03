@@ -77,12 +77,13 @@ export function PlanTestPanel({ ideaId, testCount }: { ideaId: string; testCount
         {open ? "Zwiń formularz" : "Zaplanuj test"}
       </Button>
       <form id={formId} hidden={!open} onSubmit={submit} noValidate className="flex flex-col gap-4">
-        <Field label="Nazwa testu" error={titleError ? "Wpisz nazwę testu." : undefined}>
+        <Field label="Nazwa testu" error={titleError ? "Wpisz nazwę testu." : undefined} required>
           {(control) => (
             <Input
               {...control}
               ref={titleInput}
               maxLength={200}
+              required
               value={draft.tytul}
               onChange={(e) => {
                 set("tytul")(e.target.value);

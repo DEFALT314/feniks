@@ -14,7 +14,7 @@ import { defaultInstitution } from "./_lib/institution";
 // Module VII, Middleman (P3). Mockup: design/makiety/Middleman.dc.html.
 // API: POST /api/ai/middleman, PATCH /api/ai/middleman/[id], POST /api/ai/middleman/[id]/send.
 
-export const metadata: Metadata = { title: "Karta usługi dla gminy – HubMI" };
+export const metadata: Metadata = { title: "Karta usługi dla gminy – HubMI.pl" };
 
 type Props = { searchParams: Promise<{ innovation?: string; card?: string }> };
 
@@ -77,7 +77,7 @@ export default async function Page({ searchParams }: Props) {
 
   return (
     <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed print:bg-white">
-      {/* The printed page (Pobierz PDF) shows only the card and its sources. */}
+      {/* The printed page ("Drukuj albo zapisz jako PDF") shows only the card and its sources. */}
       <style>{`@media print { body > header, header, footer, nav[aria-label="Twoje karty usług"] { display: none !important; } }`}</style>
       <MiddlemanWorkbench
         innovations={options}

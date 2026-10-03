@@ -73,7 +73,11 @@ describe("isActivePath", () => {
 describe("labels", () => {
   it("describes unread notifications for screen readers", () => {
     expect(notificationsLabel(0)).toBe("Powiadomienia: brak nowych");
+    expect(notificationsLabel(1)).toBe("Powiadomienia: 1 nowe");
     expect(notificationsLabel(2)).toBe("Powiadomienia: 2 nowe");
+    expect(notificationsLabel(5)).toBe("Powiadomienia: 5 nowych");
+    expect(notificationsLabel(12)).toBe("Powiadomienia: 12 nowych");
+    expect(notificationsLabel(22)).toBe("Powiadomienia: 22 nowe");
   });
 
   it("names roles in plain Polish", () => {

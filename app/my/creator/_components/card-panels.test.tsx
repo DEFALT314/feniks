@@ -24,12 +24,17 @@ describe("AiHints", () => {
     const html = renderToStaticMarkup(<AiHints draft={draft} onUse={() => {}} />);
     expect(html).toContain("Podpowiedz");
     expect(html).toContain("Nic nie zmieni się bez Twojej zgody");
-    expect(html).toContain('aria-live="polite"');
+    // The panel is not a live region: results are announced as one short sentence instead
+    expect(html).not.toContain("aria-live");
   });
 
   it("needs a title before asking", () => {
     const html = renderToStaticMarkup(<AiHints draft={{ ...draft, title: "" }} onUse={() => {}} />);
-    expect(html).toMatch(/<button[^>]*disabled=""[^>]*>Podpowiedz<\/button>/);
+    const button = html.match(/<button[^>]*>Podpowiedz<\/button>/)![0];
+    expect(button).toContain('aria-disabled="true"');
+    // The disabled button stays focusable and says why it is unavailable
+    const reasonId = button.match(/aria-describedby="([^"]+)"/)![1];
+    expect(html).toMatch(new RegExp(`id="${reasonId}"[^>]*>Najpierw wpisz tytuł pomysłu.`));
   });
 });
 
@@ -48,7 +53,9 @@ describe("ApplicationDraft", () => {
     const html = renderToStaticMarkup(
       <ApplicationDraft calls={aiFixtures.callList.calls} draft={{ ...draft, description: "" }} />,
     );
-    expect(html).toContain("Najpierw opisz pomysł");
+    const button = html.match(/<button[^>]*>Przygotuj szkic wniosku<\/button>/)![0];
+    const reasonId = button.match(/aria-describedby="([^"]+)"/)![1];
+    expect(html).toMatch(new RegExp(`id="${reasonId}"[^>]*>Najpierw opisz pomysł`));
   });
 
   it("renders nothing without calls", () => {
@@ -68,7 +75,10 @@ describe("SubmitPanel", () => {
       <SubmitPanel {...submitProps} missing={["Opis", "Istota"]} />,
     );
     expect(html).toContain("uzupełnij: <strong>Opis, Istota</strong>");
-    expect(html).toMatch(/<button[^>]*disabled=""[^>]*>Wyślij do ROPS<\/button>/);
+    const button = html.match(/<button[^>]*>Wyślij do ROPS<\/button>/)![0];
+    expect(button).toContain('aria-disabled="true"');
+    const reasonId = button.match(/aria-describedby="([^"]+)"/)![1];
+    expect(html).toContain(`<p id="${reasonId}" class="text-base">Żeby wysłać, uzupełnij:`);
   });
 
   it("shows the status and hides the button while ROPS has the idea", () => {

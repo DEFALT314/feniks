@@ -58,5 +58,14 @@ export function isActivePath(pathname: string, href: string): boolean {
 }
 
 export function notificationsLabel(unread: number): string {
-  return unread > 0 ? `Powiadomienia: ${unread} nowe` : "Powiadomienia: brak nowych";
+  if (unread <= 0) return "Powiadomienia: brak nowych";
+  return `Powiadomienia: ${unread} ${polishPlural(unread, "nowe", "nowe", "nowych")}`;
+}
+
+/** Polish plural form: 1 nowe powiadomienie, 2–4 nowe, 5–21 nowych, 22–24 nowe… */
+export function polishPlural(n: number, one: string, few: string, many: string): string {
+  if (n === 1) return one;
+  const tens = n % 100;
+  const units = n % 10;
+  return units >= 2 && units <= 4 && (tens < 12 || tens > 14) ? few : many;
 }

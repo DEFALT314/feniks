@@ -9,6 +9,7 @@ import type { Innovation } from "@/lib/contracts/knowledge-base";
 import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { getInnovations, getInnovationById, getCategories } from "../_lib/data";
 import { similarInnovations, challengesForInnovation } from "../_lib/related";
+import { askRopsUrl } from "../_lib/format";
 
 // Full program names for Library labels
 const PROGRAMS: Record<string, string> = {
@@ -19,7 +20,8 @@ const PROGRAMS: Record<string, string> = {
 };
 
 const LINK = "text-navy underline underline-offset-[3px] hover:text-navy-strong";
-const FOCUS = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick";
+// A link that stands on its own line gets a 44px target (project rule 7)
+const TARGET = "inline-flex min-h-11 items-center";
 
 export async function generateMetadata({ params }: PageProps<"/library/[id]">): Promise<Metadata> {
   const i = await getInnovationById((await params).id);
@@ -52,19 +54,19 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
       <div className="border-line border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-3.5 px-4 pt-5 pb-9 sm:px-10">
           <nav aria-label="Ścieżka" className="text-base">
-            <ol className="flex flex-wrap gap-1">
-              <li>
-                <Link href="/library" className={LINK}>
+            <ol className="flex flex-wrap items-center gap-x-1.5">
+              <li className="flex items-center gap-1.5">
+                <Link href="/library" className={`${LINK} ${TARGET}`}>
                   Biblioteka
-                </Link>{" "}
-                ›
+                </Link>
+                <span aria-hidden="true">›</span>
               </li>
               {category ? (
-                <li>
-                  <Link href={`/library?category=${category.id}`} className={LINK}>
+                <li className="flex items-center gap-1.5">
+                  <Link href={`/library?category=${category.id}`} className={`${LINK} ${TARGET}`}>
                     {category.nazwa}
-                  </Link>{" "}
-                  ›
+                  </Link>
+                  <span aria-hidden="true">›</span>
                 </li>
               ) : null}
               <li aria-current="page" className="text-ink-muted">
@@ -119,10 +121,13 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
           </Section>
           {challenges.length > 0 ? (
             <Section title="Wyzwania z Mapy Wyzwań">
-              <ul className="m-0 flex list-none flex-col gap-1 p-0">
+              <ul className="m-0 flex list-none flex-col p-0">
                 {challenges.map(({ area, challenge }) => (
                   <li key={challenge.id}>
-                    <Link href={`/challenge-map?area=${area.id}#area`} className={LINK}>
+                    <Link
+                      href={`/challenge-map?area=${area.id}#area`}
+                      className={`${LINK} ${TARGET}`}
+                    >
                       {area.nazwa}: {challenge.tekst}
                     </Link>
                   </li>
@@ -148,20 +153,20 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
               Przygotuj kartę usługi
             </Link>
             <Link
-              href={`/my/messages?innovation=${encodeURIComponent(i.id)}`}
+              href={askRopsUrl(i.id, i.nazwa)}
               className={buttonVariants({ variant: "secondary" })}
             >
-              Zapytaj ROPS
+              Zapytaj ROPS<span className="sr-only"> o tę innowację</span>
             </Link>
           </div>
           <MaterialsPanel innovation={i} />
           {similar.length > 0 ? (
             <div className="flex flex-col gap-1.5">
               <h2 className="text-[1.0625rem] font-bold">Podobne innowacje</h2>
-              <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
+              <ul className="m-0 flex list-none flex-col p-0">
                 {similar.map((p) => (
                   <li key={p.id}>
-                    <Link href={`/library/${p.id}`} className={LINK}>
+                    <Link href={`/library/${p.id}`} className={`${LINK} ${TARGET}`}>
                       {p.nazwa}
                     </Link>
                   </li>
@@ -229,13 +234,17 @@ function MaterialsPanel({ innovation: i }: { innovation: Innovation }) {
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`border-line text-navy flex min-h-12 items-center justify-between gap-3 border-b py-3 no-underline hover:underline ${FOCUS}`}
+                className="border-line text-navy flex min-h-12 items-center justify-between gap-3 border-b py-3 no-underline hover:underline"
               >
                 <span>
                   {p.label}
-                  <span className="sr-only"> (otwiera się w nowej karcie)</span>
+                  <span className="sr-only">
+                    , {p.kind}: {i.nazwa} (otwiera się w nowej karcie)
+                  </span>
                 </span>
-                <span className="text-ink-muted text-[0.9375rem]">{p.kind}</span>
+                <span aria-hidden="true" className="text-ink-muted text-[0.9375rem]">
+                  {p.kind}
+                </span>
               </a>
             </li>
           ))}
@@ -244,8 +253,9 @@ function MaterialsPanel({ innovation: i }: { innovation: Innovation }) {
         <p className="text-ink-muted py-3">Brak materiałów do pobrania.</p>
       )}
       <p className="pt-3 text-base">
-        <a href={i.url} target="_blank" rel="noopener noreferrer" className={`${LINK} ${FOCUS}`}>
-          {i.spoza_biblioteki ? "Źródło na stronie programu ↗" : "Pełna karta na stronie ROPS ↗"}
+        <a href={i.url} target="_blank" rel="noopener noreferrer" className={`${LINK} ${TARGET}`}>
+          {i.spoza_biblioteki ? "Źródło na stronie programu" : "Pełna karta na stronie ROPS"}
+          <span aria-hidden="true">&nbsp;↗</span>
           <span className="sr-only"> (otwiera się w nowej karcie)</span>
         </a>
       </p>

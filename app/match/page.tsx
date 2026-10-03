@@ -3,7 +3,7 @@ import { MatchForm } from "./_components/match-form";
 
 // Module I, Matchmaking (P3). Mockup: design/makiety/Dopasuj.dc.html. API: POST /api/match.
 
-export const metadata: Metadata = { title: "Dopasuj rozwiązanie – HubMI" };
+export const metadata: Metadata = { title: "Dopasuj rozwiązanie – HubMI.pl" };
 
 type Props = { searchParams: Promise<{ description?: string | string[] }> };
 

@@ -12,14 +12,20 @@ import { reportNeedHref } from "../_lib/request";
 const LINK =
   "text-navy underline underline-offset-[3px] hover:text-navy-strong hover:underline-offset-[5px]";
 
+// The decisive words: a highlighter band as in the mockup plus an underline, so they are not shown
+// by colour alone (WCAG 1.4.1). Screen readers don't announce <mark>, so the words are also listed
+// in text after the passage. Forced colours: app/globals.css gives <mark> the system Mark colours.
+export const HIGHLIGHT_LEGEND = "Podkreślone słowa zdecydowały o dopasowaniu.";
+
 export function Highlighted({ segments }: { segments: TextSegment[] }) {
+  const words = segments.filter((s) => s.highlight).map((s) => s.text.trim());
   return (
     <>
       {segments.map((s, n) =>
         s.highlight ? (
           <mark
             key={n}
-            className="bg-[linear-gradient(transparent_55%,#ffe08a_55%)] px-px text-inherit"
+            className="decoration-warning bg-transparent bg-[linear-gradient(transparent_55%,#ffe08a_55%)] px-px text-inherit underline decoration-2 underline-offset-4"
           >
             {s.text}
           </mark>
@@ -27,6 +33,12 @@ export function Highlighted({ segments }: { segments: TextSegment[] }) {
           <span key={n}>{s.text}</span>
         ),
       )}
+      {words.length ? (
+        <span className="sr-only">
+          {" "}
+          (Słowa, które zdecydowały o dopasowaniu: {words.join(", ")}.)
+        </span>
+      ) : null}
     </>
   );
 }
@@ -53,9 +65,10 @@ function Step({
       >
         {n}
       </span>
-      <h3 className="text-ink-muted mb-1.5 font-sans text-[0.9375rem] font-bold tracking-normal">
+      {/* Not a heading: the innovation names below are the h3s (the spec allows h1–h3 only) */}
+      <p className="text-ink-muted mb-1.5 font-sans text-[0.9375rem] font-bold tracking-normal">
         {title}
-      </h3>
+      </p>
       {children}
     </li>
   );
@@ -70,10 +83,12 @@ function InnovationCard({
   match,
   first,
   ai,
+  preliminary,
 }: {
   match: MatchedInnovation;
   first: boolean;
   ai: boolean;
+  preliminary: boolean;
 }) {
   const i = match.innovation;
   const tag = origin(match);
@@ -82,19 +97,25 @@ function InnovationCard({
       className={cn(
         "border-border flex flex-col gap-2.5 rounded-xl border bg-white p-6",
         first && "border-l-navy border-l-4",
+        // Preliminary (before the AI choice): a dashed border and a label, not dimmed text,
+        // so contrast stays at 4.5:1 (WCAG 1.4.3)
+        preliminary && "border-field-border border-dashed",
       )}
     >
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h4
+        <h3
           className={cn("leading-snug font-bold", first ? "text-[1.4375rem]" : "text-[1.3125rem]")}
         >
           {i.nazwa}
-        </h4>
-        {i.sprawdzona_przez_rops ? (
-          <Badge variant="success">Sprawdzona przez ROPS</Badge>
-        ) : tag ? (
-          <Badge>{tag}</Badge>
-        ) : null}
+        </h3>
+        <span className="flex flex-wrap gap-2">
+          {preliminary ? <Badge>Wstępny wynik</Badge> : null}
+          {i.sprawdzona_przez_rops ? (
+            <Badge variant="success">Sprawdzona przez ROPS</Badge>
+          ) : tag ? (
+            <Badge>{tag}</Badge>
+          ) : null}
+        </span>
       </div>
       {i.opis_krotki ? (
         <p>
@@ -118,7 +139,7 @@ function InnovationCard({
       {first ? (
         <div className="mt-1 flex flex-wrap gap-2.5">
           <Link href={`/library/${i.id}`} className={buttonVariants()}>
-            Zobacz kartę
+            Zobacz kartę<span className="sr-only">: {i.nazwa}</span>
           </Link>
           <Link
             href={`/my/middleman?innovation=${i.id}`}
@@ -128,8 +149,12 @@ function InnovationCard({
           </Link>
         </div>
       ) : (
-        <Link href={`/library/${i.id}`} className={cn(LINK, "font-bold")}>
-          Zobacz kartę<span aria-hidden="true"> →</span>
+        <Link
+          href={`/library/${i.id}`}
+          className={cn(LINK, "inline-flex min-h-11 items-center self-start font-bold")}
+        >
+          Zobacz kartę<span className="sr-only">: {i.nazwa}</span>
+          <span aria-hidden="true">&nbsp;→</span>
         </Link>
       )}
     </article>
@@ -153,7 +178,7 @@ function MoreInnovations({ result }: { result: MatchResponse }) {
   const title = nothingAbove ? "Najbliższe, co znaleźliśmy" : "Inne innowacje, które mogą pasować";
   return (
     <details className="mt-6" open={nothingAbove || undefined}>
-      <summary className="text-navy cursor-pointer font-bold">
+      <summary className="text-navy cursor-pointer py-2.5 font-bold">
         {title} ({result.more.length})
       </summary>
       <p className="text-ink-muted mt-2 text-[0.9375rem]">
@@ -167,7 +192,10 @@ function MoreInnovations({ result }: { result: MatchResponse }) {
           return (
             <li key={m.id} className="border-border border-l-2 pl-4">
               <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <Link href={`/library/${m.id}`} className={cn(LINK, "font-bold")}>
+                <Link
+                  href={`/library/${m.id}`}
+                  className={cn(LINK, "inline-flex min-h-11 items-center font-bold")}
+                >
                   {m.nazwa}
                 </Link>
                 {m.sprawdzona_przez_rops ? (
@@ -205,6 +233,9 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
           <p>
             <Highlighted segments={result.description_segments} />
           </p>
+          {result.description_segments.some((s) => s.highlight) ? (
+            <p className="text-ink-muted mt-1 text-base">{HIGHLIGHT_LEGEND}</p>
+          ) : null}
         </Step>
 
         {result.challenge ? (
@@ -212,7 +243,7 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
             <p>
               <strong>{result.challenge.area_name}:</strong> {result.challenge.challenge_text ?? ""}{" "}
               <Link href={`/challenge-map?area=${result.challenge.area_id}#area`} className={LINK}>
-                Zobacz obszar
+                Zobacz obszar<span className="sr-only">: {result.challenge.area_name}</span>
               </Link>
             </p>
           </Step>
@@ -229,14 +260,19 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
               // key changes when the AI answer replaces the ranking, so the cards fade in anew
               key={result.picked_by}
               className={cn(
-                "flex flex-col gap-4 transition-opacity duration-300",
-                choosing && "opacity-60",
+                "flex flex-col gap-4",
                 ai &&
                   "animate-in fade-in slide-in-from-bottom-2 duration-500 motion-reduce:animate-none",
               )}
             >
               {result.innovations.map((m, n) => (
-                <InnovationCard key={m.innovation.id} match={m} first={n === 0} ai={ai} />
+                <InnovationCard
+                  key={m.innovation.id}
+                  match={m}
+                  first={n === 0}
+                  ai={ai}
+                  preliminary={choosing}
+                />
               ))}
             </div>
           ) : (
@@ -271,7 +307,7 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
         </Link>
       </Card>
       <p className="text-ink-muted mt-4 text-[0.9375rem]">
-        Model wybiera wyłącznie spośród innowacji z Biblioteki ROPS i pokazuje słowa, które
+        Model wybiera wyłącznie spośród innowacji z Biblioteki ROPS i podkreśla słowa, które
         zdecydowały o dopasowaniu. Twojego opisu nie zapisujemy, do statystyk trafia tylko obszar i
         wyzwanie.
       </p>
