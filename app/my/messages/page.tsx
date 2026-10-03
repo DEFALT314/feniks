@@ -20,7 +20,7 @@ import { LiveRefresh } from "./_components/live-refresh";
 import { MessageList } from "./_components/message-list";
 import { ReplyForm } from "./_components/reply-form";
 import type { LastMessage } from "./_lib/announce";
-import { historyLine, newMessageHref, recipientOptions, when } from "./_lib/format";
+import { historyLine, newMessageHref, offersIdeaFix, recipientOptions, when } from "./_lib/format";
 
 export const metadata: Metadata = { title: "Wiadomości – HubMI.pl" };
 
@@ -149,7 +149,7 @@ export default async function MessagesPage({ searchParams }: PageProps<"/my/mess
               {fromRops ? <InviteForm threadId={thread.id} people={invitees} /> : null}
               <MessageList messages={thread.messages} />
               <ReplyForm key={thread.id} threadId={thread.id}>
-                {thread.i_am_author && thread.idea_id ? (
+                {offersIdeaFix(thread) ? (
                   <Link
                     href={`/my/creator/${thread.idea_id}`}
                     className={buttonVariants({ variant: "secondary" })}

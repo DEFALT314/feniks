@@ -103,3 +103,12 @@ export function recipientOptions(contacts: Contact[]): { value: string; label: s
       .map((c) => ({ value: c.id, label: `${c.nazwa} (${CONTACT_ROLES[c.rola]})` })),
   ];
 }
+
+/** "Popraw pomysł" next to the reply: only for the author, and only when ROPS asked for changes. */
+export function offersIdeaFix(thread: {
+  i_am_author: boolean;
+  idea_id: string | null;
+  idea_status: string | null;
+}): boolean {
+  return thread.i_am_author && thread.idea_id !== null && thread.idea_status === "do_poprawy";
+}
