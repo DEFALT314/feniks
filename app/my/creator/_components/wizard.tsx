@@ -68,7 +68,7 @@ export function Wizard({
             className="bg-neutral-soft h-2 overflow-hidden rounded-full"
           >
             <div
-              className="bg-navy h-full transition-[width] duration-300 motion-reduce:transition-none"
+              className="bg-navy h-full transition-[width] duration-(--duration-slow) motion-reduce:transition-none"
               style={{ width: `${((index + 1) / fields.length) * 100}%` }}
             />
           </div>

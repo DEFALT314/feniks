@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 const WRAP = "mx-auto w-full max-w-[1200px] px-4 sm:px-10";
 const H2 = "font-heading text-[clamp(1.75rem,4vw,2.125rem)] leading-tight font-bold";
 const CARD_LINK =
-  "border-line text-ink flex flex-col rounded-xl border bg-white no-underline transition-[border-color,box-shadow] duration-200 hover:border-[#8a99c7] hover:text-ink hover:shadow-[0_8px_20px_-10px_rgba(21,26,35,0.22)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick motion-reduce:transition-none";
+  "border-line text-ink flex flex-col rounded-xl border bg-white no-underline transition-[border-color,box-shadow,transform] duration-(--duration-fast) hover:-translate-y-0.5 hover:border-[#8a99c7] hover:text-ink hover:shadow-[0_12px_28px_-12px_rgba(21,26,35,0.28)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick motion-reduce:transition-none motion-reduce:hover:translate-y-0";
 const ARROW =
-  "ml-[0.3em] inline-block transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transition-none";
+  "ml-[0.3em] inline-block transition-transform duration-(--duration-fast) group-hover:translate-x-1 motion-reduce:transition-none";
 
 // The example in the hero; the innovations themselves come from the Library
 const EXAMPLE_IDS = [

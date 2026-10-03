@@ -65,6 +65,12 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  /* Motion easing (transitions.dev scale) as a utility: ease-smooth-out.
+     Tailwind's own ease-out / ease-in-out stay as they are. */
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Every transition-* utility without its own ease or duration: quick and smooth */
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: var(--ease-smooth-out);
 }
 
 :root {
@@ -120,6 +126,23 @@
   --sidebar-accent-foreground: var(--navy-strong);
   --sidebar-border: var(--line);
   --sidebar-ring: var(--brick);
+
+  /* Motion tokens (transitions.dev scale). Use with duration-(--duration-fast) and friends;
+     the screen motion from the mockups lives in components/ui/motion-core.ts. */
+  --duration-stagger: 40ms; /* per-item stagger offset */
+  --duration-micro: 80ms; /* tooltip delay, shake segment */
+  --duration-quick: 150ms; /* close, text swap, hover in */
+  --duration-fast: 250ms; /* open, icon swap, tabs sliding */
+  --duration-medium: 350ms; /* panel close */
+  --duration-slow: 400ms; /* panel open, content reveal */
+  --duration-very-slow: 500ms; /* emphasis, text reveal */
+  --distance-micro: 4px; /* text swap */
+  --distance-small: 6px; /* error shake */
+  --distance-base: 8px; /* page slide */
+  --distance-medium: 12px; /* text reveal */
+  --scale-medium: 0.97; /* dropdown open */
+  --scale-tiny: 0.99; /* dropdown close */
+  --blur-small: 2px; /* text swap, panel reveal */
 }
 
 /* "A+" mode (header toggle) for low-vision users: larger text, black secondary text, white page
@@ -184,4 +207,137 @@ html[data-a11y-plus] ::placeholder {
    animation; MOTION_WAIT_SCRIPT sets the attribute before paint and removes it after 2.5 s anyway. */
 html[data-ruch-czeka] [data-ruch~="wejscie"] > * {
   opacity: 0;
+}
+
+/* ── Transitions (transitions.dev recipes, tuned to the tokens above) ─────────────────────────── */
+
+/* Menu dropdown: grows from its trigger, closes faster and quieter than it opens. State comes from
+   useDisclosure (components/ui/use-disclosure.ts): .is-open, then .is-closing for --duration-quick
+   before the panel gets `hidden` again. */
+.t-dropdown {
+  transform-origin: top left;
+  transform: scale(var(--scale-medium));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--duration-fast) var(--ease-smooth-out),
+    opacity var(--duration-fast) var(--ease-smooth-out);
+  will-change: transform, opacity;
+}
+.t-dropdown[data-origin="top-right"] {
+  transform-origin: top right;
+}
+.t-dropdown[data-origin="top-center"] {
+  transform-origin: top center;
+}
+.t-dropdown.is-open {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+/* The panel was display:none a frame ago, so the open state needs a starting point */
+@starting-style {
+  .t-dropdown.is-open {
+    transform: scale(var(--scale-medium));
+    opacity: 0;
+  }
+}
+.t-dropdown.is-closing {
+  transform: scale(var(--scale-tiny));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--duration-quick) var(--ease-smooth-out),
+    opacity var(--duration-quick) var(--ease-smooth-out);
+}
+
+/* Tabs sliding: the active-page underline in the main menu travels between links (site-nav.tsx) */
+.t-tabs-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  border-radius: 3px 3px 0 0;
+  background: var(--navy);
+  opacity: 0;
+  transform: translateX(0);
+  transition:
+    transform var(--duration-fast) var(--ease-smooth-out),
+    width var(--duration-fast) var(--ease-smooth-out),
+    opacity var(--duration-quick) var(--ease-smooth-out);
+  will-change: transform, width;
+  pointer-events: none;
+}
+
+/* Text swap / text reveal: a status, alert or field error that appears rises in through a soft blur.
+   Plain CSS on mount, so every live message in the app gets it. */
+@keyframes t-text-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--distance-micro));
+    filter: blur(var(--blur-small));
+  }
+}
+.t-text-in,
+p[role="status"],
+p[role="alert"] {
+  animation: t-text-in var(--duration-fast) ease-in-out backwards;
+}
+
+/* Icon swap: an icon that replaces another in the same slot (Menu ↔ X) scales in through a blur */
+@keyframes t-icon-in {
+  from {
+    opacity: 0;
+    transform: scale(0.25);
+    filter: blur(var(--blur-small));
+  }
+}
+.t-icon-in {
+  animation: t-icon-in var(--duration-fast) ease-in-out;
+}
+
+/* Error state shake: a field that turns invalid shakes once (runs whenever aria-invalid starts
+   matching, so every form gets it). Legs 80/80/60/60 ms with per-leg easing. */
+@keyframes t-input-shake {
+  0% {
+    transform: translateX(0);
+    animation-timing-function: var(--ease-smooth-out);
+  }
+  28.57% {
+    transform: translateX(var(--distance-small));
+    animation-timing-function: var(--ease-smooth-out);
+  }
+  57.14% {
+    transform: translateX(calc(var(--distance-small) * -1));
+    animation-timing-function: var(--ease-smooth-out);
+  }
+  78.57% {
+    transform: translateX(var(--distance-micro));
+    animation-timing-function: var(--ease-smooth-out);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+input[aria-invalid="true"],
+textarea[aria-invalid="true"],
+select[aria-invalid="true"] {
+  animation: t-input-shake 280ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-dropdown,
+  .t-tabs-bar {
+    transition: none !important;
+  }
+  .t-text-in,
+  .t-icon-in,
+  p[role="status"],
+  p[role="alert"],
+  input[aria-invalid="true"],
+  textarea[aria-invalid="true"],
+  select[aria-invalid="true"] {
+    animation: none !important;
+  }
 }

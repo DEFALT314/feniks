@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 // Each variant sets its own border color: `cn` can't merge our custom theme colors, so don't override
 // colors through className; add a variant instead.
 const buttonVariants = cva(
-  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[10px] border font-bold whitespace-nowrap no-underline transition-[background-color,border-color,color,box-shadow,transform] duration-200 select-none active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60 disabled:active:translate-y-0 motion-reduce:transition-colors motion-reduce:active:translate-y-0 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[10px] border font-bold whitespace-nowrap no-underline transition-[background-color,border-color,color,box-shadow,transform] select-none active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100 motion-reduce:transition-colors motion-reduce:active:scale-100 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
   {
     variants: {
       variant: {
