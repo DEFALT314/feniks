@@ -13,7 +13,9 @@ export type BellAction =
   | { type: "loaded"; items: Notification[]; unread: number }
   | { type: "received"; item: Notification }
   | { type: "updated"; item: Notification }
-  | { type: "read"; ids?: string[] };
+  | { type: "read"; ids?: string[] }
+  // Fallback when Realtime is unavailable (blocked WebSocket): the list fetched again in the background
+  | { type: "polled"; items: Notification[]; unread: number };
 
 const MAX_ITEMS = 50;
 
@@ -38,6 +40,19 @@ export function bellReducer(state: BellState, action: BellAction): BellState {
         ...state,
         unread: Math.max(0, state.unread - delta),
         items: state.items?.map((n) => (n.id === action.item.id ? action.item : n)) ?? null,
+      };
+    }
+    case "polled": {
+      // A new unread notification is one we have not seen; without a list, a higher count says so
+      const known = state.items ? new Set(state.items.map((n) => n.id)) : null;
+      const fresh = action.items.find(
+        (n) => !n.przeczytane && (known ? !known.has(n.id) : action.unread > state.unread),
+      );
+      return {
+        items: action.items,
+        unread: action.unread,
+        announcement: fresh ? `Nowe powiadomienie: ${fresh.tytul}` : state.announcement,
+        announcementId: fresh ? state.announcementId + 1 : state.announcementId,
       };
     }
     case "read": {

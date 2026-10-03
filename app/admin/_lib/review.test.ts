@@ -64,7 +64,7 @@ describe("reviewIdea", () => {
       expect.objectContaining({
         userIds: ["author-1"],
         typ: "pomysl_oceniony",
-        link: `/my/creator/${IDEA.id}`,
+        link: `/my/creator/${IDEA.id}/card`, // the card shows the decision
       }),
     );
     expect(d.sendEmail).toHaveBeenCalledWith(
@@ -73,7 +73,7 @@ describe("reviewIdea", () => {
         subject: "Zatwierdzony: Kawiarenka",
         action: {
           label: "Zobacz pomysł",
-          url: `https://feniks-hub.vercel.app/my/creator/${IDEA.id}`,
+          url: `https://feniks-hub.vercel.app/my/creator/${IDEA.id}/card`,
         },
       }),
     );

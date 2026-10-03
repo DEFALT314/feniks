@@ -1,7 +1,14 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { describe, expect, it, vi } from "vitest";
 import type { Database } from "@/lib/supabase/types";
-import { formatDate, listOpenCalls, parseCallForm, saveCall, type CallDeps } from "./calls";
+import {
+  formatDate,
+  listOpenCalls,
+  parseCallForm,
+  saveCall,
+  setPublished,
+  type CallDeps,
+} from "./calls";
 
 const ROW = {
   id: "nabor-demo-seniorzy-2026",
@@ -154,12 +161,63 @@ describe("saveCall", () => {
     });
   });
 
+  it("tells matching authors about a call that is switched on in the form", async () => {
+    const author = { user_id: "u1", email: "anna@gmail.com", tytul: "Kawiarenka" };
+    const created = deps({ existing: null, authors: [author] });
+    const state = await saveCall(created.d, form({ ...base, id: "nabor-nowy-2027" }), null);
+    expect(state).toMatchObject({ status: "saved", notified: 1 });
+    expect(created.d.addNotification).toHaveBeenCalledWith(
+      expect.objectContaining({ userIds: ["u1"], typ: "nabor_nowy", link: "/my/creator" }),
+    );
+    expect(created.d.sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ to: "anna@gmail.com", heading: "Ruszył nowy nabór" }),
+    );
+
+    // A hidden call published in an edit counts as new too
+    const hidden = deps({ existing: { ...ROW, opublikowany: false }, authors: [author] });
+    await saveCall(hidden.d, form(base), ROW.id);
+    expect(hidden.d.addNotification).toHaveBeenCalledWith(
+      expect.objectContaining({ typ: "nabor_nowy" }),
+    );
+
+    // A new hidden call notifies nobody
+    const draft = deps({ existing: null, authors: [author] });
+    await saveCall(draft.d, form({ ...base, opublikowany: "off" }), null);
+    expect(draft.rpc).not.toHaveBeenCalled();
+  });
+
   it("returns field errors without writing", async () => {
     const { d, writes } = deps();
     const state = await saveCall(d, form({ ...base, nazwa: "" }), ROW.id);
     expect(state.status).toBe("error");
     expect(state.fieldErrors?.nazwa).toBeDefined();
     expect(writes).toHaveLength(0);
+  });
+});
+
+describe("setPublished", () => {
+  const author = { user_id: "u1", email: "anna@gmail.com", tytul: "Kawiarenka" };
+
+  it("notifies matching authors when a hidden call is switched on", async () => {
+    const { d, writes } = deps({ existing: { ...ROW, opublikowany: false }, authors: [author] });
+    expect(await setPublished(d, ROW.id, true)).toBe(true);
+    expect(writes[0]).toMatchObject({ op: "update", row: { opublikowany: true } });
+    expect(d.addNotification).toHaveBeenCalledWith(
+      expect.objectContaining({ userIds: ["u1"], typ: "nabor_nowy" }),
+    );
+    expect(d.writeAudit).toHaveBeenCalledWith(
+      expect.objectContaining({ akcja: "nabor.wlaczenie" }),
+    );
+  });
+
+  it("does not notify when switching off or when the call was already on", async () => {
+    const off = deps({ authors: [author] });
+    await setPublished(off.d, ROW.id, false);
+    expect(off.d.addNotification).not.toHaveBeenCalled();
+
+    const already = deps({ existing: ROW, authors: [author] });
+    await setPublished(already.d, ROW.id, true);
+    expect(already.d.addNotification).not.toHaveBeenCalled();
   });
 });
 

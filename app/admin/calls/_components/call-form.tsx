@@ -67,12 +67,7 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
             <Input {...p} name="termin_od" type="date" defaultValue={call?.termin_od ?? ""} />
           )}
         </Field>
-        <Field
-          label="Koniec (termin)"
-          hint={call ? "Zmiana powiadomi autorów pasujących pomysłów." : undefined}
-          className="min-w-[180px] flex-1"
-          error={e.termin_do}
-        >
+        <Field label="Koniec (termin)" className="min-w-[180px] flex-1" error={e.termin_do}>
           {(p) => (
             <Input {...p} name="termin_do" type="date" defaultValue={call?.termin_do ?? ""} />
           )}
@@ -104,6 +99,10 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
         />
         Nabór włączony (widoczny w generatorze wniosków)
       </label>
+      <p className="text-muted-foreground -mt-2 text-base">
+        Gdy włączysz nabór albo zmienisz jego termin, autorzy pomysłów z wybranych obszarów dostaną
+        powiadomienie i maila.
+      </p>
       <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" disabled={pending}>
           {pending ? "Zapisujemy…" : call ? "Zapisz zmiany" : "Dodaj nabór"}

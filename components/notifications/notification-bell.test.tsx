@@ -65,4 +65,22 @@ describe("NotificationBell", () => {
     expect(document.activeElement).toBe(container.querySelector("h2"));
     expect(heard).toHaveBeenCalledWith("Wszystkie powiadomienia oznaczone jako przeczytane.");
   });
+
+  it("asks for new notifications on its own when Realtime does not connect", async () => {
+    vi.useFakeTimers();
+    try {
+      act(() => root.render(<NotificationBell userId="u1" initialUnread={0} />));
+      expect(fetch).not.toHaveBeenCalled();
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(15_000);
+      });
+      expect(fetch).toHaveBeenCalledWith("/api/notifications", { cache: "no-store" });
+      expect(container.querySelector("button")!.getAttribute("aria-label")).toBe(
+        "Powiadomienia: 1 nowe",
+      );
+      expect(heard).toHaveBeenCalledWith("Nowe powiadomienie: ROPS ocenił pomysł");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });
