@@ -18,6 +18,19 @@ export function RegisterForm({ next }: { next?: string }) {
   const [state, action, pending] = useActionState(signUp, initialState);
   const consentError = state.fieldErrors?.consent;
 
+  // Supabase "Confirm email" is on: the account works after the link in the e-mail is clicked.
+  if (state.status === "sent") {
+    return (
+      <div role="status" aria-live="polite" className="flex flex-col gap-3">
+        <p className="font-heading text-2xl font-bold">Sprawdź skrzynkę</p>
+        <p>{state.message}</p>
+        <p className="text-muted-foreground text-base">
+          Link jest ważny przez 24 godziny. Po kliknięciu będziesz od razu zalogowany.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <form action={action} className="flex flex-col gap-5" noValidate>
       <input type="hidden" name="next" value={next ?? ""} />
