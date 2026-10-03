@@ -71,3 +71,17 @@ w `vercel.json` potrzebny jest wpis (do dodania przez P4):
 ```
 
 Rozgrzewanie: `GET /api/embed` co 10 minut z crona (`app/api/cron/`, P4).
+
+## Wektory katalogu w bazie
+
+`scripts/embed.py` liczy wektory 124 innowacji (po kilka fragmentów, razem ze zdaniami potocznymi z
+`data/derived/plain_queries.json`), 8 obszarów i 48 wyzwań i zapisuje je do `public.embeddings`
+(migracja `202610031900_ai_tables.sql`). Wyszukiwanie: funkcja `match_embeddings(query, match_kind, match_count)`,
+innowacja liczy się najlepszym fragmentem. Skrypt najpierw nadpisuje, potem usuwa nieaktualne wiersze,
+więc wyszukiwanie działa także w trakcie odświeżania.
+
+```bash
+EMBED_MODEL_DIR=embedding/model embedding/.venv/bin/python scripts/embed.py --dry-run
+NEXT_PUBLIC_SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... EMBED_MODEL_DIR=embedding/model \
+  embedding/.venv/bin/python scripts/embed.py
+```
