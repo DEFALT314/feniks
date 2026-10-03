@@ -22,7 +22,8 @@ curl -X POST $EMBED_URL -H "X-Embed-Token: $EMBED_TOKEN" -H 'content-type: appli
 - `kind: "query"` dla tekstu od użytkownika, `"passage"` dla opisów innowacji, wyzwań i zgłoszeń.
   Prefiksy `query: ` / `passage: ` wymagane przez model dodaje usługa.
 - Wektory mają długość 1: podobieństwo to iloczyn skalarny (w pgvector `1 - (a <=> b)`).
-- Do 256 tekstów naraz; ok. 10 ms na zapytanie po rozgrzaniu, zimny start ok. 5 s.
+- Do 256 tekstów naraz; ok. 10 ms na zapytanie po rozgrzaniu. Zimny start = pobranie 197 MB z GitHuba
+  + wczytanie (lokalnie przy łączu 6 MB/s: 31 s; na Vercelu do zmierzenia na podglądzie).
 
 ## Zmienne środowiskowe (Vercel, tylko serwer)
 
