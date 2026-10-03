@@ -7,22 +7,10 @@ import { Card } from "@/components/ui/card";
 import { Field } from "@/components/ui/field";
 import { Input, Textarea } from "@/components/ui/input";
 import { planIdeaTest } from "../actions";
-
-type Draft = { tytul: string; opis: string; miejsce: string; termin: string; miejsca: string };
-const EMPTY: Draft = { tytul: "", opis: "", miejsce: "", termin: "", miejsca: "" };
+import { EMPTY_PLAN as EMPTY, type PlanTestDraft as Draft } from "../_lib/model";
 
 // "Test z mieszkańcami" on the idea card: the author plans a test, residents sign up and rate it
 // in the Innovation tester (/my/tester), where the author reads the feedback.
-// Residents can't open someone else's idea, so the test starts with the idea's title and essence:
-// the sign-up card then says what is being tested.
-export function planTestDefaults(idea: { tytul: string; istota: string | null }): Draft {
-  return {
-    ...EMPTY,
-    tytul: `${idea.tytul} – test z mieszkańcami`.slice(0, 200),
-    opis: idea.istota ?? "",
-  };
-}
-
 export function PlanTestPanel({
   ideaId,
   testCount,

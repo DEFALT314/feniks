@@ -1,4 +1,4 @@
-// AI for the idea creator (#18): hints and application draft.
+// AI for the idea creator (#18): hints, application draft and unusual approaches (#103).
 // Both go through generateJson (personal data removed, JSON validated, one retry) and are
 // shown with the „Propozycja AI” label; the user applies them with a click (P2's UI).
 import { z } from "zod";
@@ -7,6 +7,8 @@ import {
   ApplicationSectionKey,
   CallSummary,
   IdeaField,
+  type AlternativesRequest,
+  type AlternativesResponse,
   type ApplicationRequest,
   type ApplicationResponse,
   type HintRequest,
@@ -144,4 +146,44 @@ Return json: {"sections": [{"key": "goal"|"audience"|"activities"|"results"|"bud
     ];
   });
   return { call_id: call.id, sections };
+}
+
+// --- unusual approaches (#103) ---
+
+export async function alternatives(
+  request: AlternativesRequest,
+  options: GenerateJsonOptions = {},
+): Promise<AlternativesResponse> {
+  const out = await generateJson(
+    // The model may give more than 3: accept them and keep the first 3
+    z.object({
+      alternatives: z.array(
+        z.object({ title: z.string(), text: z.string(), why: z.string().nullable().optional() }),
+      ),
+    }),
+    [
+      {
+        role: "system",
+        content: `You help a resident develop a social-innovation idea for ROPS Małopolska. Propose 2 or 3 unusual,
+non-obvious ways to solve the SAME problem for the SAME people: e.g. a different group that helps, an unexpected
+local partner (school, pharmacy, parish, sports club, shop), a different format (phone, game, meeting, mobile
+service), or turning the receivers into helpers. Each must be realistic for a small Małopolska municipality and
+different from what the idea already does. ${RULES}
+Return json: {"alternatives": [{"title": "a few words", "text": "1-3 sentences", "why": "one short sentence"}]}`,
+      },
+      { role: "user", content: `Idea:\n${ideaText(request.idea)}` },
+    ],
+    { temperature: 0.8, maxTokens: 1500, ...options },
+  );
+  const source = ideaText(request.idea);
+  return {
+    alternatives: out.alternatives
+      .filter((a) => a.title.trim() !== "" && a.text.trim() !== "")
+      .slice(0, 3)
+      .map((a) => ({
+        title: a.title.trim(),
+        text: removeInventedNumbers(a.text.trim(), source).text,
+        why: a.why ? removeInventedNumbers(a.why.trim(), source).text : null,
+      })),
+  };
 }
