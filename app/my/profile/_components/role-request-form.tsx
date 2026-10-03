@@ -10,7 +10,7 @@ import { REQUESTABLE_LABELS, RequestableRole, type RoleRequestState } from "../_
 
 const initialState: RoleRequestState = { status: "idle" };
 
-export const SENT_MESSAGE = "Wysłano. ROPS zobaczy prośbę w panelu.";
+export const SENT_MESSAGE = "Prośba wysłana do ROPS. Dostaniesz powiadomienie o decyzji.";
 
 /** True when the error is about the missing choice, so it belongs to the radio group. */
 export function isChoiceError(state: RoleRequestState): boolean {

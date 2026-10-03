@@ -25,16 +25,16 @@ export default function AccessibilityStatementPage() {
         <li>Stronę obsłużysz klawiaturą, a zaznaczony element ma wyraźną granatową obwódkę.</li>
         <li>Link „Przejdź do treści” na początku strony pomija menu.</li>
         <li>
-          Przycisk A+ w nagłówku powiększa tekst, przyciemnia kolory i pogrubia ramki. Ustawienie
-          zostaje zapamiętane. Ten sam kontrast włącza się sam, jeśli system prosi o większy
-          kontrast.
+          Przycisk A+ w nagłówku powiększa tekst, przyciemnia kolory i pogrubia ramki. Strona
+          zapamięta ten wybór. Wyższy kontrast włącza się też sam, jeśli masz go włączony w
+          ustawieniach telefonu lub komputera.
         </li>
         <li>Tekst ma kontrast co najmniej 4,5:1, a strona działa przy powiększeniu 200% i 400%.</li>
         <li>
           Po wysłaniu formularza z błędem kursor przechodzi do pierwszego pola do poprawy, a czytnik
           ekranu odczytuje opis błędu.
         </li>
-        <li>Wyniki AI i nowe wiadomości są ogłaszane czytnikom ekranu krótkim komunikatem.</li>
+        <li>Czytnik ekranu krótko odczyta wyniki AI i nowe wiadomości.</li>
         <li>Animacje wyłączają się, jeśli w systemie wybierzesz ograniczenie ruchu.</li>
       </ul>
 
@@ -50,7 +50,7 @@ export default function AccessibilityStatementPage() {
         <a href="mailto:dostepnosc@hubmi.pl">dostepnosc@hubmi.pl</a>. Nie musisz mieć konta. Napisz,
         na której stronie jest problem i jak się z Tobą skontaktować. Odpowiemy w ciągu 7 dni.
       </p>
-      <p>Jeśli masz konto, możesz też napisać do zespołu ROPS przez moduł Wiadomości.</p>
+      <p>Jeśli masz konto, możesz też napisać do ROPS w zakładce Wiadomości.</p>
     </main>
   );
 }

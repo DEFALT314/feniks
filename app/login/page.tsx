@@ -53,7 +53,8 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       ) : null}
       {linkError ? (
         <p role="alert" className="text-danger font-bold">
-          Link z maila wygasł albo został już użyty. Poproś o nowy.
+          Link z maila wygasł albo był już użyty. Zaloguj się poniżej albo kliknij „Nie pamiętasz
+          hasła?”.
         </p>
       ) : null}
       <LoginForm next={next} />

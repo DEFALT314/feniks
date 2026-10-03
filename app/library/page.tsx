@@ -47,8 +47,8 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
             Biblioteka innowacji
           </h1>
           <p className="text-ink-muted max-w-[760px]">
-            Rozwiązania przetestowane w inkubatorach ROPS. Każda karta mówi, dla kogo jest
-            rozwiązanie, kto może je wdrożyć i jakie są materiały.
+            Rozwiązania przetestowane w inkubatorach ROPS. Przy każdym piszemy, dla kogo jest, kto
+            może je u siebie uruchomić i jakie ma materiały do obejrzenia lub pobrania.
           </p>
           {/* The form holds only the search box; the filters in the sidebar join it with form="…".
               Nothing is sent until the user presses a button (WCAG 3.2.2). */}
@@ -156,11 +156,11 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
 
           {list.wyniki.length === 0 ? (
             <div className="flex flex-col gap-3 py-8">
-              <p>Nic nie znaleźliśmy. Spróbuj wybrać mniej filtrów.</p>
+              <p>Nic nie znaleźliśmy. Odznacz część filtrów albo wpisz inne słowa.</p>
               <p>
-                Spróbuj innych słów albo{" "}
+                Możesz też{" "}
                 <Link href="/match" className="text-navy underline">
-                  opisz swój problem własnymi słowami
+                  opisać swój problem własnymi słowami
                 </Link>
                 .
               </p>
@@ -281,7 +281,7 @@ function ResultRow({ innovation: i }: { innovation: InnovationSummary }) {
         {i.sprawdzona_przez_rops ? <Badge variant="success">Sprawdzona przez ROPS</Badge> : null}
         {i.opis_niepelny ? <Badge variant="warning">Opis niepełny</Badge> : null}
         {i.spoza_biblioteki ? (
-          <Badge variant="neutral">Z inkubatora ROPS, spoza Biblioteki online</Badge>
+          <Badge variant="neutral">Z inkubatora ROPS, spoza listy na stronie ROPS</Badge>
         ) : null}
         {meta ? <span className="text-ink-muted text-[0.9375rem]">{meta}</span> : null}
       </div>

@@ -14,9 +14,9 @@ export function formatResultCount(n: number): string {
 export function sourceBreakdown(total: number, fromLibrary: number | undefined): string | null {
   if (fromLibrary === undefined || fromLibrary === total) return null;
   if (fromLibrary === 0) {
-    return "Wszystkie pochodzą z innych programów ROPS, spoza Biblioteki innowacji online, i często mają krótszy opis.";
+    return "Wszystkie pochodzą z innych programów ROPS i zwykle mają krótszy opis.";
   }
-  return `W tym ${fromLibrary} z Biblioteki innowacji ROPS i ${total - fromLibrary} z innych programów ROPS (oznaczone „Z inkubatora ROPS, spoza Biblioteki online”, często z krótszym opisem).`;
+  return `W tym ${fromLibrary} z Biblioteki innowacji ROPS i ${total - fromLibrary} z innych programów ROPS (zwykle z krótszym opisem).`;
 }
 
 // What the visitor searched for, in words: "Dla seniorów · „pamięć” · z filmem"

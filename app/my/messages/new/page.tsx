@@ -23,8 +23,8 @@ export default async function NewMessagePage({ searchParams }: PageProps<"/my/me
       </Link>
       <h1 className="font-heading text-[2.5rem] font-bold tracking-tight">Napisz do ROPS</h1>
       <p className="text-muted-foreground">
-        Zadaj pytanie albo opisz potrzebę. Odpowie Ci zespół ROPS, a w razie potrzeby zaprosi
-        eksperta.
+        Zadaj pytanie albo opisz, czego potrzebujesz. Odpowie Ci ROPS. Jeśli trzeba, zaprosi do
+        rozmowy eksperta.
       </p>
       <Card>
         <NewThreadForm

@@ -41,7 +41,7 @@ export function buzzwordsIn(text: string, innovationName = ""): string[] {
   return BUZZWORDS.filter((w) => !name.includes(w) && lower.includes(w));
 }
 
-export const ROPS_FIRST_STEP = "Skontaktuj się z ROPS, aby porozmawiać z autorami innowacji.";
+export const ROPS_FIRST_STEP = "Napisz do ROPS i poproś o rozmowę z autorami innowacji.";
 
 const SYSTEM = `You turn a social innovation from the ROPS Małopolska library into a service card that one specific institution can order, fund and run.
 Use ONLY the facts given about the innovation and the institution. If something needed is unknown, say what the institution must check, never invent it.

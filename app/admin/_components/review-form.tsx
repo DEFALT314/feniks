@@ -52,7 +52,7 @@ export function ReviewForm({
     <form ref={formRef} action={action} className="flex flex-col gap-3" key={ideaId}>
       <Field
         label="Odpowiedź dla autora"
-        hint="Autor zobaczy ją w aplikacji i dostanie mailem. Wymagana przy „Do poprawy” i „Odrzuć”."
+        hint="Autor dostanie ją w Wiadomościach i mailem. Wymagana przy „Do poprawy” i „Odrzuć”."
         error={state.fieldErrors?.komentarz}
       >
         {(p) => <Textarea {...p} name="komentarz" rows={3} className="text-base" />}

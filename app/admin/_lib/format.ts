@@ -31,13 +31,25 @@ const STATUS_WORDS: Record<string, string> = {
   w_weryfikacji: "przekazano ekspertowi",
 };
 
+// Plain words for the other audit codes, so staff never see raw codes such as "nabor.wlaczenie"
+const AUDIT_WORDS: Record<string, string> = {
+  "innowacja.edycja": "zmieniono kartę innowacji",
+  "nabor.dodanie": "dodano nabór",
+  "nabor.edycja": "zmieniono nabór",
+  "nabor.wlaczenie": "włączono nabór",
+  "nabor.wylaczenie": "wyłączono nabór",
+  "profil.rola.zatwierdzona": "zatwierdzono rolę",
+  "profil.rola.odrzucona": "odrzucono prośbę o rolę",
+};
+
 export function describeAudit(akcja: string, szczegoly: unknown): string {
   const d = (szczegoly ?? {}) as Record<string, unknown>;
   if (akcja === "pomysl.ocena") {
     const status = STATUS_WORDS[String(d.status)] ?? String(d.status);
-    return `status „${status}”: ${String(d.tytul ?? "pomysł")}`;
+    return `„${String(d.tytul ?? "pomysł")}”: ${status}`;
   }
-  return akcja;
+  const label = AUDIT_WORDS[akcja] ?? "inna zmiana";
+  return typeof d.nazwa === "string" ? `${label}: ${d.nazwa}` : label;
 }
 
 // Polish plural: 1 pomysł, 2–4 pomysły (but 12–14 pomysłów), 5+ pomysłów
