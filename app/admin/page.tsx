@@ -12,6 +12,7 @@ import { ReviewForm } from "./_components/review-form";
 import { describeAudit, filterSummary, formatSentAt } from "./_lib/format";
 import { loadExperts, loadIdeaDetail, loadIdeaQueue, loadRecentAudit } from "./_lib/queue";
 import { STATUS_BADGE, STATUS_LABELS, parseStatusFilter } from "./_lib/status";
+import { requireRops } from "@/lib/auth/require-rops";
 
 export const metadata: Metadata = { title: "Nowe pomysły – Panel ROPS – HubMI.pl" };
 
@@ -32,6 +33,7 @@ const STAGE_LABELS: Record<string, string> = {
 
 // Module VI, idea queue (#5). Layout per design/makiety/Admin.dc.html. Role checked in layout.tsx.
 export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
+  await requireRops();
   const params = await searchParams;
   // Middleman notifications link to /admin?karta=<id> (app/api/ai/middleman/deps.ts).
   if (typeof params.karta === "string")

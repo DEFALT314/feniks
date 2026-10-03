@@ -8,6 +8,7 @@ import { AdminNav } from "../_components/admin-nav";
 import { FocusHeading } from "@/components/ui/param-focus";
 import { loadSentCard, loadSentCards } from "../_lib/cards";
 import { formatSentAt } from "../_lib/format";
+import { requireRops } from "@/lib/auth/require-rops";
 
 export const metadata: Metadata = { title: "Karty usług – Panel ROPS – HubMI.pl" };
 
@@ -20,6 +21,7 @@ const MUNICIPALITY: Record<string, string> = {
 
 // Service cards sent from the Middleman (module VII) for ROPS consultation. Role checked in ../layout.tsx.
 export default async function CardsPage({ searchParams }: PageProps<"/admin/cards">) {
+  await requireRops();
   const params = await searchParams;
   const supabase = await createClient();
   const cards = await loadSentCards(supabase);

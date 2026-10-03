@@ -8,6 +8,7 @@ import { AdminNav } from "../_components/admin-nav";
 import { FlashMessage } from "@/components/ui/param-focus";
 import { REQUESTABLE_LABELS, RequestableRole } from "@/app/my/profile/_lib/role-request";
 import { decideRole } from "./actions";
+import { requireRops } from "@/lib/auth/require-rops";
 
 export const metadata: Metadata = { title: "Prośby o rolę – Panel ROPS – HubMI.pl" };
 
@@ -25,6 +26,7 @@ const time = new Intl.DateTimeFormat("pl-PL", { dateStyle: "short", timeStyle: "
 // Role requests from /my/profile (#6). Profiles are readable by ROPS under RLS;
 // only rops_admin can change a role (database guard profiles_guard_update).
 export default async function Page({ searchParams }: PageProps<"/admin/roles">) {
+  await requireRops();
   const { msg, ok } = await searchParams;
   const supabase = await createClient();
   const { data } = await supabase
