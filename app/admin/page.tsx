@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { isDemoMode } from "@/lib/auth/demo-accounts";
@@ -30,6 +31,9 @@ const STAGE_LABELS: Record<string, string> = {
 // Module VI, idea queue (#5). Layout per design/makiety/Admin.dc.html. Role checked in layout.tsx.
 export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   const params = await searchParams;
+  // Middleman notifications link to /admin?karta=<id> (app/api/ai/middleman/deps.ts).
+  if (typeof params.karta === "string")
+    redirect(`/admin/cards?card=${encodeURIComponent(params.karta)}`);
   const filter = parseStatusFilter(params.status);
   const selectedId = typeof params.idea === "string" ? params.idea : null;
 
