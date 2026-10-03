@@ -1,107 +1,181 @@
 import { describe, expect, it } from "vitest";
-import { authErrorMessage, confirmLoginCode, recordConsent, requestLoginCode } from "./login";
+import {
+  authErrorMessage,
+  changePassword,
+  recordConsent,
+  requestPasswordReset,
+  signInWithPassword,
+  signUpWithPassword,
+} from "./login";
 import { mockAuthClient } from "./supabase-auth-mock";
 
-const REDIRECT = "https://feniks-hub.vercel.app/auth/confirm?next=%2F";
+const RESET_REDIRECT = "https://hubmi.example/auth/confirm?next=%2Fupdate-password";
 
-describe("requestLoginCode", () => {
-  it("sends a code to a normalized address and creates the account if needed", async () => {
-    const { client, auth } = mockAuthClient({});
+describe("signInWithPassword", () => {
+  it("signs in with a normalized address", async () => {
+    const { client, auth } = mockAuthClient({
+      signInWithPassword: { data: { user: { id: "u1" } } },
+    });
 
-    const state = await requestLoginCode(
-      client,
-      { email: " Anna@Example.org ", consent: "on" },
-      REDIRECT,
-    );
+    const result = await signInWithPassword(client, {
+      email: " Anna@Example.org ",
+      password: "dlugie haslo 123",
+    });
 
-    expect(state).toEqual({ status: "code-sent", email: "anna@example.org" });
-    expect(auth.signInWithOtp).toHaveBeenCalledWith({
+    expect(result).toEqual({ ok: true, userId: "u1" });
+    expect(auth.signInWithPassword).toHaveBeenCalledWith({
       email: "anna@example.org",
-      options: { shouldCreateUser: true, emailRedirectTo: REDIRECT },
+      password: "dlugie haslo 123",
     });
   });
 
-  it("requires consent and a valid e-mail before calling Supabase", async () => {
+  it("validates the form before calling Supabase", async () => {
     const { client, auth } = mockAuthClient({});
 
-    const state = await requestLoginCode(client, { email: "anna@" }, REDIRECT);
+    const result = await signInWithPassword(client, { email: "anna@", password: "" });
 
-    expect(state.status).toBe("error");
-    expect(state.fieldErrors?.email).toBeDefined();
-    expect(state.fieldErrors?.consent).toBeDefined();
-    expect(auth.signInWithOtp).not.toHaveBeenCalled();
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.state.fieldErrors?.email).toBeDefined();
+      expect(result.state.fieldErrors?.password).toBeDefined();
+    }
+    expect(auth.signInWithPassword).not.toHaveBeenCalled();
   });
 
-  it("shows a friendly message when Supabase rate-limits e-mails", async () => {
+  it("shows one message for a wrong e-mail or password", async () => {
     const { client } = mockAuthClient({
-      signInWithOtp: { error: { status: 429, message: "Email rate limit exceeded" } },
+      signInWithPassword: {
+        error: { code: "invalid_credentials", message: "Invalid login credentials", status: 400 },
+      },
     });
 
-    const state = await requestLoginCode(
-      client,
-      { email: "anna@example.org", consent: "on" },
-      REDIRECT,
-    );
+    const result = await signInWithPassword(client, {
+      email: "anna@example.org",
+      password: "zle haslo",
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.state.message).toBe("Nieprawidłowy e-mail lub hasło.");
+  });
+});
+
+describe("signUpWithPassword", () => {
+  const valid = { email: "anna@example.org", password: "mój kot lubi mleko", consent: "on" };
+
+  it("creates an account and returns the session user", async () => {
+    const { client, auth } = mockAuthClient({
+      signUp: { data: { user: { id: "u2", identities: [{}] }, session: { access_token: "t" } } },
+    });
+
+    const result = await signUpWithPassword(client, valid);
+
+    expect(result).toEqual({ ok: true, userId: "u2" });
+    expect(auth.signUp).toHaveBeenCalledWith({
+      email: "anna@example.org",
+      password: "mój kot lubi mleko",
+    });
+  });
+
+  it("requires consent and a password of at least 10 characters", async () => {
+    const { client, auth } = mockAuthClient({});
+
+    const result = await signUpWithPassword(client, {
+      email: "anna@example.org",
+      password: "krotkie",
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.state.fieldErrors?.password).toMatch(/10 znaków/);
+      expect(result.state.fieldErrors?.consent).toBeDefined();
+    }
+    expect(auth.signUp).not.toHaveBeenCalled();
+  });
+
+  it("tells the user when the address already has an account", async () => {
+    const { client } = mockAuthClient({
+      signUp: { data: { user: { id: "u3", identities: [] }, session: null } },
+    });
+
+    const result = await signUpWithPassword(client, valid);
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.state.message).toMatch(/już istnieje/);
+  });
+
+  it("explains when Supabase still requires e-mail confirmation", async () => {
+    const { client } = mockAuthClient({
+      signUp: { data: { user: { id: "u4", identities: [{}] }, session: null } },
+    });
+
+    const result = await signUpWithPassword(client, valid);
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.state.message).toMatch(/potwierdzenia/);
+  });
+});
+
+describe("requestPasswordReset", () => {
+  it("sends a reset link and answers the same way for any address", async () => {
+    const { client, auth } = mockAuthClient({});
+
+    const state = await requestPasswordReset(client, { email: "Anna@Example.org" }, RESET_REDIRECT);
+
+    expect(state).toEqual({ status: "sent", email: "anna@example.org" });
+    expect(auth.resetPasswordForEmail).toHaveBeenCalledWith("anna@example.org", {
+      redirectTo: RESET_REDIRECT,
+    });
+  });
+
+  it("reports rate limits", async () => {
+    const { client } = mockAuthClient({
+      resetPasswordForEmail: { error: { status: 429, message: "Email rate limit exceeded" } },
+    });
+
+    const state = await requestPasswordReset(client, { email: "anna@example.org" }, RESET_REDIRECT);
 
     expect(state.status).toBe("error");
     expect(state.message).toMatch(/Odczekaj/);
   });
 });
 
-describe("confirmLoginCode", () => {
-  it("verifies a 6-digit code as an e-mail OTP", async () => {
-    const { client, auth } = mockAuthClient({ verifyOtp: { data: { user: { id: "u1" } } } });
-
-    const result = await confirmLoginCode(client, { email: "anna@example.org", code: "482913" });
-
-    expect(result).toEqual({ ok: true, userId: "u1" });
-    expect(auth.verifyOtp).toHaveBeenCalledWith({
-      email: "anna@example.org",
-      token: "482913",
-      type: "email",
-    });
-  });
-
-  it("rejects a malformed code without calling Supabase", async () => {
+describe("changePassword", () => {
+  it("updates the password of the signed-in user", async () => {
     const { client, auth } = mockAuthClient({});
 
-    const result = await confirmLoginCode(client, { email: "anna@example.org", code: "12" });
+    const state = await changePassword(client, { password: "nowe dlugie haslo" });
 
-    expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.state.fieldErrors?.code).toMatch(/6 cyfr/);
-    expect(auth.verifyOtp).not.toHaveBeenCalled();
+    expect(state).toBeNull();
+    expect(auth.updateUser).toHaveBeenCalledWith({ password: "nowe dlugie haslo" });
   });
 
-  it("keeps the user on the code step when the code is wrong or expired", async () => {
-    const { client } = mockAuthClient({
-      verifyOtp: { error: { message: "Token has expired or is invalid" } },
-    });
+  it("rejects a too short password", async () => {
+    const { client, auth } = mockAuthClient({});
 
-    const result = await confirmLoginCode(client, { email: "anna@example.org", code: "000000" });
+    const state = await changePassword(client, { password: "krotkie" });
 
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.state.status).toBe("code-sent");
-      expect(result.state.fieldErrors?.code).toMatch(/wygasł/);
-    }
+    expect(state?.fieldErrors?.password).toBeDefined();
+    expect(auth.updateUser).not.toHaveBeenCalled();
+  });
+});
+
+describe("authErrorMessage", () => {
+  it("maps Supabase errors to Polish messages", () => {
+    expect(authErrorMessage({ status: 429 })).toMatch(/Odczekaj/);
+    expect(authErrorMessage({ code: "user_already_exists" })).toMatch(/już istnieje/);
+    expect(authErrorMessage({ code: "weak_password" })).toMatch(/dłuższe/);
+    expect(authErrorMessage({ message: "boom" })).toMatch(/Spróbuj ponownie/);
   });
 });
 
 describe("recordConsent", () => {
-  it("sets zgoda_rodo_at only when it is still empty", async () => {
+  it("stores the consent time only once", async () => {
     const { client, from, query } = mockAuthClient({});
 
     await recordConsent(client, "u1");
 
     expect(from).toHaveBeenCalledWith("profiles");
-    expect(query.update).toHaveBeenCalledWith({ zgoda_rodo_at: expect.any(String) });
     expect(query.eq).toHaveBeenCalledWith("id", "u1");
     expect(query.is).toHaveBeenCalledWith("zgoda_rodo_at", null);
-  });
-});
-
-describe("authErrorMessage", () => {
-  it("maps unknown errors to a generic message", () => {
-    expect(authErrorMessage({ message: "boom" })).toMatch(/Spróbuj ponownie/);
   });
 });

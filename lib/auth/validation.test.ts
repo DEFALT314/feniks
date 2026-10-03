@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { LoginCode, LoginEmail, safeNextPath } from "./validation";
+import { LoginEmail, NewPassword, requestOrigin, SignInInput, safeNextPath } from "./validation";
 
 describe("safeNextPath", () => {
   it("keeps paths inside the app", () => {
@@ -33,11 +33,46 @@ describe("LoginEmail", () => {
   });
 });
 
-describe("LoginCode", () => {
-  it("accepts exactly six digits", () => {
-    expect(LoginCode.parse(" 482913 ")).toBe("482913");
-    expect(LoginCode.safeParse("48291").success).toBe(false);
-    expect(LoginCode.safeParse("4829134").success).toBe(false);
-    expect(LoginCode.safeParse("48a913").success).toBe(false);
+describe("NewPassword", () => {
+  it("needs at least 10 characters", () => {
+    expect(NewPassword.safeParse("krotkie").success).toBe(false);
+    expect(NewPassword.parse("mój kot lubi mleko")).toBe("mój kot lubi mleko");
+  });
+
+  it("rejects passwords longer than 72 characters", () => {
+    expect(NewPassword.safeParse("a".repeat(73)).success).toBe(false);
+  });
+});
+
+describe("SignInInput", () => {
+  it("asks for a password", () => {
+    const result = SignInInput.safeParse({ email: "anna@example.org", password: "" });
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0].message).toBe("Wpisz hasło.");
+  });
+});
+
+describe("requestOrigin", () => {
+  const headers = (h: Record<string, string>) => new Headers(h);
+
+  it("uses the forwarded host and protocol behind a proxy", () => {
+    expect(
+      requestOrigin(
+        headers({
+          host: "internal:3000",
+          "x-forwarded-host": "hubmi.pl",
+          "x-forwarded-proto": "https",
+        }),
+      ),
+    ).toBe("https://hubmi.pl");
+  });
+
+  it("keeps the exact local host the browser used", () => {
+    expect(requestOrigin(headers({ host: "127.0.0.1:3000" }))).toBe("http://127.0.0.1:3000");
+    expect(requestOrigin(headers({ host: "localhost:3000" }))).toBe("http://localhost:3000");
+  });
+
+  it("assumes https for other hosts", () => {
+    expect(requestOrigin(headers({ host: "feniks.vercel.app" }))).toBe("https://feniks.vercel.app");
   });
 });
