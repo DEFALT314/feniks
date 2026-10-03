@@ -46,6 +46,7 @@ type StatusRow = {
   status: string;
   komentarz: string | null;
   ekspert_id: string | null;
+  oceniony_at?: string | null;
 };
 
 async function namesById(supabase: Client, ids: string[]): Promise<Map<string, string | null>> {
@@ -58,7 +59,7 @@ async function statusesById(supabase: Client, ids: string[]): Promise<Map<string
   if (ids.length === 0) return new Map();
   const { data } = await supabase
     .from("idea_status")
-    .select("idea_id, status, komentarz, ekspert_id")
+    .select("idea_id, status, komentarz, ekspert_id, oceniony_at")
     .in("idea_id", ids);
   return new Map(((data ?? []) as StatusRow[]).map((s) => [s.idea_id, s]));
 }
@@ -66,6 +67,13 @@ async function statusesById(supabase: Client, ids: string[]): Promise<Map<string
 function toStatus(value: string | undefined): IdeaStatus {
   const parsed = IdeaStatus.safeParse(value);
   return parsed.success ? parsed.data : "nowy";
+}
+
+// A review older than the latest submission is about an earlier version: the author sent a
+// corrected idea after "do_poprawy" (#35), so it is new again and back in the open queue.
+function statusOf(wyslanyAt: string, review: StatusRow | undefined): IdeaStatus {
+  if (review?.oceniony_at && Date.parse(review.oceniony_at) < Date.parse(wyslanyAt)) return "nowy";
+  return toStatus(review?.status);
 }
 
 /** Sent ideas, newest first, with author name, area and current status. */
@@ -98,7 +106,7 @@ export async function loadIdeaQueue(
     obszar_id: i.obszar_id,
     obszar_nazwa: i.challenge_areas?.nazwa ?? null,
     wyslany_at: i.wyslany_at!,
-    status: toStatus(statuses.get(i.id)?.status),
+    status: statusOf(i.wyslany_at!, statuses.get(i.id)),
   }));
 
   if (filter === "all") return rows;
@@ -134,7 +142,7 @@ export async function loadIdeaDetail(supabase: Client, ideaId: string): Promise<
     obszar_id: idea.obszar_id,
     obszar_nazwa: idea.challenge_areas?.nazwa ?? null,
     wyslany_at: idea.wyslany_at!,
-    status: toStatus(status?.status),
+    status: statusOf(idea.wyslany_at!, status),
     komentarz: status?.komentarz ?? null,
     ekspert_id: status?.ekspert_id ?? null,
   };
