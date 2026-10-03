@@ -13,7 +13,7 @@ import { buildIndex, informativeStems, search, type Bm25Index } from "./bm25";
 import { COVERED_BELOW, coveredProbability } from "./coverage";
 import { fuse, type Ranked } from "./fusion";
 import { highlight, stemsOf } from "./highlight";
-import { RERANK_CANDIDATES, type RerankResult } from "./rerank";
+import { RERANK_CANDIDATES, type ChallengeOption, type RerankResult } from "./rerank";
 import { stemsMatch, tokenize } from "./text";
 
 export type VectorHit = { ref_id: string; similarity: number };
@@ -34,7 +34,11 @@ export type MatchDeps = {
     kind: "innovation" | "challenge",
     count: number,
   ) => Promise<VectorHit[]>;
-  rerank?: (description: string, candidates: Innovation[]) => Promise<RerankResult>;
+  rerank?: (
+    description: string,
+    candidates: Innovation[],
+    challenges: ChallengeOption[],
+  ) => Promise<RerankResult>;
 };
 
 // How the candidates were found; sent as the X-Match-Retrieval header so a silent fallback to
@@ -53,38 +57,27 @@ export type MatchStats = {
 };
 
 const MORE = 5;
-const CHALLENGE_CANDIDATES = 10;
-
-// Short challenge texts alone can mislead ("wraca ze szpitala" resembled "po opuszczeniu placówki" in
-// the homelessness area), so the best challenge is taken from an area whose Library categories
-// include the recommended innovations; the plain best match is the fallback.
-export function chooseChallenge(
-  hits: VectorHit[],
+// The challenge is named by the AI from the whole Challenges Map (rerank.ts). Without the AI no
+// challenge is shown: vectors of the short challenge texts put 44% of everyday queries in a wrong
+// area (evals/results.md), and a wrong challenge would also skew the ROPS trends.
+function challengeById(
   areas: AreaWithChallenges[],
-  pickedCategories: string[],
+  id: string | null | undefined,
 ): MatchResponse["challenge"] {
-  const located = hits.flatMap((hit) => {
-    const area = areas.find((a) => a.wyzwania.some((w) => w.id === hit.ref_id));
-    const found = area?.wyzwania.find((w) => w.id === hit.ref_id);
-    return area && found ? [{ area, found }] : [];
-  });
-  const preferred =
-    located.find(({ area }) =>
-      pickedCategories.slice(0, 1).some((c) => area.kategorie_biblioteki.includes(c)),
-    ) ??
-    located.find(({ area }) =>
-      pickedCategories.some((c) => area.kategorie_biblioteki.includes(c)),
-    ) ??
-    located[0];
-  return preferred
-    ? {
-        area_id: preferred.area.id,
-        area_name: preferred.area.nazwa,
-        challenge_id: preferred.found.id,
-        challenge_text: preferred.found.tekst,
-      }
-    : null;
+  for (const area of id ? areas : []) {
+    const found = area.wyzwania.find((w) => w.id === id);
+    if (found) {
+      return {
+        area_id: area.id,
+        area_name: area.nazwa,
+        challenge_id: found.id,
+        challenge_text: found.tekst,
+      };
+    }
+  }
+  return null;
 }
+
 const indexCache = new WeakMap<Innovation[], { catalog: Innovation[]; index: Bm25Index }>();
 
 function catalogIndex(innovations: Innovation[]) {
@@ -124,19 +117,14 @@ export async function runMatch(
 
   const vector = await deps.embedQuery(description);
   const similarities = new Map<string, number>();
-  let challengeHits: VectorHit[] = [];
   let retrieval: Retrieval = { mode: "keywords", reason: "no-embed" };
   if (vector) {
     let failed = false;
     const fail = () => ((failed = true), [] as VectorHit[]);
-    const [innovationHits, challenges] = await Promise.all([
-      deps.vectorSearch(vector, "innovation", 50).catch(fail),
-      deps.vectorSearch(vector, "challenge", CHALLENGE_CANDIDATES).catch(fail),
-    ]);
+    const innovationHits = await deps.vectorSearch(vector, "innovation", 50).catch(fail);
     for (const hit of innovationHits) {
       if (byId.has(hit.ref_id)) similarities.set(hit.ref_id, hit.similarity);
     }
-    challengeHits = challenges;
     retrieval = similarities.size
       ? { mode: "hybrid" }
       : { mode: "keywords", reason: failed ? "vector-error" : "no-vectors" };
@@ -151,7 +139,10 @@ export async function runMatch(
   const candidates = ranked.slice(0, RERANK_CANDIDATES).map((r) => byId.get(r.id)!);
   let ai: RerankResult | null = null;
   if (deps.rerank && candidates.length) {
-    ai = await deps.rerank(description, candidates).catch((e) => {
+    const challenges = deps.areas.flatMap((a) =>
+      a.wyzwania.map((w) => ({ id: w.id, area: a.nazwa, text: w.tekst })),
+    );
+    ai = await deps.rerank(description, candidates, challenges).catch((e) => {
       console.error("rerank failed, ranking only:", (e as Error).message);
       return null;
     });
@@ -167,11 +158,7 @@ export async function runMatch(
       }));
   if (ai && !ai.picks.length) weak = true;
 
-  const challenge = chooseChallenge(
-    challengeHits,
-    deps.areas,
-    picks.map((p) => byId.get(p.id)!.kategoria_id),
-  );
+  const challenge = challengeById(deps.areas, ai?.challengeId);
 
   const innovations: MatchedInnovation[] = picks.map((p) => {
     const i = byId.get(p.id)!;

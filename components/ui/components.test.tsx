@@ -74,6 +74,13 @@ describe("SiteHeader", () => {
     expect(html).not.toContain("Wersja pokazowa");
   });
 
+  it("links the profile page from the account menu", () => {
+    const html = renderToStaticMarkup(
+      <SiteHeader user={{ name: "Stanisław", role: "mieszkaniec" }} />,
+    );
+    expect(html).toMatch(/<a [^>]*href="\/my\/profile"[^>]*>Twój profil<\/a>/);
+  });
+
   it("marks the current section and shows the signed-in user", () => {
     const html = renderToStaticMarkup(
       <SiteHeader user={{ name: "Stanisław", role: "jst" }} unreadNotifications={2} demoMode />,
