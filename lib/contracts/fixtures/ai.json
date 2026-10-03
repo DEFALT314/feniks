@@ -1,0 +1,64 @@
+{
+  "hint_request": {
+    "idea": {
+      "title": "Sąsiedzki dyżur po wypisie",
+      "description": "Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala: zakupy, leki, rozmowa i kontakt z ośrodkiem pomocy społecznej.",
+      "essence": "Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu.",
+      "stage": "pomysl",
+      "area_id": "seniorzy"
+    },
+    "fields": ["audience"]
+  },
+  "hint_response": {
+    "hints": [
+      {
+        "field": "audience",
+        "text": "Seniorzy mieszkający samotnie, którzy wracają do domu po pobycie w szpitalu, oraz ich rodziny mieszkające daleko.",
+        "why": "Pole „Dla kogo” jest puste, a opis wskazuje tę grupę."
+      }
+    ]
+  },
+  "application_request": {
+    "idea": {
+      "title": "Sąsiedzki dyżur po wypisie",
+      "description": "Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala: zakupy, leki, rozmowa i kontakt z ośrodkiem pomocy społecznej.",
+      "essence": "Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu.",
+      "audience": "Seniorzy mieszkający samotnie po wypisie ze szpitala.",
+      "stage": "pomysl"
+    },
+    "call_id": "nabor-przyklad-2026"
+  },
+  "application_response": {
+    "call_id": "nabor-przyklad-2026",
+    "sections": [
+      {
+        "key": "goal",
+        "title": "Cel projektu",
+        "text": "Zapewnienie seniorom mieszkającym samotnie wsparcia sąsiedzkiego w pierwszych dwóch tygodniach po wypisie ze szpitala, w porozumieniu z ośrodkiem pomocy społecznej.",
+        "needs_user_input": false
+      },
+      {
+        "key": "activities",
+        "title": "Działania",
+        "text": "Rekrutacja i szkolenie wolontariuszy, grafik dyżurów, karta kontaktu z OPS, spotkanie podsumowujące z rodzinami.",
+        "needs_user_input": false
+      },
+      {
+        "key": "results",
+        "title": "Rezultaty",
+        "text": "[Liczba seniorów objętych wsparciem] · [liczba przeszkolonych wolontariuszy]",
+        "needs_user_input": true
+      }
+    ]
+  },
+  "image_request": {
+    "idea": {
+      "title": "Sąsiedzki dyżur po wypisie",
+      "description": "Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala."
+    }
+  },
+  "image_response": {
+    "image_url": "https://example.supabase.co/storage/v1/object/public/ai-obrazy/demo/sasiedzki-dyzur.png",
+    "alt_text": "Ilustracja: wolontariuszka przynosi zakupy starszemu mężczyźnie, który siedzi w fotelu w swoim mieszkaniu."
+  }
+}

@@ -1,15 +1,16 @@
-# Makiety HubMI (Claude Design)
+# HubMI mockups (Claude Design)
 
-Wzór wyglądu każdego ekranu. To zwykły HTML ze stylami w atrybutach: agent czyta plik i przenosi układ
-na Next.js + Tailwind + komponenty z `components/ui/`. Nie kopiujemy plików do aplikacji, nie importujemy `support.js`.
-Znaczniki `<dc-import name="Naglowek">` / `"Stopka"` = wspólny nagłówek i stopka z `app/layout.tsx`.
+The reference design for every screen. These are plain HTML files with inline styles: an agent reads a file and ports
+the layout to Next.js + Tailwind + the components in `components/ui/`. We don't copy these files into the app and we
+don't import `support.js`. The `<dc-import name="Naglowek">` / `"Stopka"` tags stand for the shared header and footer
+from `app/layout.tsx`.
 
-| Makieta | Ekran | Issue (właściciel) |
+| Mockup | Screen | Issue (owner) |
 |---|---|---|
-| `System.dc.html` | kolory, typografia, przyciski, pola, etykiety | Makiety i system wizualny (P2) |
-| `Naglowek.dc.html`, `Stopka.dc.html` | nagłówek, stopka | Komponenty UI i układ strony (P2) |
+| `System.dc.html` | colors, typography, buttons, fields, tags | Makiety i system wizualny (P2) |
+| `Naglowek.dc.html`, `Stopka.dc.html` | header, footer | Komponenty UI i układ strony (P2) |
 | `Main.dc.html` | `/` | Strona główna (P2) |
-| `Logowanie.dc.html` | `/logowanie`, „Wejdź jako…” | Strona główna (P2), Konta demo (P4) |
+| `Logowanie.dc.html` | `/logowanie`, "Wejdź jako…" | Strona główna (P2), Konta demo (P4) |
 | `Dopasuj.dc.html` | `/dopasuj` | Strona /dopasuj (P3) |
 | `Biblioteka.dc.html` | `/biblioteka` | Biblioteka (P1) |
 | `Karta.dc.html` | `/biblioteka/[id]` | Karta innowacji (P1) |
@@ -20,7 +21,14 @@ Znaczniki `<dc-import name="Naglowek">` / `"Stopka"` = wspólny nagłówek i sto
 | `Admin.dc.html` | `/admin` | Panel ROPS (P4) |
 | `Middleman.dc.html` | `/moje/middleman` | Middleman (P3) |
 
-Kolory: granat `#1F3A8A`, cegła `#C2452B` (tylko fokus i akcenty), zieleń `#1D6B48`, tło `#F6F7F9`, tekst `#151A23`,
-drugorzędny `#4B5565`, linie `#D9DDE4`. Fonty: Bricolage Grotesque (nagłówki), Atkinson Hyperlegible Next (tekst).
-Dane na makietach są przykładowe: w aplikacji bierzemy prawdziwe z bazy, a pokazowe oznaczamy „Dane demonstracyjne”.
-Zmiany w makietach: P2 (artefakt Claude Design „HubMI.pl – makiety”), potem eksport tutaj.
+Colors: navy `#1F3A8A`, brick `#C2452B` (focus and accents only), green `#1D6B48`, background `#F6F7F9`,
+text `#151A23`, secondary text `#4B5565`, lines `#D9DDE4`. Fonts: Bricolage Grotesque (headings), Atkinson Hyperlegible
+Next (body text). The data in the mockups is sample data: the app uses real data from the database, and demo data is
+labeled "Dane demonstracyjne" (demo data). Mockup changes: P2 edits the Claude Design artifact "HubMI.pl – makiety",
+then exports it here.
+
+Motion: `ruch.js` (GSAP 3.13 + ScrollTrigger from a CDN) plays the motion on every screen based on `data-ruch`
+attributes (`wejscie`, `pokaz`, `licznik`, `slupki`, `postep`, `zakresl`, `tok`, `wybor`, `odswiez`; each one is
+described at the top of the file). Hover, press and focus states stay in CSS. In the app, the same sequences go into
+components through `useGSAP()` from `@gsap/react` (scope = the container ref, `gsap.matchMedia()` for
+`prefers-reduced-motion`). The `/dopasuj` moment is a single timeline that replays when the user clicks "Dopasuj".

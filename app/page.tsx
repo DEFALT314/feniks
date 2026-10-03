@@ -1,5 +1,5 @@
-import { WBudowie } from "@/components/w-budowie";
+import { UnderConstruction } from "@/components/under-construction";
 
 export default function Home() {
-  return <WBudowie tytul="Małopolski Hub Innowacji Społecznych" />;
+  return <UnderConstruction title="Małopolski Hub Innowacji Społecznych" />;
 }
