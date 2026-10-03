@@ -1,5 +1,16 @@
 # HackTribe – formularz „Add Project” (pole po polu, wersja po weryfikacji)
 
+## Lista na 07:30 (#30)
+- [ ] Nazwa produktu potwierdzona przez zespół (teraz „HubMI.pl”)
+- [ ] Presentation: PDF z decku (https://claude.ai/artifact/EYQZ5ZeUCGXGbof2hMFh3N → Share › Export › PDF), ≤ 10 slajdów, uzupełnione [nawiasy]
+- [ ] YouTube: film ≤ 3:00 jako „Niepubliczny” (scenariusz: docs/SCENARIUSZE_DEMO.md), plik MP4 zachowany
+- [ ] Website: https://feniks-hub.vercel.app – sprawdzone w trybie incognito
+- [ ] Makiety UX/UI: PDF albo link (P2) – w opisie albo jako dodatkowy materiał
+- [ ] Code Repository: dopiero po decyzji o widoczności repo (umowa: „nie został dotychczas opublikowany”)
+- [ ] Cover image: zrzut strony głównej
+- [ ] Identyfikator zespołu zapisany: [__]
+- [ ] Wszystko po polsku; Submit; termin 4.10 11:00
+
 Draft do soboty 20:00, finał do niedzieli 11:00. Jeden Team Leader = jeden projekt: zakłada go jedna osoba, reszta
 dołącza linkiem z zaproszeniem. Wymagane w finale (regulamin § 4 ust. 9): opis, PDF do 10 slajdów, MP4 do 3 minut;
 zadanie ROPS wymaga też linku do demo, makiet UX/UI i kosztu utrzymania.
@@ -30,9 +41,9 @@ Opcjonalne. Później: zrzut ekranu albo makieta od P2.
 New Idea (projekt powstaje w całości na hackathonie)
 
 ## What's done so far and goal of your project
-Projekt powstaje w całości podczas HackYeah 2026. Gotowe: dane startowe z materiałów ROPS (158 innowacji, 8 obszarów i 48 wyzwań Mapy Wyzwań, 9 person, 57 raportów i publikacji), schemat bazy danych z politykami dostępu według ról, Biblioteka innowacji z wyszukiwarką i filtrami, karty innowacji, Mapa Wyzwań, raporty i publikacje, dopasowanie problemu do innowacji z AI (endpoint i strona), makiety UX/UI i komponenty interfejsu. W toku: logowanie i konta demonstracyjne, Kreator pomysłów, Tester, komunikacja z powiadomieniami, panel ROPS i Middleman.
+Projekt powstał w całości podczas HackYeah 2026. Działa na produkcji (feniks-hub.vercel.app, konta pokazowe, dane fikcyjne): dopasowanie problemu do innowacji z AI (100% trafień w top 3 na 230 zapytaniach testowych ROPS), Biblioteka 158 innowacji z wyszukiwarką, filtrami i filmami, Mapa Wyzwań, poradniki i raporty, Kreator pomysłów z kanwą i podpowiedziami AI, wysyłka pomysłu do ROPS z powiadomieniem, panel ROPS (ocena pomysłów, prośby o rolę, edycja Biblioteki, trendy potrzeb), wiadomości między ROPS, autorami i ekspertami oraz karta usługi dla gminy (Middleman).
 
-Cel na koniec hackathonu: wszystkie 7 modułów działa od początku do końca w wersji demo na fikcyjnych danych, z trafnością dopasowania co najmniej 80% w top 3 na 230 zapytaniach testowych.
+Cel: pilotaż w ROPS Kraków – podłączenie bazy naborów, uruchomienie modeli na serwerze ROPS i przekazanie redakcji treści.
 
 ## Team status
 Full team
@@ -47,7 +58,7 @@ Puste.
 Później (link „Niepubliczny”). Puste w drafcie.
 
 ## Website
-Później: adres demo z Vercela. Puste w drafcie.
+https://feniks-hub.vercel.app
 
 ## Code Repository
 UWAGA: repozytorium DEFALT314/feniks jest obecnie publiczne, a umowa przeniesienia praw wymaga oświadczenia, że utwór
@@ -56,6 +67,8 @@ prywatne i dać jury dostęp, albo zapytać organizatora. W drafcie można zosta
 https://github.com/DEFALT314/feniks
 
 ## Instructions on how to open project
+Demo: https://feniks-hub.vercel.app → „Zaloguj się” → „Wejdź jako…” i wybierz konto pokazowe (mieszkaniec, organizacja, gmina, ekspertka, ROPS). Wszystkie dane są fikcyjne. Najlepsza ścieżka: „Mam problem” (dopasowanie), potem konto Fundacji (Kreator, „Wyślij do ROPS”) i konto ROPS (panel z powiadomieniem).
+
 Lokalnie (Node 22 lub nowszy, pnpm 10 – „corepack enable”):
 pnpm install
 cp .env.example .env.local

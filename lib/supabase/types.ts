@@ -85,6 +85,62 @@ export type Database = {
           },
         ]
       }
+      calls: {
+        Row: {
+          cel: string | null
+          created_at: string
+          demo: boolean
+          id: string
+          nazwa: string
+          obszary: string[]
+          opublikowany: boolean
+          organizator: string
+          termin_do: string | null
+          termin_od: string | null
+          updated_at: string
+          updated_by: string | null
+          url: string | null
+        }
+        Insert: {
+          cel?: string | null
+          created_at?: string
+          demo?: boolean
+          id: string
+          nazwa: string
+          obszary?: string[]
+          opublikowany?: boolean
+          organizator?: string
+          termin_do?: string | null
+          termin_od?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          url?: string | null
+        }
+        Update: {
+          cel?: string | null
+          created_at?: string
+          demo?: boolean
+          id?: string
+          nazwa?: string
+          obszary?: string[]
+          opublikowany?: boolean
+          organizator?: string
+          termin_do?: string | null
+          termin_od?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calls_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenge_areas: {
         Row: {
           dane: string[]
@@ -494,6 +550,51 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          autor_id: string | null
+          autor_nazwa: string | null
+          autor_rola: string
+          created_at: string
+          id: string
+          thread_id: string
+          tresc: string
+        }
+        Insert: {
+          autor_id?: string | null
+          autor_nazwa?: string | null
+          autor_rola: string
+          created_at?: string
+          id?: string
+          thread_id: string
+          tresc: string
+        }
+        Update: {
+          autor_id?: string | null
+          autor_nazwa?: string | null
+          autor_rola?: string
+          created_at?: string
+          id?: string
+          thread_id?: string
+          tresc?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_autor_id_fkey"
+            columns: ["autor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       middleman_cards: {
         Row: {
           card: Json
@@ -810,6 +911,97 @@ export type Database = {
           },
         ]
       }
+      thread_participants: {
+        Row: {
+          last_read_at: string
+          nazwa: string | null
+          rola: string
+          thread_id: string
+          user_id: string
+        }
+        Insert: {
+          last_read_at?: string
+          nazwa?: string | null
+          rola: string
+          thread_id: string
+          user_id: string
+        }
+        Update: {
+          last_read_at?: string
+          nazwa?: string | null
+          rola?: string
+          thread_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "thread_participants_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "threads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "thread_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      threads: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          idea_id: string | null
+          innowacja_id: string | null
+          last_message_at: string
+          temat: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          idea_id?: string | null
+          innowacja_id?: string | null
+          last_message_at?: string
+          temat: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          idea_id?: string | null
+          innowacja_id?: string | null
+          last_message_at?: string
+          temat?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "threads_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "threads_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: true
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "threads_innowacja_id_fkey"
+            columns: ["innowacja_id"]
+            isOneToOne: false
+            referencedRelation: "innovations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       idea_status: {
@@ -845,7 +1037,16 @@ export type Database = {
         Returns: undefined
       }
       ai_usage_take: { Args: { p_limit: number }; Returns: number }
+      call_matching_authors: {
+        Args: { p_obszary: string[] }
+        Returns: {
+          email: string
+          tytul: string
+          user_id: string
+        }[]
+      }
       can_review_idea: { Args: { p_idea_id: string }; Returns: boolean }
+      can_see_thread: { Args: { p_thread_id: string }; Returns: boolean }
       dodaj_powiadomienie: {
         Args: {
           p_link?: string
@@ -857,10 +1058,12 @@ export type Database = {
         Returns: number
       }
       idea_author_email: { Args: { p_idea_id: string }; Returns: string }
+      idea_editable: { Args: { p_idea_id: string }; Returns: boolean }
       is_idea_author: { Args: { p_idea_id: string }; Returns: boolean }
       is_rops: { Args: never; Returns: boolean }
       is_signed_up: { Args: { p_test_id: string }; Returns: boolean }
       is_test_author: { Args: { p_test_id: string }; Returns: boolean }
+      mark_thread_read: { Args: { p_thread_id: string }; Returns: undefined }
       match_embeddings: {
         Args: { match_count?: number; match_kind: string; query: string }
         Returns: {
@@ -869,6 +1072,32 @@ export type Database = {
         }[]
       }
       moja_rola: { Args: never; Returns: string }
+      post_message: {
+        Args: { p_thread_id: string; p_tresc: string }
+        Returns: string
+      }
+      start_thread: {
+        Args: {
+          p_idea_id?: string
+          p_innowacja_id?: string
+          p_temat: string
+          p_tresc: string
+          p_uczestnicy?: string[]
+        }
+        Returns: string
+      }
+      thread_add_participant: {
+        Args: { p_thread_id: string; p_user_id: string }
+        Returns: undefined
+      }
+      thread_reply_emails: {
+        Args: { p_thread_id: string }
+        Returns: {
+          email: string
+          user_id: string
+        }[]
+      }
+      wyslij_pomysl: { Args: { p_idea_id: string }; Returns: string }
       zapisz_audit: {
         Args: { p_akcja: string; p_obiekt: string; p_szczegoly?: Json }
         Returns: number

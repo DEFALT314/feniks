@@ -5,12 +5,13 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { isActivePath, type NavItem } from "./navigation";
 
-export function SiteNav({ items }: { items: NavItem[] }) {
+// Main menu on wide screens: one row, no wrapping (#75). Narrow screens use MobileMenu.
+export function SiteNav({ items, className }: { items: NavItem[]; className?: string }) {
   const pathname = usePathname();
   return (
     <nav
       aria-label="Menu główne"
-      className="flex flex-[1_1_480px] flex-wrap gap-x-5 gap-y-1 self-stretch"
+      className={cn("flex flex-nowrap gap-x-4 self-stretch", className)}
     >
       {items.map((item) => {
         const active = isActivePath(pathname, item.href);
@@ -20,7 +21,7 @@ export function SiteNav({ items }: { items: NavItem[] }) {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex min-h-12 items-center border-b-[3px] text-[1.0625rem] no-underline transition-colors duration-200",
+              "flex min-h-12 items-center border-b-[3px] text-[1.0625rem] whitespace-nowrap no-underline transition-colors duration-200",
               active
                 ? "border-navy text-navy font-bold"
                 : "text-ink hover:border-line hover:text-navy border-transparent",

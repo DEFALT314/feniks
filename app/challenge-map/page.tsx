@@ -42,9 +42,9 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
             Mapa wyzwań społecznych
           </h1>
           <p className="text-ink-muted max-w-[820px]">
-            {areas.length} obszarów i {totalChallenges} wyzwań opisanych przez Dział Innowacji
-            Społecznych ROPS. Każdy problem zgłoszony w HubMI przypisujemy do obszaru i wyzwania,
-            żeby było widać, czego najbardziej potrzebuje region.
+            {areas.length} obszarów i {totalChallenges} wyzwań opisał ROPS w Krakowie. Każdy problem
+            zgłoszony w HubMI przypisujemy do obszaru. Dzięki temu widać, czego region potrzebuje
+            najbardziej.
           </p>
           <nav aria-label="Obszary" className="mt-2">
             <ul className="m-0 grid list-none grid-cols-1 gap-2.5 p-0 sm:grid-cols-2 lg:grid-cols-4">
@@ -134,7 +134,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
               className="border-line flex flex-col gap-2.5 rounded-xl border bg-white p-6"
             >
               <span className="text-ink-muted text-[0.9375rem] font-bold">
-                Persona z Mapy Wyzwań (fikcyjna)
+                Przykładowa osoba z Mapy Wyzwań (fikcyjna)
               </span>
               <h3 id={`${p.id}-name`} className="text-[1.625rem] leading-tight font-bold">
                 {p.imie}

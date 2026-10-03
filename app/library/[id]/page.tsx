@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { notFound } from "next/navigation";
 import { VideoPlayer } from "../_components/video-player";
 import { youTubeId } from "../_lib/youtube";
@@ -18,8 +20,6 @@ const PROGRAMS: Record<string, string> = {
 
 const LINK = "text-navy underline underline-offset-[3px] hover:text-navy-strong";
 const FOCUS = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick";
-const BUTTON = `inline-flex min-h-[50px] items-center justify-center gap-2 rounded-[10px] px-[22px] text-[1.0625rem] font-bold no-underline ${FOCUS}`;
-const BADGE = "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-sm font-bold";
 
 export async function generateMetadata({ params }: PageProps<"/library/[id]">): Promise<Metadata> {
   const i = await getInnovationById((await params).id);
@@ -77,13 +77,9 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
           </h1>
           <div className="flex flex-wrap items-center gap-2">
             {i.sprawdzona_przez_rops ? (
-              <span className={`${BADGE} bg-success-soft text-success`}>
-                Wybrana do upowszechniania
-              </span>
+              <Badge variant="success">Sprawdzona przez ROPS</Badge>
             ) : null}
-            {i.opis_niepelny ? (
-              <span className={`${BADGE} bg-warning-soft text-warning`}>Opis niepełny</span>
-            ) : null}
+            {i.opis_niepelny ? <Badge variant="warning">Opis niepełny</Badge> : null}
             {program ? <span className="text-ink-muted text-base">{program}</span> : null}
           </div>
         </div>
@@ -94,8 +90,8 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
           {i.opis_niepelny ? (
             <Section title="Co wiemy" first>
               <p>
-                Znamy nazwę, program i autora tej innowacji. Opis poniżej wynika tylko z tytułu.
-                Pełny opis uzupełni ROPS.
+                Znamy tylko nazwę, program i autora tej innowacji. Opis poniżej wynika z tytułu.
+                ROPS dopisze resztę.
               </p>
             </Section>
           ) : null}
@@ -117,7 +113,9 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
           <BulletSection title="Dla kogo" items={i.dla_kogo} />
           <BulletSection title="Kto może wdrożyć" items={i.kto_moze_wdrozyc} />
           <Section title="Czy to działa">
-            <p>{i.czy_dziala ?? "Test jeszcze trwa albo źródła nie podają wyników."}</p>
+            <p>
+              {i.czy_dziala ?? "Wyników jeszcze nie ma. Test trwa albo autorzy ich nie podali."}
+            </p>
           </Section>
           {challenges.length > 0 ? (
             <Section title="Wyzwania z Mapy Wyzwań">
@@ -145,13 +143,13 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
             <h2 className="text-[1.1875rem] font-bold">Chcesz to wdrożyć?</h2>
             <Link
               href={`/my/middleman?innovation=${encodeURIComponent(i.id)}`}
-              className={`${BUTTON} bg-navy hover:bg-navy-strong text-white`}
+              className={buttonVariants()}
             >
               Przygotuj kartę usługi
             </Link>
             <Link
               href={`/my/messages?innovation=${encodeURIComponent(i.id)}`}
-              className={`${BUTTON} border-navy text-navy border bg-white`}
+              className={buttonVariants({ variant: "secondary" })}
             >
               Zapytaj ROPS
             </Link>

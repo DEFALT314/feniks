@@ -7,6 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { notificationsLabel } from "@/components/ui/navigation";
 import { Notification } from "@/lib/contracts/notifications";
 import { createClient } from "@/lib/supabase/client";
+import { authorizeRealtime } from "@/lib/supabase/realtime";
 import { cn } from "@/lib/utils";
 import { bellReducer, shortTime } from "./bell-state";
 
@@ -33,27 +34,37 @@ export function NotificationBell({
   useEffect(() => {
     const supabase = createClient();
     const filter = `user_id=eq.${userId}`;
-    const channel = supabase
-      .channel(`notifications:${userId}`)
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "notifications", filter },
-        (p) => {
-          const item = Notification.safeParse(p.new);
-          if (item.success) dispatch({ type: "received", item: item.data });
-        },
-      )
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "notifications", filter },
-        (p) => {
-          const item = Notification.safeParse(p.new);
-          if (item.success) dispatch({ type: "updated", item: item.data });
-        },
-      )
-      .subscribe();
+    let cancelled = false;
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    let stopAuth = () => {};
+    // The token must reach Realtime first, otherwise RLS hides every row (see authorizeRealtime).
+    void authorizeRealtime(supabase).then((stop) => {
+      stopAuth = stop;
+      if (cancelled) return stop();
+      channel = supabase
+        .channel(`notifications:${userId}`)
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "notifications", filter },
+          (p) => {
+            const item = Notification.safeParse(p.new);
+            if (item.success) dispatch({ type: "received", item: item.data });
+          },
+        )
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "notifications", filter },
+          (p) => {
+            const item = Notification.safeParse(p.new);
+            if (item.success) dispatch({ type: "updated", item: item.data });
+          },
+        )
+        .subscribe();
+    });
     return () => {
-      supabase.removeChannel(channel);
+      cancelled = true;
+      stopAuth();
+      if (channel) void supabase.removeChannel(channel);
     };
   }, [userId]);
 

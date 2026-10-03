@@ -40,12 +40,18 @@
   ],
   "nabory": [
     {
-      "id": "c3d4e5f6-0000-4000-8000-000000000001",
+      "id": "nabor-przyklad-2026",
       "nazwa": "Przykładowy nabór na innowacje społeczne (fikcyjny)",
       "url": "https://example.org/nabor",
       "termin_od": "2026-10-01",
       "termin_do": "2026-11-30",
-      "obszary": ["seniorzy"]
+      "obszary": [
+        "seniorzy"
+      ],
+      "organizator": "Regionalny Ośrodek Polityki Społecznej w Krakowie",
+      "cel": "Przykładowy cel naboru.",
+      "opublikowany": true,
+      "demo": true
     }
   ]
 }

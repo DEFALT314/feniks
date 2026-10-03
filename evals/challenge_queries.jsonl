@@ -1,0 +1,48 @@
+{"query": "W powiecie od roku nie zgłosiła się żadna nowa rodzina, która chciałaby przyjąć dziecko pod opiekę.", "area": "rodzina-piecza", "challenges": ["wiecej-rodzin-zastepczych"]}
+{"query": "Dziecko z naszego powiatu trafiło do rodziny w innym powiecie i nikt nie wie, kto ma płacić i kto się nim zajmuje.", "area": "rodzina-piecza", "challenges": ["wspolpraca-powiatow"]}
+{"query": "Trójka rodzeństwa trafiła do pieczy, ale każde dziecko jest w innym miejscu i prawie się nie widują.", "area": "rodzina-piecza", "challenges": ["nierozdzielanie-rodzenstwa"]}
+{"query": "Chłopiec jest w domu dziecka już szósty rok, a miał tam być tylko na chwilę.", "area": "rodzina-piecza", "challenges": ["krotszy-pobyt"]}
+{"query": "Każdy ośrodek adopcyjny w województwie inaczej przygotowuje rodziny i ma inne wymagania.", "area": "rodzina-piecza", "challenges": ["spojny-system-adopcyjny"]}
+{"query": "Dziewiętnastolatek wyrzucony z domu śpi u kolegów, a schronisko jest tylko dla starszych mężczyzn.", "area": "bezdomnosc", "challenges": ["mlodzi-bezdomni", "niewidzialnosc"]}
+{"query": "Młodzi ludzie bez dachu nad głową nie przychodzą do żadnej instytucji, nie wiemy nawet, ilu ich jest.", "area": "bezdomnosc", "challenges": ["niewidzialnosc", "mlodzi-bezdomni"]}
+{"query": "Wychowanka skończyła 18 lat, musiała wyjść z placówki i została bez mieszkania i bez nikogo do pomocy.", "area": "bezdomnosc", "challenges": ["przejscie-z-placowki"]}
+{"query": "Pan od lat żyje na ulicy, nie ma żadnej rodziny ani znajomych, do kogo mógłby się zwrócić.", "area": "bezdomnosc", "challenges": ["wiezi"]}
+{"query": "Syn porusza się na wózku i od dwóch lat nie może znaleźć żadnej pracy.", "area": "niepelnosprawnosc", "challenges": ["rynek-pracy"]}
+{"query": "Niewidoma dziewczyna chce iść na studia, ale nie ma jak korzystać z materiałów do nauki.", "area": "niepelnosprawnosc", "challenges": ["edukacja"]}
+{"query": "Dorosły syn z niepełnosprawnością intelektualną nie ma żadnych kolegów i nigdzie nie wychodzi.", "area": "niepelnosprawnosc", "challenges": ["relacje", "zainteresowania"]}
+{"query": "Po wypadku żona jest na wózku i ciągle płacze, nie radzi sobie z tym psychicznie.", "area": "niepelnosprawnosc", "challenges": ["wsparcie-emocjonalne"]}
+{"query": "Do naszego urzędu nie da się wjechać wózkiem, a strona internetowa nie działa z czytnikiem ekranu.", "area": "niepelnosprawnosc", "challenges": ["dostepnosc"]}
+{"query": "Niewidomi petenci gubią się w urzędzie i nie trafią sami do właściwego okienka.", "area": "niepelnosprawnosc", "challenges": ["mobilnosc", "dostepnosc"]}
+{"query": "Osoba z porażeniem potrzebuje rehabilitacji i pomocy przy myciu, a terminy są za pół roku.", "area": "niepelnosprawnosc", "challenges": ["opieka-medyczna"]}
+{"query": "Niesłyszący nastolatek chciałby chodzić na zajęcia muzyczne i sportowe, ale nigdzie go nie przyjmują.", "area": "niepelnosprawnosc", "challenges": ["zainteresowania"]}
+{"query": "Mieszkanie na czwartym piętrze bez windy, a mąż od udaru nie chodzi po schodach.", "area": "niepelnosprawnosc", "challenges": ["mieszkania"]}
+{"query": "Dzieci z biednych rodzin w gminie nie chodzą do przedszkola i od początku mają gorszy start.", "area": "ubostwo", "challenges": ["ubostwo-dzieci"]}
+{"query": "Emerytka po opłaceniu rachunków ma kilkaset złotych na cały miesiąc i nie stać jej na leki.", "area": "ubostwo", "challenges": ["ubostwo-seniorow"]}
+{"query": "Renta mojego brata z niepełnosprawnością nie wystarcza nawet na podstawowe rzeczy.", "area": "ubostwo", "challenges": ["ubostwo-onp"]}
+{"query": "Rolnik z małym gospodarstwem pracuje od rana do nocy, a i tak brakuje mu do pierwszego.", "area": "ubostwo", "challenges": ["pracujacy-biedni"]}
+{"query": "Osoby długo bezrobotne i bez domu nie mają szans u zwykłego pracodawcy, potrzebują innego zatrudnienia.", "area": "ubostwo", "challenges": ["bezrobotni-bezdomni"]}
+{"query": "Kobiety z Ukrainy z dziećmi u nas w gminie żyją bardzo skromnie i nie starcza im na życie.", "area": "ubostwo", "challenges": ["uchodzcy"]}
+{"query": "Starsi ludzie zimą nie grzeją mieszkań, bo nie stać ich na opał i prąd.", "area": "ubostwo", "challenges": ["ubostwo-energetyczne"]}
+{"query": "Dzieci przychodzą do szkoły głodne, bez śniadania.", "area": "ubostwo", "challenges": ["niedozywienie", "ubostwo-dzieci"]}
+{"query": "Cudzoziemcy nie wiedzą, że mogą przyjść do ośrodka pomocy, i nikt im tego nie wyjaśnia.", "area": "cudzoziemcy", "challenges": ["rowny-dostep", "uslugi-indywidualne"]}
+{"query": "W ośrodku pomocy nikt nie mówi po ukraińsku, a rodzina potrzebuje kogoś, kto przeprowadzi ją przez sprawy.", "area": "cudzoziemcy", "challenges": ["uslugi-indywidualne", "rowny-dostep"]}
+{"query": "Rodziny z Gruzji i Ukrainy w miasteczku żyją obok nas, ale nie biorą udziału w żadnych lokalnych wydarzeniach.", "area": "cudzoziemcy", "challenges": ["wlaczenie-kulturowe"]}
+{"query": "Inżynier z Ukrainy pracuje na magazynie, bo jego dyplom nie jest uznawany i słabo zna język branżowy.", "area": "cudzoziemcy", "challenges": ["rynek-pracy-cudzoziemcy"]}
+{"query": "Dziecko z Wietnamu w trzeciej klasie nic nie rozumie na lekcjach i siedzi samo na przerwach.", "area": "cudzoziemcy", "challenges": ["edukacja-dzieci", "wlaczenie-kulturowe"]}
+{"query": "Mieszkańcy boją się obcokrajowców i powtarzają o nich krzywdzące plotki.", "area": "cudzoziemcy", "challenges": ["stereotypy"]}
+{"query": "Uchodźczyni po ucieczce przed wojną nie śpi, ma ataki paniki i nie ma z kim o tym porozmawiać w swoim języku.", "area": "cudzoziemcy", "challenges": ["zdrowie-psychiczne-migrantow"]}
+{"query": "Ludzie w naszej wsi źle się odżywiają, mało się ruszają i nie chodzą na badania.", "area": "zdrowie", "challenges": ["edukacja-zdrowotna"]}
+{"query": "Do najbliższego specjalisty jest 60 kilometrów i nie ma żadnego autobusu.", "area": "zdrowie", "challenges": ["rowny-dostep-zdrowie"]}
+{"query": "Coraz więcej starszych, leżących osób potrzebuje opieki przez wiele lat, a nie ma kto jej dawać.", "area": "zdrowie", "challenges": ["opieka-dlugoterminowa"]}
+{"query": "Dzieci całe dni siedzą przy telefonach, jedzą słodycze i nie uprawiają sportu.", "area": "zdrowie", "challenges": ["zdrowie-mlodych"]}
+{"query": "W gminie wstyd przyznać się do depresji, ludzie wolą cierpieć po cichu niż iść do psychologa.", "area": "zdrowie-psychiczne", "challenges": ["destygmatyzacja", "swiadomosc-psychiczna"]}
+{"query": "Nauczyciele i rodzice nie wiedzą, jak rozmawiać z młodzieżą o emocjach i zdrowiu psychicznym.", "area": "zdrowie-psychiczne", "challenges": ["edukacja-prozdrowotna", "kompetencje-rodzicow"]}
+{"query": "Córka się okalecza, a my jako rodzice niczego wcześniej nie zauważyliśmy.", "area": "zdrowie-psychiczne", "challenges": ["kompetencje-rodzicow"]}
+{"query": "Pacjent po latach w szpitalu psychiatrycznym wraca do domu i nie ma żadnego wsparcia na miejscu.", "area": "zdrowie-psychiczne", "challenges": ["opieka-srodowiskowa"]}
+{"query": "Przychodnie i szpitale nie są przygotowane na tak wielu starszych pacjentów, przydałaby się telemedycyna.", "area": "seniorzy", "challenges": ["uslugi-dla-starzejacych", "opieka-dlugoterminowa"]}
+{"query": "Babcia nie może sama wyjść z mieszkania, bo w bloku są progi, wąskie drzwi i brak windy.", "area": "seniorzy", "challenges": ["projektowanie-uniwersalne", "mieszkania"]}
+{"query": "Tata bierze dziesięć różnych tabletek i ciągle myli dawki.", "area": "seniorzy", "challenges": ["wielolekowosc"]}
+{"query": "Nikt mnie nie odwiedza, całymi dniami siedzę sam w mieszkaniu.", "area": "seniorzy", "challenges": ["aktywizacja"]}
+{"query": "Seniorzy nie umieją zapłacić rachunku przez internet ani umówić się do lekarza przez aplikację.", "area": "seniorzy", "challenges": ["kompetencje-cyfrowe"]}
+{"query": "Mama po udarze wróciła ze szpitala i jest sama w domu, a w gminie nie ma wolnej opiekunki.", "area": "seniorzy", "challenges": ["uslugi-opiekuncze", "opieka-dlugoterminowa"]}
+{"query": "Samotni seniorzy na wsi z objawami depresji.", "area": "seniorzy", "challenges": ["aktywizacja", "uslugi-opiekuncze", "edukacja-prozdrowotna", "destygmatyzacja"]}

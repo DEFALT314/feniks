@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import type { MatchResponse, MatchedInnovation, TextSegment } from "@/lib/contracts/match";
 import { cn } from "@/lib/utils";
 import { AiProgress } from "./ai-progress";
+import { reportNeedHref } from "../_lib/request";
 
 // The result of /match, laid out as in design/makiety/Dopasuj.dc.html: description → challenge → innovations.
 
@@ -135,6 +136,53 @@ function InnovationCard({
   );
 }
 
+// One sentence of the summary, so a name like "Urzędowy ambaras" says what the innovation does.
+export function shortSummary(text: string | null, max = 140): string | null {
+  if (!text) return null;
+  // A sentence ends before a capital letter, so "m.in." or "np." does not cut it short.
+  const first = text.trim().split(/(?<=[.!?])\s+(?=[A-ZĄĆĘŁŃÓŚŹŻ„"])/)[0];
+  if (first.length <= max) return first;
+  const cut = first.slice(0, max);
+  return `${cut.slice(0, Math.max(cut.lastIndexOf(" "), max - 20)).replace(/[,;:–-]\s*$/, "")}…`;
+}
+
+// Further results from the ranking (not judged by the AI). When nothing above fits, they are
+// all there is to see: then they are called the closest finds and shown open.
+function MoreInnovations({ result }: { result: MatchResponse }) {
+  const nothingAbove = result.innovations.length === 0;
+  const title = nothingAbove ? "Najbliższe, co znaleźliśmy" : "Inne innowacje, które mogą pasować";
+  return (
+    <details className="mt-6" open={nothingAbove || undefined}>
+      <summary className="text-navy cursor-pointer font-bold">
+        {title} ({result.more.length})
+      </summary>
+      <p className="text-ink-muted mt-2 text-[0.9375rem]">
+        {result.picked_by === "ai"
+          ? "Mniej podobne do Twojego opisu. Wybrała je wyszukiwarka, AI ich nie oceniała."
+          : "Mniej podobne do Twojego opisu niż te powyżej."}
+      </p>
+      <ul className="mt-3 flex flex-col gap-3">
+        {result.more.map((m) => {
+          const summary = shortSummary(m.opis_krotki);
+          return (
+            <li key={m.id} className="border-border border-l-2 pl-4">
+              <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <Link href={`/library/${m.id}`} className={cn(LINK, "font-bold")}>
+                  {m.nazwa}
+                </Link>
+                {m.sprawdzona_przez_rops ? (
+                  <Badge variant="success">Sprawdzona przez ROPS</Badge>
+                ) : null}
+              </span>
+              {summary ? <span className="block text-base">{summary}</span> : null}
+            </li>
+          );
+        })}
+      </ul>
+    </details>
+  );
+}
+
 // Every AI sentence carries the label (CLAUDE.md, rule 5), not only the heading of the result.
 function AiNote() {
   return <span className="text-navy text-[0.9375rem] font-bold">(Propozycja AI)</span>;
@@ -202,22 +250,7 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
               )}
             </p>
           )}
-          {result.more.length ? (
-            <details className="mt-5">
-              <summary className="text-navy cursor-pointer font-bold">
-                Zobacz też ({result.more.length})
-              </summary>
-              <ul className="mt-3 flex flex-col gap-2 pl-5">
-                {result.more.map((m) => (
-                  <li key={m.id}>
-                    <Link href={`/library/${m.id}`} className={LINK}>
-                      {m.nazwa}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          ) : null}
+          {result.more.length ? <MoreInnovations result={result} /> : null}
         </Step>
       </ol>
 
@@ -231,7 +264,7 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
           Zgłoś potrzebę do ROPS. Trafi na Mapę Wyzwań i pomoże zaplanować kolejne nabory.
         </p>
         <Link
-          href="/my/messages"
+          href={reportNeedHref(result)}
           className={buttonVariants({ variant: weak ? "primary" : "secondary" })}
         >
           Zgłoś potrzebę

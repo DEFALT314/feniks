@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import fixture from "@/lib/contracts/fixtures/match.json";
 import type { MatchResponse } from "@/lib/contracts/match";
-import { MatchResult } from "./match-result";
+import { MatchResult, shortSummary } from "./match-result";
 
 const ai = fixture.response as MatchResponse;
 const render = (result: MatchResponse, choosing = false) =>
@@ -58,13 +58,14 @@ describe("MatchResult", () => {
       'href="/my/middleman?innovation=organizator-kompleksowej-opieki-w-miejscu-zamieszkania"',
     );
     expect(html).toContain('href="/challenge-map?area=seniorzy#area"');
+    expect(html).toContain('href="/my/messages/new?topic=Potrzeba');
   });
 
   it("without a match explains why and stresses reporting the need", () => {
     const html = render(fixture.response_no_match as MatchResponse);
     expect(html).toContain("nie ma jeszcze innowacji o opiece nad małymi dziećmi");
     expect(html).toContain("Wygląda na to, że takiego rozwiązania jeszcze nie ma.");
-    const link = html.match(/<a[^>]*href="\/my\/messages"[^>]*>/)?.[0] ?? "";
+    const link = html.match(/<a[^>]*href="\/my\/messages\/new[^"]*"[^>]*>/)?.[0] ?? "";
     expect(link).toContain("bg-primary");
   });
 
@@ -72,5 +73,45 @@ describe("MatchResult", () => {
     const html = render({ ...ai, challenge: null });
     expect(html).not.toContain("Wyzwanie z Mapy Wyzwań ROPS");
     expect(html).toMatch(/>2<\/span><h3[^>]*>Pasujące innowacje/);
+  });
+
+  it("explains the further results and says what each one is", () => {
+    const html = render(ai);
+    expect(html).toContain(`Inne innowacje, które mogą pasować (${ai.more.length})`);
+    expect(html).toContain("Wybrała je wyszukiwarka, AI ich nie oceniała.");
+    expect(html).not.toContain("Zobacz też");
+    const first = ai.more[0];
+    expect(html).toContain(`href="/library/${first.id}"`);
+    if (first.opis_krotki) expect(html).toContain(shortSummary(first.opis_krotki)!);
+    expect(html).not.toMatch(/<details[^>]*open/);
+  });
+
+  it("when nothing above fits calls them the closest finds and shows them open", () => {
+    const html = render({ ...ai, innovations: [], match_quality: "weak" });
+    expect(html).toContain("Najbliższe, co znaleźliśmy");
+    expect(html).toMatch(/<details[^>]*open/);
+    // a weak result that still has picks keeps the plain heading
+    expect(render({ ...ai, match_quality: "weak" })).toContain(
+      "Inne innowacje, które mogą pasować",
+    );
+  });
+
+  it("in the ranking phase does not mention the AI in the further results", () => {
+    const html = render({ ...ai, picked_by: "search" });
+    expect(html).toContain("Mniej podobne do Twojego opisu niż te powyżej.");
+  });
+});
+
+describe("shortSummary", () => {
+  it("keeps the first sentence and cuts long ones at a word", () => {
+    expect(shortSummary("Pierwsze zdanie. Drugie zdanie.")).toBe("Pierwsze zdanie.");
+    expect(shortSummary("Zabiegi spa (m.in. masaże) w domu. Drugie.")).toBe(
+      "Zabiegi spa (m.in. masaże) w domu.",
+    );
+    const long = shortSummary(`${"słowo ".repeat(40)}koniec.`, 60)!;
+    expect(long.endsWith("…")).toBe(true);
+    expect(long.length).toBeLessThanOrEqual(61);
+    expect(long).not.toMatch(/\s…$/);
+    expect(shortSummary(null)).toBeNull();
   });
 });

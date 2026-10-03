@@ -177,6 +177,12 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                 experts={experts}
                 currentExpertId={detail.ekspert_id}
               />
+              <Link
+                href={`/my/messages/new?idea=${detail.idea_id}&topic=${encodeURIComponent(detail.tytul)}`}
+                className="self-start text-base"
+              >
+                Napisz do autora
+              </Link>
             </Card>
           ) : null}
 
