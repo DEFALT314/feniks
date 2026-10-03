@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
+import { signInUrl } from "@/lib/auth/sign-in-redirect";
 import { createClient } from "@/lib/supabase/server";
 import { MyIdeas } from "./_components/my-ideas";
-import { SignInPrompt } from "./_components/states";
 import { listMyIdeas } from "./_lib/ideas";
 
 export const metadata: Metadata = {
@@ -12,6 +13,6 @@ export const metadata: Metadata = {
 
 export default async function CreatorPage() {
   const user = await getCurrentUser();
-  if (!user) return <SignInPrompt next="/my/creator" />;
+  if (!user) redirect(signInUrl("/my/creator")); // app/my/layout.tsx checks first
   return <MyIdeas ideas={await listMyIdeas(await createClient(), user.id)} />;
 }

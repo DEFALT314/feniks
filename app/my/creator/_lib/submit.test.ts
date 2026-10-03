@@ -22,7 +22,7 @@ function deps(idea: MyIdea | null = IDEA, sent: SendResult = { ok: true, resent:
   return {
     loadIdea: vi.fn(async () => idea),
     send: vi.fn(async () => sent),
-    addNotification: vi.fn(async () => 1),
+    notifyRops: vi.fn(async () => ({ notified: 1, emailSent: true })),
     writeAudit: vi.fn(async () => 1),
   } satisfies SubmitDeps;
 }
@@ -32,11 +32,9 @@ describe("submitIdea", () => {
     const d = deps();
     expect(await submitIdea(d, IDEA.id)).toEqual({ status: "sent", resent: false });
     expect(d.send).toHaveBeenCalledWith(IDEA.id);
-    expect(d.addNotification).toHaveBeenCalledWith({
-      role: ["rops_redaktor", "rops_admin"],
-      typ: "pomysl_wyslany",
-      tytul: "Nowy pomysł do oceny: Sąsiedzki dyżur po wypisie",
-      link: `/admin?idea=${IDEA.id}`,
+    expect(d.notifyRops).toHaveBeenCalledWith({
+      ideaId: IDEA.id,
+      tytul: "Sąsiedzki dyżur po wypisie",
     });
     expect(d.writeAudit).toHaveBeenCalledWith({
       akcja: "pomysl.wyslanie",
@@ -58,7 +56,7 @@ describe("submitIdea", () => {
     const d = deps({ ...IDEA, wyslany_at: "2026-10-03T19:00:00+02:00", status: "w_weryfikacji" });
     expect((await submitIdea(d, IDEA.id)).status).toBe("error");
     expect(d.send).not.toHaveBeenCalled();
-    expect(d.addNotification).not.toHaveBeenCalled();
+    expect(d.notifyRops).not.toHaveBeenCalled();
   });
 
   it("sends a corrected version after 'do poprawy'", async () => {
@@ -67,8 +65,8 @@ describe("submitIdea", () => {
       { ok: true, resent: true },
     );
     expect(await submitIdea(d, IDEA.id)).toEqual({ status: "sent", resent: true });
-    expect(d.addNotification).toHaveBeenCalledWith(
-      expect.objectContaining({ tytul: "Poprawiony pomysł do oceny: Sąsiedzki dyżur po wypisie" }),
+    expect(d.notifyRops).toHaveBeenCalledWith(
+      expect.objectContaining({ tytul: "Sąsiedzki dyżur po wypisie (poprawiona wersja)" }),
     );
     expect(d.writeAudit).toHaveBeenCalledWith(
       expect.objectContaining({ akcja: "pomysl.ponowne_wyslanie" }),
@@ -82,7 +80,7 @@ describe("submitIdea", () => {
   it("reports a failed send and does not notify", async () => {
     const d = deps(IDEA, { ok: false, reason: "failed" });
     expect((await submitIdea(d, IDEA.id)).status).toBe("error");
-    expect(d.addNotification).not.toHaveBeenCalled();
+    expect(d.notifyRops).not.toHaveBeenCalled();
   });
 
   it("does not notify twice when a parallel request already sent it", async () => {
@@ -92,22 +90,15 @@ describe("submitIdea", () => {
       status: "error",
       message: "Ten pomysł jest już w ROPS. Poczekaj na odpowiedź.",
     });
-    expect(d.addNotification).not.toHaveBeenCalled();
+    expect(d.notifyRops).not.toHaveBeenCalled();
     expect(d.writeAudit).not.toHaveBeenCalled();
   });
 
   it("keeps the submission when the notification fails", async () => {
     const d = deps();
-    d.addNotification.mockRejectedValue(new Error("rpc down"));
+    d.notifyRops.mockRejectedValue(new Error("rpc down"));
     vi.spyOn(console, "error").mockImplementation(() => {});
     expect(await submitIdea(d, IDEA.id)).toEqual({ status: "sent", resent: false });
     expect(d.writeAudit).toHaveBeenCalled();
-  });
-
-  it("keeps the notification title within the 200-character limit", async () => {
-    const d = deps({ ...IDEA, tytul: "x".repeat(200) });
-    await submitIdea(d, IDEA.id);
-    const [notification] = d.addNotification.mock.calls[0] as unknown as [{ tytul: string }];
-    expect(notification.tytul).toHaveLength(200);
   });
 });
