@@ -49,7 +49,8 @@ Shared: `lib/contracts/` (everyone edits only their own module's file), `data/ro
 9. **Licenses:** only MIT, Apache, BSD or ISC libraries. Don't add a LICENSE file. Don't copy other people's
    code, texts or graphics.
 10. **Workflow:** small changes, commit messages in English, PR to `main` with a link to the Vercel preview, green CI
-    (typecheck, lint, unit tests, axe test). P4 merges every hour in the :00–:10 window.
+    (typecheck, lint, unit tests, axe test). Everyone merges their own PR once CI is green and it merges
+    cleanly with `main`.
 11. **Unit tests:** every logic change (functions in `lib/`, endpoints in `app/api/`, zod schemas,
     validation, permissions) comes with unit tests in the same PR, to prevent regressions. Fixing a bug →
     first a test that reproduces it, then the fix. Tests live next to the code (`*.test.ts`), with no network and no real
