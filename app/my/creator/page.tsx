@@ -1,5 +1,11 @@
-import { UnderConstruction } from "@/components/under-construction";
+import type { Metadata } from "next";
+import { MyIdeas } from "./_components/my-ideas";
 
-export default function Page() {
-  return <UnderConstruction title="Kreator pomysłów" moduleName="III Kreator pomysłów" />;
+export const metadata: Metadata = {
+  title: "Moje pomysły – HubMI.pl",
+  description: "Kreator pomysłów: kanwa innowacji krok po kroku i fiszka pomysłu dla ROPS.",
+};
+
+export default function CreatorPage() {
+  return <MyIdeas />;
 }

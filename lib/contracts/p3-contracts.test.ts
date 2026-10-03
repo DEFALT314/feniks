@@ -17,6 +17,7 @@ describe("P3 contracts: fixtures pass validation", () => {
     ["application response", A.ApplicationResponse, aiFixture.application_response],
     ["image request", A.ImageRequest, aiFixture.image_request],
     ["image response", A.ImageResponse, aiFixture.image_response],
+    ["call list", A.CallList, aiFixture.call_list],
     ["service card request", MM.ServiceCardRequest, middlemanFixture.request],
     ["service card", MM.ServiceCard, middlemanFixture.card],
   ] as const)("%s", (_, schema, data) => {
