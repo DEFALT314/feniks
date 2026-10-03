@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { writeAudit } from "@/lib/audit";
 import { createClient } from "@/lib/supabase/server";
 import { editInnovation, type EditClient } from "./edit";
 
@@ -14,8 +15,12 @@ export async function PATCH(request: Request, ctx: RouteContext<"/api/innovation
   } catch {
     return NextResponse.json({ error: "Treść żądania musi być w formacie JSON." }, { status: 400 });
   }
-  const client = (await createClient()) as unknown as EditClient;
-  const result = await editInnovation(client, id, input);
-  // Change log: zapiszAudit from lib/audit.ts (P4), once it is ready
+  const supabase = await createClient();
+  const result = await editInnovation(supabase as unknown as EditClient, id, input, (fields) =>
+    writeAudit(
+      { akcja: "innowacja.edycja", obiekt: `innovations:${id}`, szczegoly: { pola: fields } },
+      supabase,
+    ),
+  );
   return NextResponse.json(result.body, { status: result.status });
 }

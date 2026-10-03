@@ -32,6 +32,7 @@ export async function editInnovation(
   client: EditClient,
   id: string,
   input: unknown,
+  onSaved?: (changedFields: string[]) => Promise<unknown>,
 ): Promise<EditResult> {
   const { data: auth } = await client.auth.getUser();
   if (!auth.user) return { status: 401, body: { error: "Zaloguj się, aby edytować kartę." } };
@@ -60,5 +61,11 @@ export async function editInnovation(
   if (error?.code === "23503") return { status: 400, body: { error: "Nie ma takiej kategorii." } };
   if (error) return { status: 500, body: { error: "Nie udało się zapisać zmian." } };
   if (!data) return { status: 404, body: { error: "Nie ma takiej innowacji." } };
+  // The change log must not undo a saved edit, so a failed log entry is only reported
+  try {
+    await onSaved?.(Object.keys(changes.data));
+  } catch (e) {
+    console.error("Innovation edit: audit log failed", e);
+  }
   return { status: 200, body: innovationFromRow(data) };
 }
