@@ -1,11 +1,12 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent, type RefObject } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, pressClass } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Field } from "@/components/ui/field";
 import { useFocusFirstError } from "@/components/ui/focus";
 import { Textarea } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import type { TesterTest } from "@/lib/contracts/innovation-tester";
 import { rateTest } from "../actions";
 
@@ -84,7 +85,10 @@ export function RatingForm({
             {SCORES.map((value) => (
               <label
                 key={value}
-                className="border-input hover:border-navy hover:text-navy has-checked:border-navy has-checked:bg-navy has-focus-visible:outline-ring relative flex h-14 min-w-11 cursor-pointer items-center justify-center rounded-[10px] border bg-white text-xl font-bold transition-colors duration-200 active:scale-[.96] has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 motion-reduce:active:scale-100"
+                className={cn(
+                  "border-input hover:border-navy hover:text-navy has-checked:border-navy has-checked:bg-navy has-focus-visible:outline-ring relative flex h-14 min-w-11 cursor-pointer items-center justify-center rounded-[10px] border bg-white text-xl font-bold transition-[color,background-color,border-color,scale] duration-200 has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2",
+                  pressClass,
+                )}
               >
                 <input
                   type="radio"

@@ -226,7 +226,7 @@ function MultiChoiceInput({ field, answer, onChange }: QuestionProps) {
         </Field>
       ) : null}
       {limited ? (
-        <p id={limitId} className="text-muted-foreground text-base">
+        <p id={limitId} className="text-muted-foreground text-base tabular-nums">
           Zaznaczono {choices.length} z {MAX_CHOICES}.
           {full ? " Żeby wybrać inną odpowiedź, najpierw odznacz jedną." : null}
         </p>
