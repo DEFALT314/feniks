@@ -1,8 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// Odświeża sesję Supabase i przepisuje ciasteczka. To NIE jest zabezpieczenie:
-// uprawnienia sprawdza getCurrentUser() i layouty na serwerze.
+// Refreshes the Supabase session and rewrites cookies. This is NOT a security check:
+// permissions are checked by getCurrentUser() and layouts on the server.
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -25,7 +25,7 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  // Nie wstawiaj kodu między createServerClient a getUser().
+  // Do not put code between createServerClient and getUser().
   await supabase.auth.getUser();
 
   return response;
