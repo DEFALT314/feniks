@@ -95,4 +95,20 @@ join auth.users u on u.email = d.email
 join public.profiles p on p.id = u.id
 where exists (select 1 from public.threads where id = 'd2000000-0000-4000-8000-000000000001');
 
+-- Demo calls (#10): the same ids as P3's data/derived/demo-calls.json, so generated applications
+-- keep working. Reset restores their text, deadlines and the "published" switch.
+insert into public.calls (id, nazwa, organizator, cel, termin_od, termin_do, obszary, opublikowany, demo) values
+  ('nabor-demo-seniorzy-2026', 'Wsparcie seniorów w miejscu zamieszkania', 'Regionalny Ośrodek Polityki Społecznej w Krakowie',
+   'Usługi i rozwiązania, które pomagają osobom starszym dłużej mieszkać samodzielnie we własnym domu i zmniejszają ich samotność.',
+   '2026-10-01', '2026-11-30', '{seniorzy}', true, true),
+  ('nabor-demo-inkubator-2026', 'Inkubator innowacji społecznych – testowanie pomysłów', 'Regionalny Ośrodek Polityki Społecznej w Krakowie',
+   'Przygotowanie prototypu nowego rozwiązania społecznego i przetestowanie go z odbiorcami w małopolskiej gminie.',
+   '2026-10-01', '2026-12-15', '{seniorzy,niepelnosprawnosc,rodzina-piecza,ubostwo,bezdomnosc,cudzoziemcy,zdrowie,zdrowie-psychiczne}', true, true),
+  ('nabor-demo-dostepnosc-2026', 'Dostępność usług publicznych dla osób z niepełnosprawnościami', 'Regionalny Ośrodek Polityki Społecznej w Krakowie',
+   'Rozwiązania, które usuwają bariery w dostępie do urzędów, transportu, kultury i usług społecznych.',
+   '2026-11-01', '2027-01-31', '{niepelnosprawnosc}', true, true)
+on conflict (id) do update set nazwa = excluded.nazwa, organizator = excluded.organizator, cel = excluded.cel,
+  termin_od = excluded.termin_od, termin_do = excluded.termin_do, obszary = excluded.obszary,
+  opublikowany = excluded.opublikowany, demo = true;
+
 commit;

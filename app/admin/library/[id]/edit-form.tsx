@@ -16,8 +16,8 @@ type TextKey = {
 
 const CHECKBOXES = [
   ["opublikowana", "Opublikowana w Bibliotece"],
-  ["sprawdzona_przez_rops", "Wybrana do upowszechniania (etykieta „Sprawdzona przez ROPS”)"],
-  ["do_matchmakingu", "Bierze udział w dopasowaniu"],
+  ["sprawdzona_przez_rops", "Sprawdzona przez ROPS (wybrana do upowszechniania)"],
+  ["do_matchmakingu", "Pokazuj w wynikach „Mam problem” (dopasowanie)"],
 ] as const;
 
 // Edits a card through PATCH /api/innovations/[id]; only changed fields are sent

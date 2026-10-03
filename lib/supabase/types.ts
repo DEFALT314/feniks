@@ -85,6 +85,62 @@ export type Database = {
           },
         ]
       }
+      calls: {
+        Row: {
+          cel: string | null
+          created_at: string
+          demo: boolean
+          id: string
+          nazwa: string
+          obszary: string[]
+          opublikowany: boolean
+          organizator: string
+          termin_do: string | null
+          termin_od: string | null
+          updated_at: string
+          updated_by: string | null
+          url: string | null
+        }
+        Insert: {
+          cel?: string | null
+          created_at?: string
+          demo?: boolean
+          id: string
+          nazwa: string
+          obszary?: string[]
+          opublikowany?: boolean
+          organizator?: string
+          termin_do?: string | null
+          termin_od?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          url?: string | null
+        }
+        Update: {
+          cel?: string | null
+          created_at?: string
+          demo?: boolean
+          id?: string
+          nazwa?: string
+          obszary?: string[]
+          opublikowany?: boolean
+          organizator?: string
+          termin_do?: string | null
+          termin_od?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calls_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenge_areas: {
         Row: {
           dane: string[]
@@ -981,6 +1037,14 @@ export type Database = {
         Returns: undefined
       }
       ai_usage_take: { Args: { p_limit: number }; Returns: number }
+      call_matching_authors: {
+        Args: { p_obszary: string[] }
+        Returns: {
+          email: string
+          tytul: string
+          user_id: string
+        }[]
+      }
       can_review_idea: { Args: { p_idea_id: string }; Returns: boolean }
       can_see_thread: { Args: { p_thread_id: string }; Returns: boolean }
       dodaj_powiadomienie: {

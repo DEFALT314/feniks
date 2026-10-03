@@ -52,7 +52,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/roles">) 
 
         {requests.length === 0 ? (
           <p className="border-border rounded-xl border bg-white p-6">
-            Brak próśb do rozpatrzenia.
+            Nie ma próśb do sprawdzenia.
           </p>
         ) : (
           <ul className="m-0 grid list-none grid-cols-1 gap-4 p-0 md:grid-cols-2">

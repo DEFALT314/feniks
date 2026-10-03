@@ -77,7 +77,7 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
           </h1>
           <div className="flex flex-wrap items-center gap-2">
             {i.sprawdzona_przez_rops ? (
-              <Badge variant="success">Wybrana do upowszechniania</Badge>
+              <Badge variant="success">Sprawdzona przez ROPS</Badge>
             ) : null}
             {i.opis_niepelny ? <Badge variant="warning">Opis niepełny</Badge> : null}
             {program ? <span className="text-ink-muted text-base">{program}</span> : null}
@@ -90,8 +90,8 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
           {i.opis_niepelny ? (
             <Section title="Co wiemy" first>
               <p>
-                Znamy nazwę, program i autora tej innowacji. Opis poniżej wynika tylko z tytułu.
-                Pełny opis uzupełni ROPS.
+                Znamy tylko nazwę, program i autora tej innowacji. Opis poniżej wynika z tytułu.
+                ROPS dopisze resztę.
               </p>
             </Section>
           ) : null}
@@ -113,7 +113,9 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
           <BulletSection title="Dla kogo" items={i.dla_kogo} />
           <BulletSection title="Kto może wdrożyć" items={i.kto_moze_wdrozyc} />
           <Section title="Czy to działa">
-            <p>{i.czy_dziala ?? "Test jeszcze trwa albo źródła nie podają wyników."}</p>
+            <p>
+              {i.czy_dziala ?? "Wyników jeszcze nie ma. Test trwa albo autorzy ich nie podali."}
+            </p>
           </Section>
           {challenges.length > 0 ? (
             <Section title="Wyzwania z Mapy Wyzwań">
