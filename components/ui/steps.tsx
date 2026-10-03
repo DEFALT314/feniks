@@ -1,0 +1,52 @@
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+export type Step = {
+  id: string;
+  label: string;
+  href: string;
+  done: number;
+  total: number;
+};
+
+type StepsProps = {
+  label: string;
+  steps: Step[];
+  currentId: string;
+  className?: string;
+};
+
+// Side list of wizard parts with progress (design/makiety/Kreator.dc.html, "Kanwa innowacji")
+function Steps({ label, steps, currentId, className }: StepsProps) {
+  return (
+    <nav aria-label={label} className={className}>
+      <ol className="flex flex-col gap-0.5">
+        {steps.map((step) => {
+          const current = step.id === currentId;
+          return (
+            <li key={step.id}>
+              <Link
+                href={step.href}
+                aria-current={current ? "step" : undefined}
+                className={cn(
+                  "text-ink flex justify-between gap-2 rounded-lg px-3 py-2.5 text-[17px] no-underline transition-colors duration-200",
+                  current
+                    ? "bg-navy-soft text-navy hover:text-navy font-bold"
+                    : "hover:bg-neutral-soft hover:text-ink",
+                )}
+              >
+                <span>{step.label}</span>
+                <span className={cn("text-[15px]", !current && "text-muted-foreground")}>
+                  <span className="sr-only">wypełniono </span>
+                  {step.done}/{step.total}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+export { Steps };
