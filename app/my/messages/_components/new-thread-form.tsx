@@ -11,17 +11,20 @@ export function NewThreadForm({
   text,
   ideaId,
   innovationId,
+  toUserId,
 }: {
   topic?: string;
   text?: string;
   ideaId?: string;
   innovationId?: string;
+  toUserId?: string;
 }) {
   const [state, action, pending] = useActionState<FormState, FormData>(startAction, {});
   return (
     <form action={action} className="flex flex-col gap-4">
       <input type="hidden" name="idea" value={ideaId ?? ""} />
       <input type="hidden" name="innovation" value={innovationId ?? ""} />
+      <input type="hidden" name="to" value={toUserId ?? ""} />
       <Field label="Temat">
         {(p) => <Input {...p} name="temat" required maxLength={200} defaultValue={topic} />}
       </Field>

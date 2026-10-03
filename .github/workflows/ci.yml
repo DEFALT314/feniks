@@ -25,3 +25,13 @@ jobs:
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm build
+
+  python:
+    # Embedding service tests (embedding/); tests that need the exported model are skipped here.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv venv --python 3.12 embedding/.venv
+      - run: uv pip install --python embedding/.venv/bin/python -r requirements.txt pytest
+      - run: embedding/.venv/bin/python -m pytest -q embedding

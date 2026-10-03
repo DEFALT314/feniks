@@ -9,7 +9,8 @@ const param = (v: string | string[] | undefined, max: number) =>
   typeof v === "string" ? v.slice(0, max) : undefined;
 
 // New conversation with ROPS. Other modules can prefill it with a link, e.g. from /match:
-// /my/messages/new?topic=Potrzeba%20w%20gminie&text=…  (also ?idea=<id> or ?innovation=<id>)
+// /my/messages/new?topic=Potrzeba%20w%20gminie&text=…  (also ?idea=<id> or ?innovation=<id>;
+// ROPS only: ?to=<user id> adds that person, e.g. "Napisz do instytucji" from a service card)
 export default async function NewMessagePage({ searchParams }: PageProps<"/my/messages/new">) {
   const p = await searchParams;
   return (
@@ -31,6 +32,7 @@ export default async function NewMessagePage({ searchParams }: PageProps<"/my/me
           text={param(p.text, 5000)}
           ideaId={param(p.idea, 64)}
           innovationId={param(p.innovation, 200)}
+          toUserId={param(p.to, 64)}
         />
       </Card>
     </main>
