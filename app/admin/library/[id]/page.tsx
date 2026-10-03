@@ -8,8 +8,9 @@ import { EditForm } from "./edit-form";
 export const metadata: Metadata = { title: "Edycja karty innowacji – Panel ROPS – HubMI.pl" };
 
 // Access is checked in app/admin/layout.tsx; writes go through RLS (rops_redaktor, rops_admin)
-export default async function Page({ params }: PageProps<"/admin/library/[id]">) {
+export default async function Page({ params, searchParams }: PageProps<"/admin/library/[id]">) {
   const { id } = await params;
+  const justCreated = (await searchParams).new === "1";
   const [innovation, categories] = await Promise.all([getInnovationById(id), getCategories()]);
   if (!innovation) notFound();
 
@@ -37,6 +38,16 @@ export default async function Page({ params }: PageProps<"/admin/library/[id]">)
             </Link>
           </p>
         </div>
+        {!innovation.opublikowana ? (
+          <p
+            role="status"
+            className="border-warning bg-warning-soft rounded-xl border p-4 text-base"
+          >
+            {justCreated ? "Karta została dodana. " : ""}
+            Karta jest ukryta: nie widać jej w Bibliotece ani w dopasowaniu. Uzupełnij opis, zaznacz
+            „Opublikowana w Bibliotece” i zapisz zmiany.
+          </p>
+        ) : null}
         <div className="border-border rounded-xl border bg-white p-6">
           <EditForm innovation={innovation} categories={categories} />
         </div>
