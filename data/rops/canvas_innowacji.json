@@ -1,0 +1,413 @@
+{
+ "zrodlo": "https://rops.krakow.pl/mpliki/IS/Moj_folder/INNO_AGH_-_SOCIAL_CANVAS.pdf",
+ "nazwa": "Social Innovation Canvas",
+ "autor": "INNO AGH (KCIT INNOAGH, partner ROPS w IWS 2.0)",
+ "wersja": "1.0 (stopka: maj 2026)",
+ "licencja": "Nieustalona: stopka mówi, że kanwa powstała na bazie zewnętrznego wzoru Social Innovation Canvas; drobny druk był nieczytelny. Zapytać mentora ROPS przed odtworzeniem kanwy 1:1 w aplikacji.",
+ "opis": "Trzy arkusze do zaznaczania (głównie checkboxy i skale, mało wolnego tekstu). Dobrze nadaje się na kreator krok po kroku: każde pole to jeden ekran z wyborem jednej lub kilku opcji plus pole 'inne'.",
+ "arkusze": [
+  {
+   "nr": 1,
+   "pola": [
+    {
+     "id": "intensywnosc",
+     "blok": "Problem",
+     "nazwa": "Intensywność",
+     "typ": "jeden_wybor",
+     "pytanie": "Jak bardzo źle jest bez waszego rozwiązania?",
+     "opcje": [
+      "Bardzo poważny problem",
+      "Mocno przeszkadza",
+      "Utrudnia działanie",
+      "Lekko przeszkadza"
+     ],
+     "mapowanie_fiszki": "opis"
+    },
+    {
+     "id": "czestotliwosc",
+     "blok": "Problem",
+     "nazwa": "Częstotliwość",
+     "typ": "skala",
+     "pytanie": "Jak często występuje problem?",
+     "opcje": [
+      "Bardzo często (codziennie)",
+      "Często (co tydzień)",
+      "Czasami (kilka razy w roku/miesiącu)",
+      "Rzadko (raz w roku lub rzadziej)"
+     ],
+     "mapowanie_fiszki": "opis"
+    },
+    {
+     "id": "skala-problemu",
+     "blok": "Problem",
+     "nazwa": "Skala problemu",
+     "typ": "jeden_wybor",
+     "pytanie": "Ilu ludzi dotyka problem?",
+     "opcje": [
+      "Pojedyncze osoby",
+      "Wąska grupa (np. jedna szkoła, okolica)",
+      "Duża grupa (miasto, region, branża)",
+      "Bardzo szeroka grupa (duża część społeczeństwa)"
+     ],
+     "mapowanie_fiszki": "dla_kogo"
+    },
+    {
+     "id": "wspieraja-zmiane",
+     "blok": "Aktorzy zmiany",
+     "nazwa": "Wspierają zmianę",
+     "typ": "tekst_lista",
+     "pytanie": "Kto widzi potrzebę zmiany i może pomóc wdrożyć pomysł?",
+     "podpowiedzi": [
+      "kto najbardziej potrzebuje zmiany",
+      "kto na niej zyska",
+      "kto już mówi o problemie",
+      "kto może polecić lub otworzyć drzwi",
+      "kto ma energię, wpływ lub zasoby"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "utrudniaja-zmiane",
+     "blok": "Aktorzy zmiany",
+     "nazwa": "Utrudniają zmianę",
+     "typ": "tekst_lista",
+     "pytanie": "Kto może się bać zmiany, stracić na niej albo ją blokować?",
+     "podpowiedzi": [
+      "kto nie rozumie potrzeby",
+      "kto boi się pracy, kosztów, ryzyka",
+      "kto może stracić wpływ lub rolę",
+      "kto powie 'to się nie uda'",
+      "kto może zablokować decyzję lub finansowanie"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "wartosc-vs-koszt",
+     "blok": "Rozwiązanie",
+     "nazwa": "Przystępność i wartość",
+     "typ": "jeden_wybor",
+     "pytanie": "Jak ma się korzyść do kosztu?",
+     "opcje": [
+      "Koszt większy niż korzyść",
+      "Korzyść i koszt podobne",
+      "Korzyść większa niż koszt",
+      "Bardzo duża wartość przy małym koszcie"
+     ],
+     "mapowanie_fiszki": "istota"
+    },
+    {
+     "id": "gotowosc",
+     "blok": "Rozwiązanie",
+     "nazwa": "Gotowość do wdrożenia",
+     "typ": "jeden_wybor",
+     "pytanie": "Na jakim etapie jest rozwiązanie?",
+     "opcje": [
+      "Pomysł",
+      "Prototyp",
+      "Przetestowane rozwiązanie",
+      "Gotowe do wdrożenia"
+     ],
+     "mapowanie_fiszki": "etap"
+    },
+    {
+     "id": "prostota",
+     "blok": "Rozwiązanie",
+     "nazwa": "Prostota i zrozumiałość",
+     "typ": "jeden_wybor",
+     "pytanie": "Czy nowa osoba szybko zrozumie, dla kogo to jest i co daje?",
+     "opcje": [
+      "Niejasne",
+      "Częściowo jasne",
+      "Jasne",
+      "Ludzie potrafią to wyjaśnić sami"
+     ],
+     "mapowanie_fiszki": "istota"
+    },
+    {
+     "id": "koszty-stale",
+     "blok": "Struktura kosztów",
+     "nazwa": "Koszty stałe",
+     "typ": "wiele_wyborow",
+     "opcje": [
+      "wynagrodzenie zespołu",
+      "czynsz / przestrzeń",
+      "utrzymanie aplikacji lub strony",
+      "abonamenty narzędzi",
+      "koordynacja projektu",
+      "księgowość / administracja",
+      "promocja podstawowa",
+      "sprzęt na start",
+      "inne"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "koszty-zmienne",
+     "blok": "Struktura kosztów",
+     "nazwa": "Koszty zmienne",
+     "typ": "wiele_wyborow",
+     "opcje": [
+      "materiały dla uczestników",
+      "czas specjalisty na osobę",
+      "dojazdy",
+      "catering",
+      "wydruk materiałów",
+      "wsparcie techniczne dla kolejnej osoby",
+      "inne"
+     ],
+     "mapowanie_fiszki": null
+    }
+   ]
+  },
+  {
+   "nr": 2,
+   "pola": [
+    {
+     "id": "glowny-uzytkownik",
+     "blok": "Odbiorcy",
+     "nazwa": "Główny użytkownik",
+     "typ": "wiele_wyborow",
+     "pytanie": "Komu rozwiązanie ma realnie pomóc?",
+     "opcje": [
+      "dzieci",
+      "młodzież",
+      "rodzice",
+      "seniorzy",
+      "osoby z niepełnosprawnościami",
+      "nauczyciele",
+      "pracownicy instytucji",
+      "osoby w kryzysie",
+      "organizacje społeczne",
+      "mieszkańcy konkretnego miejsca",
+      "inna grupa"
+     ],
+     "mapowanie_fiszki": "dla_kogo"
+    },
+    {
+     "id": "klient-platnik",
+     "blok": "Odbiorcy",
+     "nazwa": "Klient / płatnik",
+     "typ": "wiele_wyborow",
+     "pytanie": "Kto zapłaci, żeby rozwiązanie działało?",
+     "opcje": [
+      "sam użytkownik",
+      "rodzic / opiekun",
+      "szkoła",
+      "firma",
+      "urząd miasta / gmina",
+      "fundacja / organizacja społeczna",
+      "grantodawca",
+      "sponsor",
+      "NFZ / instytucja publiczna",
+      "pracodawca",
+      "inna grupa"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "decydent",
+     "blok": "Odbiorcy",
+     "nazwa": "Autorytet / instytucja / decydent",
+     "typ": "wiele_wyborow",
+     "pytanie": "Czyja zgoda lub rekomendacja jest potrzebna?",
+     "opcje": [
+      "dyrektor szkoły",
+      "nauczyciel",
+      "lekarz",
+      "terapeuta",
+      "pracownik socjalny",
+      "urząd",
+      "lider lokalny",
+      "organizacja społeczna",
+      "rodzic",
+      "opiekun",
+      "menedżer",
+      "ekspert",
+      "instytucja finansująca",
+      "inna"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "glowny-dochod",
+     "blok": "Źródła dochodów",
+     "nazwa": "Główny dochód",
+     "typ": "jeden_wybor_plus_tekst",
+     "pytanie": "Co jest głównym źródłem pieniędzy?",
+     "opcje": [
+      "Nie wiemy jeszcze",
+      "Mamy pomysł",
+      "Mamy konkretną propozycję",
+      "Mamy potwierdzenie"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "skalowanie-dochodu",
+     "blok": "Źródła dochodów",
+     "nazwa": "Skalowanie dochodu",
+     "typ": "jeden_wybor_plus_tekst",
+     "pytanie": "Co dodatkowego można sprzedawać lub finansować w przyszłości?",
+     "opcje": [
+      "Brak jasnych dodatkowych źródeł",
+      "Są szanse na dodatkowe pieniądze",
+      "Widzimy realne ścieżki rozwoju",
+      "Model można powielać"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "wartosc-emocjonalna",
+     "blok": "Propozycja wartości",
+     "nazwa": "Wartość emocjonalna",
+     "typ": "wiele_wyborow_max3",
+     "pytanie": "Co odbiorcy poczują dzięki rozwiązaniu?",
+     "opcje": [
+      "Bezpieczeństwo",
+      "Spokój",
+      "Pewność",
+      "Zmniejszenie samotności",
+      "Większa sprawczość",
+      "Poprawa stanu zdrowia",
+      "Niezależność",
+      "Motywacja",
+      "Włączenie społeczne",
+      "Poczucie bycia widzianym",
+      "Poprawa nastroju",
+      "Większe zadowolenie z życia",
+      "inne"
+     ],
+     "mapowanie_fiszki": "istota"
+    },
+    {
+     "id": "wartosc-funkcjonalna",
+     "blok": "Propozycja wartości",
+     "nazwa": "Wartość funkcjonalna",
+     "typ": "wiele_wyborow_max3",
+     "pytanie": "Co rozwiązanie konkretnie poprawia?",
+     "opcje": [
+      "Obniża koszty",
+      "Oszczędza czas",
+      "Zwiększa skuteczność",
+      "Poprawia jakość",
+      "Upraszcza proces",
+      "Zwiększa dostępność",
+      "Zwiększa zasięg pomocy",
+      "Zmniejsza obciążenie",
+      "Poprawia bezpieczeństwo",
+      "Zwiększa wpływ społeczny",
+      "Ogranicza negatywny wpływ na środowisko",
+      "Pomaga w podejmowaniu lepszych decyzji",
+      "inne"
+     ],
+     "mapowanie_fiszki": "istota"
+    }
+   ]
+  },
+  {
+   "nr": 3,
+   "pola": [
+    {
+     "id": "kanaly-wlasne",
+     "blok": "Kanały",
+     "nazwa": "Kanały bezpośrednie",
+     "typ": "wiele_wyborow",
+     "pytanie": "Jak ludzie trafiają do was bezpośrednio?",
+     "opcje": [
+      "własna strona",
+      "formularz zgłoszeniowy",
+      "sklep / system zakupu",
+      "telefon lub e-mail",
+      "spotkania bezpośrednie",
+      "własne warsztaty",
+      "media społecznościowe",
+      "własna aplikacja",
+      "newsletter",
+      "własne wydarzenia",
+      "inne"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "kanaly-posrednie",
+     "blok": "Kanały",
+     "nazwa": "Kto pomoże dotrzeć do odbiorców",
+     "typ": "wiele_wyborow",
+     "opcje": [
+      "szkoła",
+      "urząd / gmina",
+      "organizacja społeczna",
+      "ekspert",
+      "lekarz / terapeuta",
+      "nauczyciel",
+      "pracownik socjalny",
+      "lider lokalny",
+      "firma",
+      "partner",
+      "ambasador",
+      "handlowiec",
+      "inna grupa"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "kanaly-dodatkowe",
+     "blok": "Kanały",
+     "nazwa": "Kanały dodatkowe",
+     "typ": "wiele_wyborow",
+     "opcje": [
+      "kampania online",
+      "webinary",
+      "platforma cyfrowa",
+      "lokalne wydarzenia",
+      "program ambasadorski",
+      "materiały edukacyjne",
+      "rekomendacje ekspertów",
+      "współpraca z instytucjami",
+      "newsletter",
+      "społeczność online",
+      "inne"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "partnerzy",
+     "blok": "Konstelacja partnerów",
+     "nazwa": "Partnerzy",
+     "typ": "lista_partnerow",
+     "pytanie": "Którzy partnerzy pomogą: zrobić to taniej, dotrzeć do odbiorców, dawać lepszą wartość?",
+     "osie": [
+      "taniej",
+      "dotarcie",
+      "wartość"
+     ],
+     "status": [
+      "potwierdzony",
+      "w rozmowach",
+      "potencjalny"
+     ],
+     "mapowanie_fiszki": null
+    },
+    {
+     "id": "wplyw",
+     "blok": "Wpływ",
+     "nazwa": "Wpływ",
+     "typ": "macierz",
+     "pytanie": "Co zmienia rozwiązanie dla osoby, społeczności i środowiska?",
+     "wiersze": [
+      "Mały",
+      "Możliwy",
+      "Wyraźny",
+      "Silny"
+     ],
+     "kolumny": [
+      "Osoba",
+      "Społeczność",
+      "Środowisko"
+     ],
+     "mapowanie_fiszki": "istota"
+    }
+   ]
+  }
+ ]
+}
