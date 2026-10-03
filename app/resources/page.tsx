@@ -3,10 +3,12 @@ import Link from "next/link";
 import { ResourceFilters } from "@/lib/contracts/knowledge-base";
 import { getResources } from "./_lib/data";
 import { availableValues, filterResources } from "./_lib/filter";
+import { GLOSSARY, GUIDES } from "./_lib/guides";
 
 export const metadata: Metadata = {
-  title: "Raporty i publikacje – HubMI.pl",
-  description: "Raporty z badań ROPS w Krakowie i publikacje o innowacjach społecznych.",
+  title: "Wiedza o innowacjach – HubMI.pl",
+  description:
+    "Poradniki o innowacjach społecznych, słowniczek oraz raporty i publikacje ROPS w Krakowie.",
 };
 
 // No mockup: same style as the Library (design/makiety/Biblioteka.dc.html)
@@ -37,12 +39,26 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
       <section className="border-line border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-9 sm:px-10">
           <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
-            Raporty i publikacje
+            Wiedza o innowacjach
           </h1>
           <p className="text-ink-muted max-w-[760px]">
-            Badania ROPS w Krakowie o potrzebach mieszkańców Małopolski i publikacje o innowacjach
-            społecznych. Każda pozycja prowadzi do źródła na stronie ROPS.
+            Krótkie poradniki, jak działać z innowacją społeczną, oraz badania i publikacje ROPS w
+            Krakowie. Każdy raport prowadzi do źródła na stronie ROPS.
           </p>
+          <p className="m-0 text-base">
+            <a href="#poradniki" className={LINK}>
+              Poradniki
+            </a>{" "}
+            ·{" "}
+            <a href="#slowniczek" className={LINK}>
+              Słowniczek
+            </a>{" "}
+            ·{" "}
+            <a href="#results" className={LINK}>
+              Raporty i publikacje
+            </a>
+          </p>
+          <h2 className="mt-4 text-xl font-bold">Raporty i publikacje: filtry</h2>
           <form
             method="get"
             action="/resources"
@@ -101,6 +117,63 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
             </Link>
           </form>
         </div>
+      </section>
+
+      <section
+        id="poradniki"
+        aria-labelledby="guides-heading"
+        className="mx-auto flex max-w-[1200px] scroll-mt-4 flex-col gap-4 px-4 pt-10 sm:px-10"
+      >
+        <h2 id="guides-heading" className="text-[1.75rem] font-bold tracking-tight">
+          Poradniki
+        </h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {GUIDES.map((g) => (
+            <article
+              key={g.id}
+              aria-labelledby={`${g.id}-title`}
+              className="border-line flex flex-col gap-3 rounded-xl border bg-white p-6"
+            >
+              <p className="text-ink-muted m-0 text-[0.9375rem] font-bold">{g.forWhom}</p>
+              <h3 id={`${g.id}-title`} className="m-0 text-[1.375rem] leading-snug font-bold">
+                {g.title}
+              </h3>
+              <p className="m-0">{g.intro}</p>
+              <ol className="m-0 flex flex-col gap-1.5 pl-6">
+                {g.steps.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
+              <ul className="m-0 mt-auto flex list-none flex-col gap-1 p-0 pt-2 text-base">
+                {g.links.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className={`${LINK} font-bold`}>
+                      {l.label} →
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section
+        id="slowniczek"
+        aria-labelledby="glossary-heading"
+        className="mx-auto flex max-w-[1200px] scroll-mt-4 flex-col gap-3 px-4 pt-10 sm:px-10"
+      >
+        <h2 id="glossary-heading" className="text-[1.75rem] font-bold tracking-tight">
+          Słowniczek
+        </h2>
+        <dl className="border-line m-0 grid grid-cols-1 gap-x-8 gap-y-3 rounded-xl border bg-white p-6 md:grid-cols-[minmax(10rem,14rem)_1fr]">
+          {GLOSSARY.map((g) => (
+            <div key={g.term} className="contents">
+              <dt className="font-bold">{g.term}</dt>
+              <dd className="m-0">{g.meaning}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section

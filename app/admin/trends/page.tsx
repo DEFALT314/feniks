@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
 import {
@@ -18,9 +17,7 @@ export const metadata: Metadata = { title: "Potrzeby w regionie – Panel ROPS" 
 // Match queries (P3) and ideas sent to ROPS (P2); both are readable only by ROPS roles under RLS
 async function loadRows(days: number): Promise<{ queries: QueryRow[]; ideas: IdeaRow[] }> {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
-  // ideas comes from 202610032000_creator_tester.sql, not yet in the generated lib/supabase/types.ts
-  // (P4 regenerates it); untyped until then, like app/api/match/route.ts.
-  const supabase = (await createClient()) as unknown as SupabaseClient;
+  const supabase = await createClient();
   const [queries, ideas] = await Promise.all([
     supabase
       .from("match_queries")
