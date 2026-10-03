@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getInnovations } from "@/app/library/_lib/data";
 import { buttonVariants } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth";
-import { CALLS } from "@/lib/ai/creator/creator";
+import { openCalls } from "@/lib/ai/creator/open-calls";
 import { listMyCards, toServiceCard } from "@/lib/ai/middleman/store";
 import type { ServiceCard } from "@/lib/contracts/middleman";
 import { createClient } from "@/lib/supabase/server";
@@ -85,7 +85,7 @@ export default async function Page({ searchParams }: Props) {
         initialInstitution={opened?.institution ?? defaultInstitution(institutionRow)}
         cards={cards}
         initialCardId={opened?.id ?? null}
-        calls={CALLS}
+        calls={await openCalls()}
       />
     </main>
   );

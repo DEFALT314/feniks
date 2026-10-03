@@ -122,7 +122,12 @@ export function AiHints({
           </p>
         ) : null}
         {state.status === "error" ? (
-          <p className="text-danger text-base font-bold">{state.message}</p>
+          <div className="flex flex-col gap-1 text-base">
+            <p className="text-danger font-bold">{state.message}</p>
+            <p>
+              Asystent jest tylko pomocą. Fiszkę możesz wypełnić sam i wysłać do ROPS jak zwykle.
+            </p>
+          </div>
         ) : null}
         {state.status === "done" && state.hints.length === 0 ? (
           <p className="text-base">Asystent nie ma teraz podpowiedzi. Fiszka wygląda dobrze.</p>

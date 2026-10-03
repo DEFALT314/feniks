@@ -111,4 +111,56 @@ on conflict (id) do update set nazwa = excluded.nazwa, organizator = excluded.or
   termin_od = excluded.termin_od, termin_do = excluded.termin_do, obszary = excluded.obszary,
   opublikowany = excluded.opublikowany, demo = true;
 
+-- Tests from design/makiety/Tester.dc.html (P2, #36): two Library innovations run by ROPS and one
+-- test of the resident's idea "Kawiarenka cyfrowa w bibliotece", with a few sign-ups and ratings.
+-- Needs the innovations from seed.sql (run after it) and the ideas above.
+delete from public.tests where id in (
+  'd3000000-0000-4000-8000-000000000001', 'd3000000-0000-4000-8000-000000000002',
+  'd3000000-0000-4000-8000-000000000003');
+
+insert into public.tests (id, idea_id, innowacja_id, tytul, opis, miejsce, termin, liczba_miejsc)
+select d.id::uuid, d.idea_id::uuid, d.innowacja_id, d.tytul, d.opis, d.miejsce, d.termin, d.miejsca
+from (values
+  ('d3000000-0000-4000-8000-000000000001', null, 'merkury', 'Merkury – symulator bankomatu i paczkomatu',
+   'Sprawdź, czy ćwiczenia w domu pomagają potem pewniej obsłużyć urządzenia w mieście.',
+   'online, z domu', null::timestamptz, 20),
+  ('d3000000-0000-4000-8000-000000000002', null, 'senior-cuder', 'Senior CUDER – gra karciana',
+   'Spotkanie przy grze w małej grupie, potem krótka rozmowa o wrażeniach.',
+   'klub seniora', now() + interval '6 days', 8),
+  ('d3000000-0000-4000-8000-000000000003', 'd1000000-0000-4000-8000-000000000002', null,
+   'Kawiarenka cyfrowa – pierwsze spotkanie',
+   'Godzina przy kawie: e-recepta i rozmowa wideo z rodziną. Potem krótka rozmowa o wrażeniach.',
+   'Biblioteka gminna, sala na parterze', now() + interval '10 days', 12)
+) as d (id, idea_id, innowacja_id, tytul, opis, miejsce, termin, miejsca)
+where (d.innowacja_id is null or exists (select 1 from public.innovations where id = d.innowacja_id))
+  and (d.idea_id is null or exists (select 1 from public.ideas where id = d.idea_id::uuid));
+
+-- The NGO tried the resident's idea and rated it, so its author sees feedback in /my/tester.
+-- The resident is signed up for Senior CUDER and can rate it. Ratings are inserted as postgres,
+-- so the "new rating" notification trigger also fires: clear the bell afterwards (as above).
+insert into public.test_signups (test_id, user_id)
+select d.test_id::uuid, u.id
+from (values
+  ('d3000000-0000-4000-8000-000000000002', 'demo.mieszkaniec@example.org'),
+  ('d3000000-0000-4000-8000-000000000003', 'demo.fundacja@example.org'),
+  ('d3000000-0000-4000-8000-000000000003', 'demo.gops@example.org')
+) as d (test_id, email)
+join auth.users u on u.email = d.email
+where exists (select 1 from public.tests where id = d.test_id::uuid);
+
+insert into public.test_ratings (test_id, user_id, ocena, co_dzialalo, co_poprawic)
+select d.test_id::uuid, u.id, d.ocena, d.co_dzialalo, d.co_poprawic
+from (values
+  ('d3000000-0000-4000-8000-000000000003', 'demo.fundacja@example.org', 5,
+   'Młodzież tłumaczyła cierpliwie, nikt się nie śpieszył.', null),
+  ('d3000000-0000-4000-8000-000000000003', 'demo.gops@example.org', 4,
+   'Rozmowa wideo z wnukami bardzo się podobała.', 'Ściągawka na papierze do zabrania do domu.')
+) as d (test_id, email, ocena, co_dzialalo, co_poprawic)
+join auth.users u on u.email = d.email
+where exists (select 1 from public.test_signups s where s.test_id = d.test_id::uuid and s.user_id = u.id);
+
+delete from public.notifications n
+using auth.users u
+where n.user_id = u.id and u.email like 'demo.%@example.org' and n.typ = 'test_ocena';
+
 commit;
