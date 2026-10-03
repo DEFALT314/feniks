@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Innovation } from "@/lib/contracts/knowledge-base";
-import { getChallengeAreas } from "@/app/mapa-wyzwan/_lib/data";
+import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { getInnovations, getInnovationById, getCategories } from "../_lib/data";
 import { similarInnovations, challengesForInnovation } from "../_lib/related";
 
@@ -19,9 +19,7 @@ const FOCUS = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visi
 const BUTTON = `inline-flex min-h-[50px] items-center justify-center gap-2 rounded-[10px] px-[22px] text-[1.0625rem] font-bold no-underline ${FOCUS}`;
 const BADGE = "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-sm font-bold";
 
-export async function generateMetadata({
-  params,
-}: PageProps<"/biblioteka/[id]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/library/[id]">): Promise<Metadata> {
   const i = await getInnovationById((await params).id);
   return {
     title: i
@@ -31,7 +29,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function InnovationPage({ params }: PageProps<"/biblioteka/[id]">) {
+export default async function InnovationPage({ params }: PageProps<"/library/[id]">) {
   const { id } = await params;
   const [i, catalog, categories, areas] = await Promise.all([
     getInnovationById(id),
@@ -47,20 +45,20 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
   const challenges = challengesForInnovation(i, areas);
 
   return (
-    <main id="tresc" className="bg-surface text-ink text-lg leading-relaxed">
+    <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
       <div className="border-line border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-3.5 px-4 pt-5 pb-9 sm:px-10">
           <nav aria-label="Ścieżka" className="text-base">
             <ol className="flex flex-wrap gap-1">
               <li>
-                <Link href="/biblioteka" className={LINK}>
+                <Link href="/library" className={LINK}>
                   Biblioteka
                 </Link>{" "}
                 ›
               </li>
               {category ? (
                 <li>
-                  <Link href={`/biblioteka?kategoria=${category.id}`} className={LINK}>
+                  <Link href={`/library?category=${category.id}`} className={LINK}>
                     {category.nazwa}
                   </Link>{" "}
                   ›
@@ -118,7 +116,7 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
               <ul className="m-0 flex list-none flex-col gap-1 p-0">
                 {challenges.map(({ area, challenge }) => (
                   <li key={challenge.id}>
-                    <Link href={`/mapa-wyzwan?obszar=${area.id}#obszar`} className={LINK}>
+                    <Link href={`/challenge-map?area=${area.id}#area`} className={LINK}>
                       {area.nazwa}: {challenge.tekst}
                     </Link>
                   </li>
@@ -138,13 +136,13 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
           <div className="border-line border-t-navy flex flex-col gap-3 rounded-xl border border-t-4 bg-white p-6">
             <h2 className="text-[1.1875rem] font-bold">Chcesz to wdrożyć?</h2>
             <Link
-              href={`/moje/middleman?innowacja=${encodeURIComponent(i.id)}`}
+              href={`/my/middleman?innovation=${encodeURIComponent(i.id)}`}
               className={`${BUTTON} bg-navy hover:bg-navy-strong text-white`}
             >
               Przygotuj kartę usługi
             </Link>
             <Link
-              href={`/moje/wiadomosci?innowacja=${encodeURIComponent(i.id)}`}
+              href={`/my/messages?innovation=${encodeURIComponent(i.id)}`}
               className={`${BUTTON} border-navy text-navy border bg-white`}
             >
               Zapytaj ROPS
@@ -157,7 +155,7 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
               <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
                 {similar.map((p) => (
                   <li key={p.id}>
-                    <Link href={`/biblioteka/${p.id}`} className={LINK}>
+                    <Link href={`/library/${p.id}`} className={LINK}>
                       {p.nazwa}
                     </Link>
                   </li>

@@ -22,7 +22,7 @@ function formatItemCount(n: number): string {
   return mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? `${n} pozycje` : `${n} pozycji`;
 }
 
-export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby">) {
+export default async function ResourcesPage({ searchParams }: PageProps<"/resources">) {
   // Empty form fields ("Wszystkie") count as no filter
   const params = Object.fromEntries(
     Object.entries(await searchParams).filter(([, v]) => typeof v === "string" && v !== ""),
@@ -33,7 +33,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
   const { years, tags } = availableValues(resources);
 
   return (
-    <main id="tresc" className="bg-surface text-ink text-lg leading-relaxed">
+    <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
       <section className="border-line border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-9 sm:px-10">
           <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
@@ -45,28 +45,28 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
           </p>
           <form
             method="get"
-            action="/zasoby"
+            action="/resources"
             className="flex flex-wrap items-end gap-4"
             aria-label="Filtry"
           >
             <div className="flex flex-col gap-1">
-              <label htmlFor="typ" className="text-ink-muted text-[0.9375rem] font-bold">
+              <label htmlFor="type" className="text-ink-muted text-[0.9375rem] font-bold">
                 Rodzaj
               </label>
-              <select id="typ" name="typ" defaultValue={filters.typ ?? ""} className={FIELD}>
+              <select id="type" name="type" defaultValue={filters.type ?? ""} className={FIELD}>
                 <option value="">Wszystkie</option>
                 <option value="raport">Raporty z badań</option>
                 <option value="publikacja">Publikacje o innowacjach</option>
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="rok" className="text-ink-muted text-[0.9375rem] font-bold">
+              <label htmlFor="year" className="text-ink-muted text-[0.9375rem] font-bold">
                 Rok
               </label>
               <select
-                id="rok"
-                name="rok"
-                defaultValue={filters.rok ? String(filters.rok) : ""}
+                id="year"
+                name="year"
+                defaultValue={filters.year ? String(filters.year) : ""}
                 className={FIELD}
               >
                 <option value="">Wszystkie</option>
@@ -96,7 +96,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
             >
               Pokaż
             </button>
-            <Link href="/zasoby" className={`inline-flex min-h-[50px] items-center ${LINK}`}>
+            <Link href="/resources" className={`inline-flex min-h-[50px] items-center ${LINK}`}>
               Wyczyść
             </Link>
           </form>
@@ -104,10 +104,14 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
       </section>
 
       <section
-        aria-labelledby="wyniki"
+        aria-labelledby="results"
         className="mx-auto flex max-w-[1200px] flex-col px-4 pt-8 pb-16 sm:px-10"
       >
-        <h2 id="wyniki" aria-live="polite" className="border-ink border-b-2 pb-2 text-lg font-bold">
+        <h2
+          id="results"
+          aria-live="polite"
+          className="border-ink border-b-2 pb-2 text-lg font-bold"
+        >
           {formatItemCount(list.length)}
         </h2>
         {list.length === 0 ? (
@@ -131,7 +135,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
                   {r.tagi.map((t) => (
                     <Link
                       key={t}
-                      href={`/zasoby?tag=${encodeURIComponent(t)}`}
+                      href={`/resources?tag=${encodeURIComponent(t)}`}
                       className={`bg-neutral-soft text-ink-muted inline-flex min-h-6 items-center rounded-full px-2.5 font-bold no-underline hover:underline ${FOCUS}`}
                     >
                       <span className="sr-only">Temat: </span>

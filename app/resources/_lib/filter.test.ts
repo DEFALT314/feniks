@@ -20,11 +20,11 @@ describe("Resources", () => {
   });
 
   it("filters by type, year and tag at once", () => {
-    const list = filterResources(resources, f({ typ: "raport", tag: "seniorzy" }));
+    const list = filterResources(resources, f({ type: "raport", tag: "seniorzy" }));
     expect(list.length).toBeGreaterThan(0);
     expect(list.every((r) => r.typ === "raport" && r.tagi.includes("seniorzy"))).toBe(true);
     const year = list[0].rok!;
-    expect(filterResources(resources, f({ rok: String(year) })).every((r) => r.rok === year)).toBe(
+    expect(filterResources(resources, f({ year: String(year) })).every((r) => r.rok === year)).toBe(
       true,
     );
   });

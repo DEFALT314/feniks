@@ -16,13 +16,13 @@ const BUTTON =
   "inline-flex min-h-[50px] items-center justify-center gap-2 rounded-[10px] px-[22px] text-[1.0625rem] font-bold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick";
 const BADGE = "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-sm font-bold";
 
-export default async function LibraryPage({ searchParams }: PageProps<"/biblioteka">) {
+export default async function LibraryPage({ searchParams }: PageProps<"/library">) {
   const params = await searchParams;
   const filters = LibraryFilters.safeParse(params).data ?? LibraryFilters.parse({});
   const [innovations, available] = await Promise.all([getInnovations(), getAvailableFilters()]);
   const list = search(innovations, filters, available);
 
-  const selectedCategories = available.kategorie.filter((k) => filters.kategoria.includes(k.id));
+  const selectedCategories = available.kategorie.filter((k) => filters.category.includes(k.id));
   const heading = [
     selectedCategories.length ? selectedCategories.map((k) => k.nazwa).join(", ") : null,
     filters.q ? `„${filters.q}”` : null,
@@ -31,8 +31,8 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
     .join(" · ");
 
   return (
-    <main id="tresc" className="bg-surface text-ink text-lg leading-relaxed">
-      <FilterForm id="filtry" aria-label="Szukaj i filtruj innowacje">
+    <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
+      <FilterForm id="filters" aria-label="Szukaj i filtruj innowacje">
         <section className="border-line border-b bg-white">
           <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-9 sm:px-10">
             <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
@@ -43,11 +43,11 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
               rozwiązanie, kto może je wdrożyć i jakie są materiały.
             </p>
             <div className="flex max-w-[900px] flex-wrap items-center gap-3">
-              <label htmlFor="szukaj" className="sr-only">
+              <label htmlFor="search" className="sr-only">
                 Szukaj w Bibliotece
               </label>
               <input
-                id="szukaj"
+                id="search"
                 name="q"
                 type="search"
                 defaultValue={filters.q ?? ""}
@@ -60,7 +60,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
             </div>
             <p className="text-base">
               Nie wiesz, czego szukać?{" "}
-              <Link href="/dopasuj" className="text-navy underline underline-offset-[3px]">
+              <Link href="/match" className="text-navy underline underline-offset-[3px]">
                 Opisz problem, a dopasujemy rozwiązanie
               </Link>
               .
@@ -74,9 +74,9 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
               {available.kategorie.map((k) => (
                 <FilterOption
                   key={k.id}
-                  name="kategoria"
+                  name="category"
                   value={k.id}
-                  checked={filters.kategoria.includes(k.id)}
+                  checked={filters.category.includes(k.id)}
                   count={list.liczniki.kategorie[k.id] ?? 0}
                 >
                   {k.nazwa}
@@ -85,32 +85,35 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
             </FilterGroup>
             <FilterGroup legend="Sprawdzenie">
               <FilterOption
-                name="sprawdzona"
+                name="verified"
                 value="1"
-                checked={filters.sprawdzona}
+                checked={filters.verified}
                 count={list.liczniki.sprawdzona}
               >
                 Wybrane do upowszechniania
               </FilterOption>
             </FilterGroup>
             <FilterGroup legend="Materiały">
-              <FilterOption name="film" value="1" checked={filters.film} count={list.liczniki.film}>
+              <FilterOption
+                name="video"
+                value="1"
+                checked={filters.video}
+                count={list.liczniki.film}
+              >
                 Jest film
               </FilterOption>
               <FilterOption name="pdf" value="1" checked={filters.pdf} count={list.liczniki.pdf}>
                 Jest opis modelu (PDF)
               </FilterOption>
             </FilterGroup>
-            {filters.grupa ? <input type="hidden" name="grupa" value={filters.grupa} /> : null}
-            {filters.etykieta ? (
-              <input type="hidden" name="etykieta" value={filters.etykieta} />
-            ) : null}
+            {filters.group ? <input type="hidden" name="group" value={filters.group} /> : null}
+            {filters.label ? <input type="hidden" name="label" value={filters.label} /> : null}
             <div className="flex flex-wrap gap-3">
               <button type="submit" className={`${BUTTON} border-navy text-navy border bg-white`}>
                 Pokaż wyniki
               </button>
               <Link
-                href="/biblioteka"
+                href="/library"
                 className="text-navy inline-flex min-h-[50px] items-center underline"
               >
                 Wyczyść filtry
@@ -118,9 +121,9 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
             </div>
           </aside>
 
-          <section aria-labelledby="wyniki" className="flex min-w-0 flex-[999_1_560px] flex-col">
+          <section aria-labelledby="results" className="flex min-w-0 flex-[999_1_560px] flex-col">
             <div className="border-ink flex flex-wrap items-baseline justify-between gap-2 border-b-2 pb-2">
-              <h2 id="wyniki" aria-live="polite" className="text-lg font-bold">
+              <h2 id="results" aria-live="polite" className="text-lg font-bold">
                 {heading ? `${heading}: ` : ""}
                 {formatResultCount(list.liczba)}
               </h2>
@@ -134,7 +137,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
                 <p>Nic nie pasuje do tych filtrów.</p>
                 <p>
                   Spróbuj innych słów albo{" "}
-                  <Link href="/dopasuj" className="text-navy underline">
+                  <Link href="/match" className="text-navy underline">
                     opisz swój problem własnymi słowami
                   </Link>
                   .
@@ -152,7 +155,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
               <nav aria-label="Strony wyników" className="flex flex-wrap items-center gap-1.5 pt-6">
                 {list.strona > 1 ? (
                   <Link
-                    href={libraryUrl(filters, { strona: list.strona - 1 })}
+                    href={libraryUrl(filters, { page: list.strona - 1 })}
                     className="text-navy px-2.5 font-bold"
                   >
                     ← Poprzednia strona
@@ -161,7 +164,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
                 {Array.from({ length: list.liczba_stron }, (_, n) => n + 1).map((s) => (
                   <Link
                     key={s}
-                    href={libraryUrl(filters, { strona: s })}
+                    href={libraryUrl(filters, { page: s })}
                     aria-current={s === list.strona ? "page" : undefined}
                     aria-label={`Strona ${s}`}
                     className={
@@ -175,7 +178,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
                 ))}
                 {list.strona < list.liczba_stron ? (
                   <Link
-                    href={libraryUrl(filters, { strona: list.strona + 1 })}
+                    href={libraryUrl(filters, { page: list.strona + 1 })}
                     className="text-navy px-2.5 font-bold"
                   >
                     Następna strona →
@@ -248,7 +251,7 @@ function ResultRow({ innovation: i }: { innovation: InnovationSummary }) {
     <li className="border-line flex flex-col gap-1.5 border-b py-5">
       <h3 className="text-[1.375rem] leading-snug font-bold tracking-tight">
         <Link
-          href={`/biblioteka/${i.id}`}
+          href={`/library/${i.id}`}
           className="text-ink hover:text-navy focus-visible:outline-brick no-underline hover:underline focus-visible:outline-3 focus-visible:outline-offset-2"
         >
           {i.nazwa}
