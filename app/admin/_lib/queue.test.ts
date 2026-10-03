@@ -30,7 +30,11 @@ const IDEAS = [
   },
 ];
 
-function client() {
+function client(
+  reviews: unknown[] = [
+    { idea_id: "i1", status: "zatwierdzony", komentarz: null, ekspert_id: null },
+  ],
+) {
   const chain = (data: unknown) => {
     const q: Record<string, unknown> = {};
     for (const m of ["select", "not", "order", "eq"]) q[m] = vi.fn(() => q);
@@ -41,7 +45,7 @@ function client() {
   const from = vi.fn((table: string) => {
     if (table === "ideas") return chain(IDEAS);
     if (table === "profiles") return chain([{ id: "u1", nazwa_wyswietlana: "Fundacja" }]);
-    return chain([{ idea_id: "i1", status: "zatwierdzony", komentarz: null, ekspert_id: null }]);
+    return chain(reviews);
   });
   return { from } as unknown as SupabaseClient<Database>;
 }
@@ -68,5 +72,22 @@ describe("loadIdeaQueue", () => {
   it("filters the open queue and single statuses", async () => {
     expect((await loadIdeaQueue(client(), "open")).map((r) => r.idea_id)).toEqual(["i2"]);
     expect((await loadIdeaQueue(client(), "zatwierdzony")).map((r) => r.idea_id)).toEqual(["i1"]);
+  });
+
+  it("puts an idea sent again after 'do_poprawy' back in the open queue", async () => {
+    const reviews = [
+      {
+        idea_id: "i1",
+        status: "do_poprawy",
+        komentarz: "Dopisz koszty.",
+        ekspert_id: null,
+        oceniony_at: "2026-10-03T15:30:00Z", // before i1 was sent again at 16:00
+      },
+    ];
+    const rows = await loadIdeaQueue(client(reviews), "open");
+    expect(rows.map((r) => [r.idea_id, r.status])).toEqual([
+      ["i1", "nowy"],
+      ["i2", "nowy"],
+    ]);
   });
 });
