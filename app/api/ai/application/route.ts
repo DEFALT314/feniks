@@ -1,4 +1,4 @@
-// POST /api/ai/wniosek – draft of a grant application for an open call (#18). Contract: lib/contracts/ai.ts.
+// POST /api/ai/application – draft of a grant application for an open call (#18). Contract: lib/contracts/ai.ts.
 import { NextResponse } from "next/server";
 import { applicationDraft } from "@/lib/ai/creator/creator";
 import { aiFailure, jsonError, readAiRequest } from "@/lib/ai/http";
