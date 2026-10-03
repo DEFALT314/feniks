@@ -1,5 +1,5 @@
-import { WBudowie } from "@/components/w-budowie";
+import { UnderConstruction } from "@/components/under-construction";
 
-export default function Strona() {
-  return <WBudowie tytul="Znajdź rozwiązanie" modul="I Matchmaking" />;
+export default function Page() {
+  return <UnderConstruction title="Znajdź rozwiązanie" moduleName="I Matchmaking" />;
 }

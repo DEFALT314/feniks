@@ -3,8 +3,8 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import type { Database } from "./types";
 
-// Klient z sesją zalogowanego użytkownika. Używaj w Server Components, Server Actions i endpointach.
-// Działa z RLS, czyli widzi tylko to, na co pozwalają polityki.
+// Client with the signed-in user's session. Use it in Server Components, Server Actions and endpoints.
+// Works with RLS, so it only sees what the policies allow.
 export async function createClient() {
   const cookieStore = await cookies();
 
@@ -22,7 +22,7 @@ export async function createClient() {
               cookieStore.set(name, value, options),
             );
           } catch {
-            // Wywołanie z Server Component: ciasteczka odświeża proxy.ts.
+            // Called from a Server Component: proxy.ts refreshes the cookies.
           }
         },
       },

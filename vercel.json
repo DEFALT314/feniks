@@ -1,5 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "regions": ["fra1"]
+  "regions": ["fra1"],
+  "functions": {
+    "api/embed.py": {
+      "excludeFiles": "{node_modules/**,.next/**,app/**,components/**,lib/**,design/**,docs/**,pitch/**,data/**,supabase/**,scripts/**,public/**,evals/**,embedding/model/**,embedding/.venv/**,embedding/test_*.py}"
+    }
+  }
 }

@@ -1,5 +1,5 @@
-import { WBudowie } from "@/components/w-budowie";
+import { UnderConstruction } from "@/components/under-construction";
 
-export default function Strona() {
-  return <WBudowie tytul="Panel ROPS" modul="VI Panel administratora" />;
+export default function Page() {
+  return <UnderConstruction title="Panel ROPS" moduleName="VI Panel administratora" />;
 }
