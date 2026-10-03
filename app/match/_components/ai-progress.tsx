@@ -19,11 +19,22 @@ export function progressPercent(seconds: number): number {
   return Math.round(95 * (1 - Math.exp(-seconds / 8)));
 }
 
-export function stepAt(seconds: number): string {
-  return AI_STEPS[Math.min(Math.floor(seconds / STEP_SECONDS), AI_STEPS.length - 1)];
+export function stepAt(seconds: number, steps: string[] = AI_STEPS): string {
+  return steps[Math.min(Math.floor(seconds / STEP_SECONDS), steps.length - 1)];
 }
 
-export function AiProgress() {
+type AiProgressProps = {
+  title?: string;
+  steps?: string[];
+  note?: string | null;
+};
+
+// Also used by /my/middleman with its own title and steps.
+export function AiProgress({
+  title = "AI wybiera najlepiej pasujące innowacje",
+  steps = AI_STEPS,
+  note = "Poniżej wstępne wyniki wyszukiwania. Za chwilę zastąpi je wybór AI z uzasadnieniem.",
+}: AiProgressProps = {}) {
   const [seconds, setSeconds] = useState(0);
   useEffect(() => {
     const started = Date.now();
@@ -39,14 +50,14 @@ export function AiProgress() {
           <span className="bg-navy relative inline-flex size-3 rounded-full" />
         </span>
         <p role="status" className="text-navy font-bold">
-          AI wybiera najlepiej pasujące innowacje
+          {title}
         </p>
         <span aria-hidden="true" className="text-ink-muted ml-auto text-base tabular-nums">
           {seconds} s
         </span>
       </div>
       <p aria-hidden="true" className="text-ink-muted text-base">
-        {stepAt(seconds)}
+        {stepAt(seconds, steps)}
       </p>
       <div aria-hidden="true" className="h-1.5 overflow-hidden rounded-full bg-white">
         <div
@@ -54,9 +65,7 @@ export function AiProgress() {
           style={{ width: `${progressPercent(seconds)}%` }}
         />
       </div>
-      <p className="text-ink-muted text-[0.9375rem]">
-        Poniżej wstępne wyniki wyszukiwania. Za chwilę zastąpi je wybór AI z uzasadnieniem.
-      </p>
+      {note ? <p className="text-ink-muted text-[0.9375rem]">{note}</p> : null}
     </div>
   );
 }
