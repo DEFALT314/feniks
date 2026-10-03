@@ -124,7 +124,8 @@ async function main() {
     const sample = SETS[0].cases.slice(0, aiSample);
     const withAi = {
       ...baseDeps,
-      rerank: (d: string, c: Parameters<typeof rerank>[1]) => rerank(d, c),
+      rerank: (d: string, c: Parameters<typeof rerank>[1], ch: Parameters<typeof rerank>[3]) =>
+        rerank(d, c, {}, ch),
     };
     const started = Date.now();
     const s = await score(sample, withAi);

@@ -74,6 +74,15 @@ describe("SiteHeader", () => {
     expect(html).not.toContain("Wersja pokazowa");
   });
 
+  it("links the signed-in user's name to the profile page", () => {
+    const html = renderToStaticMarkup(
+      <SiteHeader user={{ name: "Stanisław", role: "mieszkaniec" }} />,
+    );
+    expect(linkTag(html, "/my/profile")).toContain(
+      'aria-label="Twój profil: Stanisław, mieszkaniec"',
+    );
+  });
+
   it("marks the current section and shows the signed-in user", () => {
     const html = renderToStaticMarkup(
       <SiteHeader user={{ name: "Stanisław", role: "jst" }} unreadNotifications={2} demoMode />,

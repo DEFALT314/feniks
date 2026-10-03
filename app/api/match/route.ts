@@ -70,8 +70,8 @@ export async function POST(request: Request) {
       return (data ?? []) as VectorHit[];
     },
     rerank: aiAllowed
-      ? (description, candidates) =>
-          rerank(description, candidates, db ? { cache: supabaseCache(db) } : {})
+      ? (description, candidates, challenges) =>
+          rerank(description, candidates, db ? { cache: supabaseCache(db) } : {}, challenges)
       : undefined,
   };
 
