@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – menu nagłówka</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#EEF0F4;color:#4B5565}
+.tag-warn{background:#FFF1DB;color:#8A4B00}
+.tag-err{background:#FDECEA;color:#B42318}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.th{display:flex;flex-direction:column;gap:2px;padding:16px 18px;border-bottom:1px solid #D9DDE4;text-decoration:none;color:#151A23}
+.th:hover{background:#F3F6FD;color:#151A23}
+.msg{display:flex;flex-direction:column;gap:4px;padding:16px 0;border-bottom:1px solid #EEF0F4}
+label{font-weight:700}
+textarea{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+.opt{display:flex;gap:12px;align-items:center;padding:12px 16px;border:1px solid #D9DDE4;border-radius:10px;font-weight:400}
+.opt input{width:22px;height:22px;accent-color:#1F3A8A;flex:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.row{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid #EEF0F4;flex-wrap:wrap}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.5; padding: 48px 64px; display: flex; gap: 64px; align-items: flex-start">
+  <section style="flex: 1; display: flex; flex-direction: column; gap: 16px">
+    <h1 class="h" style="font-size: 28px">Menu konta (od 1024 px)</h1>
+    <p class="muted" style="font-size: 16px">Kliknięcie imienia w nagłówku. Escape albo kliknięcie obok zamyka. Między 1024 a 1279 px zamiast imienia jest kółko z inicjałem.</p>
+    <div style="align-self: flex-end; width: 280px; background: #fff; border: 1px solid #D9DDE4; border-radius: 14px; box-shadow: 0 12px 28px -12px rgba(21,26,35,.25); padding: 8px">
+      <p style="margin: 0 0 8px; padding: 6px 12px 10px; border-bottom: 1px solid #D9DDE4; line-height: 1.25"><strong style="display:block">GOPS w Przykładowej Woli</strong><span class="muted" style="font-size: 14px">gmina (JST)</span></p>
+      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Kreator.dc.html">Moje pomysły</a>
+      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Tester.dc.html">Testy</a>
+      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px;background:#E8EDFA;color:#1F3A8A;font-weight:700" href="Wiadomosci.dc.html" aria-current="page">Wiadomości</a>
+      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Middleman.dc.html">Karta usługi</a>
+      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Profil.dc.html">Twój profil</a>
+      <div style="border-top: 1px solid #D9DDE4; margin-top: 8px; padding-top: 8px"><button type="button" style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px;width:100%;border:0;background:none;font:inherit;font-weight:700;cursor:pointer">Wyloguj się</button></div>
+    </div>
+  </section>
+  <section style="width: 375px; display: flex; flex-direction: column; gap: 16px">
+    <h1 class="h" style="font-size: 28px">Telefon i powiększenie 200%</h1>
+    <div style="background: #fff; border: 1px solid #D9DDE4; border-radius: 16px; overflow: hidden">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 14px 16px; border-bottom: 1px solid #D9DDE4">
+        <span style="display:flex;align-items:center;gap:8px"><svg width="36" height="36" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14.5" cy="9" r="5.5" fill="#1F3A8A"></circle><circle cx="33.5" cy="9" r="5.5" fill="#C2452B"></circle><path d="M23.4 44 C 12 36.5, 3.5 29, 5.5 21.5 C 7 16.5, 13.5 15.5, 17.5 18.5 C 20.3 20.6, 22.3 23, 23.4 25.5 Z" fill="#1F3A8A"></path><path d="M24.6 44 C 36 36.5, 44.5 29, 42.5 21.5 C 41 16.5, 34.5 15.5, 30.5 18.5 C 27.7 20.6, 25.7 23, 24.6 25.5 Z" fill="#C2452B"></path></svg><span class="h" style="font-size: 22px">HubMI</span></span>
+        <span style="margin-left:auto;display:flex;gap:8px">
+          <span style="display:flex;align-items:center;justify-content:center;height:44px;min-width:44px;border:1px solid #6B7487;border-radius:10px;font-weight:700;font-size:16px">A+</span>
+          <span style="display:flex;align-items:center;gap:6px;height:44px;padding:0 10px;border-radius:10px;background:#1F3A8A;color:#fff;font-weight:700;font-size:16px" aria-expanded="true">✕ Menu</span>
+        </span>
+      </div>
+      <nav aria-label="Menu główne" style="padding: 8px">
+        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Dopasuj.dc.html">Dopasuj rozwiązanie</a>
+        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Biblioteka.dc.html">Biblioteka</a>
+        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="MapaWyzwan.dc.html">Mapa wyzwań</a>
+      </nav>
+      <div style="border-top: 1px solid #D9DDE4; padding: 8px">
+        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px;font-weight:700" href="Logowanie.dc.html">Zaloguj się</a>
+        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Rejestracja.dc.html">Załóż konto</a>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
