@@ -1,6 +1,6 @@
 # Matchmaking accuracy
 
-Generated: 2026-10-03 17:10 UTC · mode: vectors + keywords · `npx tsx evals/match-accuracy.ts`
+Generated: 2026-10-03 19:55 UTC · mode: vectors + keywords · `npx tsx evals/match-accuracy.ts`
 
 | set | queries | top 1 | top 3 | top 10 | false "no match" |
 |---|---|---|---|---|---|
@@ -10,7 +10,16 @@ Generated: 2026-10-03 17:10 UTC · mode: vectors + keywords · `npx tsx evals/ma
 
 White spots: 94% of 80 problems outside the Library flagged as "no match" (without AI).
 
-With the AI choice (deepseek-v4-flash:free via Token Harbor), sample of the first 20 ROPS queries, measured 2026-10-03 with `--ai 20`: top 1 95%, top 3 **100%**, about 16 s per query (free tier; repeated queries are served from `ai_cache` in ~70 ms).
+## Challenge from the Challenges Map
+
+One everyday query per challenge (48, `evals/challenge_queries.jsonl`, written by P3). Off-topic = a challenge from a wrong area. Without AI no challenge is shown on purpose: vectors of the short challenge texts put 44% of these queries in a wrong area.
+
+| mode | queries | right area | right challenge | off-topic | none |
+|---|---|---|---|---|---|
+| without AI | 48 | 0% | **0%** | 0% | 100% |
+| with AI | 48 | 96% | **96%** | 4% | 0% |
+
+With the AI choice (deepseek-chat), sample of 20 ROPS queries: top 1 90%, top 3 **95%**, about 2 s per query.
 
 Target from the issue: at least 80% in the top 3 on the ROPS set. The colloquial and atypical sets were
 written by P3, so results on them may be slightly optimistic; the ROPS set is independent. Sentences from
