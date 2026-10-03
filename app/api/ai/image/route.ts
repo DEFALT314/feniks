@@ -1,4 +1,4 @@
-// POST /api/ai/obraz – a simple illustration of the idea (#18). Contract: lib/contracts/ai.ts.
+// POST /api/ai/image – a simple illustration of the idea (#18). Contract: lib/contracts/ai.ts.
 // Drawn as SVG by the language model (free) and sanitized; returned as a data URL with alt text.
 import { NextResponse } from "next/server";
 import { visualisation } from "@/lib/ai/creator/creator";

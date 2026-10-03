@@ -1,4 +1,4 @@
-// Whitelist sanitizer for the SVG illustration drawn by the language model (/api/ai/obraz).
+// Whitelist sanitizer for the SVG illustration drawn by the language model (/api/ai/image).
 // The image is shown in <img>, where scripts never run; this is defense in depth: only drawing
 // elements and presentation attributes survive, with no links, scripts, styles or external URLs.
 

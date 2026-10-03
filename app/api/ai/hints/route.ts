@@ -1,4 +1,4 @@
-// POST /api/ai/podpowiedz – hints for the idea card fields (#18). Contract: lib/contracts/ai.ts.
+// POST /api/ai/hints – hints for the idea card fields (#18). Contract: lib/contracts/ai.ts.
 import { NextResponse } from "next/server";
 import { hints } from "@/lib/ai/creator/creator";
 import { aiFailure, readAiRequest } from "@/lib/ai/http";
