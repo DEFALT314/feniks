@@ -1,0 +1,29 @@
+{
+  "id": "d4e5f6a7-0000-4000-8000-000000000001",
+  "temat": "Sąsiedzka kawiarenka dla seniorów",
+  "idea_id": "a1b2c3d4-0000-4000-8000-000000000001",
+  "uczestnicy": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "nazwa_wyswietlana": "Anna z Wieliczki",
+      "role": "mieszkaniec"
+    },
+    {
+      "user_id": "44444444-4444-4444-8444-444444444444",
+      "nazwa_wyswietlana": "Ekspert ds. seniorów (fikcyjny)",
+      "role": "ekspert"
+    }
+  ],
+  "ostatnia_wiadomosc_at": "2026-10-03T18:30:00+02:00",
+  "nieprzeczytane": 1,
+  "wiadomosci": [
+    {
+      "id": "e5f6a7b8-0000-4000-8000-000000000001",
+      "thread_id": "d4e5f6a7-0000-4000-8000-000000000001",
+      "autor_id": "44444444-4444-4444-8444-444444444444",
+      "autor_nazwa": "Ekspert ds. seniorów (fikcyjny)",
+      "tresc": "Dzień dobry, czy świetlica jest dostępna dla osób na wózku?",
+      "created_at": "2026-10-03T18:30:00+02:00"
+    }
+  ]
+}
