@@ -82,14 +82,14 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
                 </FilterOption>
               ))}
             </FilterGroup>
-            <FilterGroup legend="Sprawdzenie">
+            <FilterGroup legend="Polecane">
               <FilterOption
                 name="verified"
                 value="1"
                 checked={filters.verified}
                 count={list.liczniki.sprawdzona}
               >
-                Wybrane do upowszechniania
+                Sprawdzone przez ROPS
               </FilterOption>
             </FilterGroup>
             <FilterGroup legend="Materiały">
@@ -102,7 +102,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
                 Jest film
               </FilterOption>
               <FilterOption name="pdf" value="1" checked={filters.pdf} count={list.liczniki.pdf}>
-                Jest opis modelu (PDF)
+                Jest opis do pobrania (PDF)
               </FilterOption>
             </FilterGroup>
             {filters.group ? <input type="hidden" name="group" value={filters.group} /> : null}
@@ -133,7 +133,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
 
             {list.wyniki.length === 0 ? (
               <div className="flex flex-col gap-3 py-8">
-                <p>Nic nie pasuje do tych filtrów.</p>
+                <p>Nic nie znaleźliśmy. Spróbuj wybrać mniej filtrów.</p>
                 <p>
                   Spróbuj innych słów albo{" "}
                   <Link href="/match" className="text-navy underline">
@@ -262,9 +262,7 @@ function ResultRow({ innovation: i }: { innovation: InnovationSummary }) {
         <p>{i.opis_krotki}</p>
       )}
       <div className="flex flex-wrap items-center gap-2">
-        {i.sprawdzona_przez_rops ? (
-          <Badge variant="success">Wybrana do upowszechniania</Badge>
-        ) : null}
+        {i.sprawdzona_przez_rops ? <Badge variant="success">Sprawdzona przez ROPS</Badge> : null}
         {i.opis_niepelny ? <Badge variant="warning">Opis niepełny</Badge> : null}
         {i.spoza_biblioteki ? (
           <Badge variant="neutral">Z inkubatora ROPS, spoza Biblioteki online</Badge>
