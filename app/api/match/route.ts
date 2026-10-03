@@ -12,7 +12,10 @@ import { clientIp, createRateLimiter } from "@/lib/ai/rate-limit";
 import { MatchRequest } from "@/lib/contracts/match";
 import { createClient } from "@/lib/supabase/server";
 
-const limiter = createRateLimiter(20, 60 * 60 * 1000); // 20 queries per hour per IP (#15)
+// 20 AI queries per hour per IP (#15). The /match page first asks with ai: false (ranking only,
+// no LLM cost) and then with AI, so ranking-only requests get their own, looser limit.
+const aiLimiter = createRateLimiter(20, 60 * 60 * 1000);
+const searchLimiter = createRateLimiter(120, 60 * 60 * 1000);
 
 const databaseConfigured = () =>
   Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
@@ -20,20 +23,21 @@ const llmConfigured = () =>
   Boolean(process.env.LLM_BASE_URL && process.env.LLM_MODEL && process.env.LLM_API_KEY);
 
 export async function POST(request: Request) {
-  const limit = limiter(clientIp(request.headers));
-  if (!limit.ok) {
-    const minutes = Math.ceil(limit.retryAfterSeconds / 60);
-    return NextResponse.json(
-      { error: `Za dużo zapytań. Spróbuj ponownie za ${minutes} min.` },
-      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } },
-    );
-  }
-
   const parsed = MatchRequest.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json(
       { error: "Opisz problem własnymi słowami: od 10 do 2000 znaków." },
       { status: 400 },
+    );
+  }
+  const withAi = parsed.data.ai !== false;
+
+  const limit = (withAi ? aiLimiter : searchLimiter)(clientIp(request.headers));
+  if (!limit.ok) {
+    const minutes = Math.ceil(limit.retryAfterSeconds / 60);
+    return NextResponse.json(
+      { error: `Za dużo zapytań. Spróbuj ponownie za ${minutes} min.` },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } },
     );
   }
 
@@ -57,7 +61,7 @@ export async function POST(request: Request) {
       return (data ?? []) as VectorHit[];
     },
     rerank:
-      parsed.data.ai !== false && llmConfigured()
+      withAi && llmConfigured()
         ? (description, candidates) =>
             rerank(description, candidates, db ? { cache: supabaseCache(db) } : {})
         : undefined,
@@ -66,7 +70,8 @@ export async function POST(request: Request) {
   const { response, stats } = await runMatch(parsed.data, deps);
 
   // Statistics for trends: area, challenge and quality only; the description is never stored.
-  if (supabase) {
+  // Once per search: the ranking-only request that precedes the AI request is not counted.
+  if (supabase && withAi) {
     const { error } = await db!.from("match_queries").insert(stats);
     if (error) console.error("match_queries insert failed:", error.message);
   }
