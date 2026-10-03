@@ -56,7 +56,7 @@ export function TesterBoard({ tests }: { tests: TesterTest[] }) {
         {tests.length === 0 ? (
           <p className="text-muted-foreground">
             Teraz nie ma otwartych testów. Zajrzyj tu później albo przejrzyj{" "}
-            <Link href="/library">Bibliotekę rozwiązań</Link>.
+            <Link href="/library">Bibliotekę innowacji</Link>.
           </p>
         ) : (
           <ul className="flex flex-col gap-4">
@@ -126,7 +126,7 @@ function TestCard({ test, onRate }: { test: TesterTest; onRate: () => void }) {
         <h3 id={headingId} className="text-[1.375rem] leading-snug font-bold">
           {test.tytul}
         </h3>
-        {test.zapisany ? <Badge variant="success">Jesteś zapisany</Badge> : null}
+        {test.zapisany ? <Badge variant="success">Masz miejsce na teście</Badge> : null}
       </div>
       {test.opis ? <p>{test.opis}</p> : null}
       <TestDetails test={test} />
@@ -142,15 +142,18 @@ function TestCard({ test, onRate }: { test: TesterTest; onRate: () => void }) {
             <Button ref={firstAction} type="button" onClick={onRate} aria-describedby={headingId}>
               {test.moja_ocena ? "Zmień ocenę" : "Oceń test"}
             </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              disabled={pending}
-              aria-describedby={headingId}
-              onClick={() => run(() => withdrawFromTest(test.id), "Wypisano Cię z testu.")}
-            >
-              {pending ? "Wypisuję…" : "Wypisz się"}
-            </Button>
+            {/* After rating, the test took place: withdrawing would orphan the rating */}
+            {test.moja_ocena ? null : (
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={pending}
+                aria-describedby={headingId}
+                onClick={() => run(() => withdrawFromTest(test.id), "Wypisano Cię z testu.")}
+              >
+                {pending ? "Wypisuję…" : "Wypisz się"}
+              </Button>
+            )}
           </>
         ) : (
           <Button

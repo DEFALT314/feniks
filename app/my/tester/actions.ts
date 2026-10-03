@@ -20,7 +20,8 @@ export async function signUpForTest(testId: string): Promise<ActionResult> {
   const id = TestId.safeParse(testId);
   if (!id.success) return BAD_INPUT;
   const result = await signUp(await createClient(), id.data);
-  if (result.ok) revalidatePath("/my/tester");
+  // Also after a refusal: when the last seat went to someone else, the card must stop showing it
+  revalidatePath("/my/tester");
   return result;
 }
 
@@ -30,7 +31,7 @@ export async function withdrawFromTest(testId: string): Promise<ActionResult> {
   const id = TestId.safeParse(testId);
   if (!id.success) return BAD_INPUT;
   const result = await withdraw(await createClient(), user.id, id.data);
-  if (result.ok) revalidatePath("/my/tester");
+  revalidatePath("/my/tester");
   return result;
 }
 
@@ -56,9 +57,9 @@ function planTestError(field: PropertyKey | undefined): string {
     case "miejsce":
       return "Miejsce może mieć najwyżej 200 znaków.";
     case "termin":
-      return "Podaj poprawny termin.";
+      return "Wpisz datę i godzinę testu albo zostaw pole puste.";
     case "liczba_miejsc":
-      return "Liczba miejsc: od 1 do 500.";
+      return "Wpisz liczbę miejsc od 1 do 500 albo zostaw pole puste.";
     default:
       return BAD_INPUT.error;
   }

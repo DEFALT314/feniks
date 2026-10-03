@@ -20,8 +20,8 @@ export function IdeaNotFound() {
 export function LockedNotice() {
   return (
     <p className="bg-warning-soft text-ink rounded-[10px] px-4 py-3 text-base">
-      <strong>Pomysł jest w ROPS.</strong> Możesz go czytać, ale nie zmieniać. Edycja wróci, jeśli
-      ROPS poprosi o poprawki.
+      <strong>Pomysł jest już w ROPS.</strong> Możesz go czytać, ale nie zmieniać. Jeśli ROPS
+      poprosi o poprawki, znów będzie można go zmieniać.
     </p>
   );
 }

@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { LibraryFilters } from "@/lib/contracts/knowledge-base";
-import { askRopsUrl, filterSummary, formatResultCount, libraryTitle } from "./format";
+import {
+  askRopsUrl,
+  filterSummary,
+  formatResultCount,
+  libraryTitle,
+  sourceBreakdown,
+} from "./format";
 
 const categories = [
   { id: "dla-seniorow", nazwa: "Dla seniorów", url: null },
@@ -53,5 +59,22 @@ describe("askRopsUrl", () => {
     expect(url.pathname).toBe("/my/messages/new");
     expect(url.searchParams.get("innovation")).toBe("bawita");
     expect(url.searchParams.get("topic")).toBe("Pytanie o innowację: BaWita");
+  });
+});
+
+describe("sourceBreakdown", () => {
+  it("splits the count into the ROPS Library and other ROPS programs", () => {
+    expect(sourceBreakdown(158, 115)).toMatch(
+      /^W tym 115 z Biblioteki innowacji ROPS i 43 z innych/,
+    );
+  });
+
+  it("says nothing when every result is from the Library", () => {
+    expect(sourceBreakdown(20, 20)).toBeNull();
+    expect(sourceBreakdown(20, undefined)).toBeNull();
+  });
+
+  it("explains a list made only of items from outside the Library", () => {
+    expect(sourceBreakdown(3, 0)).toMatch(/^Wszystkie pochodzą z innych programów ROPS/);
   });
 });

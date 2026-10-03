@@ -39,7 +39,11 @@ export function SubmitPanel({
   const [state, send, pending] = useActionState<SubmitState>(
     async () => {
       if (!(await beforeSend())) {
-        return { status: "error", message: "Najpierw zapisz fiszkę: sprawdź zaznaczone pola." };
+        return {
+          status: "error",
+          message:
+            "Nie wysłaliśmy pomysłu, bo nie udało się zapisać fiszki. Popraw zaznaczone pola i wyślij jeszcze raz.",
+        };
       }
       return sendToRops(ideaId);
     },
@@ -105,7 +109,7 @@ export function SubmitPanel({
             {pending ? "Wysyłamy…" : resend ? "Wyślij poprawioną wersję" : "Wyślij do ROPS"}
           </Button>
           <p className="text-muted-foreground text-base">
-            Zespół ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach.
+            ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach, wyślemy ją też mailem.
           </p>
         </form>
       ) : null}

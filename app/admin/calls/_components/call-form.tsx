@@ -35,7 +35,9 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
       <Field
         label="Identyfikator"
         hint={
-          call ? "Nie zmienia się po dodaniu." : "Małe litery i myślniki, np. nabor-seniorzy-2027."
+          call
+            ? "Tego nie można zmienić."
+            : "Małe litery, cyfry i myślniki, np. nabor-seniorzy-2027. Później nie można go zmienić."
         }
         error={e.id}
         required={!call}
@@ -67,7 +69,7 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
             <Input {...p} name="termin_od" type="date" defaultValue={call?.termin_od ?? ""} />
           )}
         </Field>
-        <Field label="Koniec (termin)" className="min-w-[180px] flex-1" error={e.termin_do}>
+        <Field label="Koniec naboru" className="min-w-[180px] flex-1" error={e.termin_do}>
           {(p) => (
             <Input {...p} name="termin_do" type="date" defaultValue={call?.termin_do ?? ""} />
           )}
@@ -97,7 +99,7 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
           defaultChecked={call?.opublikowany ?? false}
           className="accent-navy size-5 shrink-0"
         />
-        Nabór włączony (widoczny w generatorze wniosków)
+        Nabór włączony (widzą go autorzy pomysłów)
       </label>
       <p className="text-muted-foreground -mt-2 text-base">
         Gdy włączysz nabór albo zmienisz jego termin, autorzy pomysłów z wybranych obszarów dostaną

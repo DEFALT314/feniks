@@ -98,11 +98,23 @@ export const CallInput = z
       .string()
       .trim()
       .regex(/^[a-z0-9][a-z0-9-]{2,80}$/, {
-        message: "Identyfikator: małe litery, cyfry i myślniki.",
+        message: "Identyfikator: co najmniej 3 znaki, tylko małe litery, cyfry i myślniki.",
       }),
-    nazwa: z.string().trim().min(3, { message: "Wpisz nazwę naboru." }).max(200),
-    organizator: z.string().trim().min(2).max(200),
-    cel: z.string().trim().max(1000).optional(),
+    nazwa: z
+      .string()
+      .trim()
+      .min(3, { message: "Wpisz nazwę naboru." })
+      .max(200, { message: "Nazwa może mieć najwyżej 200 znaków." }),
+    organizator: z
+      .string()
+      .trim()
+      .min(2, { message: "Wpisz organizatora naboru." })
+      .max(200, { message: "Organizator może mieć najwyżej 200 znaków." }),
+    cel: z
+      .string()
+      .trim()
+      .max(1000, { message: "Pole „Na co są pieniądze” może mieć najwyżej 1000 znaków." })
+      .optional(),
     url: z.url({ message: "Wpisz pełny adres strony, np. https://…" }).optional(),
     termin_od: z.iso.date().optional(),
     termin_do: z.iso.date().optional(),

@@ -3,9 +3,10 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 import { getCurrentUser } from "@/lib/auth";
 import { signInUrl } from "@/lib/auth/sign-in-redirect";
-import { CALLS } from "@/lib/ai/creator/creator";
+import { openCalls } from "@/lib/ai/creator/open-calls";
 import { createClient } from "@/lib/supabase/server";
 import { PlanTestPanel } from "@/app/my/tester/_components/plan-test-panel";
+import { planTestDefaults } from "@/app/my/tester/_lib/model";
 import { countIdeaTests } from "@/app/my/tester/_lib/tests";
 import { IdeaCard } from "../../_components/card-form";
 import { IdeaNotFound } from "../../_components/states";
@@ -36,15 +37,17 @@ export default async function CardPage({
   if (!loaded) redirect(signInUrl(`/my/creator/${id}/card`)); // app/my/layout.tsx checks first
   const { db, idea } = loaded;
   if (!idea) return <IdeaNotFound />;
-  const testCount = await countIdeaTests(db, idea.id);
+  const [testCount, calls] = await Promise.all([countIdeaTests(db, idea.id), openCalls()]);
   // key: a refreshed copy from the database (e.g. after browser Back) replaces the local state
   return (
     <IdeaCard
       key={idea.updated_at}
       idea={idea}
-      calls={CALLS}
+      calls={calls}
       justSent={sent === "first" || sent === "again" ? sent : null}
-      testPanel={<PlanTestPanel ideaId={idea.id} testCount={testCount} />}
+      testPanel={
+        <PlanTestPanel ideaId={idea.id} testCount={testCount} defaults={planTestDefaults(idea)} />
+      }
     />
   );
 }

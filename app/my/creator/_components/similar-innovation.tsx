@@ -80,10 +80,10 @@ export function SimilarInnovation({ description }: { description: string }) {
       <div className="flex flex-col gap-2.5">
         {state.status === "too-short" ? (
           <p className="text-base">
-            Opisz pomysł w fiszce, a sprawdzimy, czy w Bibliotece ROPS jest coś podobnego.
+            Opisz pomysł w fiszce, a sprawdzimy, czy w Bibliotece innowacji jest coś podobnego.
           </p>
         ) : null}
-        {state.status === "loading" ? <p>Szukamy w Bibliotece ROPS…</p> : null}
+        {state.status === "loading" ? <p>Szukamy w Bibliotece innowacji…</p> : null}
         {state.status === "error" ? (
           <p className="text-danger text-base font-bold">{state.message}</p>
         ) : null}
@@ -101,7 +101,8 @@ export function SimilarInnovation({ description }: { description: string }) {
               </Badge>
             ) : null}
             <p className="text-muted-foreground text-base">
-              Twój pomysł może ją uzupełnić. Warto porozmawiać z autorami, zanim wyślesz fiszkę.
+              Zobacz ją, zanim wyślesz fiszkę. Może wystarczy zrobić to samo u siebie. A może Twój
+              pomysł coś do niej doda.
             </p>
             <Link href={`/library/${state.innovation.id}`} className="font-bold">
               Zobacz kartę<span className="sr-only">: {state.innovation.nazwa}</span>

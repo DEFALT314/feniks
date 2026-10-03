@@ -110,7 +110,7 @@ export function RatingForm({
             ))}
           </div>
         </fieldset>
-        <Field label="Co działało?">
+        <Field label="Co działało?" hint="Co Ci się podobało albo pomogło.">
           {(control) => (
             <Textarea
               {...control}
@@ -121,7 +121,10 @@ export function RatingForm({
             />
           )}
         </Field>
-        <Field label="Co poprawić?">
+        <Field
+          label="Co poprawić?"
+          hint="Zaproponuj usprawnienie: co zmienić, żeby działało lepiej. Np. większy druk, inna godzina spotkania, prostsza instrukcja."
+        >
           {(control) => (
             <Textarea
               {...control}

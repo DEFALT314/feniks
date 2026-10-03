@@ -19,8 +19,8 @@ export function TesterView({ tests, feedback }: { tests: TesterTest[]; feedback:
         >
           <h1 className="text-[2.75rem] leading-tight font-bold">Testy nowych rozwiązań</h1>
           <p className="text-muted-foreground max-w-[760px]">
-            Zapisz się na test, wypróbuj rozwiązanie i powiedz autorom, co działa, a co poprawić.
-            Twoja opinia trafia do nich i do ROPS.
+            Zapisz się na test, wypróbuj rozwiązanie, oceń je i zaproponuj, co poprawić. Twoja
+            opinia trafia do autorów i do ROPS.
           </p>
         </div>
       </div>

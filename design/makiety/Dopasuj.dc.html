@@ -58,7 +58,7 @@ a.card{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) va
 a.card:hover{border-color:#8A99C7;box-shadow:0 8px 20px -10px rgba(21,26,35,.22)}
 input:not([type=radio]):not([type=checkbox]),textarea,select{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) var(--ease)}
 input:not([type=radio]):not([type=checkbox]):hover,textarea:hover,select:hover{border-color:#4B5565}
-input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A}
+input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{outline:none;border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A,0 0 0 5px rgba(31,58,138,.18)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:1ms!important;animation-delay:0ms!important;transition-property:color,background-color,border-color,box-shadow,text-decoration-color!important}
   .btn:active{transform:none}
@@ -115,7 +115,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
           <h3 class="lbl" style="margin-bottom: 12px">Pasujące innowacje</h3>
           <div style="display: flex; flex-direction: column; gap: 16px">
             <article class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px; border-left: 4px solid #1F3A8A">
-              <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h4 class="h" style="font-size: 23px; margin: 0">Organizator kompleksowej opieki w miejscu zamieszkania</h4><span class="tag tag-ok">Sprawdzona przez ROPS</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h4 class="h" style="font-size: 23px; margin: 0">Organizator kompleksowej opieki w miejscu zamieszkania</h4><span class="tag">Z inkubatora MIWS</span></div>
               <p>Program pilnej pomocy w domu dla osób niesamodzielnych <mark>po wyjściu ze szpitala</mark> i ich rodzin, łącznie z organizacją <mark>opieki</mark> i <mark>sprzętu</mark>.</p>
               <dl class="kv"><dt>Kto wdraża</dt><dd>OPS, gmina, podmioty opieki długoterminowej</dd></dl>
               <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px"><a class="btn btn-p" href="Karta.dc.html">Zobacz kartę</a><a class="btn btn-s" href="Middleman.dc.html">Przygotuj dla mojej gminy</a></div>

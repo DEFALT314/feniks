@@ -45,7 +45,7 @@ export function ReplyForm({
       className="border-border mt-auto flex flex-col gap-2 border-t pt-4"
       noValidate
     >
-      <Field label="Odpowiedz" error={fieldError} required>
+      <Field label="Twoja odpowiedź" error={fieldError} required>
         {(p) => <Textarea {...p} name="tresc" rows={3} required maxLength={5000} />}
       </Field>
       <div className="flex flex-wrap gap-2.5">

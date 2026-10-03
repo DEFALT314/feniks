@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export type SaveStatus = "idle" | "saving" | "saved" | "error";
 type Result = { ok: true } | { ok: false; error: string };
 
-const OFFLINE = "Brak połączenia. Zmiany nie zostały zapisane.";
+const OFFLINE = "Brak połączenia z internetem.";
 
 /**
  * Saves changes through a server action. Each key (a canvas field, a card field) keeps only its

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getCategories } from "@/app/library/_lib/data";
+import { getAvailableFilters, getCategories, getInnovations } from "@/app/library/_lib/data";
+import { formatResultCount } from "@/app/library/_lib/format";
 import { getChallengeAreas } from "./_lib/data";
-import type { FullChallengeArea } from "./_lib/from-files";
 import { challengeMapTitle, formatChallengeCount } from "./_lib/format";
+import { challengeLibraryLink } from "./_lib/library-link";
 import { HashFocus } from "@/app/library/_components/hash-focus";
 
 export async function generateMetadata({
@@ -21,16 +22,14 @@ const LINK = "text-navy underline underline-offset-[3px] hover:text-navy-strong"
 // A link that stands on its own gets a 44px target (project rule 7)
 const TARGET = "inline-flex min-h-11 items-center";
 
-// Link to the Library: categories linked to the area + words from the challenge
-function innovationsUrl(area: FullChallengeArea, text: string): string {
-  const p = new URLSearchParams({ q: text });
-  for (const k of area.kategorie_biblioteki) p.append("category", k);
-  return `/library?${p.toString()}`;
-}
-
 export default async function ChallengeMapPage({ searchParams }: PageProps<"/challenge-map">) {
   const { area: selectedId } = await searchParams;
-  const [areas, categories] = await Promise.all([getChallengeAreas(), getCategories()]);
+  const [areas, categories, innovations, available] = await Promise.all([
+    getChallengeAreas(),
+    getCategories(),
+    getInnovations(),
+    getAvailableFilters(),
+  ]);
   const selected = areas.find((o) => o.id === selectedId) ?? areas[0];
   const categoryName = (id: string) => categories.find((k) => k.id === id)?.nazwa ?? id;
   const totalChallenges = areas.reduce((s, o) => s + o.wyzwania.length, 0);
@@ -45,9 +44,13 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
             Mapa wyzwań społecznych
           </h1>
           <p className="text-ink-muted max-w-[820px]">
-            {areas.length} obszarów i {totalChallenges} wyzwań opisał ROPS w Krakowie. Każdy problem
-            zgłoszony w HubMI przypisujemy do obszaru. Dzięki temu widać, czego region potrzebuje
+            ROPS w Krakowie opisał {areas.length} obszarów i {totalChallenges} wyzwań. Każdy problem
+            zgłoszony w HubMI łączymy z jednym obszarem. Dzięki temu widać, czego region potrzebuje
             najbardziej.
+          </p>
+          <p className="max-w-[820px]">
+            Wybierz obszar, który Cię dotyczy. Zobaczysz, z czym ludzie mają kłopot, co mówią dane i
+            jakie gotowe rozwiązania są już w Bibliotece.
           </p>
           <nav aria-label="Obszary" className="mt-2">
             <ul className="m-0 grid list-none grid-cols-1 gap-2.5 p-0 sm:grid-cols-2 lg:grid-cols-4">
@@ -92,17 +95,23 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
 
           <h3 className="text-ink-muted mt-3 text-[0.9375rem] font-bold">Kluczowe wyzwania</h3>
           <ul className="m-0 list-none p-0">
-            {selected.wyzwania.map((w) => (
-              <li
-                key={w.id}
-                className="border-line flex flex-wrap items-baseline justify-between gap-4 border-b py-3.5"
-              >
-                <span>{w.tekst}</span>
-                <Link href={innovationsUrl(selected, w.tekst)} className={`${LINK} ${TARGET}`}>
-                  Innowacje<span className="sr-only"> dla wyzwania: {w.tekst}</span>
-                </Link>
-              </li>
-            ))}
+            {selected.wyzwania.map((w) => {
+              const link = challengeLibraryLink(selected, w.tekst, innovations, available);
+              return (
+                <li
+                  key={w.id}
+                  className="border-line flex flex-wrap items-baseline justify-between gap-x-4 border-b py-3.5"
+                >
+                  <span>{w.tekst}</span>
+                  <Link href={link.href} className={`${LINK} ${TARGET} shrink-0`}>
+                    {link.wholeArea
+                      ? `Zobacz ${formatResultCount(link.count)} z obszaru`
+                      : `Zobacz ${formatResultCount(link.count)}`}
+                    <span className="sr-only"> dla wyzwania: {w.tekst}</span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           {selected.dane.length > 0 ? (
@@ -139,7 +148,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
               className="border-line flex flex-col gap-2.5 rounded-xl border bg-white p-6"
             >
               <span className="text-ink-muted text-[0.9375rem] font-bold">
-                Przykładowa osoba z Mapy Wyzwań (fikcyjna)
+                Przykładowa osoba z Mapy Wyzwań (postać fikcyjna)
               </span>
               <h3 id={`${p.id}-name`} className="text-[1.625rem] leading-tight font-bold">
                 {p.imie}
@@ -159,7 +168,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
                 href={`/match?description=${encodeURIComponent(p.opis ?? "")}`}
                 className="border-navy text-navy mt-1.5 inline-flex min-h-[50px] items-center justify-center rounded-[10px] border bg-white px-[22px] text-[1.0625rem] font-bold no-underline"
               >
-                Dopasuj dla: {p.imie}
+                Znajdź rozwiązanie dla: {p.imie}
               </Link>
             </aside>
           ))}

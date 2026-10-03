@@ -70,7 +70,22 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
       ? calls.find((c) => c.id === state.callId)
       : undefined;
 
-  if (calls.length === 0) return null;
+  if (calls.length === 0) {
+    return (
+      <section
+        aria-labelledby="application-heading"
+        className="border-border flex flex-col gap-2 border-t pt-6"
+      >
+        <h2 id="application-heading" className="text-[1.625rem] font-bold">
+          Wniosek pod nabór
+        </h2>
+        <p className="text-base">
+          Teraz nie ma otwartych naborów. Gdy ROPS ogłosi nabór, tutaj przygotujesz szkic wniosku
+          dopasowany do jego celu.
+        </p>
+      </section>
+    );
+  }
   return (
     <section
       aria-labelledby="application-heading"
@@ -78,10 +93,13 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
     >
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <h2 id="application-heading" className="text-[1.625rem] font-bold">
-          Wniosek pod nabór
+          Szkic wniosku o dofinansowanie
         </h2>
         <Badge variant="ai">Propozycja AI</Badge>
       </div>
+      <p className="text-base">
+        Asystent AI ułoży szkic wniosku z Twojej fiszki, dopasowany do celu wybranego naboru.
+      </p>
       <div className="flex flex-col gap-1.5">
         <label htmlFor={selectId} className="font-bold">
           Nabór
@@ -126,19 +144,27 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
         {state.status === "loading" ? (
           <p>Asystent AI pisze szkic wniosku. To trwa około 10–20 sekund.</p>
         ) : null}
-        {state.status === "error" ? <p className="text-danger font-bold">{state.message}</p> : null}
+        {state.status === "error" ? (
+          <div className="flex flex-col gap-1 text-base">
+            <p className="text-danger font-bold">{state.message}</p>
+            <p>
+              Wniosek możesz też napisać sam: opis, istota i odbiorcy z fiszki to dobry początek.
+              Wysłanie fiszki do ROPS działa bez asystenta.
+            </p>
+          </div>
+        ) : null}
         {state.status === "done" ? (
           <>
             {draftCall ? (
               <p className="bg-warning-soft rounded-[10px] px-4 py-3 text-base">
-                Ten szkic powstał dla naboru „{draftCall.name}”. Żeby dopasować go do wybranego
-                naboru, kliknij „Przygotuj szkic od nowa”. Twoje poprawki w obecnym szkicu wtedy
-                znikną.
+                Ten szkic dotyczy naboru „{draftCall.name}”, a wybrany jest inny nabór. Kliknij
+                „Przygotuj szkic od nowa”, żeby dopasować szkic do wybranego naboru. Twoje poprawki
+                w szkicu wtedy znikną.
               </p>
             ) : null}
             <p className="text-muted-foreground text-base">
-              To szkic do poprawienia. Fragmenty w nawiasach [ ] uzupełnij sam: AI nie podaje liczb
-              ani kwot.
+              To szkic do poprawienia. AI nie wpisuje liczb ani kwot. Uzupełnij je w miejscach w
+              nawiasach [ ].
             </p>
             {state.sections.map((section) => (
               <div key={section.key} className="flex flex-col gap-2">

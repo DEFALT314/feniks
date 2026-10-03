@@ -36,8 +36,8 @@ export default async function CallsPage({ searchParams }: PageProps<"/admin/call
             Nabory
           </h1>
           <p className="text-muted-foreground">
-            Włączone nabory widzą autorzy pomysłów w generatorze wniosków. Wyłączone są widoczne
-            tylko dla ROPS.
+            Włączony nabór widzą autorzy pomysłów, gdy przygotowują szkic wniosku o dofinansowanie.
+            Wyłączony widzi tylko ROPS.
           </p>
           {calls.length === 0 ? (
             <Card>

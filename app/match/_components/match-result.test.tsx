@@ -60,12 +60,38 @@ describe("MatchResult", () => {
     expect(html).toContain('href="/my/messages/new?topic=Potrzeba');
   });
 
+  it("leaves out the service card for users who can't prepare one", () => {
+    const html = renderToStaticMarkup(
+      <MatchResult result={ai} choosing={false} serviceCard={false} />,
+    );
+    expect(html).not.toContain("/my/middleman");
+    expect(html).toContain(
+      'href="/library/organizator-kompleksowej-opieki-w-miejscu-zamieszkania"',
+    );
+  });
+
   it("without a match explains why and stresses reporting the need", () => {
     const html = render(fixture.response_no_match as MatchResponse);
     expect(html).toContain("nie ma jeszcze innowacji o opiece nad małymi dziećmi");
     expect(html).toContain("Wygląda na to, że takiego rozwiązania jeszcze nie ma.");
     const link = html.match(/<a[^>]*href="\/my\/messages\/new[^"]*"[^>]*>/)?.[0] ?? "";
     expect(link).toContain("bg-primary");
+  });
+
+  it("calls a weak result with picks a partial fit, not 'no solution yet'", () => {
+    const html = render({ ...ai, match_quality: "weak" });
+    expect(html).toContain("Te innowacje pasują tylko częściowo.");
+    expect(html).not.toContain("takiego rozwiązania jeszcze nie ma");
+  });
+
+  it("puts the emergency numbers above the result when the description is an emergency", () => {
+    const segments = (text: string) => [{ text, highlight: false }];
+    const violence = render({ ...ai, description_segments: segments("sasiad bije zone") });
+    expect(violence.indexOf('href="tel:112"')).toBeLessThan(violence.indexOf("Wynik"));
+    expect(violence).toContain('href="tel:800120002"');
+    const suicide = render({ ...ai, description_segments: segments("syn nie chce żyć") });
+    expect(suicide).toContain('href="tel:800702222"');
+    expect(render(ai)).not.toContain("tel:112");
   });
 
   it("numbers the steps without a gap when there is no challenge", () => {

@@ -10,7 +10,7 @@ from `app/layout.tsx`.
 | `System.dc.html` | colors, typography, buttons, fields, tags | Makiety i system wizualny (P2) |
 | `Logo.dc.html` | logo (wariant C „Razem”), pliki w `design/logo/` | Komponenty UI i układ strony (P2) |
 | `Cover.dc.html` | okładka projektu (`design/okladka.png`) | Kompletne zgłoszenie (P1) |
-| `Naglowek.dc.html`, `Stopka.dc.html` | header, footer | Komponenty UI i układ strony (P2) |
+| `Naglowek.dc.html`, `NaglowekMenu.dc.html`, `Stopka.dc.html` | header (one-row menu, account menu, phone menu), footer | Komponenty UI i układ strony (P2) |
 | `Main.dc.html` | `/` | Strona główna (P2) |
 | `Logowanie.dc.html` | `/login`: e-mail i hasło | Strona główna i wygląd logowania (P2), logika P4 |
 | `Rejestracja.dc.html` | `/register`: e-mail i hasło | Strona główna i wygląd logowania (P2), logika P4 |
