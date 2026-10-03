@@ -6,6 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { roleLabel } from "@/components/ui/navigation";
 import { getCurrentUser, headerName } from "@/lib/auth";
+import { isPasswordChanged } from "@/lib/auth/password-changed";
 import { createClient } from "@/lib/supabase/server";
 import { DisplayNameForm } from "./_components/display-name-form";
 import { RoleRequestForm } from "./_components/role-request-form";
@@ -14,7 +15,8 @@ import { RequestableRole } from "./_lib/role-request";
 export const metadata = { title: "Twój profil – HubMI.pl" };
 
 // Layout per design/makiety/Profil.dc.html: account, role request (#6), password and sign-out.
-export default async function ProfilePage() {
+export default async function ProfilePage({ searchParams }: PageProps<"/my/profile">) {
+  const passwordChanged = isPasswordChanged(await searchParams);
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/my/profile");
 
@@ -35,6 +37,14 @@ export default async function ProfilePage() {
       className="mx-auto flex w-full max-w-[820px] flex-col gap-6 px-4 pt-10 pb-[72px] sm:px-10"
     >
       <h1 className="font-heading text-[2.5rem] font-bold tracking-tight">Twój profil</h1>
+      {passwordChanged ? (
+        <p
+          role="status"
+          className="bg-success-soft text-success border-success m-0 rounded-xl border-l-4 px-5 py-4 font-bold"
+        >
+          Hasło zostało zmienione. Przy następnym logowaniu wpisz nowe hasło.
+        </p>
+      ) : null}
 
       <Card
         role="region"

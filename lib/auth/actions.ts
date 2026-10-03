@@ -12,6 +12,7 @@ import {
   signUpWithPassword,
   type AuthFormState,
 } from "./login";
+import { PASSWORD_CHANGED_PATH } from "./password-changed";
 import { requestOrigin, safeNextPath } from "./validation";
 
 async function siteOrigin() {
@@ -56,7 +57,7 @@ export async function setNewPassword(
 ): Promise<AuthFormState> {
   const state = await changePassword(await createClient(), Object.fromEntries(formData));
   if (state) return state;
-  redirect("/");
+  redirect(PASSWORD_CHANGED_PATH);
 }
 
 export async function resendSignupEmail(
