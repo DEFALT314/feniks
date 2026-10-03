@@ -2,6 +2,8 @@
 // Uruchomienie: npx tsx scripts/seed/build_fixtures.ts
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { innowacjaZRekordu } from "../../app/biblioteka/_lib/z-plikow";
+import { skrot, szukaj } from "../../app/biblioteka/_lib/szukaj";
 
 const ROOT = join(__dirname, "..", "..");
 const DATA = join(ROOT, "data", "rops");
@@ -22,46 +24,9 @@ const kategorie = [...biblioteka.kategorie, { id: "inne", nazwa: "Inne", url: nu
   url: k.url,
 }));
 
-function karta(i: Rekord, spozaBiblioteki: boolean) {
-  return {
-    id: i.id,
-    nazwa: i.nazwa,
-    kategoria_id: i.kategoria,
-    etykieta: i.etykieta,
-    sprawdzona_przez_rops: !spozaBiblioteki && i.etykieta !== null,
-    opis_krotki: i.opis_krotki,
-    dla_kogo: i.dla_kogo,
-    slowa_kluczowe: i.slowa_kluczowe,
-    spoza_biblioteki: spozaBiblioteki,
-    opis_niepelny: spozaBiblioteki && i.pewnosc !== "pewne",
-    ma_film: Boolean(i.materialy.film),
-    problem: i.problem,
-    kto_moze_wdrozyc: i.kto_moze_wdrozyc,
-    czy_dziala: i.czy_dziala,
-    materialy: i.materialy,
-    url: i.url,
-    do_matchmakingu: !spozaBiblioteki || i.pewnosc === "pewne",
-    program: i.program ?? null,
-    zrodlo: i.zrodlo ?? null,
-    pewnosc: i.pewnosc ?? null,
-    opublikowana: true,
-    updated_at: "2026-10-03T12:00:00.000Z",
-  };
-}
-
-const skrot = (k: ReturnType<typeof karta>) => ({
-  id: k.id,
-  nazwa: k.nazwa,
-  kategoria_id: k.kategoria_id,
-  etykieta: k.etykieta,
-  sprawdzona_przez_rops: k.sprawdzona_przez_rops,
-  opis_krotki: k.opis_krotki,
-  dla_kogo: k.dla_kogo,
-  slowa_kluczowe: k.slowa_kluczowe,
-  spoza_biblioteki: k.spoza_biblioteki,
-  opis_niepelny: k.opis_niepelny,
-  ma_film: k.ma_film,
-});
+const karta = (i: Rekord, spozaBiblioteki: boolean) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ({ ...innowacjaZRekordu(i as any, spozaBiblioteki), updated_at: "2026-10-03T12:00:00.000Z" });
 
 // Przykłady: sprawdzona z filmem, zwykła z Biblioteki, spoza pełna i spoza z niepełnym opisem
 const zBiblioteki = biblioteka.innowacje as Rekord[];
@@ -98,15 +63,15 @@ const persony = [seniorzy.persona].flat().map((p: Rekord) => ({
 
 const fixtures = {
   kategorie,
-  lista_innowacji: {
-    wyniki: wybrane.map(skrot),
-    liczba: wybrane.length,
-    dostepne_filtry: {
+  lista_innowacji: szukaj(
+    wybrane,
+    { kategoria: [], sprawdzona: false, film: false, pdf: false, strona: 1 },
+    {
       kategorie,
       grupy: [...new Set(wybrane.flatMap((k) => k.dla_kogo))].sort(),
       etykiety: ["IWS", "Inkubator Dostępności", "MIIS", "MIWS"],
     },
-  },
+  ),
   innowacja: wybrane[0],
   innowacje: wybrane,
   obszary: (mapa.obszary as Rekord[]).map(obszar),

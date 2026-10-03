@@ -79,7 +79,43 @@
         ],
         "spoza_biblioteki": false,
         "opis_niepelny": false,
-        "ma_film": true
+        "ma_film": true,
+        "ma_pdf": true,
+        "kto_moze_wdrozyc": [
+          "placówki wsparcia dziennego seniorów",
+          "DPS",
+          "miejskie dzienne domy pomocy społecznej",
+          "warsztaty terapii zajęciowej",
+          "osoby indywidualne"
+        ]
+      },
+      {
+        "id": "straznik",
+        "nazwa": "Strażnik",
+        "kategoria_id": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+        "etykieta": "Inkubator Dostępności",
+        "sprawdzona_przez_rops": true,
+        "opis_krotki": "Aplikacja na telefon rozpoznająca dźwięk alarmów (np. czujnik czadu, alarm pożarowy) i ostrzegająca osobę niesłyszącą wibracją, latarką lub telefonem pod wskazany numer, z historią zdarzeń.",
+        "dla_kogo": ["osoby głuche", "osoby niedosłyszące", "osoby głuchoniewidome"],
+        "slowa_kluczowe": [
+          "głuchota",
+          "niesłyszący",
+          "niedosłyszący",
+          "alarm pożarowy",
+          "czujnik czadu",
+          "tlenek węgla",
+          "bezpieczeństwo",
+          "aplikacja",
+          "wibracje",
+          "powiadomienia",
+          "hotel",
+          "bezpieczeństwo w domu"
+        ],
+        "spoza_biblioteki": false,
+        "opis_niepelny": false,
+        "ma_film": true,
+        "ma_pdf": true,
+        "kto_moze_wdrozyc": ["hotele", "pensjonaty", "akademiki", "osoby prywatne"]
       },
       {
         "id": "terapeuta-przestrzeni",
@@ -107,37 +143,15 @@
         ],
         "spoza_biblioteki": false,
         "opis_niepelny": false,
-        "ma_film": false
-      },
-      {
-        "id": "straznik",
-        "nazwa": "Strażnik",
-        "kategoria_id": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
-        "etykieta": "Inkubator Dostępności",
-        "sprawdzona_przez_rops": true,
-        "opis_krotki": "Aplikacja na telefon rozpoznająca dźwięk alarmów (np. czujnik czadu, alarm pożarowy) i ostrzegająca osobę niesłyszącą wibracją, latarką lub telefonem pod wskazany numer, z historią zdarzeń.",
-        "dla_kogo": [
-          "osoby głuche",
-          "osoby niedosłyszące",
-          "osoby głuchoniewidome"
-        ],
-        "slowa_kluczowe": [
-          "głuchota",
-          "niesłyszący",
-          "niedosłyszący",
-          "alarm pożarowy",
-          "czujnik czadu",
-          "tlenek węgla",
-          "bezpieczeństwo",
-          "aplikacja",
-          "wibracje",
-          "powiadomienia",
-          "hotel",
-          "bezpieczeństwo w domu"
-        ],
-        "spoza_biblioteki": false,
-        "opis_niepelny": false,
-        "ma_film": true
+        "ma_film": false,
+        "ma_pdf": false,
+        "kto_moze_wdrozyc": [
+          "OPS",
+          "miejskie dzienne domy pomocy społecznej",
+          "DPS",
+          "centra aktywności seniorów",
+          "NGO"
+        ]
       },
       {
         "id": "innowacyjna-terapia-zajeciowa-w-domu-osoby-starszej",
@@ -166,7 +180,9 @@
         ],
         "spoza_biblioteki": true,
         "opis_niepelny": false,
-        "ma_film": false
+        "ma_film": false,
+        "ma_pdf": true,
+        "kto_moze_wdrozyc": ["ośrodki pomocy społecznej", "organizacje pozarządowe"]
       },
       {
         "id": "agrotreningi-metody-pracy-z-osobami-starszymi-na-obszarach-wiejskich",
@@ -175,9 +191,7 @@
         "etykieta": "MIIS",
         "sprawdzona_przez_rops": false,
         "opis_krotki": "Zestaw metod pracy z osobami starszymi mieszkającymi na wsi, przetestowany w MIIS. Dostępny spis podaje tylko tytuł, typ (usługa) i autora; szczegółów metod brak.",
-        "dla_kogo": [
-          "osoby starsze mieszkające na obszarach wiejskich"
-        ],
+        "dla_kogo": ["osoby starsze mieszkające na obszarach wiejskich"],
         "slowa_kluczowe": [
           "senior",
           "wieś",
@@ -192,10 +206,14 @@
         ],
         "spoza_biblioteki": true,
         "opis_niepelny": true,
-        "ma_film": false
+        "ma_film": false,
+        "ma_pdf": false,
+        "kto_moze_wdrozyc": []
       }
     ],
     "liczba": 5,
+    "strona": 1,
+    "liczba_stron": 1,
     "dostepne_filtry": {
       "kategorie": [
         {
@@ -261,12 +279,16 @@
         "seniorzy mieszkający samodzielnie lub z rodziną",
         "seniorzy zagrożeni izolacją społeczną"
       ],
-      "etykiety": [
-        "IWS",
-        "Inkubator Dostępności",
-        "MIIS",
-        "MIWS"
-      ]
+      "etykiety": ["IWS", "Inkubator Dostępności", "MIIS", "MIWS"]
+    },
+    "liczniki": {
+      "kategorie": {
+        "dla-seniorow": 4,
+        "dla-osob-z-niepelnosprawnoscia-sensoryczna": 1
+      },
+      "sprawdzona": 2,
+      "film": 2,
+      "pdf": 3
     }
   },
   "innowacja": {
@@ -296,7 +318,7 @@
     "spoza_biblioteki": false,
     "opis_niepelny": false,
     "ma_film": true,
-    "problem": "Coraz więcej seniorów z otępieniem, a mało narzędzi rehabilitacyjnych przeznaczonych dla dorosłych.",
+    "ma_pdf": true,
     "kto_moze_wdrozyc": [
       "placówki wsparcia dziennego seniorów",
       "DPS",
@@ -304,6 +326,7 @@
       "warsztaty terapii zajęciowej",
       "osoby indywidualne"
     ],
+    "problem": "Coraz więcej seniorów z otępieniem, a mało narzędzi rehabilitacyjnych przeznaczonych dla dorosłych.",
     "czy_dziala": "Test potwierdził poprawę pamięci proceduralnej, małej motoryki, mowy oraz funkcjonowania społecznego.",
     "materialy": {
       "opis_pdf": "https://rops.krakow.pl/mpliki/IS/BIBLIOTEKA_INNOWACJI_SPOECZNYCH/ROPS_Folder_IN_BaWita_v15_www.pdf",
@@ -348,7 +371,7 @@
       "spoza_biblioteki": false,
       "opis_niepelny": false,
       "ma_film": true,
-      "problem": "Coraz więcej seniorów z otępieniem, a mało narzędzi rehabilitacyjnych przeznaczonych dla dorosłych.",
+      "ma_pdf": true,
       "kto_moze_wdrozyc": [
         "placówki wsparcia dziennego seniorów",
         "DPS",
@@ -356,6 +379,7 @@
         "warsztaty terapii zajęciowej",
         "osoby indywidualne"
       ],
+      "problem": "Coraz więcej seniorów z otępieniem, a mało narzędzi rehabilitacyjnych przeznaczonych dla dorosłych.",
       "czy_dziala": "Test potwierdził poprawę pamięci proceduralnej, małej motoryki, mowy oraz funkcjonowania społecznego.",
       "materialy": {
         "opis_pdf": "https://rops.krakow.pl/mpliki/IS/BIBLIOTEKA_INNOWACJI_SPOECZNYCH/ROPS_Folder_IN_BaWita_v15_www.pdf",
@@ -399,7 +423,7 @@
       "spoza_biblioteki": false,
       "opis_niepelny": false,
       "ma_film": false,
-      "problem": "Senior czuje, że nie radzi sobie sam w domu, co obniża jakość życia i zwiększa ryzyko trafienia do placówki całodobowej.",
+      "ma_pdf": false,
       "kto_moze_wdrozyc": [
         "OPS",
         "miejskie dzienne domy pomocy społecznej",
@@ -407,6 +431,7 @@
         "centra aktywności seniorów",
         "NGO"
       ],
+      "problem": "Senior czuje, że nie radzi sobie sam w domu, co obniża jakość życia i zwiększa ryzyko trafienia do placówki całodobowej.",
       "czy_dziala": "W teście wzrosła samodzielność seniorów, zwłaszcza samotnych; zmiany były tanie, ale potrzebne jest wsparcie psychologiczne.",
       "materialy": {
         "opis_pdf": null,
@@ -430,11 +455,7 @@
       "etykieta": "Inkubator Dostępności",
       "sprawdzona_przez_rops": true,
       "opis_krotki": "Aplikacja na telefon rozpoznająca dźwięk alarmów (np. czujnik czadu, alarm pożarowy) i ostrzegająca osobę niesłyszącą wibracją, latarką lub telefonem pod wskazany numer, z historią zdarzeń.",
-      "dla_kogo": [
-        "osoby głuche",
-        "osoby niedosłyszące",
-        "osoby głuchoniewidome"
-      ],
+      "dla_kogo": ["osoby głuche", "osoby niedosłyszące", "osoby głuchoniewidome"],
       "slowa_kluczowe": [
         "głuchota",
         "niesłyszący",
@@ -452,13 +473,9 @@
       "spoza_biblioteki": false,
       "opis_niepelny": false,
       "ma_film": true,
+      "ma_pdf": true,
+      "kto_moze_wdrozyc": ["hotele", "pensjonaty", "akademiki", "osoby prywatne"],
       "problem": "Osoby głuche i niedosłyszące nie słyszą sygnałów alarmowych i są narażone na niebezpieczeństwo.",
-      "kto_moze_wdrozyc": [
-        "hotele",
-        "pensjonaty",
-        "akademiki",
-        "osoby prywatne"
-      ],
       "czy_dziala": "Aplikacja skutecznie wykrywa sygnał alarmowy i powiadamia użytkownika w dostępny dla niego sposób, także budząc go.",
       "materialy": {
         "opis_pdf": "https://rops.krakow.pl/mpliki/IS/BIBLIOTEKA_INNOWACJI_SPOECZNYCH/Straznik.pdf",
@@ -503,11 +520,9 @@
       "spoza_biblioteki": true,
       "opis_niepelny": false,
       "ma_film": false,
+      "ma_pdf": true,
+      "kto_moze_wdrozyc": ["ośrodki pomocy społecznej", "organizacje pozarządowe"],
       "problem": "Seniorzy, którzy nie wychodzą z domu, nie mają dostępu do zajęć aktywizujących; zostaje im opieka lub placówka.",
-      "kto_moze_wdrozyc": [
-        "ośrodki pomocy społecznej",
-        "organizacje pozarządowe"
-      ],
       "czy_dziala": "Półroczny test pokazał poprawę samodzielności i samopoczucia uczestników oraz mniejszą potrzebę opieki instytucjonalnej.",
       "materialy": {
         "opis_pdf": "https://cdn.innowacjespoleczne.pl/Attachments/i002/123/MODEL%20Innowacyjna%20terapia%20zaj%C4%99ciowa%20w%20domu%20osoby%20starszej.pdf",
@@ -531,9 +546,7 @@
       "etykieta": "MIIS",
       "sprawdzona_przez_rops": false,
       "opis_krotki": "Zestaw metod pracy z osobami starszymi mieszkającymi na wsi, przetestowany w MIIS. Dostępny spis podaje tylko tytuł, typ (usługa) i autora; szczegółów metod brak.",
-      "dla_kogo": [
-        "osoby starsze mieszkające na obszarach wiejskich"
-      ],
+      "dla_kogo": ["osoby starsze mieszkające na obszarach wiejskich"],
       "slowa_kluczowe": [
         "senior",
         "wieś",
@@ -549,8 +562,9 @@
       "spoza_biblioteki": true,
       "opis_niepelny": true,
       "ma_film": false,
-      "problem": "Seniorzy na wsi mają mniej możliwości aktywizacji i wsparcia niż w mieście (wniosek z tytułu innowacji).",
+      "ma_pdf": false,
       "kto_moze_wdrozyc": [],
+      "problem": "Seniorzy na wsi mają mniej możliwości aktywizacji i wsparcia niż w mieście (wniosek z tytułu innowacji).",
       "czy_dziala": null,
       "materialy": {
         "opis_pdf": null,
@@ -592,9 +606,7 @@
         "deinstytucjonalizacja",
         "PCPR"
       ],
-      "kategorie_biblioteki": [
-        "dla-dzieci-mlodziezy-i-rodziny"
-      ],
+      "kategorie_biblioteki": ["dla-dzieci-mlodziezy-i-rodziny"],
       "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
     },
     {
@@ -620,9 +632,7 @@
         "eksmisja",
         "streetworking"
       ],
-      "kategorie_biblioteki": [
-        "dla-osob-w-kryzysie-bezdomnosci"
-      ],
+      "kategorie_biblioteki": ["dla-osob-w-kryzysie-bezdomnosci"],
       "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
     },
     {
@@ -683,10 +693,7 @@
         "renta",
         "wieś"
       ],
-      "kategorie_biblioteki": [
-        "dla-rynku-pracy",
-        "dla-osob-w-kryzysie-bezdomnosci"
-      ],
+      "kategorie_biblioteki": ["dla-rynku-pracy", "dla-osob-w-kryzysie-bezdomnosci"],
       "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
     },
     {
@@ -710,9 +717,7 @@
         "szkoła",
         "uznawanie kwalifikacji"
       ],
-      "kategorie_biblioteki": [
-        "dla-cudzoziemcow"
-      ],
+      "kategorie_biblioteki": ["dla-cudzoziemcow"],
       "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
     },
     {
@@ -739,9 +744,7 @@
         "dostęp do lekarza",
         "telemedycyna"
       ],
-      "kategorie_biblioteki": [
-        "dla-zdrowia-i-medycyny"
-      ],
+      "kategorie_biblioteki": ["dla-zdrowia-i-medycyny"],
       "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
     },
     {
@@ -769,10 +772,7 @@
         "CZP",
         "stygmatyzacja"
       ],
-      "kategorie_biblioteki": [
-        "dla-zdrowia-i-medycyny",
-        "dla-dzieci-mlodziezy-i-rodziny"
-      ],
+      "kategorie_biblioteki": ["dla-zdrowia-i-medycyny", "dla-dzieci-mlodziezy-i-rodziny"],
       "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
     },
     {
@@ -800,9 +800,7 @@
         "DDP",
         "klub seniora"
       ],
-      "kategorie_biblioteki": [
-        "dla-seniorow"
-      ],
+      "kategorie_biblioteki": ["dla-seniorow"],
       "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf"
     }
   ],
@@ -831,9 +829,7 @@
       "DDP",
       "klub seniora"
     ],
-    "kategorie_biblioteki": [
-      "dla-seniorow"
-    ],
+    "kategorie_biblioteki": ["dla-seniorow"],
     "zrodlo_url": "https://rops.krakow.pl/mpliki/IS/IWS_20/za._nr_2._Mapa_Wyzwa_Spoecznych.pdf",
     "wyzwania": [
       {
@@ -878,16 +874,8 @@
           "poczucie wartości",
           "świadome dbanie o zdrowie i leki"
         ],
-        "wyzwania": [
-          "samotność",
-          "nadużywanie leków i suplementów",
-          "życie po stracie męża"
-        ],
-        "motywacje": [
-          "radość z prostych rzeczy",
-          "organizacja dnia",
-          "wyjście do ludzi"
-        ]
+        "wyzwania": ["samotność", "nadużywanie leków i suplementów", "życie po stracie męża"],
+        "motywacje": ["radość z prostych rzeczy", "organizacja dnia", "wyjście do ludzi"]
       }
     ],
     "innowacje": [
@@ -917,7 +905,15 @@
         ],
         "spoza_biblioteki": false,
         "opis_niepelny": false,
-        "ma_film": true
+        "ma_film": true,
+        "ma_pdf": true,
+        "kto_moze_wdrozyc": [
+          "placówki wsparcia dziennego seniorów",
+          "DPS",
+          "miejskie dzienne domy pomocy społecznej",
+          "warsztaty terapii zajęciowej",
+          "osoby indywidualne"
+        ]
       },
       {
         "id": "terapeuta-przestrzeni",
@@ -945,7 +941,15 @@
         ],
         "spoza_biblioteki": false,
         "opis_niepelny": false,
-        "ma_film": false
+        "ma_film": false,
+        "ma_pdf": false,
+        "kto_moze_wdrozyc": [
+          "OPS",
+          "miejskie dzienne domy pomocy społecznej",
+          "DPS",
+          "centra aktywności seniorów",
+          "NGO"
+        ]
       },
       {
         "id": "innowacyjna-terapia-zajeciowa-w-domu-osoby-starszej",
@@ -974,7 +978,9 @@
         ],
         "spoza_biblioteki": true,
         "opis_niepelny": false,
-        "ma_film": false
+        "ma_film": false,
+        "ma_pdf": true,
+        "kto_moze_wdrozyc": ["ośrodki pomocy społecznej", "organizacje pozarządowe"]
       },
       {
         "id": "agrotreningi-metody-pracy-z-osobami-starszymi-na-obszarach-wiejskich",
@@ -983,9 +989,7 @@
         "etykieta": "MIIS",
         "sprawdzona_przez_rops": false,
         "opis_krotki": "Zestaw metod pracy z osobami starszymi mieszkającymi na wsi, przetestowany w MIIS. Dostępny spis podaje tylko tytuł, typ (usługa) i autora; szczegółów metod brak.",
-        "dla_kogo": [
-          "osoby starsze mieszkające na obszarach wiejskich"
-        ],
+        "dla_kogo": ["osoby starsze mieszkające na obszarach wiejskich"],
         "slowa_kluczowe": [
           "senior",
           "wieś",
@@ -1000,7 +1004,9 @@
         ],
         "spoza_biblioteki": true,
         "opis_niepelny": true,
-        "ma_film": false
+        "ma_film": false,
+        "ma_pdf": false,
+        "kto_moze_wdrozyc": []
       }
     ]
   },
@@ -1011,9 +1017,7 @@
       "rok": 2026,
       "tytul": "Wyzwania i potrzeby sektora opiekuńczego w Małopolsce. Perspektywa opiekunów oraz podmiotów realizujących opiekę",
       "opis": null,
-      "tagi": [
-        "seniorzy"
-      ],
+      "tagi": ["seniorzy"],
       "url": "https://rops.krakow.pl/pliki-do-pobrania/wpis,2026-i-wyzwania-i-potrzeby-sektora-opiekunczego-w-malopolsce-perspektywa-opiekunow-oraz-podmiotow-realizujacych-opieke,1479"
     },
     {
@@ -1031,10 +1035,7 @@
       "rok": 2025,
       "tytul": "Mieszkania wspomagane i treningowe w Małopolsce jako priorytet w rozwoju usług społecznych i deinstytucjonalizacji",
       "opis": null,
-      "tagi": [
-        "deinstytucjonalizacja",
-        "usługi społeczne"
-      ],
+      "tagi": ["deinstytucjonalizacja", "usługi społeczne"],
       "url": "https://rops.krakow.pl/pliki-do-pobrania/wpis,2025-mieszkania-wspomagane-i-treningowe-w-malopolsce-jako-priorytet-w-rozwoju-uslug-spolecznych-i-deinstytucjonalizacji,1310"
     },
     {

@@ -38,13 +38,14 @@ export const InnowacjaSkrot = z.object({
   spoza_biblioteki: z.boolean(),
   opis_niepelny: z.boolean(), // spoza Biblioteki i pewnosc = "prawdopodobne" → dopisek „opis niepełny”
   ma_film: z.boolean(),
+  ma_pdf: z.boolean(),
+  kto_moze_wdrozyc: z.array(z.string()),
 });
 export type InnowacjaSkrot = z.infer<typeof InnowacjaSkrot>;
 
 // Karta /biblioteka/[id]. autor_instytucja celowo pominięte do zgody ROPS.
 export const Innowacja = InnowacjaSkrot.extend({
   problem: z.string().nullable(),
-  kto_moze_wdrozyc: z.array(z.string()),
   czy_dziala: z.string().nullable(),
   materialy: Materialy,
   url: z.string(), // „Zobacz pełną kartę w ROPS”
@@ -60,25 +61,41 @@ export type Innowacja = z.infer<typeof Innowacja>;
 // Flaga z adresu strony: "1" albo "true" = włączona (z.coerce.boolean() zamieniłby "false" na true)
 const flaga = z.preprocess((v) => v === true || v === "1" || v === "true", z.boolean());
 
+// Parametr, który może wystąpić w adresie kilka razy (?kategoria=a&kategoria=b)
+const lista = z.preprocess(
+  (v) => (v === undefined || v === "" ? [] : [v].flat()),
+  z.array(z.string()),
+);
+
 // Filtry listy, trzymane w adresie strony (searchParams)
 export const FiltryBiblioteki = z.object({
   q: z.string().trim().max(200).optional(), // nazwa i słowa kluczowe
-  kategoria: z.string().optional(),
+  kategoria: lista,
   grupa: z.string().optional(), // jedna z wartości dla_kogo
   etykieta: z.string().optional(),
   sprawdzona: flaga,
-  spoza: flaga, // pokaż także rekordy spoza Biblioteki online
-  strona: z.coerce.number().int().min(1).default(1),
+  film: flaga,
+  pdf: flaga,
+  strona: z.coerce.number().int().min(1).catch(1),
 });
 export type FiltryBiblioteki = z.infer<typeof FiltryBiblioteki>;
 
 export const ListaInnowacji = z.object({
   wyniki: z.array(InnowacjaSkrot),
   liczba: z.number().int(), // licznik wyników po filtrach
+  strona: z.number().int(),
+  liczba_stron: z.number().int(),
   dostepne_filtry: z.object({
     kategorie: z.array(Kategoria),
     grupy: z.array(z.string()),
     etykiety: z.array(z.string()),
+  }),
+  // Liczniki przy filtrach (ile pozycji pasuje do wyszukiwania w danej kategorii itd.)
+  liczniki: z.object({
+    kategorie: z.record(z.string(), z.number().int()),
+    sprawdzona: z.number().int(),
+    film: z.number().int(),
+    pdf: z.number().int(),
   }),
 });
 export type ListaInnowacji = z.infer<typeof ListaInnowacji>;
