@@ -30,6 +30,8 @@ describe("MatchResult", () => {
     expect(html).not.toContain("Propozycja AI");
     expect(html).not.toContain("Dlaczego pasuje");
     expect(html).toContain('role="status"');
+    expect(html).toContain("AI wybiera najlepiej pasujące innowacje");
+    expect(html).toContain("Wstępne wyniki wyszukiwania");
   });
 
   it("links to the innovation card, the service card and the challenge area", () => {
