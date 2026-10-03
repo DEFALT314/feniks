@@ -142,15 +142,18 @@ function TestCard({ test, onRate }: { test: TesterTest; onRate: () => void }) {
             <Button ref={firstAction} type="button" onClick={onRate} aria-describedby={headingId}>
               {test.moja_ocena ? "Zmień ocenę" : "Oceń test"}
             </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              disabled={pending}
-              aria-describedby={headingId}
-              onClick={() => run(() => withdrawFromTest(test.id), "Wypisano Cię z testu.")}
-            >
-              {pending ? "Wypisuję…" : "Wypisz się"}
-            </Button>
+            {/* After rating, the test took place: withdrawing would orphan the rating */}
+            {test.moja_ocena ? null : (
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={pending}
+                aria-describedby={headingId}
+                onClick={() => run(() => withdrawFromTest(test.id), "Wypisano Cię z testu.")}
+              >
+                {pending ? "Wypisuję…" : "Wypisz się"}
+              </Button>
+            )}
           </>
         ) : (
           <Button
