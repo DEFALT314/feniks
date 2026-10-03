@@ -76,16 +76,44 @@ export const RoleDecisionInput = z.object({
 });
 export type RoleDecisionInput = z.infer<typeof RoleDecisionInput>;
 
-// Calls for proposals (grants): table public.calls
+// Calls for proposals (grants): table public.calls (#10). The id is a text slug.
 export const Call = z.object({
-  id: z.uuid(),
+  id: z.string(),
   nazwa: z.string(),
-  url: z.url(),
+  url: z.url().nullable(),
   termin_od: z.iso.date().nullable(),
   termin_do: z.iso.date().nullable(),
   obszary: z.array(z.string()), // challenge area ids from the Challenge map
+  organizator: z.string().optional(),
+  cel: z.string().nullable().optional(), // what the call funds, plain Polish
+  opublikowany: z.boolean().optional(), // "włączanie naborów": only published calls are public
+  demo: z.boolean().optional(),
 });
 export type Call = z.infer<typeof Call>;
+
+// Form in /admin/calls (messages shown to ROPS staff, in Polish).
+export const CallInput = z
+  .object({
+    id: z
+      .string()
+      .trim()
+      .regex(/^[a-z0-9][a-z0-9-]{2,80}$/, {
+        message: "Identyfikator: małe litery, cyfry i myślniki.",
+      }),
+    nazwa: z.string().trim().min(3, { message: "Wpisz nazwę naboru." }).max(200),
+    organizator: z.string().trim().min(2).max(200),
+    cel: z.string().trim().max(1000).optional(),
+    url: z.url({ message: "Wpisz pełny adres strony, np. https://…" }).optional(),
+    termin_od: z.iso.date().optional(),
+    termin_do: z.iso.date().optional(),
+    obszary: z.array(z.string()).default([]),
+    opublikowany: z.boolean().default(false),
+  })
+  .refine((c) => !c.termin_od || !c.termin_do || c.termin_od <= c.termin_do, {
+    message: "Koniec naboru nie może być przed początkiem.",
+    path: ["termin_do"],
+  });
+export type CallInput = z.infer<typeof CallInput>;
 
 export const AdminFixtures = z.object({
   kolejka: z.array(IdeaQueueItem),
