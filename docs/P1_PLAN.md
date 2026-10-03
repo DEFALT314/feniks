@@ -18,7 +18,7 @@ Zasada: **każde zadanie zaczynamy od `git pull`** (na gałęzi: `git pull` na m
 
 ## Etap 0 – teraz, bez szkieletu (do ok. 16:00)
 ✅ Zrobione: migracja `202610031800_zasobnik_tabele.sql` + `scripts/seed/build_seed.ts` → `seed.sql` (158 innowacji, 124 do Matchmakingu, 27 sprawdzonych, 8 obszarów, 48 wyzwań, 9 person, 57 zasobów; test na Postgres 16 w Dockerze, seed 2× bez błędów).
-1. **Pytania do mentora ROPS** (rozmowa na żywo, odpowiedzi do docu z planem):
+1. **Pytania do mentora ROPS** → `docs/PYTANIA_MENTOR_ROPS.md` (rozmowa na żywo, odpowiedzi do docu z planem):
    skąd „200+” i czy dostaniemy pełne karty MIIS i IWS 2.0; zgoda na treść Biblioteki i kanwę INNO AGH;
    czy pokazywać instytucje-autorów; najważniejsze liczby z raportu o sektorze opiekuńczym (2026); nazwa produktu.
 2. **Migracja** `supabase/migrations/<data>_zasobnik_tabele.sql`:
@@ -34,7 +34,7 @@ Zasada: **każde zadanie zaczynamy od `git pull`** (na gałęzi: `git pull` na m
 4. Commity prosto na `main` (decyzja P1), zawsze po `git pull`.
 
 ## Etap 1 – po szkielecie P4 (ok. 16:00–19:00)
-1. `lib/contracts/zasobnik.ts` + fixtures **do 16:30**: lista innowacji z filtrami, karta, obszary i wyzwania, zasoby.
+1. ✅ `lib/contracts/zasobnik.ts` + `lib/contracts/fixtures/zasobnik.json` (generuje `npx tsx scripts/seed/build_fixtures.ts`), sprawdzone zod i `tsc --strict`.
 2. `/biblioteka`: filtry (kategoria, grupa docelowa, program/etykieta, „Sprawdzona przez ROPS”), wyszukiwanie po nazwie
    i słowach kluczowych, licznik wyników, filtry w URL (searchParams, Server Component), dopisek „opis niepełny” dla rekordów spoza.
 3. `/biblioteka/[id]`: opis, problem, dla kogo, kto może wdrożyć, czy działa, materiały, „Zobacz pełną kartę w ROPS”,
