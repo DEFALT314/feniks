@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./button";
+import { Logo } from "./logo";
 import { navItemsFor, notificationsLabel, roleLabel, type CurrentUser } from "./navigation";
 import { SiteNav } from "./site-nav";
 import { TextSizeToggle } from "./text-size-toggle";
@@ -30,15 +31,9 @@ export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: 
         <Link
           href="/"
           aria-label="HubMI – strona główna"
-          className="text-ink hover:text-ink flex items-center gap-2.5 py-2.5 no-underline"
+          className="text-ink hover:text-ink py-2.5 no-underline"
         >
           <Logo />
-          <span className="flex flex-col leading-[1.05]">
-            <span className="font-heading text-[1.4375rem] font-bold tracking-tight">HubMI</span>
-            <span className="text-muted-foreground text-[0.8125rem]">
-              innowacje społeczne Małopolski
-            </span>
-          </span>
         </Link>
         <SiteNav items={navItemsFor(user?.role ?? null)} />
         <div className="flex items-center gap-2.5">
@@ -73,21 +68,5 @@ export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: 
         </div>
       </div>
     </header>
-  );
-}
-
-function Logo() {
-  return (
-    <svg width="40" height="18" viewBox="0 0 40 18" aria-hidden="true">
-      <path
-        d="M5 9 C 12 2, 16 2, 20 9 S 28 16, 35 9"
-        fill="none"
-        stroke="#8A93A3"
-        strokeWidth="1.5"
-      />
-      <circle cx="5" cy="9" r="4.5" fill="var(--navy)" />
-      <circle cx="20" cy="9" r="4.5" fill="var(--brick)" />
-      <circle cx="35" cy="9" r="4.5" fill="var(--success)" />
-    </svg>
   );
 }

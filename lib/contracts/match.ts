@@ -1,5 +1,5 @@
 // Contract for module I, Matchmaking (P3): POST /api/match.
-// The /dopasuj page (P3) and "Coś podobnego już działa" in the idea creator (P2) call it.
+// The /match page (P3) and "Coś podobnego już działa" in the idea creator (P2) call it.
 // Sample data: lib/contracts/fixtures/match.json. After 17:00, changes only by adding fields.
 //
 // Privacy: the description is not stored (the page says so); match_queries keeps only the area
