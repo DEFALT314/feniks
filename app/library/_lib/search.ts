@@ -96,16 +96,16 @@ export function toSummary(i: Innovation): InnovationSummary {
   };
 }
 
-type FilterKey = "kategoria" | "grupa" | "etykieta" | "sprawdzona" | "film" | "pdf";
+type FilterKey = "category" | "group" | "label" | "verified" | "video" | "pdf";
 
 // Whether the innovation passes the filters; `skip` lets us compute the count next to a given filter
 function passesFilters(i: Innovation, f: LibraryFilters, skip?: FilterKey): boolean {
-  if (skip !== "kategoria" && f.kategoria.length > 0 && !f.kategoria.includes(i.kategoria_id))
+  if (skip !== "category" && f.category.length > 0 && !f.category.includes(i.kategoria_id))
     return false;
-  if (skip !== "grupa" && f.grupa && !i.dla_kogo.includes(f.grupa)) return false;
-  if (skip !== "etykieta" && f.etykieta && i.etykieta !== f.etykieta) return false;
-  if (skip !== "sprawdzona" && f.sprawdzona && !i.sprawdzona_przez_rops) return false;
-  if (skip !== "film" && f.film && !i.ma_film) return false;
+  if (skip !== "group" && f.group && !i.dla_kogo.includes(f.group)) return false;
+  if (skip !== "label" && f.label && i.etykieta !== f.label) return false;
+  if (skip !== "verified" && f.verified && !i.sprawdzona_przez_rops) return false;
+  if (skip !== "video" && f.video && !i.ma_film) return false;
   if (skip !== "pdf" && f.pdf && !i.ma_pdf) return false;
   return true;
 }
@@ -124,11 +124,11 @@ export function search(
 
   const counts: InnovationList["liczniki"] = { kategorie: {}, sprawdzona: 0, film: 0, pdf: 0 };
   for (const { i } of matching) {
-    if (passesFilters(i, filters, "kategoria")) {
+    if (passesFilters(i, filters, "category")) {
       counts.kategorie[i.kategoria_id] = (counts.kategorie[i.kategoria_id] ?? 0) + 1;
     }
-    if (i.sprawdzona_przez_rops && passesFilters(i, filters, "sprawdzona")) counts.sprawdzona += 1;
-    if (i.ma_film && passesFilters(i, filters, "film")) counts.film += 1;
+    if (i.sprawdzona_przez_rops && passesFilters(i, filters, "verified")) counts.sprawdzona += 1;
+    if (i.ma_film && passesFilters(i, filters, "video")) counts.film += 1;
     if (i.ma_pdf && passesFilters(i, filters, "pdf")) counts.pdf += 1;
   }
 
@@ -147,7 +147,7 @@ export function search(
     .map(({ i }) => i);
 
   const pageCount = Math.max(1, Math.ceil(results.length / pageSize));
-  const page = Math.min(filters.strona, pageCount);
+  const page = Math.min(filters.page, pageCount);
   return {
     wyniki: results.slice((page - 1) * pageSize, page * pageSize).map(toSummary),
     liczba: results.length,

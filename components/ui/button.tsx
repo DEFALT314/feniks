@@ -21,7 +21,7 @@ const buttonVariants = cva(
           "border-input bg-white text-ink hover:border-navy hover:text-ink aria-pressed:border-navy aria-pressed:bg-navy aria-pressed:text-white",
       },
       size: {
-        default: "min-h-[50px] px-[22px] text-[17px]",
+        default: "min-h-[50px] px-[22px] text-[1.0625rem]",
         sm: "min-h-11 px-4 text-base",
         icon: "size-11",
       },

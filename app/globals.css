@@ -27,6 +27,8 @@
   --color-neutral-soft: var(--neutral-soft);
   --color-highlight: var(--highlight);
   --color-field-border: var(--field-border);
+  --color-line: var(--line);
+  --color-surface: var(--surface);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -120,12 +122,35 @@
   --sidebar-ring: var(--brick);
 }
 
-/* "A+" mode (header toggle): larger text and higher contrast for low-vision users */
+/* "A+" mode (header toggle) for low-vision users: larger text, black secondary text, white page
+   background, dark borders, thicker link underlines and focus outline. Works on every page that uses
+   the theme tokens (no hex colors in components). */
 html[data-a11y-plus] {
-  font-size: 112.5%;
-  --ink-muted: #151a23;
-  --line: #6b7487;
-  --field-border: #151a23;
+  font-size: 125%;
+  --ink: #000000;
+  --ink-muted: #000000;
+  --surface: #ffffff;
+  --line: #151a23;
+  --field-border: #000000;
+  --navy: #142a6b;
+  --navy-strong: #0b1a47;
+  --success: #12472f;
+  --warning: #5c3200;
+  --danger: #8a1a12;
+}
+
+html[data-a11y-plus] a {
+  text-decoration-thickness: 2px;
+}
+
+html[data-a11y-plus] :focus-visible {
+  outline-width: 4px;
+}
+
+/* Dark enough to read (7:1 on white) but still distinguishable from typed text */
+html[data-a11y-plus] ::placeholder {
+  color: #4b5565;
+  opacity: 1;
 }
 
 @layer base {

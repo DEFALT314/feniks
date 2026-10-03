@@ -2,8 +2,8 @@
 // Run: npx tsx scripts/seed/build_fixtures.ts
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { innovationFromRecord } from "../../app/biblioteka/_lib/from-files";
-import { toSummary, search } from "../../app/biblioteka/_lib/search";
+import { innovationFromRecord } from "../../app/library/_lib/from-files";
+import { toSummary, search } from "../../app/library/_lib/search";
 
 const ROOT = join(__dirname, "..", "..");
 const DATA = join(ROOT, "data", "rops");
@@ -65,7 +65,7 @@ const fixtures = {
   categories,
   innovation_list: search(
     selected,
-    { kategoria: [], sprawdzona: false, film: false, pdf: false, strona: 1 },
+    { category: [], verified: false, video: false, pdf: false, page: 1 },
     {
       kategorie: categories,
       grupy: [...new Set(selected.flatMap((k) => k.dla_kogo))].sort(),

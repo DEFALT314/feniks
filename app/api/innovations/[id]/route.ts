@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { editInnovation, type EditClient } from "./edit";
 
-// PATCH /api/zasoby/innowacje/[id]: editing a card from the ROPS panel (contract: InnovationEdit → Innovation)
-export async function PATCH(request: Request, ctx: RouteContext<"/api/zasoby/innowacje/[id]">) {
+// PATCH /api/innovations/[id]: editing a card from the ROPS panel (contract: InnovationEdit → Innovation)
+export async function PATCH(request: Request, ctx: RouteContext<"/api/innovations/[id]">) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.json({ error: "Baza danych nie jest skonfigurowana." }, { status: 503 });
   }

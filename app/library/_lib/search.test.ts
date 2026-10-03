@@ -52,7 +52,7 @@ describe("search", () => {
   it("filters by several categories at once", () => {
     const result = search(
       catalog,
-      filters({ kategoria: ["dla-seniorow", "dla-rynku-pracy"] }),
+      filters({ category: ["dla-seniorow", "dla-rynku-pracy"] }),
       available,
       1000,
     );
@@ -61,12 +61,12 @@ describe("search", () => {
     );
   });
 
-  it("sprawdzona=1 leaves the 27 innovations selected for dissemination", () => {
-    expect(search(catalog, filters({ sprawdzona: "1" }), available).liczba).toBe(27);
+  it("verified=1 leaves the 27 innovations selected for dissemination", () => {
+    expect(search(catalog, filters({ verified: "1" }), available).liczba).toBe(27);
   });
 
   it("the category count ignores the selected category but respects the other filters", () => {
-    const result = search(catalog, filters({ kategoria: "dla-seniorow", film: "1" }), available);
+    const result = search(catalog, filters({ category: "dla-seniorow", video: "1" }), available);
     const withFilm = catalog.filter((i) => i.ma_film);
     expect(result.liczniki.kategorie["dla-rynku-pracy"] ?? 0).toBe(
       withFilm.filter((i) => i.kategoria_id === "dla-rynku-pracy").length,
@@ -75,7 +75,7 @@ describe("search", () => {
   });
 
   it("a page out of range gives the last page", () => {
-    const result = search(catalog, filters({ strona: "99" }), available);
+    const result = search(catalog, filters({ page: "99" }), available);
     expect(result.strona).toBe(result.liczba_stron);
   });
 
@@ -85,19 +85,19 @@ describe("search", () => {
 });
 
 describe("filters from the page URL", () => {
-  it("sprawdzona=false does not enable the filter", () => {
-    expect(filters({ sprawdzona: "false" }).sprawdzona).toBe(false);
+  it("verified=false does not enable the filter", () => {
+    expect(filters({ verified: "false" }).verified).toBe(false);
   });
 
   it("an invalid page falls back to 1", () => {
-    expect(filters({ strona: "abc" }).strona).toBe(1);
+    expect(filters({ page: "abc" }).page).toBe(1);
   });
 
   it("the URL keeps filters and changes the page", () => {
-    const f = filters({ q: "seniorzy", kategoria: ["a", "b"], film: "1" });
-    expect(libraryUrl(f, { strona: 2 })).toBe(
-      "/biblioteka?q=seniorzy&kategoria=a&kategoria=b&film=1&strona=2",
+    const f = filters({ q: "seniorzy", category: ["a", "b"], video: "1" });
+    expect(libraryUrl(f, { page: 2 })).toBe(
+      "/library?q=seniorzy&category=a&category=b&video=1&page=2",
     );
-    expect(libraryUrl(filters())).toBe("/biblioteka");
+    expect(libraryUrl(filters())).toBe("/library");
   });
 });
