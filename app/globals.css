@@ -189,7 +189,11 @@ html[data-a11y-plus] ::placeholder {
   h1,
   h2,
   h3 {
-    @apply font-heading tracking-tight;
+    @apply font-heading tracking-tight text-balance;
+  }
+  /* No single word left alone on the last line of a paragraph */
+  p {
+    @apply text-pretty;
   }
   a {
     @apply text-navy hover:text-navy-strong underline underline-offset-[3px];
@@ -227,9 +231,6 @@ html[data-ruch-czeka] [data-ruch~="wejscie"] > * {
 .t-dropdown[data-origin="top-right"] {
   transform-origin: top right;
 }
-.t-dropdown[data-origin="top-center"] {
-  transform-origin: top center;
-}
 .t-dropdown.is-open {
   transform: scale(1);
   opacity: 1;
@@ -250,6 +251,22 @@ html[data-ruch-czeka] [data-ruch~="wejscie"] > * {
     transform var(--duration-quick) var(--ease-smooth-out),
     opacity var(--duration-quick) var(--ease-smooth-out);
 }
+/* Full-width panels (mobile menu) slide down a little instead: scaling a wide sheet would pull its
+   edges in by tens of pixels. Closing moves half the distance, so it stays quieter than opening. */
+.t-dropdown[data-motion="slide"] {
+  transform: translateY(calc(var(--distance-base) * -1));
+}
+.t-dropdown[data-motion="slide"].is-open {
+  transform: none;
+}
+@starting-style {
+  .t-dropdown[data-motion="slide"].is-open {
+    transform: translateY(calc(var(--distance-base) * -1));
+  }
+}
+.t-dropdown[data-motion="slide"].is-closing {
+  transform: translateY(calc(var(--distance-micro) * -1));
+}
 
 /* Tabs sliding: the active-page underline in the main menu travels between links (site-nav.tsx) */
 .t-tabs-bar {
@@ -266,12 +283,13 @@ html[data-ruch-czeka] [data-ruch~="wejscie"] > * {
     transform var(--duration-fast) var(--ease-smooth-out),
     width var(--duration-fast) var(--ease-smooth-out),
     opacity var(--duration-quick) var(--ease-smooth-out);
-  will-change: transform, width;
+  will-change: transform; /* width is a layout property and can't be composited */
   pointer-events: none;
 }
 
-/* Text swap / text reveal: a status, alert or field error that appears rises in through a soft blur.
-   Plain CSS on mount, so every live message in the app gets it. */
+/* Text swap / text reveal: a message that appears rises in through a soft blur. Opt-in on the element
+   that mounts (field errors, swapped labels): it runs on mount only, so a live region whose text
+   changes in place would never animate. */
 @keyframes t-text-in {
   from {
     opacity: 0;
@@ -279,22 +297,8 @@ html[data-ruch-czeka] [data-ruch~="wejscie"] > * {
     filter: blur(var(--blur-small));
   }
 }
-.t-text-in,
-p[role="status"],
-p[role="alert"] {
-  animation: t-text-in var(--duration-fast) ease-in-out backwards;
-}
-
-/* Icon swap: an icon that replaces another in the same slot (Menu ↔ X) scales in through a blur */
-@keyframes t-icon-in {
-  from {
-    opacity: 0;
-    transform: scale(0.25);
-    filter: blur(var(--blur-small));
-  }
-}
-.t-icon-in {
-  animation: t-icon-in var(--duration-fast) ease-in-out;
+.t-text-in {
+  animation: t-text-in var(--duration-fast) var(--ease-smooth-out) backwards;
 }
 
 /* Error state shake: a field that turns invalid shakes once (runs whenever aria-invalid starts
@@ -332,9 +336,6 @@ select[aria-invalid="true"] {
     transition: none !important;
   }
   .t-text-in,
-  .t-icon-in,
-  p[role="status"],
-  p[role="alert"],
   input[aria-invalid="true"],
   textarea[aria-invalid="true"],
   select[aria-invalid="true"] {
