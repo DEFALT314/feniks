@@ -18,7 +18,14 @@ export type AreaTrend = {
   weak: number;
 };
 
-export type ChallengeTrend = { id: string; text: string; areaName: string; count: number };
+export type ChallengeTrend = {
+  id: string;
+  text: string;
+  areaName: string;
+  count: number;
+  // Of these, searches without a good match: a gap in the Library for this exact challenge
+  weak: number;
+};
 
 export type Trends = {
   areas: AreaTrend[];
@@ -71,10 +78,13 @@ export function aggregateTrends(
       a.wyzwania.map((w) => [w.id, { text: w.tekst, areaName: a.nazwa }] as const),
     ),
   );
-  const challengeCounts = new Map<string, number>();
+  const challengeCounts = new Map<string, { count: number; weak: number }>();
   for (const q of queries) {
     if (q.challenge_id && challengeInfo.has(q.challenge_id)) {
-      challengeCounts.set(q.challenge_id, (challengeCounts.get(q.challenge_id) ?? 0) + 1);
+      const c = challengeCounts.get(q.challenge_id) ?? { count: 0, weak: 0 };
+      c.count += 1;
+      if (q.match_quality === "weak") c.weak += 1;
+      challengeCounts.set(q.challenge_id, c);
     }
   }
 
@@ -83,7 +93,7 @@ export function aggregateTrends(
       (a, b) => b.total - a.total || a.name.localeCompare(b.name, "pl"),
     ),
     challenges: [...challengeCounts.entries()]
-      .map(([id, count]) => ({ id, count, ...challengeInfo.get(id)! }))
+      .map(([id, c]) => ({ id, ...c, ...challengeInfo.get(id)! }))
       .sort((a, b) => b.count - a.count || a.text.localeCompare(b.text, "pl"))
       .slice(0, topChallenges),
     total: queries.length + ideas.length,
