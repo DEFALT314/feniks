@@ -20,7 +20,8 @@ export async function signUpForTest(testId: string): Promise<ActionResult> {
   const id = TestId.safeParse(testId);
   if (!id.success) return BAD_INPUT;
   const result = await signUp(await createClient(), id.data);
-  if (result.ok) revalidatePath("/my/tester");
+  // Also after a refusal: when the last seat went to someone else, the card must stop showing it
+  revalidatePath("/my/tester");
   return result;
 }
 
@@ -30,7 +31,7 @@ export async function withdrawFromTest(testId: string): Promise<ActionResult> {
   const id = TestId.safeParse(testId);
   if (!id.success) return BAD_INPUT;
   const result = await withdraw(await createClient(), user.id, id.data);
-  if (result.ok) revalidatePath("/my/tester");
+  revalidatePath("/my/tester");
   return result;
 }
 

@@ -58,13 +58,13 @@ describe("tester actions", () => {
     expect(withdraw).not.toHaveBeenCalled();
   });
 
-  it("pass the database refusal through and do not refresh", async () => {
+  it("pass the database refusal through and refresh, so a taken last seat disappears", async () => {
     signUp.mockResolvedValue({ ok: false, error: "Brak wolnych miejsc na ten test." });
     expect(await signUpForTest(TEST_ID)).toEqual({
       ok: false,
       error: "Brak wolnych miejsc na ten test.",
     });
-    expect(revalidatePath).not.toHaveBeenCalled();
+    expect(revalidatePath).toHaveBeenCalledWith("/my/tester");
   });
 
   it("validate a rating before saving it as the signed-in user", async () => {

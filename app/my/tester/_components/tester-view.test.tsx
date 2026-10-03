@@ -34,11 +34,18 @@ describe("TesterView", () => {
   it("shows the sign-up, the user's rating and opens the rating form for it", () => {
     const html = render();
     expect(card(html, cuder.id)).toContain("Jesteś zapisany");
-    expect(card(html, cuder.id)).toMatch(/<button[^>]*>Wypisz się<\/button>/);
     expect(card(html, cuder.id)).toMatch(/<button[^>]*>Zmień ocenę<\/button>/);
+    // Rated means the test took place: withdrawing would leave a rating without a participant
+    expect(card(html, cuder.id)).not.toContain("Wypisz się");
     expect(html).toContain("Oceń: Senior CUDER");
     expect(html).toMatch(/<input[^>]*type="radio"[^>]*checked=""[^>]*value="4"/);
     expect(html).toContain("Większe litery na kartach.");
+  });
+
+  it("lets a signed-up user withdraw before rating", () => {
+    const html = card(render([{ ...cuder, moja_ocena: null }]), cuder.id);
+    expect(html).toMatch(/<button[^>]*>Wypisz się<\/button>/);
+    expect(html).toMatch(/<button[^>]*>Oceń test<\/button>/);
   });
 
   it("keeps the user's own test out of the open list and shows its feedback", () => {
