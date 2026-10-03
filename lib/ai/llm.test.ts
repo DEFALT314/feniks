@@ -154,3 +154,14 @@ describe("createLlmClient", () => {
     expect(() => createLlmClient(env)).toThrow(/LLM_MODEL/);
   });
 });
+
+describe("createLlmClient timeout", () => {
+  it("accepts a longer per-request timeout for long answers", () => {
+    const env = {
+      LLM_BASE_URL: "https://x",
+      LLM_MODEL: "m",
+      LLM_API_KEY: "k",
+    } as unknown as NodeJS.ProcessEnv;
+    expect(createLlmClient(env, 90_000).model).toBe("m");
+  });
+});

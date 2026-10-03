@@ -1,7 +1,8 @@
 // Contract for AI in the idea creator (P3 endpoints, used by P2's /my/creator):
-//   POST /api/ai/podpowiedz  hints for the idea card fields
-//   POST /api/ai/wniosek     draft of a grant application for an open call
-//   POST /api/ai/obraz       visualisation of the idea
+//   POST /api/ai/hints        hints for the idea card fields
+//   POST /api/ai/application  draft of a grant application for an open call
+//   POST /api/ai/image        visualisation of the idea
+//   GET  /api/ai/calls        open calls to choose from
 // Sample data: lib/contracts/fixtures/ai.json. After 17:00, changes only by adding fields.
 //
 // Rules (CLAUDE.md, rule 5): every AI text is shown with the „Propozycja AI” label and is used only
@@ -23,7 +24,7 @@ export const IdeaDraft = z.object({
 });
 export type IdeaDraft = z.infer<typeof IdeaDraft>;
 
-// --- /api/ai/podpowiedz ---
+// --- /api/ai/hints ---
 
 export const IdeaField = z.enum(["title", "description", "essence", "audience"]);
 export type IdeaField = z.infer<typeof IdeaField>;
@@ -45,7 +46,24 @@ export const HintResponse = z.object({
 });
 export type HintResponse = z.infer<typeof HintResponse>;
 
-// --- /api/ai/wniosek ---
+// --- GET /api/ai/calls ---
+// Open calls ("nabory") to choose from. Until P4 adds a calls table, these are demo calls
+// (demo: true, labelled "Dane demonstracyjne" in the UI).
+
+export const CallSummary = z.object({
+  id: z.string(),
+  name: z.string(),
+  organizer: z.string(),
+  goal: z.string(), // what the call funds, plain Polish
+  deadline: z.string().nullable(), // ISO date
+  demo: z.boolean(),
+});
+export type CallSummary = z.infer<typeof CallSummary>;
+
+export const CallList = z.object({ calls: z.array(CallSummary) });
+export type CallList = z.infer<typeof CallList>;
+
+// --- /api/ai/application ---
 
 export const ApplicationRequest = z.object({
   idea: IdeaDraft,
@@ -74,7 +92,7 @@ export const ApplicationResponse = z.object({
 });
 export type ApplicationResponse = z.infer<typeof ApplicationResponse>;
 
-// --- /api/ai/obraz ---
+// --- /api/ai/image ---
 
 export const ImageRequest = z.object({
   idea: IdeaDraft,
@@ -90,6 +108,7 @@ export type ImageResponse = z.infer<typeof ImageResponse>;
 
 // Sample data checked against the schemas: a mistake in fixtures shows up immediately.
 export const aiFixtures = {
+  callList: CallList.parse(fixture.call_list),
   hintRequest: HintRequest.parse(fixture.hint_request),
   hintResponse: HintResponse.parse(fixture.hint_response),
   applicationRequest: ApplicationRequest.parse(fixture.application_request),
