@@ -26,8 +26,19 @@ describe("format", () => {
 
   it("describes review entries in the audit log", () => {
     expect(describeAudit("pomysl.ocena", { status: "do_poprawy", tytul: "Kawiarenka" })).toBe(
-      "status „do poprawy”: Kawiarenka",
+      "„Kawiarenka”: do poprawy",
     );
-    expect(describeAudit("innowacja.edycja", {})).toBe("innowacja.edycja");
+  });
+
+  it("never shows raw audit codes to staff", () => {
+    expect(describeAudit("innowacja.edycja", {})).toBe("zmieniono kartę innowacji");
+    expect(describeAudit("nabor.wlaczenie", null)).toBe("włączono nabór");
+    expect(describeAudit("nabor.dodanie", { nazwa: "Wsparcie seniorów" })).toBe(
+      "dodano nabór: Wsparcie seniorów",
+    );
+    expect(describeAudit("profil.rola.zatwierdzona", { z: "mieszkaniec", o: "ngo" })).toBe(
+      "zatwierdzono rolę",
+    );
+    expect(describeAudit("cos.nowego", {})).toBe("inna zmiana");
   });
 });

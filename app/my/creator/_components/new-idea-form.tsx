@@ -20,7 +20,12 @@ export function NewIdeaForm() {
       noValidate
       className="mt-2 flex max-w-[760px] flex-wrap items-end gap-3"
     >
-      <Field label="Nowy pomysł" error={state.error} required className="min-w-0 flex-[1_1_320px]">
+      <Field
+        label="Tytuł nowego pomysłu"
+        error={state.error}
+        required
+        className="min-w-0 flex-[1_1_320px]"
+      >
         {(control) => (
           <Input
             {...control}
@@ -33,7 +38,7 @@ export function NewIdeaForm() {
         )}
       </Field>
       <Button type="submit" disabled={pending}>
-        {pending ? "Tworzymy…" : "Zacznij kanwę"}
+        {pending ? "Tworzymy…" : "Zacznij opisywać pomysł"}
       </Button>
     </form>
   );

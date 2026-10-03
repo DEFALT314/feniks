@@ -19,7 +19,7 @@ export default async function Page({ params }: PageProps<"/admin/library/[id]">)
       <div className="mx-auto flex max-w-[860px] flex-col gap-6 px-4 py-8 sm:px-10">
         <nav aria-label="Ścieżka" className="text-base">
           <Link href="/admin/library" className="text-navy underline underline-offset-[3px]">
-            Biblioteka w panelu
+            Karty innowacji
           </Link>{" "}
           › <span aria-current="page">{innovation.nazwa}</span>
         </nav>
@@ -33,7 +33,7 @@ export default async function Page({ params }: PageProps<"/admin/library/[id]">)
               href={`/library/${innovation.id}`}
               className="text-navy underline underline-offset-[3px]"
             >
-              Zobacz kartę publiczną
+              Zobacz kartę w Bibliotece
             </Link>
           </p>
         </div>

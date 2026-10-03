@@ -43,7 +43,7 @@ describe("ApplicationDraft", () => {
     const html = renderToStaticMarkup(
       <ApplicationDraft calls={aiFixtures.callList.calls} draft={draft} />,
     );
-    expect(html).toContain("Wniosek pod nabór");
+    expect(html).toContain("Szkic wniosku o dofinansowanie");
     expect(html).toContain("Propozycja AI");
     for (const call of aiFixtures.callList.calls) expect(html).toContain(call.name);
     expect(html).toContain("Dane demonstracyjne");

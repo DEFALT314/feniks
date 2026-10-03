@@ -87,7 +87,7 @@ describe("tester actions", () => {
     });
     expect(await planIdeaTest({ idea_id: IDEA_ID, tytul: "Test", liczba_miejsc: 0 })).toEqual({
       ok: false,
-      error: "Liczba miejsc: od 1 do 500.",
+      error: "Wpisz liczbę miejsc od 1 do 500 albo zostaw pole puste.",
     });
     expect(await planIdeaTest({ idea_id: "x", tytul: "Test" })).toEqual({
       ok: false,

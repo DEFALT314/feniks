@@ -80,7 +80,7 @@ export function IdeaCard({
             href={`/my/creator/${idea.id}`}
             className="inline-flex min-h-11 items-center self-start text-base"
           >
-            <span aria-hidden="true">←&nbsp;</span>Wróć do kreatora
+            <span aria-hidden="true">←&nbsp;</span>Wróć do pytań
           </Link>
           <h1 className="text-[2.5rem] leading-tight font-bold">{draft.tytul || idea.tytul}</h1>
           <p className="text-muted-foreground text-base">
@@ -117,7 +117,7 @@ export function IdeaCard({
             </Field>
             <TextField
               label="Opis"
-              hint="Jaki problem rozwiązujecie i jak?"
+              hint="Jaki problem rozwiązuje Twój pomysł i w jaki sposób?"
               rows={4}
               max={MAX.opis}
               value={draft.opis}
@@ -236,7 +236,7 @@ function TextField({
 function CanvasHints({ label, items }: { label: string; items: string[] }) {
   return (
     <div className="bg-navy-soft rounded-[10px] px-4 py-3 text-base">
-      <p className="font-bold">Z Twojej kanwy – może pomóc napisać pole „{label}”:</p>
+      <p className="font-bold">Twoje odpowiedzi z kanwy, które pomogą wypełnić pole „{label}”:</p>
       <ul className="list-disc pl-6">
         {items.map((item) => (
           <li key={item}>{item}</li>

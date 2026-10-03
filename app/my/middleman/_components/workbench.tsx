@@ -153,8 +153,8 @@ export function MiddlemanWorkbench(props: Props) {
             Karta usługi dla Twojej gminy
           </h1>
           <p className="text-ink-muted max-w-[820px]">
-            Wybierz innowację i opisz instytucję. Przygotujemy szkic usługi w języku, w którym gmina
-            ją zamawia i finansuje. Ty decydujesz, co w nim zostaje.
+            Wybierz innowację i opisz swoją instytucję. AI przygotuje szkic usługi, którą gmina może
+            zamówić i sfinansować. Ty go poprawiasz i decydujesz, czy wysłać go do ROPS.
           </p>
           <div ref={formRef} className="flex max-w-[1000px] flex-col gap-4">
             <div className="flex flex-wrap items-end gap-4">
@@ -209,7 +209,7 @@ export function MiddlemanWorkbench(props: Props) {
                   </select>
                 )}
               </Field>
-              <Field label="Gmina" className="flex-[1_1_220px]">
+              <Field label="Rodzaj gminy lub powiat" className="flex-[1_1_220px]">
                 {(p) => (
                   <select
                     {...p}
@@ -307,7 +307,7 @@ export function MiddlemanWorkbench(props: Props) {
                   </p>
                 ) : (
                   <Button type="button" onClick={send} disabled={busy !== null || editing}>
-                    {busy === "sending" ? "Wysyłam…" : "Wyślij do ROPS do konsultacji"}
+                    {busy === "sending" ? "Wysyłam…" : "Poproś ROPS o opinię"}
                   </Button>
                 )}
                 {!sent && !editing ? (
@@ -364,7 +364,9 @@ export function MiddlemanWorkbench(props: Props) {
                   </a>{" "}
                   <span className="text-ink-muted text-base">
                     · {c.based_on.nazwa} ·{" "}
-                    {c.status === "wyslana_do_rops" ? "wysłana do ROPS" : `szkic ${c.version}`}
+                    {c.status === "wyslana_do_rops"
+                      ? "wysłana do ROPS"
+                      : `szkic, wersja ${c.version}`}
                   </span>
                 </li>
               ))}

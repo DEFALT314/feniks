@@ -64,8 +64,8 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
             Wiedza o innowacjach
           </h1>
           <p className="text-ink-muted max-w-[760px]">
-            Krótkie poradniki, jak działać z innowacją społeczną, oraz badania i publikacje ROPS w
-            Krakowie. Każdy raport prowadzi do źródła na stronie ROPS.
+            Krótkie poradniki, słowniczek oraz badania i publikacje ROPS w Krakowie. Raporty
+            otwierają się na stronie ROPS.
           </p>
           <nav aria-label="Na tej stronie" className="text-base">
             <ul className="m-0 flex list-none flex-wrap items-center gap-x-2 p-0">
@@ -88,7 +88,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
               </li>
             </ul>
           </nav>
-          <h2 className="mt-4 text-xl font-bold">Raporty i publikacje: filtry</h2>
+          <h2 className="mt-4 text-xl font-bold">Szukaj raportów i publikacji</h2>
           <form
             method="get"
             action={`/resources#${RESULTS}`}
@@ -212,7 +212,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
           {formatItemCount(list.length)}
         </h2>
         {list.length === 0 ? (
-          <p className="py-8">Nic nie pasuje do tych filtrów.</p>
+          <p className="py-8">Nic nie pasuje do tych filtrów. Kliknij „Wyczyść filtry”.</p>
         ) : (
           <ul className="m-0 list-none p-0">
             {list.map((r) => (
