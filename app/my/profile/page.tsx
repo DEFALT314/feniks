@@ -2,33 +2,20 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { roleLabel } from "@/components/ui/navigation";
 import { getCurrentUser, headerName } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
-import { cancelRoleRequest } from "./actions";
 import { DisplayNameForm } from "./_components/display-name-form";
-import { RoleRequestForm } from "./_components/role-request-form";
-import { REQUESTABLE_ROLE_LABELS, REQUESTABLE_ROLES, type RequestableRole } from "./_lib/profile";
 
 export const metadata = { title: "Twój profil – HubMI.pl" };
 
-const isRequestable = (v: unknown): v is RequestableRole =>
-  REQUESTABLE_ROLES.includes(v as RequestableRole);
-
-// Layout per design/makiety/Profil.dc.html: account, role request, password and sign-out.
+// Layout per design/makiety/Profil.dc.html: account, password and sign-out.
+// The role request section of the mockup waits for the ROPS approval screen (#6).
 export default async function ProfilePage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/my/profile");
 
-  const supabase = await createClient();
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("wnioskowana_rola")
-    .eq("id", user.id)
-    .maybeSingle();
-  const requested = isRequestable(profile?.wnioskowana_rola) ? profile.wnioskowana_rola : null;
   const role = roleLabel(user.role);
 
   return (
@@ -60,39 +47,6 @@ export default async function ProfilePage() {
           </div>
         </dl>
       </Card>
-
-      {user.role === "mieszkaniec" ? (
-        <Card
-          role="region"
-          aria-labelledby="role-heading"
-          className="flex flex-col gap-3.5 p-7 sm:px-8"
-        >
-          <h2 id="role-heading" className="font-heading text-2xl font-bold">
-            Działasz w imieniu instytucji?
-          </h2>
-          {requested ? (
-            <>
-              <p>
-                Prośba o rolę <strong>{REQUESTABLE_ROLE_LABELS[requested].toLowerCase()}</strong>{" "}
-                czeka na zatwierdzenie przez ROPS. Do tego czasu korzystasz z konta jak mieszkaniec.
-              </p>
-              <form action={cancelRoleRequest}>
-                <Button type="submit" variant="tertiary" className="px-0">
-                  Anuluj prośbę
-                </Button>
-              </form>
-            </>
-          ) : (
-            <>
-              <p className="text-muted-foreground">
-                Organizacje, gminy i eksperci mają dodatkowe narzędzia, np. kartę usługi dla gminy.
-                Rolę zatwierdza ROPS.
-              </p>
-              <RoleRequestForm />
-            </>
-          )}
-        </Card>
-      ) : null}
 
       <Card
         role="region"
