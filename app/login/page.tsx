@@ -1,69 +1,51 @@
+import Link from "next/link";
+import { AuthCard } from "@/components/auth/auth-card";
 import { LoginForm } from "@/components/auth/login-form";
 import { SignOutButton } from "@/components/auth/sign-out-button";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { getCurrentUser, headerName } from "@/lib/auth";
 import { safeNextPath } from "@/lib/auth/validation";
 
 export const metadata = { title: "Logowanie – HubMI.pl" };
 
-// Layout per design/makiety/Logowanie.dc.html. Sign-in logic: P4 (lib/auth); styling: P2.
-// The "Wejdź jako…" demo column comes with #3.
+// Layout per design/makiety/Logowanie.dc.html: one centered card, e-mail and password.
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
   const next = safeNextPath(typeof params.next === "string" ? params.next : null);
   const linkError = params.error === "link";
   const user = await getCurrentUser();
 
+  if (user) {
+    return (
+      <AuthCard title="Jesteś zalogowany" headingId="login-heading">
+        <p className="text-muted-foreground">
+          Konto: <strong className="text-ink">{headerName(user)}</strong>
+          {user.email ? ` (${user.email})` : null}
+        </p>
+        <SignOutButton />
+      </AuthCard>
+    );
+  }
+
+  const registerHref = next === "/" ? "/register" : `/register?next=${encodeURIComponent(next)}`;
   return (
-    <main
-      id="main-content"
-      className="mx-auto flex w-full max-w-[1200px] flex-wrap items-start gap-8 px-4 pt-14 pb-[72px] sm:px-10"
+    <AuthCard
+      title="Zaloguj się"
+      headingId="login-heading"
+      footer={
+        <>
+          Nie masz konta?{" "}
+          <Link href={registerHref} className="font-bold">
+            Załóż konto
+          </Link>
+        </>
+      }
     >
-      <Card
-        role="region"
-        aria-labelledby="login-heading"
-        className="flex flex-[1_1_460px] flex-col gap-[18px] p-9"
-      >
-        {user ? (
-          <>
-            <h1 id="login-heading" className="font-heading text-4xl font-bold tracking-tight">
-              Jesteś zalogowany
-            </h1>
-            <p className="text-muted-foreground">
-              Konto: <strong className="text-ink">{headerName(user)}</strong>
-              {user.email ? ` (${user.email})` : null}
-            </p>
-            <SignOutButton />
-          </>
-        ) : (
-          <>
-            <h1 id="login-heading" className="font-heading text-4xl font-bold tracking-tight">
-              Zaloguj się kodem z maila
-            </h1>
-            <p className="text-muted-foreground">
-              Bez hasła. Wyślemy 6-cyfrowy kod, ważny przez 10 minut.
-            </p>
-            {linkError ? (
-              <p role="alert" className="text-danger font-bold">
-                Link z maila wygasł albo został już użyty. Wyślij nowy kod.
-              </p>
-            ) : null}
-            <LoginForm next={next} />
-            <div className="border-border flex flex-col gap-2.5 border-t pt-[18px]">
-              <span className="text-muted-foreground text-[0.9375rem] font-bold">
-                Wkrótce, w pilotażu
-              </span>
-              <Button variant="secondary" disabled className="justify-start">
-                Profil zaufany lub mObywatel (login.gov.pl)
-              </Button>
-              <Button variant="secondary" disabled className="justify-start">
-                Konto służbowe ROPS
-              </Button>
-            </div>
-          </>
-        )}
-      </Card>
-    </main>
+      {linkError ? (
+        <p role="alert" className="text-danger font-bold">
+          Link z maila wygasł albo został już użyty. Poproś o nowy.
+        </p>
+      ) : null}
+      <LoginForm next={next} />
+    </AuthCard>
   );
 }
