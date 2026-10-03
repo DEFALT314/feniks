@@ -4,10 +4,10 @@
 # [tool.uv]
 # extra-index-url = ["https://download.pytorch.org/whl/cpu"]
 # ///
-"""Convert the embedding model to a small int8 ONNX model served by app.py (no torch at runtime).
+"""Convert the embedding model to a small int8 ONNX model served by api/embed.py (no torch at runtime).
 
-Runs in the first stage of the Dockerfile, or locally:
-    uv run hf-space/export_onnx.py [output_dir]          # default output: hf-space/model
+Run once locally, then upload the output to the private model repo (see embedding/README.md):
+    uv run embedding/export_onnx.py [output_dir]       # default output: embedding/model
 Output: model.onnx (int8), tokenizer.json, MODEL (model name).
 
 Vocabulary pruning: the model is multilingual (250k tokens) and most of its weights are the
