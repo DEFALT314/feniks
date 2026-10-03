@@ -32,6 +32,24 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_usage: {
+        Row: {
+          day: string
+          requests: number
+          user_id: string
+        }
+        Insert: {
+          day: string
+          requests?: number
+          user_id: string
+        }
+        Update: {
+          day?: string
+          requests?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           actor_id: string | null
@@ -826,6 +844,7 @@ export type Database = {
         Args: { p_key: string; p_value: Json }
         Returns: undefined
       }
+      ai_usage_take: { Args: { p_limit: number }; Returns: number }
       can_review_idea: { Args: { p_idea_id: string }; Returns: boolean }
       dodaj_powiadomienie: {
         Args: {
