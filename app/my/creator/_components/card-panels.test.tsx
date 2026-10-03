@@ -16,6 +16,7 @@ const submitProps = {
   comment: null,
   missing: [],
   beforeSend: async () => true,
+  justSent: null,
 };
 
 describe("AiHints", () => {
@@ -90,5 +91,13 @@ describe("SubmitPanel", () => {
     expect(html).toContain("Do poprawy");
     expect(html).toContain("Dopisz, kto poprowadzi dyżury.");
     expect(html).toContain("Wyślij poprawioną wersję");
+  });
+
+  it("confirms a send after the page reloads with ?sent=", () => {
+    const html = renderToStaticMarkup(
+      <SubmitPanel {...submitProps} sentAt="2026-10-03T18:00:00Z" justSent="first" />,
+    );
+    expect(html).toContain("Wysłano do ROPS.");
+    expect(html).not.toContain("Wyślij");
   });
 });

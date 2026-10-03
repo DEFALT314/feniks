@@ -42,3 +42,13 @@ export function IdeaNotFound() {
     </main>
   );
 }
+
+// Shown on the canvas and the card while ROPS has the idea (database lock in *_creator_submit.sql)
+export function LockedNotice() {
+  return (
+    <p className="bg-warning-soft text-ink rounded-[10px] px-4 py-3 text-base">
+      <strong>Pomysł jest w ROPS.</strong> Możesz go czytać, ale nie zmieniać. Edycja wróci, jeśli
+      ROPS poprosi o poprawki.
+    </p>
+  );
+}

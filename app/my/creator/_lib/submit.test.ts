@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { MyIdea } from "./ideas";
+import type { MyIdea, SendResult } from "./ideas";
 import { submitIdea, type SubmitDeps } from "./submit";
 
 const IDEA: MyIdea = {
@@ -18,10 +18,10 @@ const IDEA: MyIdea = {
   komentarz: null,
 };
 
-function deps(idea: MyIdea | null = IDEA, sent = true) {
+function deps(idea: MyIdea | null = IDEA, sent: SendResult = { ok: true, resent: false }) {
   return {
     loadIdea: vi.fn(async () => idea),
-    markSent: vi.fn(async () => sent),
+    send: vi.fn(async () => sent),
     addNotification: vi.fn(async () => 1),
     writeAudit: vi.fn(async () => 1),
   } satisfies SubmitDeps;
@@ -31,7 +31,7 @@ describe("submitIdea", () => {
   it("sends a complete draft, notifies ROPS with a link to the queue and writes the audit log", async () => {
     const d = deps();
     expect(await submitIdea(d, IDEA.id)).toEqual({ status: "sent", resent: false });
-    expect(d.markSent).toHaveBeenCalledWith(IDEA.id);
+    expect(d.send).toHaveBeenCalledWith(IDEA.id);
     expect(d.addNotification).toHaveBeenCalledWith({
       role: ["rops_redaktor", "rops_admin"],
       typ: "pomysl_wyslany",
@@ -51,18 +51,21 @@ describe("submitIdea", () => {
       message: "Uzupełnij fiszkę przed wysłaniem.",
       missing: ["Istota", "Dla kogo"],
     });
-    expect(d.markSent).not.toHaveBeenCalled();
+    expect(d.send).not.toHaveBeenCalled();
   });
 
   it("does not send twice while ROPS has the idea", async () => {
     const d = deps({ ...IDEA, wyslany_at: "2026-10-03T19:00:00+02:00", status: "w_weryfikacji" });
     expect((await submitIdea(d, IDEA.id)).status).toBe("error");
-    expect(d.markSent).not.toHaveBeenCalled();
+    expect(d.send).not.toHaveBeenCalled();
     expect(d.addNotification).not.toHaveBeenCalled();
   });
 
   it("sends a corrected version after 'do poprawy'", async () => {
-    const d = deps({ ...IDEA, wyslany_at: "2026-10-03T19:00:00+02:00", status: "do_poprawy" });
+    const d = deps(
+      { ...IDEA, wyslany_at: "2026-10-03T19:00:00+02:00", status: "do_poprawy" },
+      { ok: true, resent: true },
+    );
     expect(await submitIdea(d, IDEA.id)).toEqual({ status: "sent", resent: true });
     expect(d.addNotification).toHaveBeenCalledWith(
       expect.objectContaining({ tytul: "Poprawiony pomysł do oceny: Sąsiedzki dyżur po wypisie" }),
@@ -76,10 +79,21 @@ describe("submitIdea", () => {
     expect((await submitIdea(deps(null), IDEA.id)).status).toBe("error");
   });
 
-  it("reports a failed update and does not notify", async () => {
-    const d = deps(IDEA, false);
+  it("reports a failed send and does not notify", async () => {
+    const d = deps(IDEA, { ok: false, reason: "failed" });
     expect((await submitIdea(d, IDEA.id)).status).toBe("error");
     expect(d.addNotification).not.toHaveBeenCalled();
+  });
+
+  it("does not notify twice when a parallel request already sent it", async () => {
+    // The database refuses the second send under its row lock (HM409)
+    const d = deps(IDEA, { ok: false, reason: "with-rops" });
+    expect(await submitIdea(d, IDEA.id)).toEqual({
+      status: "error",
+      message: "Ten pomysł jest już w ROPS. Poczekaj na odpowiedź.",
+    });
+    expect(d.addNotification).not.toHaveBeenCalled();
+    expect(d.writeAudit).not.toHaveBeenCalled();
   });
 
   it("keeps the submission when the notification fails", async () => {

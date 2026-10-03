@@ -1,6 +1,6 @@
 import type { AuditEntry } from "@/lib/audit";
 import type { NewNotification } from "@/lib/contracts/notifications";
-import type { MyIdea } from "./ideas";
+import type { MyIdea, SendResult } from "./ideas";
 import { canSubmit, missingForSubmission } from "./submission";
 
 export type SubmitState =
@@ -10,16 +10,24 @@ export type SubmitState =
 
 export type SubmitDeps = {
   loadIdea: (id: string) => Promise<MyIdea | null>;
-  markSent: (id: string) => Promise<boolean>;
+  send: (id: string) => Promise<SendResult>;
   addNotification: (n: NewNotification) => Promise<unknown>;
   writeAudit: (e: AuditEntry) => Promise<unknown>;
 };
 
 const ROPS_ROLES = ["rops_redaktor", "rops_admin"] as const;
 
+const SEND_FAILED: Record<Exclude<SendResult, { ok: true }>["reason"], string> = {
+  "not-found": "Nie ma takiego pomysłu albo nie jest Twój.",
+  "with-rops": "Ten pomysł jest już w ROPS. Poczekaj na odpowiedź.",
+  incomplete: "Uzupełnij fiszkę przed wysłaniem.",
+  failed: "Nie udało się wysłać pomysłu. Spróbuj ponownie.",
+};
+
 /**
- * "Wyślij do ROPS" (#35): checks the card is complete and may be sent, sets wyslany_at,
- * notifies ROPS and writes the audit log. A failed notification or audit entry does not undo the
+ * "Wyślij do ROPS" (#35): checks the card is complete and may be sent (for a clear message), then
+ * the database sends it (public.wyslij_pomysl checks again under a row lock), and ROPS is notified
+ * and the audit log written. A failed notification or audit entry does not undo the
  * submission: the idea is in the ROPS queue either way.
  */
 export async function submitIdea(deps: SubmitDeps, ideaId: string): Promise<SubmitState> {
@@ -34,10 +42,9 @@ export async function submitIdea(deps: SubmitDeps, ideaId: string): Promise<Subm
     return { status: "error", message: "Uzupełnij fiszkę przed wysłaniem.", missing };
   }
 
-  const resent = idea.wyslany_at !== null;
-  if (!(await deps.markSent(idea.id))) {
-    return { status: "error", message: "Nie udało się wysłać pomysłu. Spróbuj ponownie." };
-  }
+  const sent = await deps.send(idea.id);
+  if (!sent.ok) return { status: "error", message: SEND_FAILED[sent.reason] };
+  const { resent } = sent;
 
   const followUps = await Promise.allSettled([
     deps.addNotification({

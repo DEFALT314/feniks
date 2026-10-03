@@ -114,21 +114,41 @@ export async function createIdea(
   return { ok: true, id: data.id };
 }
 
+const LOCKED: SaveResult = {
+  ok: false,
+  error: "Pomysł jest w ROPS. Edycja wróci, jeśli ROPS poprosi o poprawki.",
+};
+
+// Database errors raised by migration *_creator_submit.sql
+const LOCKED_CODE = "HM423";
+
+// The author's own idea, if they may edit it now (never sent, or ROPS asked for changes)
+async function editableIdea(db: Db, authorId: string, ideaId: string) {
+  if (!isUuid(ideaId)) return { idea: null, editable: false };
+  const [{ data: idea }, { data: editable }] = await Promise.all([
+    db.from("ideas").select("id, etap").eq("id", ideaId).eq("autor_id", authorId).maybeSingle(),
+    untyped(db).rpc("idea_editable", { p_idea_id: ideaId }),
+  ]);
+  return { idea, editable: editable === true };
+}
+
 /** Saves one canvas answer (null clears it). The readiness answer fills an empty stage on the card. */
 export async function saveAnswer(
   db: Db,
+  authorId: string,
   ideaId: string,
   fieldId: string,
   answer: CanvasAnswer | null,
 ): Promise<SaveResult> {
   const field = fields.find((f) => f.id === fieldId);
-  if (!field || !isUuid(ideaId)) return { ok: false, error: "Nieznane pytanie." };
+  if (!field) return { ok: false, error: "Nieznane pytanie." };
   if (answer !== null && !answerSchema(field).safeParse(answer).success) {
     return { ok: false, error: "Ta odpowiedź nie pasuje do pytania." };
   }
 
-  const { data: idea } = await db.from("ideas").select("id, etap").eq("id", ideaId).maybeSingle();
+  const { idea, editable } = await editableIdea(db, authorId, ideaId);
   if (!idea) return NOT_FOUND;
+  if (!editable) return LOCKED;
 
   const { error } =
     answer === null
@@ -136,6 +156,7 @@ export async function saveAnswer(
       : await db
           .from("idea_canvas")
           .upsert({ idea_id: ideaId, pole_id: fieldId, odpowiedz: answer as Json });
+  if (error?.code === LOCKED_CODE) return LOCKED;
   if (error) return { ok: false, error: "Nie udało się zapisać odpowiedzi." };
 
   const stage = answer ? stageFromAnswers({ [fieldId]: answer }) : null;
@@ -145,29 +166,53 @@ export async function saveAnswer(
   return { ok: true };
 }
 
-export async function saveCard(db: Db, ideaId: string, input: IdeaCardInput): Promise<SaveResult> {
+export async function saveCard(
+  db: Db,
+  authorId: string,
+  ideaId: string,
+  input: IdeaCardInput,
+): Promise<SaveResult> {
   const parsed = IdeaCardInput.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Sprawdź pola fiszki." };
-  if (!isUuid(ideaId)) return NOT_FOUND;
+  const { idea, editable } = await editableIdea(db, authorId, ideaId);
+  if (!idea) return NOT_FOUND;
+  if (!editable) return LOCKED;
   const { data, error } = await db
     .from("ideas")
     .update(parsed.data)
     .eq("id", ideaId)
     .select("id")
     .maybeSingle();
+  if (error?.code === LOCKED_CODE) return LOCKED;
   if (error) return { ok: false, error: "Nie udało się zapisać fiszki." };
   return data ? { ok: true } : NOT_FOUND;
 }
 
-/** Marks the idea as sent now; returns false when the row was not updated (not the author's idea). */
-export async function markSent(db: Db, ideaId: string): Promise<boolean> {
-  const { data, error } = await db
-    .from("ideas")
-    .update({ wyslany_at: new Date().toISOString() })
-    .eq("id", ideaId)
-    .select("id")
-    .maybeSingle();
-  return !error && Boolean(data);
+export type SendResult =
+  | { ok: true; resent: boolean }
+  | { ok: false; reason: "not-found" | "with-rops" | "incomplete" | "failed" };
+
+const SEND_ERRORS: Record<string, Exclude<SendResult, { ok: true }>["reason"]> = {
+  HM404: "not-found",
+  HM409: "with-rops",
+  HM422: "incomplete",
+};
+
+/**
+ * Sends the idea to ROPS through public.wyslij_pomysl(): the database locks the row, checks the
+ * author, the state and the required fields, and sets wyslany_at with its own clock.
+ */
+export async function sendIdea(db: Db, ideaId: string): Promise<SendResult> {
+  if (!isUuid(ideaId)) return { ok: false, reason: "not-found" };
+  const { data, error } = await untyped(db).rpc("wyslij_pomysl", { p_idea_id: ideaId });
+  if (error) return { ok: false, reason: SEND_ERRORS[error.code ?? ""] ?? "failed" };
+  return { ok: true, resent: data === "ponownie" };
+}
+
+// wyslij_pomysl and idea_editable come from *_creator_submit.sql, which is not yet in the generated
+// lib/supabase/types.ts (P4 regenerates it with pnpm db:types)
+function untyped(db: Db): SupabaseClient {
+  return db as unknown as SupabaseClient;
 }
 
 function isUuid(value: string): boolean {
