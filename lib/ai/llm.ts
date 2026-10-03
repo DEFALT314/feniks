@@ -6,12 +6,14 @@
 // - removes personal data from every message before sending it,
 // - asks for JSON (JSON mode) and validates the answer with a zod schema,
 // - on an invalid answer retries once, telling the model what was wrong,
-// - optionally caches valid answers (lib/ai/cache.ts).
+// - optionally caches valid answers (lib/ai/cache.ts),
+// - with AI_REPLAY set, replays or records answers for the stage demo (lib/ai/replay.ts).
 import "server-only";
 import OpenAI from "openai";
 import { z } from "zod";
 import { cacheKey, type AiCache } from "./cache";
 import { redactPersonalData } from "./privacy";
+import { fileReplay, replayKey, replayMode, replayNote, type ReplayStore } from "./replay";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
@@ -94,6 +96,7 @@ export type GenerateJsonOptions = {
   temperature?: number;
   maxTokens?: number;
   timeoutMs?: number; // per request; raise it for long answers (default 30 s)
+  replay?: ReplayStore; // defaults to the recordings file when AI_REPLAY is set
 };
 
 export async function generateJson<T>(
@@ -101,7 +104,6 @@ export async function generateJson<T>(
   messages: ChatMessage[],
   options: GenerateJsonOptions = {},
 ): Promise<T> {
-  const client = options.client ?? createLlmClient(process.env, options.timeoutMs);
   const settings = {
     temperature: options.temperature ?? 0.2,
     maxTokens: options.maxTokens ?? 2000,
@@ -113,12 +115,23 @@ export async function generateJson<T>(
     safe = [{ role: "system", content: "Respond with a single JSON object." }, ...safe];
   }
 
+  const mode = options.replay?.mode ?? replayMode();
+  const replay = mode === "off" ? null : (options.replay ?? fileReplay(mode));
+  const recordingKey = replay ? replayKey(safe) : null;
+  if (replay?.mode === "replay" && recordingKey) {
+    const recorded = schema.safeParse(replay.get(recordingKey));
+    if (recorded.success) return recorded.data;
+  }
+
+  // Created after the replay check, so a recorded answer needs no model at all.
+  const client = options.client ?? createLlmClient(process.env, options.timeoutMs);
   const secret = options.cacheSecret ?? process.env.LLM_API_KEY;
   const key =
     options.cache && secret
       ? cacheKey(secret, { model: client.model, settings, messages: safe })
       : null;
-  if (key && options.cache) {
+  // When recording, ask the model even for cached requests, so every demo path lands in the file.
+  if (key && options.cache && replay?.mode !== "record") {
     const cached = schema.safeParse(await options.cache.get(key).catch(() => null));
     if (cached.success) return cached.data;
   }
@@ -138,6 +151,11 @@ export async function generateJson<T>(
     const result = schema.safeParse(parsed);
     if (result.success) {
       if (key && options.cache) await options.cache.set(key, result.data).catch(() => undefined);
+      if (replay?.mode === "record" && recordingKey) {
+        await replay.record(recordingKey, result.data, replayNote(safe)).catch((e) => {
+          console.error("AI replay: recording failed:", (e as Error).message);
+        });
+      }
       return result.data;
     }
     problem = describeIssues(result.error);
