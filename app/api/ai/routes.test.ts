@@ -9,6 +9,12 @@ vi.mock("@/lib/ai/llm", async (original) => ({
   generateJson: (...args: unknown[]) => generate(...args),
 }));
 
+const quota = vi.fn();
+vi.mock("@/lib/ai/usage", async (original) => ({
+  ...(await original<typeof import("@/lib/ai/usage")>()),
+  dailyQuotaForCurrentUser: () => quota(),
+}));
+
 const { POST: hintsRoute } = await import("./hints/route");
 const { POST: applicationRoute } = await import("./application/route");
 const { GET: callsRoute } = await import("./calls/route");
@@ -27,6 +33,7 @@ const post = (body: unknown, fixedIp?: string) =>
   });
 
 beforeEach(() => {
+  quota.mockReset().mockResolvedValue({ ok: true, left: null });
   generate.mockReset();
   vi.stubEnv("LLM_BASE_URL", "http://llm");
   vi.stubEnv("LLM_MODEL", "m");
@@ -54,6 +61,14 @@ describe("AI creator endpoints", () => {
     expect(ApplicationResponse.safeParse(await ok.json()).success).toBe(true);
     const missing = await applicationRoute(post({ idea, call_id: "nie-ma" }));
     expect(missing.status).toBe(404);
+  });
+
+  it("refuses with 429 over the daily per-user limit, before asking the model", async () => {
+    quota.mockResolvedValue({ ok: false });
+    const res = await hintsRoute(post({ idea }));
+    expect(res.status).toBe(429);
+    expect((await res.json()).error).toMatch(/limit 100 próśb/);
+    expect(generate).not.toHaveBeenCalled();
   });
 
   it("rejects an invalid body in plain Polish", async () => {
