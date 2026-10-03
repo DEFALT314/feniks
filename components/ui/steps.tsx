@@ -36,7 +36,7 @@ function Steps({ label, steps, currentId, className }: StepsProps) {
                 )}
               >
                 <span>{step.label}</span>
-                <span className={cn("text-base", !current && "text-muted-foreground")}>
+                <span className={cn("text-base tabular-nums", !current && "text-muted-foreground")}>
                   <span className="sr-only">wypełniono </span>
                   <span aria-hidden="true">
                     {step.done}/{step.total}

@@ -3,6 +3,7 @@ import {
   accountItemsFor,
   isActivePath,
   navItemsFor,
+  notificationsBadge,
   notificationsLabel,
   roleLabel,
 } from "./navigation";
@@ -78,6 +79,13 @@ describe("labels", () => {
     expect(notificationsLabel(5)).toBe("Powiadomienia: 5 nowych");
     expect(notificationsLabel(12)).toBe("Powiadomienia: 12 nowych");
     expect(notificationsLabel(22)).toBe("Powiadomienia: 22 nowe");
+  });
+
+  it("caps the visible unread badge at 99+ so it never grows wider", () => {
+    expect(notificationsBadge(7)).toBe("7");
+    expect(notificationsBadge(99)).toBe("99");
+    expect(notificationsBadge(100)).toBe("99+");
+    expect(notificationsBadge(1234)).toBe("99+");
   });
 
   it("names roles in plain Polish", () => {

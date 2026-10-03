@@ -73,9 +73,11 @@ export function Wizard({
             aria-valuetext={stepLabel(index)}
             className="bg-neutral-soft h-2 overflow-hidden rounded-full"
           >
+            {/* Filled with the `scale` property, not `width`: no layout on every step, and it
+                composes with the entrance animation, which runs on `transform` (motion.tsx) */}
             <div
-              className="bg-navy h-full transition-[width] duration-(--duration-slow) motion-reduce:transition-none"
-              style={{ width: `${((index + 1) / fields.length) * 100}%` }}
+              className="bg-navy h-full w-full origin-left transition-[scale] duration-(--duration-slow) motion-reduce:transition-none"
+              style={{ scale: `${(index + 1) / fields.length} 1` }}
             />
           </div>
         </div>

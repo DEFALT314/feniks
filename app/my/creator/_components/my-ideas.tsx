@@ -61,7 +61,7 @@ function IdeaSummary({ idea }: { idea: MyIdea }) {
         <h3 className="text-[1.375rem] leading-snug font-bold">{idea.tytul}</h3>
         <Badge variant={status.badge}>{status.label}</Badge>
       </div>
-      <p className="text-muted-foreground text-base">
+      <p className="text-muted-foreground text-base tabular-nums">
         Kanwa: {done} z {fields.length} pytań
         {idea.etap ? ` · etap: ${STAGE_LABELS[idea.etap]}` : ""} · zmieniono{" "}
         {dateTime.format(new Date(idea.updated_at))}
