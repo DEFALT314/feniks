@@ -9,6 +9,7 @@ export const ADMIN_TABS: Tab[] = [
   { label: "Nowe pomysły", href: "/admin" },
   { label: "Prośby o rolę", href: "/admin/roles" },
   { label: "Biblioteka", href: "/admin/library" },
+  { label: "Karty usług", href: "/admin/cards" },
   { label: "Nabory", href: "/admin/calls" },
   { label: "Potrzeby w regionie", href: "/admin/trends" },
 ];

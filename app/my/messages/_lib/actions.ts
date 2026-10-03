@@ -30,6 +30,7 @@ export async function startAction(_prev: FormState, formData: FormData): Promise
     tresc: formData.get("tresc"),
     ideaId: text("idea"),
     innowacjaId: text("innovation"),
+    participants: text("to") ? [text("to")!] : undefined,
   });
   if (!result.ok) return { error: result.message };
   revalidatePath("/my/messages");
