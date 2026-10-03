@@ -1,79 +1,85 @@
-# HubMI.pl – instrukcje dla Claude Code
+# HubMI.pl – instructions for Claude Code
 
-## Projekt
-HackYeah 2026, zadanie ROPS Kraków: Małopolski Hub Innowacji Społecznych. Siedem modułów:
-I Matchmaking (obowiązkowy), II Zasobnik wiedzy, III Kreator pomysłów, IV Tester innowacji,
-V Komunikacja, VI Panel administratora, VII Middleman. Budujemy tak, jakby aplikacja miała
-zostać wdrożona w ROPS. Interfejs po polsku, prostym językiem, bez angielskich słów.
+## Project
+HackYeah 2026, ROPS Kraków challenge: Małopolski Hub Innowacji Społecznych (Małopolska Social Innovation Hub).
+Seven modules: I Matchmaking (mandatory), II Knowledge base (Zasobnik wiedzy), III Idea creator (Kreator pomysłów),
+IV Innovation tester (Tester innowacji), V Messages (Komunikacja), VI Admin panel, VII Middleman. We build it as if
+the app were going to be deployed at ROPS. The user interface is in Polish, in plain language, with no English words.
 
-## Stos
+## Stack
 - Next.js (App Router, TypeScript), Tailwind + shadcn/ui, Vercel (region `fra1`).
 - Supabase: Postgres + pgvector, Auth, Realtime, Storage.
-- Hugging Face: prywatny Space z `sdadas/mmlw-e5-small` (embeddingi 384, prefiksy `query: ` i `passage: `);
-  Inference Providers: DeepSeek V4.1 Flash przez router zgodny z OpenAI oraz model do obrazów.
+- Hugging Face: private Space with `sdadas/mmlw-e5-small` (384-dim embeddings, prefixes `query: ` and `passage: `);
+  Inference Providers: DeepSeek V4.1 Flash through an OpenAI-compatible router, plus an image model.
 - E-mail: Resend.
 
-## Właściciele folderów (nie edytuj cudzych; potrzebna zmiana → napisz do właściciela)
-| Osoba | Foldery |
+## Folder owners (don't edit other people's folders; need a change → message the owner)
+| Person | Folders |
 |---|---|
-| P1 Radek – Treść i Zasobnik | `app/biblioteka/`, `app/mapa-wyzwan/`, `app/zasoby/`, `app/api/zasoby/`, `scripts/seed/`, `supabase/seed.sql`, `docs/`, `pitch/` |
-| P2 Paweł – Interfejs i Kreator | `components/ui/`, `app/layout.tsx`, `app/page.tsx`, `app/logowanie/`, `app/moje/kreator/`, `app/moje/tester/`, `app/api/kreator/`, `app/api/tester/`, `styles/`, `design/` |
-| P3 Konrad – AI i dopasowanie | `app/dopasuj/`, `app/moje/middleman/`, `app/api/match/`, `app/api/ai/`, `lib/ai/`, `hf-space/`, `scripts/embed.py`, `evals/`, `data/derived/` |
-| P4 Domik – Platforma i ROPS | `middleware.ts`, `lib/auth/`, `lib/supabase/`, `app/admin/`, `app/moje/wiadomosci/`, `app/api/admin/`, `app/api/wiadomosci/`, `app/api/powiadomienia/`, `app/api/cron/`, `app/api/demo/`, `lib/powiadomienia.ts`, `lib/audit.ts`, `supabase/migrations/*_wspolne.sql`, `supabase/seed_demo.sql`, `.github/`, konfiguracja Vercel |
+| P1 Radek – Content and Knowledge base | `app/biblioteka/`, `app/mapa-wyzwan/`, `app/zasoby/`, `app/api/zasoby/`, `scripts/seed/`, `supabase/seed.sql`, `docs/`, `pitch/` |
+| P2 Paweł – Interface and Idea creator | `components/ui/`, `app/layout.tsx`, `app/page.tsx`, `app/logowanie/`, `app/moje/kreator/`, `app/moje/tester/`, `app/api/kreator/`, `app/api/tester/`, `styles/`, `design/` |
+| P3 Konrad – AI and matching | `app/dopasuj/`, `app/moje/middleman/`, `app/api/match/`, `app/api/ai/`, `lib/ai/`, `hf-space/`, `scripts/embed.py`, `evals/`, `data/derived/` |
+| P4 Dominik – Platform and ROPS | `middleware.ts`, `lib/auth/`, `lib/supabase/`, `app/admin/`, `app/moje/wiadomosci/`, `app/api/admin/`, `app/api/wiadomosci/`, `app/api/powiadomienia/`, `app/api/cron/`, `app/api/demo/`, `lib/powiadomienia.ts`, `lib/audit.ts`, `supabase/migrations/*_wspolne.sql`, `supabase/seed_demo.sql`, `.github/`, Vercel configuration |
 
-Wspólne: `lib/contracts/` (każdy edytuje tylko plik swojego modułu), `data/rops/` (tylko do odczytu).
+Shared: `lib/contracts/` (everyone edits only their own module's file), `data/rops/` (read-only).
 
-## Zasady
-0. **Wygląd:** każdy ekran budujesz według makiety z `design/makiety/` (tabela w `design/makiety/README.md`),
-   na komponentach z `components/ui/`. Nie wymyślaj własnych kolorów ani układów.
-1. **Logowanie:** zawsze `getCurrentUser()` z `lib/auth`. Strony `/admin/*` sprawdzają rolę na serwerze
-   w layoucie. Middleware tylko odświeża sesję i nie jest zabezpieczeniem.
-2. **Baza:** każda nowa tabela w nowej migracji `supabase/migrations/<YYYYMMDDHHMM>_<modul>_<opis>.sql`,
-   z `enable row level security` i politykami. Nie edytuj cudzych ani już scalonych migracji.
-   Role: `mieszkaniec`, `ngo`, `jst`, `ekspert`, `rops_redaktor`, `rops_admin` (funkcja SQL `public.moja_rola()`).
-3. **Dostęp do danych:** endpointy i Server Components używają klienta z sesją użytkownika
-   (`lib/supabase/server.ts`). Klucz serwisowy tylko w `app/api/cron/`, `app/api/demo/` i skryptach.
-4. **Kontrakty:** schemat zod w `lib/contracts/<modul>.ts`, przykładowe dane w `lib/contracts/fixtures/<modul>.json`.
-   Korzystasz z cudzego endpointu, który jeszcze nie działa → pracuj na fixtures. Po 17:00 kontrakty
-   zmieniamy tylko przez dodanie pól.
-5. **AI:** tylko przez `lib/ai/llm.ts` (zmienne `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY`). Model wybiera
-   wyłącznie spośród przekazanych identyfikatorów albo zwraca „brak”. Odpowiedź JSON sprawdzana zod,
-   jedno ponowienie. Każdy tekst z AI ma etykietę „Propozycja AI”; nic nie jest publikowane ani wysyłane
-   bez kliknięcia człowieka. Do AI nie trafiają dane osobowe.
-6. **Sekrety:** tylko w zmiennych serwera. W `NEXT_PUBLIC_*` wyłącznie adres i publiczny klucz Supabase.
-7. **Dostępność (WCAG 2.1 AA, projektujemy pod 2.2):** semantyczny HTML, etykiety pól, widoczny fokus,
-   kontrast 4,5:1, pełna obsługa klawiaturą, `aria-live="polite"` dla odpowiedzi AI i powiadomień,
-   cele dotykowe co najmniej 44 px, `lang="pl"`, układ działa przy powiększeniu 200%.
-8. **Dane:** tylko fikcyjne osoby. Materiały ROPS z `data/rops/` (opis: `docs/MATERIALY_ROPS.md`)
-   zawsze z linkiem do źródła; bez nazwisk autorów innowacji.
-9. **Licencje:** tylko biblioteki MIT, Apache, BSD lub ISC. Nie dodawaj pliku LICENSE. Nie kopiuj cudzego
-   kodu, tekstów ani grafik.
-10. **Praca:** małe zmiany, commity po polsku, PR do `main` z linkiem do podglądu Vercel, zielone CI
-    (typecheck, lint, testy jednostkowe, test axe). Scalanie robi P4 co godzinę w oknie :00–:10.
-11. **Testy jednostkowe:** każda zmiana logiki (funkcje w `lib/`, endpointy w `app/api/`, schematy zod,
-    walidacja, uprawnienia) ma testy jednostkowe w tym samym PR, żeby uniknąć regresji. Naprawiasz błąd →
-    najpierw test, który go odtwarza, potem poprawka. Testy obok kodu (`*.test.ts`), bez sieci i prawdziwej
-    bazy (AI i Supabase zastępujesz atrapami albo fixtures). Nie usuwaj ani nie wyłączaj cudzych testów, żeby
-    przeszło CI.
+## Rules
+0. **Look:** build every screen from its mockup in `design/makiety/` (table in `design/makiety/README.md`),
+   using components from `components/ui/`. Don't invent your own colors or layouts.
+1. **Auth:** always `getCurrentUser()` from `lib/auth`. `/admin/*` pages check the role on the server
+   in the layout. Middleware only refreshes the session and is not a security boundary.
+2. **Database:** every new table goes in a new migration `supabase/migrations/<YYYYMMDDHHMM>_<module>_<description>.sql`,
+   with `enable row level security` and policies. Don't edit other people's or already merged migrations.
+   Roles: `mieszkaniec`, `ngo`, `jst`, `ekspert`, `rops_redaktor`, `rops_admin` (SQL function `public.moja_rola()`).
+3. **Data access:** endpoints and Server Components use the client with the user's session
+   (`lib/supabase/server.ts`). The service key only in `app/api/cron/`, `app/api/demo/` and scripts.
+4. **Contracts:** zod schema in `lib/contracts/<module>.ts`, sample data in `lib/contracts/fixtures/<module>.json`.
+   Using someone else's endpoint that doesn't work yet → work on fixtures. After 17:00 contracts
+   change only by adding fields.
+5. **AI:** only through `lib/ai/llm.ts` (variables `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY`). The model picks
+   only from the identifiers it was given or returns "none". The JSON response is validated with zod,
+   one retry. Every AI text carries the label „Propozycja AI”; nothing is published or sent
+   without a human click. No personal data goes to AI.
+6. **Secrets:** server-side variables only. `NEXT_PUBLIC_*` holds only the Supabase URL and public key.
+7. **Accessibility (WCAG 2.1 AA, designing for 2.2):** semantic HTML, field labels, visible focus,
+   4.5:1 contrast, full keyboard support, `aria-live="polite"` for AI responses and notifications,
+   touch targets at least 44 px, `lang="pl"`, layout works at 200% zoom.
+8. **Data:** fictional people only. ROPS materials from `data/rops/` (description: `docs/MATERIALY_ROPS.md`)
+   always with a link to the source; no names of innovation authors.
+9. **Licenses:** only MIT, Apache, BSD or ISC libraries. Don't add a LICENSE file. Don't copy other people's
+   code, texts or graphics.
+10. **Workflow:** small changes, commit messages in English, PR to `main` with a link to the Vercel preview, green CI
+    (typecheck, lint, unit tests, axe test). Everyone merges their own PR once CI is green and it merges
+    cleanly with `main`.
+11. **Unit tests:** every logic change (functions in `lib/`, endpoints in `app/api/`, zod schemas,
+    validation, permissions) comes with unit tests in the same PR, to prevent regressions. Fixing a bug →
+    first a test that reproduces it, then the fix. Tests live next to the code (`*.test.ts`), with no network and no real
+    database (replace AI and Supabase with mocks or fixtures). Don't delete or disable other people's tests to make
+    CI pass. A PR with new code and no unit tests is not ready.
+12. **English everywhere except the UI:** variable, function, type, component, file and folder names, comments,
+    test names, commit messages and this file are in English (e.g. `lib/matching/score.ts`, `MatchCard.tsx`, not `wynik.ts`).
+    Only what the user sees stays in Polish: interface texts and page addresses (route folders in `app/`,
+    e.g. `app/biblioteka/`), plus database column names and existing contract fields. Don't rename existing
+    Polish names in passing, only in a separate PR.
 
-## Zadania (GitHub Issues)
-Każda osoba ma etykietę P1–P4 (P1 Radek, P2 Paweł, P3 Konrad, P4 Domik); kamienie milowe M1–M6 to kolejność. Start sesji: `/zadanie P3` (swoja etykieta).
-1. `gh issue list --label P3 --state open --json number,title,milestone,labels` i wybierz zadanie z najwcześniejszego
-   kamienia, bez etykiety `w toku`. Przy remisie najpierw to, które w sekcji „Blokuje” ma innych ludzi.
-2. `gh issue view <nr>`: przeczytaj checklistę i sekcję **Zależności**. Dla każdego „Blokowane przez #X” sprawdź
-   `gh issue view X --json state`. Otwarte → nie czekaj: pracuj na `lib/contracts/fixtures/`, a w PR napisz, co podmienić.
-   Brak nawet kontraktu → weź inne niezablokowane zadanie.
-3. `gh issue edit <nr> --add-label "w toku"`, gałąź `p3/<nr>-krotki-opis`. Pokaż człowiekowi plan w 3–6 punktach
-   i zacznij po jego „ok”.
-4. Koniec: PR z `Closes #<nr>` i odhaczoną checklistą. Blokuje Cię coś spoza listy → komentarz w issue,
-   etykieta `zablokowane`, napisz do właściciela.
-Nie zamykaj i nie edytuj cudzych issues poza komentarzem.
+## Tasks (GitHub Issues)
+Each person has a label P1–P4 (P1 Radek, P2 Paweł, P3 Konrad, P4 Dominik); milestones M1–M6 give the order. Session start: `/zadanie P3` (your own label).
+1. `gh issue list --label P3 --state open --json number,title,milestone,labels` and pick a task from the earliest
+   milestone, without the `w toku` label. On a tie, first the one whose "Blokuje" (Blocks) section lists other people.
+2. `gh issue view <nr>`: read the checklist and the **Zależności** (Dependencies) section. For each "Blokowane przez #X" (Blocked by) check
+   `gh issue view X --json state`. Open → don't wait: work on `lib/contracts/fixtures/`, and say in the PR what to swap.
+   Not even a contract yet → take another unblocked task.
+3. `gh issue edit <nr> --add-label "w toku"`, branch `p3/<nr>-short-description`. Show the human a 3–6 point plan
+   and start after their "ok".
+4. Done: PR with `Closes #<nr>` and the checklist ticked. Blocked by something outside the list → comment on the issue,
+   label `zablokowane`, message the owner.
+Don't close or edit other people's issues beyond commenting.
 
-## Dane i testy
-- `data/rops/*.json` to źródło danych startowych; `supabase/seed.sql` generuje skrypt z `scripts/seed/`.
-- Kanwa Kreatora czytana statycznie z `data/rops/canvas_innowacji.json`.
-- Test trafności Matchmakingu: `data/rops/gold_matchmaking.jsonl`, cel co najmniej 80% w top 3.
+## Data and tests
+- `data/rops/*.json` is the source of seed data; `supabase/seed.sql` is generated by the script in `scripts/seed/`.
+- The Idea creator canvas is read statically from `data/rops/canvas_innowacji.json`.
+- Matchmaking accuracy test: `data/rops/gold_matchmaking.jsonl`, target at least 80% in the top 3.
 
-## Tryb demonstracyjny
-`DEMO_MODE=true`: ekran „Wejdź jako…” z kontami demo (`/api/demo/login`) i pasek
-„Tryb demonstracyjny – dane fikcyjne”. W produkcji wyłączony.
+## Demo mode
+`DEMO_MODE=true`: a „Wejdź jako…” screen with demo accounts (`/api/demo/login`) and a
+„Tryb demonstracyjny – dane fikcyjne” banner. Disabled in production.

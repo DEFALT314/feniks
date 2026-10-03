@@ -2,9 +2,9 @@
 
 import type { ComponentProps } from "react";
 
-// Formularz GET: filtry lądują w adresie strony. Zaznaczenie pola od razu odświeża wyniki,
-// a bez JavaScriptu działa przycisk „Pokaż wyniki”.
-export function FormularzFiltrow(props: ComponentProps<"form">) {
+// GET form: filters end up in the page URL. Ticking a checkbox refreshes the results right away,
+// and without JavaScript the "Pokaż wyniki" button works.
+export function FilterForm(props: ComponentProps<"form">) {
   return (
     <form
       method="get"

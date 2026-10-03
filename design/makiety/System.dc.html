@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <title>HubMI – system wizualny</title>
 <script src="./support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="./ruch.js"></script>
 </head>
 <body>
 <x-dc>
@@ -36,16 +39,39 @@ mark{background:linear-gradient(transparent 55%,#FFE08A 55%);color:inherit;paddi
 label{font-weight:700}
 input,textarea{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
 section{padding:44px 0;border-bottom:1px solid #D9DDE4;display:flex;flex-direction:column;gap:20px}
+/* Ruch i stany – wspólne dla wszystkich ekranów (w aplikacji: tokeny w globals.css) */
+:root{--ruch-szybko:120ms;--ruch:200ms;--ruch-wolno:420ms;--ease:cubic-bezier(.16,1,.3,1)}
+html{scrollbar-color:#B8C0CD #F6F7F9;caret-color:#1F3A8A}
+::selection{background:#FFE08A;color:#151A23}
+a{text-decoration-thickness:1px;transition:color var(--ruch) var(--ease),text-underline-offset var(--ruch) var(--ease),text-decoration-color var(--ruch) var(--ease)}
+a:hover{text-underline-offset:5px}
+.arr{display:inline-block;margin-left:.3em;transition:transform var(--ruch) var(--ease)}
+a:hover .arr{transform:translateX(4px)}
+.btn{transition:background-color var(--ruch) var(--ease),border-color var(--ruch) var(--ease),color var(--ruch) var(--ease),box-shadow var(--ruch) var(--ease),transform var(--ruch-szybko) var(--ease)}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn-p:hover{background:#172C6B;color:#fff;box-shadow:0 2px 8px -2px rgba(23,44,107,.35)}
+.btn-s:hover{background:#E8EDFA;color:#172C6B}
+.btn-t:hover{color:#172C6B;text-underline-offset:5px}
+.btn-d:hover{background:#FDECEA;color:#912018}
+a.card{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) var(--ease)}
+a.card:hover{border-color:#8A99C7;box-shadow:0 8px 20px -10px rgba(21,26,35,.22)}
+input:not([type=radio]):not([type=checkbox]),textarea,select{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) var(--ease)}
+input:not([type=radio]):not([type=checkbox]):hover,textarea:hover,select:hover{border-color:#4B5565}
+input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:1ms!important;animation-delay:0ms!important;transition-property:color,background-color,border-color,box-shadow,text-decoration-color!important}
+  .btn:active{transform:none}
+}
 </style>
 </helmet>
 <div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
   <main class="wrap">
-    <section style="padding-top: 64px">
+    <section data-ruch="wejscie" style="padding-top: 64px">
       <span class="lbl">HubMI · system wizualny v2</span>
       <h1 class="h" style="font-size: 52px">Spokojny, czytelny, urzędowy, ale ciepły</h1>
       <p style="max-width: 820px; font-size: 20px">Jasne tło, granat jako kolor działania, ceglasty akcent i zieleń dla rzeczy sprawdzonych. Nagłówki w Bricolage Grotesque, tekst w Atkinson Hyperlegible Next: kroju zaprojektowanym z myślą o osobach słabowidzących. Każdy kolor tekstu ma kontrast co najmniej 4,5:1.</p>
     </section>
-    <section>
+    <section data-ruch="pokaz">
       <h2 class="h" style="font-size: 28px">Kolory</h2>
       <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px">
         <div class="sw"><div style="background: #1F3A8A"></div><div><strong>Granat</strong><br>#1F3A8A · działanie, linki<br><span class="muted">biały tekst 10,3:1</span></div></div>
@@ -60,14 +86,14 @@ section{padding:44px 0;border-bottom:1px solid #D9DDE4;display:flex;flex-directi
         <div class="sw"><div style="background: #D9DDE4"></div><div><strong>Linia</strong><br>#D9DDE4 · obramowania</div></div>
       </div>
     </section>
-    <section>
+    <section data-ruch="pokaz">
       <h2 class="h" style="font-size: 28px">Typografia</h2>
       <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
         <div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px"><span class="lbl">Nagłówki · Bricolage Grotesque 700</span><span class="h" style="font-size: 44px">Mapa wyzwań</span><span class="muted">Zdania, nie wersaliki. Ciasne odstępy między literami.</span></div>
         <div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px"><span class="lbl">Tekst · Atkinson Hyperlegible Next 400/700, 18 px</span><span style="font-size: 22px; font-weight: 700">Opisz problem własnymi słowami</span><span>Litery łatwe do odróżnienia (I, l, 1; O, 0). Interlinia 1,6, krótkie zdania.</span></div>
       </div>
     </section>
-    <section>
+    <section data-ruch="pokaz">
       <h2 class="h" style="font-size: 28px">Przyciski, etykiety, wyróżnienia</h2>
       <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
         <button type="button" class="btn btn-p">Dopasuj</button>
@@ -87,14 +113,14 @@ section{padding:44px 0;border-bottom:1px solid #D9DDE4;display:flex;flex-directi
       </div>
       <p>Słowa, które zdecydowały o dopasowaniu, podkreślamy zakreślaczem: rodzina nie wie, jak zorganizować <mark>opiekę w domu</mark> po <mark>wypisie ze szpitala</mark>.</p>
     </section>
-    <section>
+    <section data-ruch="pokaz">
       <h2 class="h" style="font-size: 28px">Pola formularza</h2>
       <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
         <div style="display: flex; flex-direction: column; gap: 6px"><label for="s-opis">Opisz problem</label><span id="s-opis-h" class="muted" style="font-size: 16px">Nie podawaj imion ani nazwisk.</span><textarea id="s-opis" aria-describedby="s-opis-h" rows="3">Samotni seniorzy na wsi nie wychodzą z domu.</textarea></div>
         <div style="display: flex; flex-direction: column; gap: 6px"><label for="s-mail">Adres e-mail</label><span id="s-mail-e" style="font-size: 16px; color: #B42318; font-weight: 700">Wpisz adres w formie nazwa@domena.pl</span><input id="s-mail" type="email" aria-invalid="true" aria-describedby="s-mail-e" value="stanislaw@" style="border: 2px solid #B42318"></div>
       </div>
     </section>
-    <section style="border-bottom: none; padding-bottom: 64px">
+    <section data-ruch="pokaz" style="border-bottom: none; padding-bottom: 64px">
       <h2 class="h" style="font-size: 28px">Zasady</h2>
       <ul style="margin: 0; padding-left: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 32px">
         <li>Tekst 18 px, kontrast co najmniej 4,5:1.</li>
@@ -105,6 +131,7 @@ section{padding:44px 0;border-bottom:1px solid #D9DDE4;display:flex;flex-directi
         <li>Wyniki AI ogłaszane czytnikom ekranu (aria-live).</li>
         <li>Układ działa przy 200% i na ekranie 320 px.</li>
         <li>Przycisk A+ powiększa tekst i podnosi kontrast.</li>
+        <li>Ruch (GSAP, <code>ruch.js</code>): wejścia i odsłony 420 ms, krzywa expo.out; przy ograniczeniu ruchu treść od razu na miejscu.</li>
       </ul>
     </section>
   </main>

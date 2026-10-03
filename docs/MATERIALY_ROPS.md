@@ -14,7 +14,7 @@ Stan: 3.10.2026, pobrane ze stron rops.krakow.pl.
 | `canvas_innowacji.json` | Social Innovation Canvas INNO AGH: 3 arkusze, 22 pola z typem (jeden wybór, wiele, skala, macierz) i opcjami | III Kreator pomysłów |
 | `biblioteka_spoza.json` + `biblioteka_spoza_notatki.md` | 43 innowacje z inkubatorów ROPS, których nie ma w Bibliotece online (20 z MIIS 2016–2019, 23 z IWS 2.0). 9 ma pełny opis (`do_matchmakingu: true`), 34 tylko nazwę, program i instytucję | II Zasobnik; do Matchmakingu tylko pełne |
 | `raporty_i_publikacje.json` | 51 raportów z badań ROPS (2010–2026) z tagami + 6 publikacji o innowacjach | II Zasobnik |
-| `scripts/sync-biblioteka.mjs` | Skrypt do ponownego pobrania Biblioteki (pełne teksty sekcji) | II, szybka aktualizacja |
+| `scripts/sync-library.mjs` | Skrypt do ponownego pobrania Biblioteki (pełne teksty sekcji) | II, szybka aktualizacja |
 
 ## Liczby, które warto znać
 
