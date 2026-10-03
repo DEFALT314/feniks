@@ -1,0 +1,749 @@
+{
+ "description": "Colloquial problem statements per innovation (doc2query), embedded as extra chunks so plain-language queries reach formal descriptions. Written from the innovation descriptions only, never from przyklady_zapytan (the accuracy test set). Library items: written by Claude; items from outside the Library: generated with DeepSeek V4.1 Flash.",
+ "queries": {
+  "bawita": [
+   "Mama ma początki demencji i trzeba jej ćwiczyć głowę i ręce",
+   "W domu dziennym brakuje pomocy do zajęć dla osób z otępieniem",
+   "Tata po wylewie nie radzi sobie z planowaniem dnia",
+   "Szukam czegoś do rehabilitacji pamięci dla dorosłych, nie dziecięcych zabawek"
+  ],
+  "senior-cuder": [
+   "Babcia jest samotna i nie rozmawia z rodziną",
+   "Seniorzy w klubie siedzą osobno i się nie otwierają",
+   "Jak zmotywować starszych ludzi, żeby dbali o siebie",
+   "Potrzebujemy gry, która pobudzi rozmowy o emocjach wśród starszych"
+  ],
+  "merkury": [
+   "Seniorzy boją się korzystać z bankomatu i paczkomatu",
+   "Klub seniora chce przećwiczyć obsługę urządzeń samoobsługowych",
+   "Babcia nie potrafi obsłużyć kasy samoobsługowej w sklepie",
+   "Jak nauczyć starsze osoby obsługi nowych urządzeń bez stresu"
+  ],
+  "organizator-kompleksowej-opieki-w-miejscu-zamieszkania": [
+   "Tata wychodzi ze szpitala i nie wiemy, jak zorganizować opiekę w domu",
+   "Rodzina jest przerażona opieką nad leżącym bliskim",
+   "Po wypisie ze szpitala potrzebny sprzęt i pomoc od zaraz",
+   "Osoba niesamodzielna wraca do domu, a bliscy nie dają rady"
+  ],
+  "przenosne-modularne-lazienki": [
+   "W mieszkaniu nie ma łazienki ani prysznica",
+   "Stara kamienica bez łazienki, a nie stać nas na remont",
+   "Senior myje się w misce, bo nie ma toalety w mieszkaniu",
+   "Jak szybko dać łazienkę w lokalu bez przebudowy"
+  ],
+  "terapeuta-przestrzeni": [
+   "Mama nie radzi sobie sama w mieszkaniu i boimy się, że trafi do DPS",
+   "Jak tanio przystosować mieszkanie dla starszej osoby",
+   "Dziadek potyka się o meble i progi w domu",
+   "Senior chce zostać u siebie, ale dom jest dla niego niewygodny"
+  ],
+  "talerze-zdrowia": [
+   "Seniorzy jedzą byle co i nie wiedzą, jak komponować posiłki",
+   "Osoby z niepełnosprawnością intelektualną nie umieją zdrowo gotować",
+   "Jak prosto nauczyć zdrowego odżywiania",
+   "Podopieczni mają złą dietę i trzeba ich nauczyć planować obiad"
+  ],
+  "therapy-set": [
+   "W DPS brakuje pomocy do terapii dla leżących mieszkańców",
+   "Chcemy sami zrobić pomoce terapeutyczne na warsztatach",
+   "Tanie materiały do zajęć z seniorami w łóżku",
+   "Szukamy scenariuszy zajęć terapeutycznych dla starszych"
+  ],
+  "sciezka-treningu-umyslu": [
+   "Seniorzy chcą ćwiczyć umysł na świeżym powietrzu",
+   "Pomysł na park, który pobudza pamięć i koncentrację",
+   "Gmina chce zrobić miejsce do ćwiczeń dla głowy, nie tylko siłownię",
+   "Starsi ludzie tracą refleks i chcą go trenować"
+  ],
+  "edu-gra-hahaha": [
+   "Seniorzy są przygaszeni i potrzebują dawki energii i śmiechu",
+   "Jak zintegrować grupę starszych osób na zajęciach",
+   "Ludzie w klubie są zestresowani i spięci, chcemy ich rozluźnić",
+   "Szukamy zabawy bez rywalizacji, która poprawi nastrój"
+  ],
+  "obu-obuwie-po-domu": [
+   "Babcia ślizga się w kapciach i już raz upadła",
+   "Starsze osoby przewracają się w domu",
+   "Jakie obuwie domowe chroni seniora przed upadkiem",
+   "Dziadek ma problem z założeniem butów i chodzi boso"
+  ],
+  "centrum-antydepresyjne": [
+   "Babcia ma depresję i nie wychodzi z domu",
+   "Starszy człowiek jest przygnębiony, apatyczny i nic go nie cieszy",
+   "Jak pomóc seniorowi w kryzysie psychicznym w jego domu",
+   "Rodzina nie wie, jak wspierać starszą osobę z depresją"
+  ],
+  "zeglowanie-w-wyobrazni-czyli-sposob-na-strachy-na-wodzie": [
+   "Senior boi się wody i nie wejdzie do łódki",
+   "Osoba na wózku chce spróbować żeglowania, ale się boi",
+   "Jak oswoić lęk przed wodą bezpiecznie",
+   "Starsi ludzie paraliżuje strach przed jeziorem"
+  ],
+  "stworzenie-narzedzia-ulatwiajacego-seniorom-prawidlowe-regulowanie-spraw-spadkowych": [
+   "Seniorzy w ośrodku pytają o dziedziczenie i formalności",
+   "Kto dziedziczy po mamie, jeśli nie zostawiła testamentu",
+   "Seniorzy pytają o sprawy spadkowe",
+   "Jak starsza osoba może sama uporządkować sprawy majątkowe"
+  ],
+  "mobilne-centrum-pomocy-dla-osob-starszych": [
+   "Seniorzy na wsi nie mają dostępu do prawnika i dietetyka",
+   "Starsi mieszkańcy daleko od miasta zostają bez porad",
+   "Jak dotrzeć z pomocą do starszych ludzi w małych miejscowościach",
+   "Babcia nie umie zaplanować budżetu domowego i nikt jej nie doradzi"
+  ],
+  "kody-qr-na-pomoc-seniorom": [
+   "Tata z alzheimerem wychodzi z domu i się gubi",
+   "Babcia nie pamięta adresu, gdy zabłądzi",
+   "Jak ktoś obcy może pomóc zagubionemu seniorowi",
+   "Boimy się, że mama z demencją zaginie"
+  ],
+  "e-rzecznik-konsumenta-seniora": [
+   "Seniorka podpisała niekorzystną umowę z akwizytorem",
+   "Jak starsza osoba ma złożyć reklamację",
+   "Babcię oszukał sprzedawca i nie wie, co robić",
+   "Seniorzy nie znają swoich praw jako konsumenci"
+  ],
+  "sciezka-motosensoryczna": [
+   "Seniorzy tracą sprawność palców",
+   "Ćwiczenia na dłonie w trakcie spaceru po mieście",
+   "Gmina chce zrobić w parku stanowiska do ćwiczeń dla starszych",
+   "Starsi ludzie boją się wychodzić z domu i ćwiczyć"
+  ],
+  "korytarz-wspomnien": [
+   "Mieszkańcy DPS z demencją się nudzą i nie poznają ludzi",
+   "Jak pobudzić wspomnienia osób z zaburzeniami pamięci",
+   "Chcemy, żeby korytarz w domu opieki był przyjazny",
+   "Seniorzy w placówce czują się obco"
+  ],
+  "wirtualne-izby-pamieci": [
+   "Seniorzy mają wiele historii, które warto ocalić",
+   "Jak zaangażować starszych w zajęcia z fotografii",
+   "Zajęcia łączące wspomnienia starszych i nowe technologie",
+   "Starsi ludzie chcą opowiedzieć o dawnych czasach"
+  ],
+  "paszport-pacjenta-z-choroba-rzadka": [
+   "Dziecko ma rzadką chorobę i lekarze na SOR nie wiedzą, jak postępować",
+   "Ciągle tłumaczymy każdemu lekarzowi chorobę od nowa",
+   "Gdzie zapisać najważniejsze informacje o chorobie i lekach",
+   "Pacjent z rzadką chorobą w nagłym wypadku"
+  ],
+  "himalaje-autyzmu": [
+   "Dziecko w spektrum panikuje u lekarza",
+   "Wizyta w przychodni to koszmar dla osoby z autyzmem",
+   "Jak przygotować autystyczne dziecko do badania krwi",
+   "Osoba z autyzmem nie zniesie pobytu w szpitalu"
+  ],
+  "gra-o-zdrowie": [
+   "Osoby po kryzysie psychicznym boją się wrócić do pracy",
+   "Pacjenci psychiatryczni nie wiedzą, jak szukać zatrudnienia",
+   "Jak ćwiczyć rozmowę z pracodawcą po długiej chorobie",
+   "Zajęcia dla osób z problemami psychicznymi przed powrotem do pracy"
+  ],
+  "telerehabilitacja-oddechowa": [
+   "Mama po covidzie ma duszności i nie dojedzie na rehabilitację",
+   "Jak ćwiczyć oddychanie w domu pod okiem specjalisty",
+   "Pacjenci z chorobami płuc mieszkają daleko od przychodni",
+   "Zdalna rehabilitacja dla osoby z problemami oddechowymi"
+  ],
+  "inteligentny-organizer-do-lekow": [
+   "Tata zapomina brać leki o właściwej porze",
+   "Babcia myli tabletki i dawki",
+   "Jak opiekun może z daleka sprawdzić, czy chory wziął leki",
+   "Mama bierze dużo leków i się w nich gubi"
+  ],
+  "drogowskazy-ajkum": [
+   "Pacjenci błądzą po szpitalu i spóźniają się na badania",
+   "W centrum onkologicznym trudno trafić do gabinetu",
+   "Starsza osoba nie znajdzie drogi w dużym szpitalu",
+   "Jak prowadzić pacjenta krok po kroku po budynku"
+  ],
+  "cold-box": [
+   "Gdzie trzymać insulinę w podróży",
+   "Lek musi być w lodówce, a ja ciągle jestem poza domem",
+   "Dziecko z cukrzycą jedzie na wycieczkę i trzeba chłodzić insulinę",
+   "Upał psuje leki, które muszą być schłodzone"
+  ],
+  "pacjent-pro": [
+   "Pacjent na oddziale psychiatrycznym czuje się zagubiony",
+   "Osoba w kryzysie psychicznym nie wie, co ją czeka w szpitalu",
+   "Jak motywować pacjentów psychiatrii do terapii",
+   "Syn trafił na psychiatrię i jest przerażony"
+  ],
+  "oncotriada": [
+   "Żona usłyszała diagnozę raka i jest w szoku",
+   "Jak wesprzeć kobietę zaraz po diagnozie nowotworu",
+   "Po diagnozie onkologicznej ogarnia strach i nikt nie pomaga",
+   "Pacjentka z rakiem potrzebuje rozmowy z kimś, kto to przeszedł"
+  ],
+  "agencja-pracy-incydentalnej": [
+   "Osoba niepełnosprawna może pracować tylko czasem, bez stałych godzin",
+   "Ludzie chcą dorobić bez zakładania firmy",
+   "Jak dać drobne zlecenia osobom, które nie dadzą rady na etacie",
+   "Bezrobotni z gminy chcą dorywczej pracy"
+  ],
+  "niewypaleni": [
+   "Osoby z niepełnosprawnością intelektualną są przemęczone pracą",
+   "Pracownik się wypala, a nie umie o tym powiedzieć",
+   "Jak rozpoznać wypalenie zawodowe i stres w pracy",
+   "Podopieczni w zakładzie pracy chronionej tracą siły i chęci"
+  ],
+  "konsultant-etr": [
+   "Osoby z niepełnosprawnością intelektualną szukają pracy",
+   "Urząd chce pisać zrozumiałe teksty",
+   "Jak zatrudnić osobę z niepełnosprawnością przy sprawdzaniu tekstów",
+   "Teksty urzędowe są niezrozumiałe dla wielu ludzi"
+  ],
+  "mobilna-gielda-pracy": [
+   "Gmina wiejska ma wysokie bezrobocie i słaby dojazd do instytucji rynku pracy",
+   "Mieszkańcy małych miejscowości nie mają dostępu do doradcy zawodowego",
+   "Jak zorganizować spotkanie z pracodawcami blisko domu",
+   "Bezrobotni nie dojadą do miasta na targi pracy"
+  ],
+  "oddawacze": [
+   "Mam w domu niepotrzebne rzeczy i chcę coś dobrego z nimi zrobić",
+   "Jak oddać używane rzeczy i przy okazji wesprzeć zbiórkę",
+   "Ludzie wyrzucają dobre rzeczy, a fundacja potrzebuje pieniędzy",
+   "Pomysł na zbiórkę charytatywną przez oddawanie przedmiotów"
+  ],
+  "szlakiem-ludzi-bezdomnych": [
+   "Streetworkerzy widzą, że ludzie z ulicy chodzą brudni i zawstydzeni",
+   "Jak zapewnić higienę ludziom żyjącym na ulicy",
+   "Bezdomni zimą nie mają dostępu do prysznica",
+   "Mobilna łaźnia dla osób w kryzysie bezdomności"
+  ],
+  "wiejski-program-pomocy-osobom-w-kryzysie-bezdomnosci-sciezka-feniksa": [
+   "Bezdomni w gminie wiejskiej nie mają gdzie pójść",
+   "Jak pomóc osobom bezdomnym wyjść z bezdomności na stałe",
+   "Noclegownia nie rozwiązuje problemu bezdomności",
+   "Praca dla osób bezdomnych zamiast schroniska"
+  ],
+  "komix-zyciowy": [
+   "Wychowawcy placówki szukają narzędzia do rozmowy o uczuciach z podopiecznymi",
+   "Młodzież w pieczy zastępczej ma trudność z dorosłym życiem",
+   "Jak przygotować wychowanków placówki do samodzielności",
+   "Dzieci z rodzin zastępczych są pełne złości i lęku"
+  ],
+  "patryk-i-kropka": [
+   "Nastolatki z niepełnosprawnością intelektualną nie rozumieją dojrzewania",
+   "Jak prosto opowiedzieć młodzieży o problemach nastolatków",
+   "Prosta lektura dla młodzieży z trudnościami w czytaniu",
+   "Młodzi z niepełnosprawnością mają kłopot z relacjami"
+  ],
+  "edki-kredki-terapeutyczne": [
+   "Dziecko ma spastyczną rękę i nie utrzyma kredki",
+   "Syn z porażeniem mózgowym zaciska dłoń",
+   "Jak ułatwić rysowanie dziecku z niesprawną ręką",
+   "Rehabilitacja dłoni dziecka w trakcie zabawy"
+  ],
+  "rodzina-adopcyjna-dorasta": [
+   "Adoptowany nastolatek się buntuje, a my nie wiemy, jak reagować",
+   "Rodzice adopcyjni nie rozumieją zachowań dorastającego dziecka",
+   "Dziecko adoptowane w okresie dojrzewania pyta o przeszłość",
+   "Jak wspierać rodzinę adopcyjną z nastolatkiem"
+  ],
+  "puzzle-3d": [
+   "Niewidome dziecko nie wie, jak wyglądają zwierzęta",
+   "Zabawki dla dzieci słabowidzących, które ćwiczą dotyk",
+   "Jak uczyć alfabetu Braille'a przez zabawę",
+   "Pomoce dydaktyczne dla niewidomych przedszkolaków"
+  ],
+  "hop-hop-mobilny-plac-zabaw": [
+   "Dziecko potrzebuje rehabilitacji w domu, a nie mamy sprzętu",
+   "Jak ćwiczyć z niepełnosprawnym dzieckiem przez zabawę",
+   "Mobilny plac zabaw dla dzieci z trudnościami ruchowymi",
+   "Rodzice chcą robić tor przeszkód w domu dla rozwoju dziecka"
+  ],
+  "mobilny-pomocnik-dydaktyczno-sensoryczny-dla-uczniowstudentow-ze-spektrum-autyzmu": [
+   "Uczeń z autyzmem nie wytrzymuje w hałaśliwej klasie",
+   "Student w spektrum potrzebuje przerwy, ale nie umie o nią poprosić",
+   "Jak pomóc dziecku z autyzmem skupić się na lekcji",
+   "Nadwrażliwość na bodźce w szkole"
+  ],
+  "przewodnik-dla-osob-z-asd-moje-potrzeby-gdzie-i-jak-je-realizowac": [
+   "Osoba z autyzmem boi się iść sama do sklepu czy urzędu",
+   "Jak przygotować dorosłego w spektrum do codziennych spraw",
+   "Co powiedzieć w urzędzie, gdy ktoś ma trudność z komunikacją",
+   "Usamodzielnienie osoby z autyzmem"
+  ],
+  "bez-presji-z-depresji": [
+   "Córka wraca do szkoły po leczeniu depresji i się boi",
+   "Uczeń po pobycie w szpitalu psychiatrycznym nie radzi sobie w klasie",
+   "Nastolatek z depresją ma lęk przed szkołą",
+   "Jak szkoła ma wspierać ucznia po kryzysie psychicznym"
+  ],
+  "bez-stresu-do-sukcesu-terapia-neurologiczna-przyjazna-dziecku": [
+   "Małe dziecko płacze na rehabilitacji i nie chce ćwiczyć",
+   "Fizjoterapia niemowlęcia jest dla niego zbyt stresująca",
+   "Jak uspokoić dziecko podczas ćwiczeń z fizjoterapeutą",
+   "Rehabilitacja neurologiczna maluszka z pomocą psa"
+  ],
+  "uwaznione-rodzienstwo": [
+   "Zdrowe dzieci czują się pominięte, bo brat jest niepełnosprawny",
+   "Siostra dziecka z niepełnosprawnością jest zazdrosna i smutna",
+   "Jak rodzice mają dzielić uwagę między dzieci",
+   "Rodzeństwo chorego dziecka ma swoje trudności"
+  ],
+  "brzuszkole-brzuszek-zostaje-w-przedszkolu": [
+   "Przedszkolak ma nadwagę i źle się odżywia",
+   "Jak nauczyć małe dziecko zdrowego jedzenia",
+   "Rodzice nie wiedzą, co dawać dziecku do jedzenia",
+   "Otyłość u dzieci w wieku przedszkolnym"
+  ],
+  "to-nie-koniec-swiata-to-poczatek-swiata": [
+   "Urodziło się nam dziecko z niepełnosprawnością i jesteśmy załamani",
+   "Rodzina dowiedziała się o diagnozie dziecka i nie wie, co dalej",
+   "Gdzie szukać informacji, gdy dziecko jest niepełnosprawne",
+   "Jak wspierać rodziców w szoku po diagnozie dziecka"
+  ],
+  "jezykolamacz": [
+   "Dziecko z autyzmem nie mówi albo mówi bardzo mało",
+   "Jak wspierać naukę mowy u autystycznego przedszkolaka",
+   "Logopeda szuka aplikacji do pracy z dzieckiem w spektrum",
+   "Ćwiczenia mowy przez zabawę na tablecie"
+  ],
+  "piosenki-uczestniczace": [
+   "Dziecko nie mówi i nie może brać udziału w zajęciach",
+   "Jak włączyć niemówiące dzieci do śpiewania",
+   "Zajęcia muzyczne dla dzieci z trudnościami w komunikacji",
+   "Przedszkole szuka piosenek z gestami"
+  ],
+  "moj-pomocny-virtual-world": [
+   "Szkoła przyjęła uczniów uchodźców i potrzebuje wsparcia adaptacji",
+   "Uczniowie z zagranicy nie znają polskich słów",
+   "Jak pomóc dziecku uchodźcy odnaleźć się w klasie",
+   "Ukraińska młodzież czuje się zagubiona w szkole"
+  ],
+  "mobilna-pomoc-terapeutyczna": [
+   "Podejrzewamy, że w rodzinie dochodzi do przemocy",
+   "Rodzina w kryzysie nie chce iść do ośrodka pomocy",
+   "Jak dotrzeć z pomocą do rodziny, która się zamyka",
+   "Dziecko może być krzywdzone w domu, ale nikt tego nie zgłasza"
+  ],
+  "marimbaza": [
+   "Młodzież w ośrodku wychowawczym jest agresywna i zamknięta",
+   "Jak nauczyć trudną młodzież współpracy",
+   "Zajęcia muzyczne, które budują pewność siebie nastolatków",
+   "Wychowankowie nie potrafią pracować w grupie"
+  ],
+  "nasz-wspolny-rodzinny-swiat-poznaje-ucze-reaguje": [
+   "Rodzina ma wiele problemów i nie wie, gdzie szukać pomocy",
+   "Jak szybko skierować rodzinę do odpowiednich specjalistów",
+   "Rodzice i dzieci nie rozmawiają ze sobą",
+   "Rodzina potrzebuje wsparcia, ale boi się instytucji"
+  ],
+  "mpatyk": [
+   "Dzieci w szkole wyśmiewają kolegę na wózku",
+   "Jak uczyć empatii wobec osób z niepełnosprawnością",
+   "Uczniowie nie rozumieją, jak żyją osoby niepełnosprawne",
+   "Gra na lekcję wychowawczą o niepełnosprawności"
+  ],
+  "czas-na-aktywnosc": [
+   "Dorosły z zespołem Downa siedzi w domu i nic nie robi",
+   "Jak osoba z niepełnosprawnością intelektualną ma sama wybrać zajęcia",
+   "Brakuje prostego sposobu, by znaleźć wydarzenia dla osób z trisomią",
+   "Osoba z zespołem Downa chce być bardziej samodzielna"
+  ],
+  "bajkala": [
+   "Dziecko uchodźców nie rozumie po polsku i źle śpi",
+   "Jak oswajać dziecko z językiem polskim przed snem",
+   "Rodzina z Czeczenii chce czytać dziecku polskie bajki",
+   "Dzieci cudzoziemców tęsknią i nie mogą zasnąć"
+  ],
+  "dialog-ponad-kulturami": [
+   "Sąd rodzinny ma sprawę o uprowadzenie rodzicielskie",
+   "Rodzice z różnych krajów walczą o dziecko",
+   "Matka boi się, że partner porwie dziecko",
+   "Konflikt rodzinny w małżeństwie mieszanym"
+  ],
+  "wortal-informacyjny": [
+   "Organizacja pomaga Afgańczykom i potrzebuje materiałów informacyjnych",
+   "Gdzie Afgańczycy znajdą informacje w swoim języku",
+   "Cudzoziemcy nie rozumieją polskich urzędów i szkół",
+   "Brakuje informacji w języku dari"
+  ],
+  "dialog-ponad-kulturami-1": [
+   "Uchodźca nie umie czytać ani pisać i potrzebuje się dogadać",
+   "Jak rozmawiać z Afgańczykami bez tłumacza",
+   "Komunikator z obrazkami dla cudzoziemców",
+   "Ewakuowani z Afganistanu nie znają polskiego"
+  ],
+  "health-guide-pl": [
+   "Migranci zarobkowi nie orientują się w systemie opieki zdrowotnej",
+   "Ukraińcy gubią się w polskiej służbie zdrowia",
+   "Jak działa NFZ, wyjaśnione po angielsku",
+   "Migranci nie wiedzą, gdzie się leczyć"
+  ],
+  "zrozum-moja-kulture-zrozum-mnie": [
+   "Mieszkańcy nie akceptują nowych sąsiadów z zagranicy",
+   "Jak zintegrować migrantów z lokalną społecznością",
+   "Konflikty kulturowe w szkole albo na osiedlu",
+   "Spotkanie, na którym ludzie poznają różne kultury"
+  ],
+  "urzedowy-ambaras": [
+   "Osoba z niepełnosprawnością intelektualną nie umie załatwić sprawy w urzędzie",
+   "Podopieczny boi się iść sam do ośrodka pomocy",
+   "Jak uczyć dorosłych z niepełnosprawnością samodzielności w urzędach",
+   "Ćwiczenie wizyty w urzędzie pracy"
+  ],
+  "stop-otylosci-innowacyjna-metoda-pracy-z-osobami-niepelnosprawnymi-intelektualnie": [
+   "Podopieczni z niepełnosprawnością intelektualną mają dużą nadwagę",
+   "Jak pomóc dorosłej osobie z niepełnosprawnością schudnąć",
+   "Otyłość w domu pomocy społecznej",
+   "Osoby niepełnosprawne intelektualnie mało się ruszają i źle jedzą"
+  ],
+  "pelna-wokanda": [
+   "Osoba z niepełnosprawnością intelektualną ma zeznawać w sądzie",
+   "Jak przygotować podopiecznego do rozprawy",
+   "Osoba niepełnosprawna boi się sądu i prawnika",
+   "Prawa osób z niepełnosprawnością w sądzie"
+  ],
+  "pelnia-zdrowia": [
+   "Osoba z niepełnosprawnością intelektualną nie umie iść do lekarza",
+   "Jak nauczyć podopiecznych korzystać z przychodni",
+   "Dorośli z niepełnosprawnością nie dbają o zdrowie",
+   "Wizyta u lekarza sprawia trudność osobie z upośledzeniem"
+  ],
+  "niepelnosprawnosc-szansa-na-pelnosprawnosc-w-pracy-i-zyciu": [
+   "Uczniowie z niepełnosprawnością intelektualną nie wiedzą, gdzie mogą pracować",
+   "Jak przygotować młodzież niepełnosprawną do zawodu",
+   "Szkoła specjalna szuka zajęć z doradztwa zawodowego",
+   "Młody człowiek z niepełnosprawnością nie wierzy w siebie"
+  ],
+  "dostepna-polska": [
+   "Osoby z niepełnosprawnością intelektualną chcą podróżować",
+   "Przewodnik turystyczny w prostym języku",
+   "Jak zorganizować wycieczkę dla podopiecznych",
+   "Zwiedzanie miast jest za trudne dla osób z niepełnosprawnością"
+  ],
+  "zalatw-to-sam": [
+   "Osoba z niepełnosprawnością intelektualną nie wie, jak działa urząd",
+   "Gra terenowa ucząca załatwiania spraw w mieście",
+   "Jak zachęcić podopiecznych do samodzielności",
+   "Instytucje publiczne są dla nich onieśmielające"
+  ],
+  "go-ahead-mow-smialo": [
+   "Osoba niepełnosprawna nie wie, jak się zachować w rozmowie",
+   "Jak ćwiczyć sytuacje społeczne i rozpoznawanie emocji",
+   "Młody człowiek jest nieśmiały i nie rozumie reakcji innych",
+   "Trening umiejętności społecznych na telefonie"
+  ],
+  "autyzm-i-ja": [
+   "Przedszkolak ma autyzm, a nauczyciele nie wiedzą, jak go wspierać",
+   "Jak obserwować zachowania dziecka w spektrum w domu i przedszkolu",
+   "Rodzice dziecka z autyzmem szukają poradnika",
+   "Nauczycielka nie radzi sobie z dzieckiem autystycznym w grupie"
+  ],
+  "podroz-poza-domem-w-wirtualnej-rzeczywistosci": [
+   "Uczeń z zaburzeniami lękowymi boi się wyjść z domu",
+   "Jak bezpiecznie ćwiczyć wyjścia do sklepu i autobusu",
+   "Dziecko z niepełnosprawnością panikuje poza domem",
+   "Lęk przed nowymi miejscami u osoby niepełnosprawnej"
+  ],
+  "ta-sciezka-terapeutyczna-sciezka-kulturowa-dla-dzieci-i-doroslych-z-autyzmem": [
+   "Osoba z autyzmem gubi się w muzeum czy urzędzie",
+   "Jak prowadzić osobę w spektrum po budynku",
+   "Instytucja kultury chce być przyjazna dla autystycznych gości",
+   "Nawigacja w budynku dla osób z autyzmem"
+  ],
+  "osa-i-eco-puzzle": [
+   "Dorosły syn z autyzmem nie ma co robić po szkole",
+   "Rodziny dorosłych osób z autyzmem są osamotnione",
+   "Jak dać zajęcie i zarobek osobom w spektrum",
+   "Grupa wsparcia dla rodziców dorosłych dzieci z autyzmem"
+  ],
+  "rodzinny-system-wzajemnej-pomocy": [
+   "Młody dorosły z autyzmem skończył szkołę i siedzi w domu",
+   "Jak aktywizować osoby w spektrum, które nie pracują",
+   "Rodziny chcą się wspierać nawzajem",
+   "Po szkole specjalnej nie ma żadnych zajęć"
+  ],
+  "mix-ar-i-vr-dla-koordynacji-ruchowej": [
+   "Dziecko z autyzmem ma słabą motorykę rąk",
+   "Jak ćwiczyć chwytanie u dziecka w spektrum",
+   "Terapeuta szuka nowoczesnych ćwiczeń dłoni",
+   "Gry ruchowe dla dzieci z autyzmem"
+  ],
+  "uniodziez": [
+   "Osoba na wózku moknie, bo zwykła kurtka nie pasuje",
+   "Płaszcz przeciwdeszczowy dla osoby na wózku",
+   "Ubrania dla niepełnosprawnych ruchowo",
+   "Jak chronić osobę na wózku przed deszczem"
+  ],
+  "zakupy-na-jednym-wozku-z-dzieckiem-z-niepelnosprawnoscia-ruchowa": [
+   "Mama nie może zrobić zakupów z niepełnosprawnym dzieckiem",
+   "Zwykły wózek sklepowy nie nadaje się dla dziecka z porażeniem",
+   "Sklep chce być przyjazny dla rodzin z niepełnosprawnymi dziećmi",
+   "Dziecko nie utrzyma głowy w wózku na zakupach"
+  ],
+  "kompleksowa-pomoc-dla-osob-po-amputacji-konczyny-dolnej": [
+   "Tata stracił nogę i nie radzi sobie psychicznie",
+   "Rehabilitacja po amputacji nogi",
+   "Po amputacji potrzebne wsparcie psychologa i dietetyka",
+   "Osoba po amputacji chce wrócić do sprawności"
+  ],
+  "puzzles-ramp": [
+   "Wózkiem nie da się pokonać progu ani krawężnika",
+   "Jak tanio zrobić podjazd dla wózka",
+   "Sklep ma schodek przy wejściu i osoby na wózkach nie wejdą",
+   "Bariery architektoniczne w urzędzie gminy"
+  ],
+  "chlap-pro": [
+   "Proteza nogi niszczy się od wody",
+   "Jak chronić protezę podczas deszczu",
+   "Osoba z protezą nie może chodzić po mokrym",
+   "Ochrona protezy przed zachlapaniem"
+  ],
+  "marina-pai": [
+   "Przystań nie jest przystosowana dla osób z niepełnosprawnością",
+   "Jak sprawdzić dostępność mariny",
+   "Osoby niepełnosprawne chcą korzystać z żeglarstwa",
+   "Zarządca portu chce usunąć bariery"
+  ],
+  "zakupy-bez-barier": [
+   "Osoba niewidoma nie przeczyta etykiet w sklepie",
+   "Seniorowi trudno robić zakupy samemu",
+   "Jak sklep może pomóc klientom z niepełnosprawnością",
+   "Klient na wózku nie sięga do półek"
+  ],
+  "nakreceni-na-aktywnosc": [
+   "Nie wiadomo, które lokale są dostępne dla wózków",
+   "Mapa miejsc przyjaznych osobom z niepełnosprawnością",
+   "Osoba na wózku nie wie, czy wjedzie do restauracji",
+   "Jak sprawdzić dostępność urzędu przed wizytą"
+  ],
+  "moduly-niezaleznosci": [
+   "Osoba na wózku chce podróżować kamperem",
+   "Jak przystosować auto do wyjazdów osoby niepełnosprawnej",
+   "Turystyka dla osób na wózkach",
+   "Wakacje z niepełnosprawnym członkiem rodziny"
+  ],
+  "biustspinka": [
+   "Kobieta po udarze nie może sama zapiąć biustonosza",
+   "Osoba z niesprawnymi rękami potrzebuje pomocy przy ubieraniu",
+   "Jak samodzielnie się ubrać przy ograniczonej sprawności",
+   "Ubieranie się po mastektomii albo urazie barku"
+  ],
+  "szablony-piekna": [
+   "Kobiety na wózkach nie mają ładnej, wygodnej bielizny",
+   "Bielizna dla osób z niepełnosprawnością",
+   "Szycie ubrań adaptacyjnych",
+   "Osoba niepełnosprawna chce się czuć atrakcyjnie"
+  ],
+  "ev-modul-do-wozkow-inwalidzkich": [
+   "Wózek się przewraca na podjazdach",
+   "Jak zwiększyć zasięg i stabilność wózka",
+   "Napęd elektryczny do zwykłego wózka",
+   "Osoba na wózku nie da rady pod górkę"
+  ],
+  "dostepny-stol-targowy": [
+   "Na targu stragany są za wysokie dla osób na wózkach",
+   "Jak urządzić targowisko przyjazne seniorom",
+   "Sprzedawca z niepełnosprawnością potrzebuje wygodnego stoiska",
+   "Gmina remontuje targowisko i chce, żeby było dostępne"
+  ],
+  "cloudleg": [
+   "Osoba bez nóg chce wyglądać naturalnie",
+   "Kosmetyczne protezy dla osoby na wózku",
+   "Po amputacji obu nóg ludzie się gapią",
+   "Jak poprawić samoocenę osoby po amputacji"
+  ],
+  "lekki-wozek-aktywny": [
+   "Wózek jest za ciężki do samodzielnego prowadzenia",
+   "Lekki wózek dla aktywnej osoby niepełnosprawnej",
+   "Jak samemu wkładać wózek do auta",
+   "Sportowiec na wózku potrzebuje lżejszego sprzętu"
+  ],
+  "wozek-szermierczy": [
+   "Klub szermierki na wózkach nie ma sprzętu",
+   "Sprzęt do szermierki jest za drogi",
+   "Sport dla osób na wózkach",
+   "Paraolimpijczycy potrzebują tańszych wózków"
+  ],
+  "dostepna-szermierka": [
+   "Zawodnik na wózku nie może sam przygotować stanowiska",
+   "Jak organizować zawody szermiercze dla niepełnosprawnych",
+   "Platforma do treningu szermierki",
+   "Sport niepełnosprawnych w gminie"
+  ],
+  "innotextil": [
+   "Pacjent po urazie źle chodzi i nie wie, co poprawić",
+   "Rehabilitacja chodu w domu",
+   "Jak monitorować postępy w rehabilitacji",
+   "Odzież, która pomaga ćwiczyć ruch"
+  ],
+  "straznik": [
+   "Osoba głucha nie usłyszy czujnika dymu",
+   "Niesłyszący nie wie, że dzwoni alarm",
+   "Jak ostrzec głuchą osobę przed niebezpieczeństwem w domu",
+   "Bezpieczeństwo niesłyszących w nocy"
+  ],
+  "wsparcie-imprez-masowych-dla-osob-z-niepelnosprawnoscia-wzroku": [
+   "Niewidomi nie mogą bezpiecznie uczestniczyć w festynie",
+   "Jak przygotować koncert dla osób słabowidzących",
+   "Organizator wydarzenia chce usunąć bariery",
+   "Ścieżki prowadzące dla niewidomych na imprezie"
+  ],
+  "teleasystent": [
+   "Niewidomy potrzebuje pomocy w mieście, ale nikt nie może z nim iść",
+   "Osoba słabowidząca nie poradzi sobie w urzędzie",
+   "Zdalna pomoc przez telefon dla niewidomych",
+   "Jak niewidomy ma ugotować obiad bez pomocy"
+  ],
+  "hear-it": [
+   "Głusi chcą pracować w informatyce",
+   "Nauka programowania w języku migowym",
+   "Osoby niesłyszące szukają lepszej pracy",
+   "Kursy IT dla głuchych"
+  ],
+  "gluchy-czytelnik-w-bibliotece": [
+   "Głusi nie chodzą do biblioteki",
+   "Jak zachęcić niesłyszących do czytania",
+   "Biblioteka chce obsługiwać osoby głuche",
+   "Informacja w języku migowym o bibliotece"
+  ],
+  "blue-sea-eye": [
+   "Niewidomy chce sterować łodzią",
+   "Żeglarstwo dla osób niewidomych",
+   "Jak niewidomy może trzymać kurs na wodzie",
+   "Sport wodny dla słabowidzących"
+  ],
+  "osoby-niewidome-i-niedowidzace-jako-nauczyciele-jezyka-polskiego": [
+   "Niewidomi szukają pracy",
+   "Kto może uczyć cudzoziemców polskiego",
+   "Praca dla osób słabowidzących jako nauczycieli",
+   "Kursy polskiego dla migrantów"
+  ],
+  "ngoz-nawigacja-glosowa-osob-zaleznych": [
+   "Niewidomy gubi się w budynku urzędu",
+   "Jak prowadzić osobę niewidomą po szpitalu",
+   "Nawigacja głosowa w budynku",
+   "Osoba niewidoma nie znajdzie wyjścia"
+  ],
+  "wibraap": [
+   "Głusi chcą poczuć muzykę",
+   "Koncert dostępny dla osób niesłyszących",
+   "Jak niesłyszący może grać na instrumencie",
+   "Wibracje zamiast dźwięku"
+  ],
+  "my-way-to-culture": [
+   "Muzeum nie jest dostępne dla niewidomych i głuchych",
+   "Jak zwiedzać muzeum na wózku",
+   "Instytucja kultury chce przyjąć osoby z niepełnosprawnościami",
+   "Ścieżka zwiedzania dla osób z różnymi niepełnosprawnościami"
+  ],
+  "glucha-ankieta": [
+   "Głusi nie mogą wypełnić ankiety pisemnej",
+   "Jak zbierać opinie osób posługujących się językiem migowym",
+   "Konsultacje społeczne bez barier dla niesłyszących",
+   "Ankieta w języku migowym"
+  ],
+  "dostepny-wniosek-dla-ggluchych": [
+   "Głuchy nie rozumie formularza w urzędzie",
+   "Jak zamówić tłumacza języka migowego w urzędzie",
+   "Urząd chce mieć dostępne wnioski",
+   "Niesłyszący nie załatwi sprawy bez pomocy"
+  ],
+  "czytamoda": [
+   "Niewidoma kobieta nie wie, jak wygląda ubranie w sklepie",
+   "Zakupy odzieżowe dla niewidomych",
+   "Opis ubrań dla osób słabowidzących",
+   "Jak niewidomy może wybrać ubranie"
+  ],
+  "dostepny-transport-publiczny": [
+   "Niewidomy nie wie, który autobus przyjeżdża",
+   "Komunikacja miejska dla niewidomych",
+   "Osoba słabowidząca nie znajdzie przystanku",
+   "Aplikacja z rozkładem jazdy dla niewidomych"
+  ],
+  "turystyka-gorskawspinaczka-dostepna-dla-wszystkich": [
+   "Niewidomy chce chodzić po górach",
+   "Wspinaczka dla osób niewidomych",
+   "Sport dla niewidomych na ściance",
+   "Jak prowadzić niewidomego na szlaku"
+  ],
+  "zdobadz-swoje-szczyty": [
+   "Turysta z niepełnosprawnością planuje górską trasę",
+   "Opis szlaku dla niewidomych i osób na wózku",
+   "Jak przygotować się do górskiej wycieczki z niepełnosprawnością",
+   "Przewodnik po szlakach z audiodeskrypcją"
+  ],
+  "spotkania-kulturlove": [
+   "Brakuje asystentów na wyjścia kulturalne dla osób z niepełnosprawnością",
+   "Wolontariusz do towarzyszenia w wyjściach do teatru",
+   "Osoby z niepełnosprawnością są wykluczone z kultury",
+   "Jak znaleźć opiekuna na wyjście"
+  ],
+  "zmysly-w-ruchu-model-choreografii-dla-osob-niewidomych": [
+   "Niewidomi chcą tańczyć",
+   "Zajęcia taneczne dla osób słabowidzących",
+   "Jak prowadzić warsztaty ruchowe dla niewidomych",
+   "Ruch i taniec bez wzroku"
+  ],
+  "kaski-binauralne": [
+   "Osoba, która niedawno straciła wzrok, boi się wyjść z domu",
+   "Rehabilitacja po utracie wzroku",
+   "Jak oswoić niewidomego z hałasem na ulicy",
+   "Lęk przed przestrzenią po utracie widzenia"
+  ],
+  "wielodziedzinowy-slownik-terminow-specjalistycznych-pl-pjm": [
+   "Brakuje znaków migowych na trudne słowa",
+   "Głuchy student nie rozumie fachowych pojęć",
+   "Słownik języka migowego dla specjalistów",
+   "Tłumacz migowy nie zna znaku na termin medyczny"
+  ],
+  "innowacyjna-terapia-zajeciowa-w-domu-osoby-starszej": [
+   "Moja babcia nie wychodzi z domu i ciągle siedzi sama, gdzie znaleźć dla niej jakieś zajęcia?",
+   "Jestem starsza i rzadko wychodzę, nudzę się sama, czy ktoś może do mnie przyjść i mnie czymś zająć?",
+   "Jak dotrzeć z zajęciami do seniorów, którzy nie wychodzą z domu i są samotni?",
+   "Jak pomóc starszym osobom, które nie dojdą do dziennego ośrodka i całymi dniami siedzą w domu?"
+  ],
+  "asystent-osoby-starszej-nowa-forma-uslug-opiekunczych": [
+   "Moja babcia jest coraz słabsza, potrzebuje pomocy w codziennych sprawach, a rodzina mieszka daleko i nie może być z nią na co dzień",
+   "Jestem starsza, mieszkam sama, boję się oszustów i nie mam z kim załatwić spraw, gdy trafię do szpitala",
+   "Starszy człowiek po szpitalu wraca do pustego domu, rodzina za granicą, brakuje mu codziennego wsparcia i kontaktu z bliskimi",
+   "W naszej gminie starsi mieszkańcy są samotni, nie radzą sobie z codziennymi sprawami i padają ofiarą oszustw, brakuje pomocy dla nich i ich rodzin"
+  ],
+  "model-mobilnego-spa-dla-seniorow": [
+   "Moja mama jest starsza i nie ma siły dbać o siebie, potrzebuje odpoczynku i pielęgnacji ciała, gdzie szukać pomocy?",
+   "Jestem seniorem, czuję się zmęczony i zaniedbany, brakuje mi relaksu i dbania o ciało, co mogę zrobić?",
+   "Seniorzy w mojej placówce potrzebują odpoczynku i pielęgnacji ciała, jak zapewnić im takie wsparcie?",
+   "Mieszkańcy starsi w gminie zgłaszają brak możliwości relaksu i dbania o siebie, jakie wsparcie można zorganizować?"
+  ],
+  "lokalny-doradca-ds-zadluzenia": [
+   "Mój ojciec ma długi, nachodzi go windykacja i nie wiemy, gdzie szukać pomocy.",
+   "Nie stać mnie na spłatę długów, boję się komornika i nie wiem, do kogo się zwrócić.",
+   "Pomagam osobie zadłużonej, która nie ma w okolicy żadnego wsparcia, jak jej pomóc?",
+   "Mieszkańcy skarżą się, że mają długi i nie mają lokalnej pomocy, jak rozwiązać ten problem?"
+  ],
+  "krok-po-kroku-do-sprawnosci-personalizowany-przewodnik-ruchu-dla": [
+   "Gdzie znaleźć bezpieczne ćwiczenia dla starszego rodzica, który ma różne ograniczenia zdrowotne?",
+   "Jakie ćwiczenia mogę robić na moim poziomie, żeby się nie przemęczać?",
+   "Jak dopasować zajęcia ruchowe do możliwości podopiecznych w różnym wieku i stanie zdrowia?",
+   "Jakie programy ruchu dla starszych mieszkańców uwzględniają ich indywidualne ograniczenia?"
+  ],
+  "pastylki-wiedzy-cyfrowe-instrukcje-medyczne": [
+   "Jak podawać leki mamie, żeby nie pomylić dawki, gdy nie ma przy niej lekarza?",
+   "Gdzie w telefonie sprawdzę, co robić po wizycie, gdy nie pamiętam, co mówił doktor?",
+   "Jak pomóc pacjentom, którzy gubią kartki z zaleceniami i nie wiedzą, jak brać leki?",
+   "Mieszkańcy nie mają dostępu do zaleceń lekarza po wyjściu ze szpitala – jak im to ułatwić?"
+  ],
+  "bazalnie-w-domu-model-pracy-domowej-z-dziecmi-gleboko": [
+   "Nie wiem, jak w domu pomóc dziecku, które nie mówi, nie chodzi i słabo reaguje na dotyk, brakuje mi prostych wskazówek.",
+   "Nie czuję dobrze swojego ciała i potrzebuję codziennej pomocy w domu, nie wiem, jak ćwiczyć z opiekunem, żeby lepiej odbierać świat.",
+   "Rodziny z dziećmi, które wymagają stałej opieki i nie kontaktują się łatwo, nie mają materiałów do pracy w domu, gdzie szukać wsparcia dla opiekunów?",
+   "Gmina szuka sposobu, jak pomóc rodzinom opiekującym się dziećmi, które nie mówią i nie chodzą, bo brakuje im poradników i zajęć do pracy w domu."
+  ],
+  "oddech-aplikacja-zwiekszajaca-samoswiadomosc-podczas-dlugotrwalego": [
+   "Moje dziecko bez przerwy siedzi w telefonie i przesuwa palcem po ekranie, nie reaguje na nic.",
+   "Nie umiem przestać bezmyślnie przeglądać telefonu, tracę przez to mnóstwo czasu.",
+   "Podopieczny ciągle wpatruje się w ekran i przewija różne rzeczy, trudno z nim nawiązać kontakt.",
+   "Mieszkańcy spędzają coraz więcej czasu na bezcelowym przeglądaniu telefonów, widać to w przestrzeni publicznej."
+  ],
+  "pierwsza-w-polsce-stacjonarna-szkola-higieny-cyfrowej-dla-rodzicow-i": [
+   "Wnuczek ciągle siedzi z nosem w telefonie, a rodzice nie wiedzą, jak mu to ograniczyć.",
+   "Jestem mamą przedszkolaka i nie umiem powstrzymać dziecka od tabletu, szukam pomocy.",
+   "Jak pomóc rodzinom, w których małe dzieci są cały czas przed telefonem i tabletem?",
+   "Mieszkańcy zgłaszają, że dzieci w wieku przedszkolnym są uzależnione od telefonów, co może zrobić gmina?"
+  ]
+ }
+}
