@@ -163,4 +163,30 @@ delete from public.notifications n
 using auth.users u
 where n.user_id = u.id and u.email like 'demo.%@example.org' and n.typ = 'test_ocena';
 
+
+-- "Potrzeby w regionie" (/admin/trends): fictional statistics of past "Dopasuj rozwiązanie" searches,
+-- so the chart tells a story on a fresh database. Only area, challenge and match quality, as the app
+-- stores them; no texts. Added only while few searches have an area, so re-running does not pile up.
+insert into public.match_queries (area_id, challenge_id, match_quality, created_at)
+select d.area_id, d.challenge_id, d.quality, now() - make_interval(days => (n * 7 + d.offset_days) % 85, hours => n)
+from (values
+  ('seniorzy', 'aktywizacja', 'strong', 9, 1),
+  ('seniorzy', 'kompetencje-cyfrowe', 'strong', 6, 2),
+  ('seniorzy', 'uslugi-opiekuncze', 'strong', 4, 3),
+  ('seniorzy', 'wielolekowosc', 'weak', 5, 4),
+  ('niepelnosprawnosc', 'rynek-pracy', 'strong', 5, 5),
+  ('niepelnosprawnosc', 'mobilnosc', 'strong', 3, 6),
+  ('zdrowie-psychiczne', 'kompetencje-rodzicow', 'strong', 4, 0),
+  ('zdrowie-psychiczne', 'destygmatyzacja', 'weak', 2, 2),
+  ('rodzina-piecza', 'wiecej-rodzin-zastepczych', 'strong', 3, 3),
+  ('ubostwo', 'niedozywienie', 'weak', 3, 1),
+  ('ubostwo', 'ubostwo-energetyczne', 'strong', 2, 5),
+  ('cudzoziemcy', 'stereotypy', 'weak', 3, 4),
+  ('cudzoziemcy', 'edukacja-dzieci', 'strong', 2, 6),
+  ('bezdomnosc', 'mlodzi-bezdomni', 'weak', 2, 0),
+  ('zdrowie', 'opieka-dlugoterminowa', 'strong', 2, 3)
+) as d (area_id, challenge_id, quality, how_many, offset_days)
+cross join lateral generate_series(1, d.how_many) as n
+where (select count(*) from public.match_queries where area_id is not null) < 20;
+
 commit;
