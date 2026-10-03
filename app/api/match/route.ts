@@ -14,6 +14,7 @@ import {
 } from "@/lib/ai/matching/pipeline";
 import { rerank } from "@/lib/ai/matching/rerank";
 import { clientIp, createRateLimiter } from "@/lib/ai/rate-limit";
+import { dailyQuotaForCurrentUser } from "@/lib/ai/usage";
 import { MatchRequest } from "@/lib/contracts/match";
 import { createClient } from "@/lib/supabase/server";
 
@@ -46,6 +47,9 @@ export async function POST(request: Request) {
     );
   }
 
+  // Over the daily per-user limit the search still works, only without the AI picks and reasons.
+  const aiAllowed = withAi && llmConfigured() && (await dailyQuotaForCurrentUser()).ok;
+
   const supabase = databaseConfigured() ? await createClient() : null;
   // match_embeddings and match_queries come from 202610031900_ai_tables.sql, which is not in the
   // generated lib/supabase/types.ts yet (P4 regenerates it); untyped until then.
@@ -65,11 +69,10 @@ export async function POST(request: Request) {
       if (error) throw new Error(error.message);
       return (data ?? []) as VectorHit[];
     },
-    rerank:
-      withAi && llmConfigured()
-        ? (description, candidates) =>
-            rerank(description, candidates, db ? { cache: supabaseCache(db) } : {})
-        : undefined,
+    rerank: aiAllowed
+      ? (description, candidates) =>
+          rerank(description, candidates, db ? { cache: supabaseCache(db) } : {})
+      : undefined,
   };
 
   const { response, stats, retrieval } = await runMatch(parsed.data, deps);

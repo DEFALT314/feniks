@@ -165,3 +165,73 @@ describe("createLlmClient timeout", () => {
     expect(createLlmClient(env, 90_000).model).toBe("m");
   });
 });
+
+describe("generateJson with AI_REPLAY (stage demo)", () => {
+  it("records a valid answer, then replays it without calling the model", async () => {
+    const { memoryReplay } = await import("./replay");
+    const file = { entries: {} as Record<string, { note: string; value: unknown }> };
+    const { client } = fakeClient('{"id": "senior-cuder", "reason": "Pasuje."}');
+    await generateJson(Pick, ask, { client, replay: memoryReplay("record", file) });
+    const [entry] = Object.values(file.entries);
+    expect(entry).toEqual({
+      note: "Samotni seniorzy",
+      value: { id: "senior-cuder", reason: "Pasuje." },
+    });
+
+    const silent = fakeClient();
+    await expect(
+      generateJson(Pick, ask, { client: silent.client, replay: memoryReplay("replay", file) }),
+    ).resolves.toEqual({ id: "senior-cuder", reason: "Pasuje." });
+    expect(silent.calls).toHaveLength(0);
+  });
+
+  it("asks the model when nothing is recorded or the recording no longer fits the schema", async () => {
+    const { memoryReplay, replayKey } = await import("./replay");
+    const live = fakeClient('{"id": "a", "reason": "b"}', '{"id": "c", "reason": "d"}');
+    const empty = memoryReplay("replay");
+    await expect(generateJson(Pick, ask, { client: live.client, replay: empty })).resolves.toEqual({
+      id: "a",
+      reason: "b",
+    });
+    expect(empty.get(replayKey(ask))).toBeNull(); // replay mode never writes
+
+    const stale = memoryReplay("replay");
+    await stale.record(replayKey(ask), { id: 1 }, "");
+    await expect(generateJson(Pick, ask, { client: live.client, replay: stale })).resolves.toEqual({
+      id: "c",
+      reason: "d",
+    });
+  });
+
+  it("records even when the answer is already in the AI cache", async () => {
+    const { memoryReplay } = await import("./replay");
+    const cache = memoryCache();
+    await generateJson(Pick, ask, {
+      client: fakeClient('{"id": "a", "reason": "b"}').client,
+      cache,
+      cacheSecret: "s",
+    });
+    const file = { entries: {} as Record<string, { note: string; value: unknown }> };
+    const live = fakeClient('{"id": "c", "reason": "d"}');
+    await generateJson(Pick, ask, {
+      client: live.client,
+      cache,
+      cacheSecret: "s",
+      replay: memoryReplay("record", file),
+    });
+    expect(live.calls).toHaveLength(1);
+    expect(Object.values(file.entries)[0].value).toEqual({ id: "c", reason: "d" });
+  });
+
+  it("keys recordings on redacted text, so a phone number never reaches the file", async () => {
+    const { memoryReplay } = await import("./replay");
+    const file = { entries: {} as Record<string, { note: string; value: unknown }> };
+    const { client } = fakeClient('{"id": "x", "reason": "y"}');
+    await generateJson(
+      Pick,
+      [ask[0], { role: "user", content: "Mama sama w domu, tel. 601 234 567" }],
+      { client, replay: memoryReplay("record", file) },
+    );
+    expect(JSON.stringify(file)).not.toContain("601");
+  });
+});

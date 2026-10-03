@@ -102,7 +102,8 @@ function InnovationCard({
       ) : null}
       {ai ? (
         <p>
-          <span className="font-bold">Dlaczego pasuje: </span>
+          <span className="font-bold">Dlaczego pasuje</span> <AiNote />
+          {": "}
           {match.reason}
           {match.quote ? <span className="text-ink-muted"> Z opisu: „{match.quote}”.</span> : null}
         </p>
@@ -132,6 +133,11 @@ function InnovationCard({
       )}
     </article>
   );
+}
+
+// Every AI sentence carries the label (CLAUDE.md, rule 5), not only the heading of the result.
+function AiNote() {
+  return <span className="text-navy text-[0.9375rem] font-bold">(Propozycja AI)</span>;
 }
 
 export function MatchResult({ result, choosing }: { result: MatchResponse; choosing: boolean }) {
@@ -187,8 +193,13 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
             </div>
           ) : (
             <p>
-              {result.no_match_reason ??
-                "W Bibliotece ROPS nie ma jeszcze innowacji, która pasuje do tego problemu."}
+              {result.no_match_reason ? (
+                <>
+                  {result.no_match_reason} <AiNote />
+                </>
+              ) : (
+                "W Bibliotece ROPS nie ma jeszcze innowacji, która pasuje do tego problemu."
+              )}
             </p>
           )}
           {result.more.length ? (

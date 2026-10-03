@@ -60,9 +60,16 @@ function post(body: unknown, headers: Record<string, string> = {}) {
   });
 }
 
+const quota = vi.fn();
+vi.mock("@/lib/ai/usage", async (original) => ({
+  ...(await original<typeof import("@/lib/ai/usage")>()),
+  dailyQuotaForCurrentUser: () => quota(),
+}));
+
 const { POST } = await import("./route");
 
 beforeEach(() => {
+  quota.mockReset().mockResolvedValue({ ok: true, left: null });
   vi.clearAllMocks();
   for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v);
   rerankMock.mockResolvedValue({
@@ -123,6 +130,19 @@ describe("POST /api/match", () => {
     const res = await POST(post({ description: "pomoc" }));
     expect(res.status).toBe(400);
     expect((await res.json()).error).toMatch(/od 10 do 2000 znaków/);
+  });
+
+  it("over the daily per-user AI limit still searches, only without AI", async () => {
+    quota.mockResolvedValue({ ok: false });
+    const res = await POST(post({ description: "Seniorzy boją się korzystać z bankomatu." }));
+    expect(res.status).toBe(200);
+    expect((await res.json()).picked_by).toBe("search");
+    expect(rerankMock).not.toHaveBeenCalled();
+  });
+
+  it("ranking-only requests do not use the daily AI limit", async () => {
+    await POST(post({ description: "Seniorzy boją się korzystać z bankomatu.", ai: false }));
+    expect(quota).not.toHaveBeenCalled();
   });
 
   it("limits AI queries to 20 per hour per IP, ranking-only requests separately", async () => {
