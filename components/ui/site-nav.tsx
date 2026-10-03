@@ -20,7 +20,7 @@ export function SiteNav({ items }: { items: NavItem[] }) {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex min-h-12 items-center border-b-[3px] text-[17px] no-underline transition-colors duration-200",
+              "flex min-h-12 items-center border-b-[3px] text-[1.0625rem] no-underline transition-colors duration-200",
               active
                 ? "border-navy text-navy font-bold"
                 : "text-ink hover:border-line hover:text-navy border-transparent",

@@ -22,7 +22,7 @@ function ChoiceTile({ title, description, className, ...inputProps }: ChoiceTile
         {...inputProps}
       />
       <span className="flex flex-col gap-0.5">
-        <strong className="text-[19px]">{title}</strong>
+        <strong className="text-[1.1875rem]">{title}</strong>
         {description ? <span className="text-muted-foreground">{description}</span> : null}
       </span>
     </label>
