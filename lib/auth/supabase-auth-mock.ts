@@ -13,6 +13,7 @@ export function mockAuthClient(opts: {
   signUp?: Result;
   resetPasswordForEmail?: Result;
   updateUser?: Result;
+  resend?: Result;
 }) {
   const query = {
     select: vi.fn(() => query),
@@ -35,6 +36,7 @@ export function mockAuthClient(opts: {
       Promise.resolve({ data: {}, error: null, ...opts.resetPasswordForEmail }),
     ),
     updateUser: vi.fn(() => Promise.resolve({ data: {}, error: null, ...opts.updateUser })),
+    resend: vi.fn(() => Promise.resolve({ data: {}, error: null, ...opts.resend })),
   };
   const from = vi.fn(() => query);
   return { client: { auth, from } as unknown as SupabaseClient<Database>, auth, from, query };
