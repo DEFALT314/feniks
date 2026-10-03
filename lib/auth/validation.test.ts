@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { LoginCode, LoginEmail, safeNextPath } from "./validation";
+import { LoginEmail, NewPassword, SignInInput, safeNextPath } from "./validation";
 
 describe("safeNextPath", () => {
   it("keeps paths inside the app", () => {
@@ -33,11 +33,21 @@ describe("LoginEmail", () => {
   });
 });
 
-describe("LoginCode", () => {
-  it("accepts exactly six digits", () => {
-    expect(LoginCode.parse(" 482913 ")).toBe("482913");
-    expect(LoginCode.safeParse("48291").success).toBe(false);
-    expect(LoginCode.safeParse("4829134").success).toBe(false);
-    expect(LoginCode.safeParse("48a913").success).toBe(false);
+describe("NewPassword", () => {
+  it("needs at least 10 characters", () => {
+    expect(NewPassword.safeParse("krotkie").success).toBe(false);
+    expect(NewPassword.parse("mój kot lubi mleko")).toBe("mój kot lubi mleko");
+  });
+
+  it("rejects passwords longer than 72 characters", () => {
+    expect(NewPassword.safeParse("a".repeat(73)).success).toBe(false);
+  });
+});
+
+describe("SignInInput", () => {
+  it("asks for a password", () => {
+    const result = SignInInput.safeParse({ email: "anna@example.org", password: "" });
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0].message).toBe("Wpisz hasło.");
   });
 });

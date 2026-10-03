@@ -1,10 +1,9 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
-import { recordConsent } from "@/lib/auth/login";
 import { safeNextPath } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/server";
 
-// Sign-in link from the e-mail. Supabase sends either ?code= (PKCE) or ?token_hash=&type=.
+// Link from an e-mail (password reset). Supabase sends either ?code= (PKCE) or ?token_hash=&type=.
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
   const next = safeNextPath(searchParams.get("next"));
@@ -22,6 +21,5 @@ export async function GET(request: NextRequest) {
   if (error || !data.user) {
     return NextResponse.redirect(new URL("/login?error=link", origin));
   }
-  await recordConsent(supabase, data.user.id);
   return NextResponse.redirect(new URL(next, origin));
 }
