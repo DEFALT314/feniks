@@ -4,14 +4,17 @@ Model: sdadas/mmlw-e5-base as a pruned int8 ONNX model (export_onnx.py). Vectors
 unit length, so similarity = dot product. The e5 family needs the "query: " / "passage: " prefixes,
 which `encode` adds based on `kind`.
 
-The model (~200 MB) is too large for the GitHub repo, so it lives in a private Hugging Face model
-repo and is downloaded to /tmp on a cold start. Configuration (server environment variables):
+The model (~200 MB) is too large for a file in the GitHub repo, so it is attached to a GitHub
+release of this repo and downloaded to /tmp on a cold start; SHA-256 checksums pinned below
+reject corrupted or swapped files. Configuration (server environment variables):
     EMBED_TOKEN        required; callers send it in the X-Embed-Token header
-    HF_TOKEN           read token for the private model repo
-    EMBED_MODEL_REPO   default "defalt314/hubmi-mmlw-e5-base-onnx"
     EMBED_MODEL_DIR    use a local model folder instead of downloading (development, tests)
+
+Model: sdadas/mmlw-e5-base, Apache-2.0 (https://huggingface.co/sdadas/mmlw-e5-base), converted
+and pruned by export_onnx.py.
 """
 
+import hashlib
 import hmac
 import json
 import os
@@ -26,8 +29,13 @@ PREFIX = {"query": "query: ", "passage": "passage: "}
 MAX_TEXTS = 256
 MAX_CHARS = 4000
 MAX_TOKENS = 512
-MODEL_FILES = ("model.onnx", "tokenizer.json", "MODEL")
-MODEL_REPO = os.environ.get("EMBED_MODEL_REPO", "defalt314/hubmi-mmlw-e5-base-onnx")
+MODEL_RELEASE_URL = "https://github.com/DEFALT314/feniks/releases/download/embed-model-v1"
+# A new model means a new release tag and new checksums (sha256sum embedding/model/*).
+MODEL_SHA256 = {
+    "model.onnx": "d2dd6ed3409a7d24b74cf2c2e3f085dd3d80e89ba084a03cf9699f800953717c",
+    "tokenizer.json": "9dd64c61cb9e2b16ae632002ef66a8fba6c6639b164f59197469e7e4bd866e6c",
+    "MODEL": "4578b7bdf0fc756bf33be5434493b5ac03031ca32c31770ea26574cb8562d0f4",
+}
 DOWNLOAD_DIR = Path("/tmp/hubmi-embed-model")
 _download_lock = threading.Lock()
 
@@ -37,14 +45,18 @@ class BadRequest(ValueError):
 
 
 def _download(name: str, dest: Path) -> None:
-    request = urllib.request.Request(f"https://huggingface.co/{MODEL_REPO}/resolve/main/{name}")
-    if token := os.environ.get("HF_TOKEN"):
-        request.add_header("Authorization", f"Bearer {token}")
     part = dest.with_suffix(dest.suffix + ".part")
-    with urllib.request.urlopen(request, timeout=120) as response, open(part, "wb") as f:
-        while chunk := response.read(1 << 20):
-            f.write(chunk)
-    part.replace(dest)  # atomic: a crashed download never leaves a truncated model behind
+    digest = hashlib.sha256()
+    try:
+        with urllib.request.urlopen(f"{MODEL_RELEASE_URL}/{name}", timeout=120) as response, open(part, "wb") as f:
+            while chunk := response.read(1 << 20):
+                f.write(chunk)
+                digest.update(chunk)
+        if digest.hexdigest() != MODEL_SHA256[name]:
+            raise OSError(f"checksum mismatch for {name}")
+        part.replace(dest)  # atomic: a failed download never leaves a broken model file behind
+    finally:
+        part.unlink(missing_ok=True)
 
 
 def model_dir() -> Path:
@@ -52,7 +64,7 @@ def model_dir() -> Path:
         return Path(local)
     with _download_lock:
         DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
-        for name in MODEL_FILES:
+        for name in MODEL_SHA256:
             if not (DOWNLOAD_DIR / name).exists():
                 _download(name, DOWNLOAD_DIR / name)
     return DOWNLOAD_DIR

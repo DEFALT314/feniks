@@ -3,11 +3,11 @@
 Zamiana tekstu na wektor znaczenia dla Matchmakingu. Model `sdadas/mmlw-e5-base` (polski, 768
 wymiarów) jako ONNX int8 z przyciętym słownikiem (łacinka i cyrylica). Działa jako funkcja Pythona
 na Vercelu, w tym samym projekcie co Next.js. Hugging Face Spaces z serwerem wymagają płatnego
-planu, a to rozwiązanie jest darmowe.
+planu, a to rozwiązanie jest darmowe i nie wymaga konta na HF.
 
 ```
 Next.js /api/match (TS)  →  POST /api/embed (api/embed.py, Python)  →  embedding/core.py
-                                                     model z prywatnego repo HF, pobierany do /tmp przy zimnym starcie
+                                   model z GitHub Release embed-model-v1, pobierany do /tmp przy zimnym starcie
 ```
 
 ## API
@@ -29,17 +29,20 @@ curl -X POST $EMBED_URL -H "X-Embed-Token: $EMBED_TOKEN" -H 'content-type: appli
 | zmienna | opis |
 |---|---|
 | `EMBED_TOKEN` | wymagany; długi losowy ciąg (`openssl rand -hex 32`), wysyłany w `X-Embed-Token` |
-| `HF_TOKEN` | token odczytu Hugging Face do prywatnego repo modelu |
-| `EMBED_MODEL_REPO` | domyślnie `defalt314/hubmi-mmlw-e5-base-onnx` |
 | `EMBED_URL` | dla `/api/match`: `https://<domena>/api/embed`, lokalnie `http://localhost:7860/api/embed` |
 
-## Przygotowanie modelu (raz, P3)
+## Plik modelu
 
+Model (188 MB) nie mieści się jako plik w repozytorium (limit GitHuba 100 MB), więc jest
+załącznikiem do [GitHub Release `embed-model-v1`](https://github.com/DEFALT314/feniks/releases/tag/embed-model-v1).
+Funkcja pobiera go przy zimnym starcie i sprawdza sumy SHA-256 zapisane w `embedding/core.py`.
+Źródło: [sdadas/mmlw-e5-base](https://huggingface.co/sdadas/mmlw-e5-base), Apache-2.0.
+
+Nowa wersja modelu (P3):
 ```bash
 uv run embedding/export_onnx.py                      # tworzy embedding/model/ (torch tylko na czas eksportu)
-hf auth login
-hf repo create defalt314/hubmi-mmlw-e5-base-onnx --private
-hf upload defalt314/hubmi-mmlw-e5-base-onnx embedding/model .
+gh release create embed-model-v2 embedding/model/{model.onnx,tokenizer.json,MODEL} --latest=false
+sha256sum embedding/model/*                          # → MODEL_SHA256 i MODEL_RELEASE_URL w core.py
 ```
 
 ## Lokalnie

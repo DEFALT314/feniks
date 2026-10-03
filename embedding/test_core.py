@@ -4,6 +4,7 @@ Tests marked `needs_model` use the real exported model in embedding/model/ and a
 has not been built (uv run embedding/export_onnx.py).
 """
 
+import hashlib
 import io
 import json
 import threading
@@ -81,19 +82,26 @@ def test_kind_defaults_to_query(fake_model):
 # --- model download ---
 
 
-def test_download_sends_hf_token_and_is_atomic(monkeypatch, tmp_path):
+def test_download_from_release_verifies_checksum(monkeypatch, tmp_path):
     seen = []
 
-    def fake_urlopen(request, timeout):
-        seen.append((request.full_url, request.get_header("Authorization")))
+    def fake_urlopen(url, timeout):
+        seen.append(url)
         return io.BytesIO(b"model-bytes")
 
-    monkeypatch.setenv("HF_TOKEN", "hf_read")
     monkeypatch.setattr(core.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setitem(core.MODEL_SHA256, "model.onnx", hashlib.sha256(b"model-bytes").hexdigest())
     core._download("model.onnx", tmp_path / "model.onnx")
     assert (tmp_path / "model.onnx").read_bytes() == b"model-bytes"
     assert not list(tmp_path.glob("*.part"))
-    assert seen == [(f"https://huggingface.co/{core.MODEL_REPO}/resolve/main/model.onnx", "Bearer hf_read")]
+    assert seen == [f"{core.MODEL_RELEASE_URL}/model.onnx"]
+
+
+def test_download_with_wrong_checksum_is_rejected(monkeypatch, tmp_path):
+    monkeypatch.setattr(core.urllib.request, "urlopen", lambda url, timeout: io.BytesIO(b"tampered"))
+    with pytest.raises(OSError, match="checksum"):
+        core._download("model.onnx", tmp_path / "model.onnx")
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_model_dir_downloads_only_missing_files(monkeypatch, tmp_path):
@@ -103,18 +111,18 @@ def test_model_dir_downloads_only_missing_files(monkeypatch, tmp_path):
     downloaded = []
     monkeypatch.setattr(core, "_download", lambda name, dest: downloaded.append(name) or dest.write_text("x"))
     assert core.model_dir() == tmp_path
-    assert downloaded == ["model.onnx", "tokenizer.json"]
-    assert core.model_dir() == tmp_path and downloaded == ["model.onnx", "tokenizer.json"]  # second call: no download
+    assert sorted(downloaded) == ["model.onnx", "tokenizer.json"]
+    assert core.model_dir() == tmp_path and len(downloaded) == 2  # second call: no download  # second call: no download
 
 
 def test_failed_download_leaves_no_file(monkeypatch, tmp_path):
-    def fail(request, timeout):
+    def fail(url, timeout):
         raise urllib.error.URLError("offline")
 
     monkeypatch.setattr(core.urllib.request, "urlopen", fail)
     with pytest.raises(urllib.error.URLError):
         core._download("model.onnx", tmp_path / "model.onnx")
-    assert not (tmp_path / "model.onnx").exists()
+    assert list(tmp_path.iterdir()) == []
 
 
 # --- the Vercel handler over real HTTP ---
