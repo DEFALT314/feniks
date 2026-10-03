@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { VideoPlayer } from "../_components/video-player";
+import { youTubeId } from "../_lib/youtube";
 import type { Innovation } from "@/lib/contracts/knowledge-base";
 import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { getInnovations, getInnovationById, getCategories } from "../_lib/data";
@@ -38,6 +40,7 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
     getChallengeAreas(),
   ]);
   if (!i || !i.opublikowana) notFound();
+  const videoId = youTubeId(i.materialy.film);
 
   const category = categories.find((k) => k.id === i.kategoria_id);
   const program = i.program ?? (i.etykieta ? (PROGRAMS[i.etykieta] ?? i.etykieta) : null);
@@ -99,6 +102,11 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
           {i.opis_krotki ? (
             <Section title="Na czym polega" first={!i.opis_niepelny}>
               <p>{i.opis_krotki}</p>
+            </Section>
+          ) : null}
+          {videoId ? (
+            <Section title="Zobacz, jak to działa">
+              <VideoPlayer id={videoId} title={i.nazwa} />
             </Section>
           ) : null}
           {i.problem ? (

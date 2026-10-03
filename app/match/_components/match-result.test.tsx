@@ -19,10 +19,25 @@ describe("MatchResult", () => {
   it("labels AI picks as an AI proposal and shows the reason with the quote", () => {
     const html = render(ai);
     expect(html).toContain("Propozycja AI, wybór należy do Ciebie");
-    expect(html).toContain("Dlaczego pasuje: </span>Pomaga zorganizować opiekę");
+    expect(html).toContain("Pomaga zorganizować opiekę");
+    // each AI reason is labelled, not only the heading of the result
+    const reasons = html.split("Dlaczego pasuje</span>").length - 1;
+    expect(reasons).toBe(ai.innovations.length);
+    expect(html.split("(Propozycja AI)").length - 1).toBe(reasons);
     expect(html).toContain(
       "„organizacja opieki, sprzętu i wsparcia dostosowanych do możliwości bliskich”",
     );
+  });
+
+  it("labels the model's explanation when nothing fits", () => {
+    const html = render({
+      ...ai,
+      innovations: [],
+      match_quality: "weak",
+      no_match_reason: "Opis dotyczy transportu, a w Bibliotece nie ma takich innowacji.",
+    });
+    expect(html).toContain("nie ma takich innowacji. <span");
+    expect(html).toContain("(Propozycja AI)");
   });
 
   it("shows no AI label and no reasons for the ranking-only phase, with a status message", () => {

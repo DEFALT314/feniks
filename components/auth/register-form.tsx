@@ -8,6 +8,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { signUp } from "@/lib/auth/actions";
 import type { AuthFormState } from "@/lib/auth/login";
 import { PASSWORD_MIN_LENGTH } from "@/lib/auth/validation";
+import { CheckInbox } from "./check-inbox";
 import { FormMessage } from "./form-message";
 
 const initialState: AuthFormState = { status: "idle" };
@@ -19,17 +20,7 @@ export function RegisterForm({ next }: { next?: string }) {
   const consentError = state.fieldErrors?.consent;
 
   // Supabase "Confirm email" is on: the account works after the link in the e-mail is clicked.
-  if (state.status === "sent") {
-    return (
-      <div role="status" aria-live="polite" className="flex flex-col gap-3">
-        <p className="font-heading text-2xl font-bold">Sprawdź skrzynkę</p>
-        <p>{state.message}</p>
-        <p className="text-muted-foreground text-base">
-          Link jest ważny przez 24 godziny. Po kliknięciu będziesz od razu zalogowany.
-        </p>
-      </div>
-    );
-  }
+  if (state.status === "sent" && state.email) return <CheckInbox email={state.email} next={next} />;
 
   return (
     <form action={action} className="flex flex-col gap-5" noValidate>
