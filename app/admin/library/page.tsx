@@ -40,7 +40,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
   const nameById = new Map(innovations.map((i) => [i.id, i.nazwa]));
 
   return (
-    <main id="tresc" className="text-ink bg-[#F6F7F9] text-lg leading-relaxed">
+    <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
       <AdminNav current="/admin/library" />
       <div className="mx-auto flex max-w-[1200px] flex-wrap gap-10 px-4 py-8 sm:px-10">
         <section aria-labelledby="karty" className="flex min-w-0 flex-[999_1_560px] flex-col gap-4">

@@ -14,7 +14,7 @@ export default async function Page({ params }: PageProps<"/admin/library/[id]">)
   if (!innovation) notFound();
 
   return (
-    <main id="tresc" className="text-ink bg-[#F6F7F9] text-lg leading-relaxed">
+    <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
       <AdminNav current="/admin/library" />
       <div className="mx-auto flex max-w-[860px] flex-col gap-6 px-4 py-8 sm:px-10">
         <nav aria-label="Ścieżka" className="text-base">
