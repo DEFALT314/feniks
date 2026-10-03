@@ -17,13 +17,15 @@ zostać wdrożona w ROPS. Interfejs po polsku, prostym językiem, bez angielskic
 | Osoba | Foldery |
 |---|---|
 | P1 Treść i Zasobnik | `app/biblioteka/`, `app/mapa-wyzwan/`, `app/zasoby/`, `app/api/zasoby/`, `scripts/seed/`, `supabase/seed.sql`, `docs/`, `pitch/` |
-| P2 Interfejs i Kreator | `components/ui/`, `app/layout.tsx`, `app/page.tsx`, `app/logowanie/`, `app/moje/kreator/`, `app/moje/tester/`, `app/api/kreator/`, `app/api/tester/`, `styles/` |
+| P2 Interfejs i Kreator | `components/ui/`, `app/layout.tsx`, `app/page.tsx`, `app/logowanie/`, `app/moje/kreator/`, `app/moje/tester/`, `app/api/kreator/`, `app/api/tester/`, `styles/`, `design/` |
 | P3 AI i dopasowanie | `app/dopasuj/`, `app/moje/middleman/`, `app/api/match/`, `app/api/ai/`, `lib/ai/`, `hf-space/`, `scripts/embed.py`, `evals/`, `data/derived/` |
 | P4 Platforma i ROPS | `middleware.ts`, `lib/auth/`, `lib/supabase/`, `app/admin/`, `app/moje/wiadomosci/`, `app/api/admin/`, `app/api/wiadomosci/`, `app/api/powiadomienia/`, `app/api/cron/`, `app/api/demo/`, `lib/powiadomienia.ts`, `lib/audit.ts`, `supabase/migrations/*_wspolne.sql`, `supabase/seed_demo.sql`, `.github/`, konfiguracja Vercel |
 
 Wspólne: `lib/contracts/` (każdy edytuje tylko plik swojego modułu), `data/rops/` (tylko do odczytu).
 
 ## Zasady
+0. **Wygląd:** każdy ekran budujesz według makiety z `design/makiety/` (tabela w `design/makiety/README.md`),
+   na komponentach z `components/ui/`. Nie wymyślaj własnych kolorów ani układów.
 1. **Logowanie:** zawsze `getCurrentUser()` z `lib/auth`. Strony `/admin/*` sprawdzają rolę na serwerze
    w layoucie. Middleware tylko odświeża sesję i nie jest zabezpieczeniem.
 2. **Baza:** każda nowa tabela w nowej migracji `supabase/migrations/<YYYYMMDDHHMM>_<modul>_<opis>.sql`,

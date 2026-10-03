@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – Mapa wyzwań</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.area{display:flex;flex-direction:column;gap:2px;padding:16px 18px;text-decoration:none;color:#151A23;border-radius:10px;border:1px solid #D9DDE4;background:#fff;min-height:84px}
+.area:hover{border-color:#1F3A8A;color:#151A23}
+table{border-collapse:collapse;width:100%;font-size:16px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid #D9DDE4;vertical-align:top}
+th{font-size:15px;color:#4B5565}
+.ch{display:flex;justify-content:space-between;gap:16px;align-items:baseline;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid #D9DDE4}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+  <dc-import name="Naglowek" active="mapa" rola="jst" kto="GOPS w Przykładowej Woli" hint-size="100%,112px"></dc-import>
+  <main>
+    <section style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
+      <div class="wrap" style="padding-top: 44px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 16px">
+        <h1 class="h" style="font-size: 44px">Mapa wyzwań społecznych</h1>
+        <p class="muted" style="max-width: 820px">8 obszarów i 48 wyzwań opisanych przez Dział Innowacji Społecznych ROPS. Każdy problem zgłoszony w HubMI przypisujemy do obszaru i wyzwania, żeby było widać, czego najbardziej potrzebuje region.</p>
+        <nav aria-label="Obszary" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 8px">
+          <a href="#o1" class="area"><strong>Rodzina i piecza zastępcza</strong><span class="muted" style="font-size: 15px">5 wyzwań</span></a>
+          <a href="#o2" class="area"><strong>Bezdomność</strong><span class="muted" style="font-size: 15px">4 wyzwania</span></a>
+          <a href="#o3" class="area"><strong>Niepełnosprawność</strong><span class="muted" style="font-size: 15px">9 wyzwań</span></a>
+          <a href="#o4" class="area"><strong>Ubóstwo</strong><span class="muted" style="font-size: 15px">8 wyzwań</span></a>
+          <a href="#o5" class="area"><strong>Integracja cudzoziemców</strong><span class="muted" style="font-size: 15px">7 wyzwań</span></a>
+          <a href="#o6" class="area"><strong>Zdrowie</strong><span class="muted" style="font-size: 15px">5 wyzwań</span></a>
+          <a href="#o7" class="area"><strong>Zdrowie psychiczne</strong><span class="muted" style="font-size: 15px">4 wyzwania</span></a>
+          <a href="#o8" class="area" aria-current="true" style="border: 2px solid #1F3A8A; background: #E8EDFA"><strong>Seniorzy</strong><span style="font-size: 15px; color: #1F3A8A">6 wyzwań · wybrany</span></a>
+        </nav>
+      </div>
+    </section>
+    <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 48px; padding-top: 40px; padding-bottom: 40px">
+      <section id="o8" aria-labelledby="sen" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+        <h2 id="sen" class="h" style="font-size: 34px">Seniorzy</h2>
+        <p>Dostosowanie się do starzejącego się społeczeństwa: opieka zdrowotna i opiekuńcza, godna, bezpieczna i możliwie samodzielna starość bez izolacji.</p>
+        <h3 class="lbl" style="margin-top: 12px">Kluczowe wyzwania</h3>
+        <div>
+          <div class="ch"><span>Usługi zdrowotne dopasowane do starzejącego się społeczeństwa, także z nowymi technologiami</span><a href="Biblioteka.dc.html">Innowacje</a></div>
+          <div class="ch"><span>Projektowanie uniwersalne przestrzeni i mieszkań, mieszkalnictwo senioralne</span><a href="Biblioteka.dc.html">Innowacje</a></div>
+          <div class="ch"><span>Odpowiedzialne przyjmowanie leków i suplementów</span><a href="Biblioteka.dc.html">Innowacje</a></div>
+          <div class="ch"><span>Szersza oferta aktywizacji i integracji seniorów</span><a href="Biblioteka.dc.html">Innowacje</a></div>
+          <div class="ch"><span>Kompetencje cyfrowe seniorów</span><a href="Biblioteka.dc.html">Innowacje</a></div>
+          <div class="ch" style="background: #FFFBEA; padding-left: 10px; padding-right: 10px"><span><strong>Dostęp do usług opiekuńczych w gminie, w tym specjalistycznych</strong> <span class="muted" style="font-size: 15px">· z Twojego ostatniego dopasowania</span></span><a href="Biblioteka.dc.html">Innowacje</a></div>
+        </div>
+      </section>
+      <aside aria-labelledby="persona" class="card" style="flex: 1 1 300px; max-width: 380px; padding: 24px; display: flex; flex-direction: column; gap: 10px; align-self: flex-start">
+        <span class="lbl">Persona z Mapy Wyzwań (fikcyjna)</span>
+        <h3 id="persona" class="h" style="font-size: 26px">Janina, 73 lata</h3>
+        <p>Mieszka sama w małym mieście, niedawno owdowiała, rzadko wychodzi z domu, przyjmuje wiele leków.</p>
+        <p><strong>Cele:</strong> mniej samotności, poczucie wartości, świadome dbanie o zdrowie.</p>
+        <p><strong>Wyzwania:</strong> samotność, nadużywanie leków, życie po stracie męża.</p>
+        <a class="btn btn-s" href="Dopasuj.dc.html" style="margin-top: 6px">Dopasuj dla Janiny</a>
+      </aside>
+    </div>
+    <section aria-labelledby="tab" class="wrap" style="padding-bottom: 64px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="tab" class="h" style="font-size: 24px">Cała mapa w tabeli</h2>
+      <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D9DDE4; border-radius: 12px">
+        <table>
+          <thead><tr><th scope="col">Obszar</th><th scope="col">Wyzwań</th><th scope="col">Persona</th><th scope="col">Kategoria Biblioteki</th></tr></thead>
+          <tbody>
+            <tr><td>Rodzina i piecza zastępcza</td><td>5</td><td>Ania i Staś</td><td>dzieci, młodzież i rodzina</td></tr>
+            <tr><td>Bezdomność</td><td>4</td><td>Kuba</td><td>kryzys bezdomności</td></tr>
+            <tr><td>Niepełnosprawność</td><td>9</td><td>Krystian</td><td>mobilność, sensoryczna, intelektualna</td></tr>
+            <tr><td>Ubóstwo</td><td>8</td><td>Tomek</td><td>rynek pracy, bezdomność</td></tr>
+            <tr><td>Integracja cudzoziemców</td><td>7</td><td>Swietłana</td><td>cudzoziemcy</td></tr>
+            <tr><td>Zdrowie</td><td>5</td><td>Stanisław</td><td>zdrowie i medycyna</td></tr>
+            <tr><td>Zdrowie psychiczne</td><td>4</td><td>Mateusz, Karina</td><td>zdrowie; dzieci i młodzież</td></tr>
+            <tr><td>Seniorzy</td><td>6</td><td>Janina</td><td>seniorzy</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

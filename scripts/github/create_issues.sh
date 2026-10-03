@@ -89,6 +89,7 @@ issue p4_login "[P4] Logowanie kodem z maila, role i getCurrentUser()" "P4,platf
 EOF
 
 issue p4_demo "[P4] Konta demo i ekran „Wejdź jako…”" "P4,platforma" "M1 Fundament (16:30)" <<'EOF'
+**Makieta:** `design/makiety/Logowanie.dc.html`
 - [ ] `supabase/seed_demo.sql`: 5 fikcyjnych kont (mieszkaniec, ngo, jst, ekspert, rops_admin)
 - [ ] `POST /api/demo/login` tworzy prawdziwą sesję (generateLink + verifyOtp po stronie serwera)
 - [ ] Działa tylko przy `DEMO_MODE=true`, w produkcji 404
@@ -104,6 +105,7 @@ issue p4_wspolne "[P4] Wspólne tabele: profiles, instytucje, notifications, aud
 EOF
 
 issue p4_kolejka "[P4] Panel ROPS: kolejka pomysłów i ocena" "P4,VI panel" "M2 Moduły v1 (19:00)" <<'EOF'
+**Makieta:** `design/makiety/Admin.dc.html`
 - [ ] Lista nowych pomysłów (z tabeli `ideas` od P2, tylko odczyt)
 - [ ] Ocena we własnej tabeli `idea_reviews`: zatwierdź / do poprawy / odrzuć + komentarz dla autora
 - [ ] Przypisanie eksperta do pomysłu
@@ -111,6 +113,7 @@ issue p4_kolejka "[P4] Panel ROPS: kolejka pomysłów i ocena" "P4,VI panel" "M2
 EOF
 
 issue p4_role "[P4] Panel ROPS: role instytucji i edycja kart innowacji" "P4,VI panel" "M2 Moduły v1 (19:00)" <<'EOF'
+**Makieta:** `design/makiety/Admin.dc.html`
 - [ ] Prośby o rolę jst/ngo → zatwierdzenie przez ROPS (moduł VI: weryfikacja)
 - [ ] Edycja karty innowacji przez `PATCH /api/zasoby/innowacje/[id]` (endpoint P1)
 - [ ] Dziennik zmian w panelu
@@ -124,12 +127,14 @@ issue p4_powiad "[P4] Powiadomienia na żywo i maile" "P4,V komunikacja" "M3 Mat
 EOF
 
 issue p4_komunikacja "[P4] Komunikacja: wątki ROPS, autor i ekspert" "P4,V komunikacja" "M4 Wszystkie moduły (23:00)" <<'EOF'
+**Makieta:** `design/makiety/Wiadomosci.dc.html`
 - [ ] Tabele `threads`, `messages` z RLS (uczestnicy widzą tylko swoje)
 - [ ] Strona `/moje/wiadomosci`: lista rozmów, wątek, odpowiedź, historia statusu pomysłu
 - [ ] Wiadomość „Zgłoś potrzebę do ROPS” z wyniku dopasowania
 EOF
 
 issue p4_trendy "[P4] Potrzeby w regionie: trendy według Mapy Wyzwań" "P4,VI panel" "M4 Wszystkie moduły (23:00)" <<'EOF'
+**Makieta:** `design/makiety/Admin.dc.html` (sekcja trendów)
 - [ ] Zgłoszenia i zapytania (`match_queries` od P3) zliczane według obszaru i wyzwania
 - [ ] Wykres słupkowy + ta sama tabela (WCAG)
 - [ ] Krótkie podsumowanie od P3, oznaczone „Propozycja AI”
@@ -175,6 +180,7 @@ issue p3_match "[P3] Endpoint dopasowania /api/match" "P3,AI,I matchmaking" "M3 
 EOF
 
 issue p3_dopasuj "[P3] Strona /dopasuj" "P3,I matchmaking" "M3 Matchmaking i komunikacja (20:00)" <<'EOF'
+**Makieta:** `design/makiety/Dopasuj.dc.html`
 - [ ] Pole opisu, przykłady do kliknięcia, wybór roli i gminy
 - [ ] Wynik: opis → wyzwanie → innowacje (wg makiety), etykieta „Propozycja AI”, `aria-live`
 - [ ] Linki: karta innowacji, karta usługi dla gminy, „Zgłoś potrzebę do ROPS”
@@ -193,6 +199,7 @@ issue p3_kreator_ai "[P3] AI w Kreatorze: podpowiedzi, wniosek pod nabór, obraz
 EOF
 
 issue p3_middleman "[P3] Middleman: karta usługi dla gminy" "P3,AI,VII middleman" "M4 Wszystkie moduły (23:00)" <<'EOF'
+**Makieta:** `design/makiety/Middleman.dc.html`
 - [ ] Strona `/moje/middleman`: wybór innowacji i instytucji (`?innowacja=<id>` z karty innowacji)
 - [ ] Szkic usługi z `kto_moze_wdrozyc`, `dla_kogo` i profilu instytucji; zapis w `middleman_cards`
 - [ ] Edycja, PDF, wysłanie do ROPS do konsultacji
@@ -222,11 +229,13 @@ Odpowiedzi wpisać do docu z planem.
 EOF
 
 issue p1_biblioteka "[P1] Biblioteka: lista z filtrami i wyszukiwaniem" "P1,II zasobnik" "M2 Moduły v1 (19:00)" <<'EOF'
+**Makieta:** `design/makiety/Biblioteka.dc.html`
 - [ ] `/biblioteka`: kategorie, „wybrane do upowszechniania”, film, PDF; wyszukiwanie po nazwie i słowach
 - [ ] Rekordy spoza Biblioteki z oznaczeniem „opis niepełny”
 EOF
 
 issue p1_karta "[P1] Karta innowacji i endpoint edycji" "P1,II zasobnik" "M2 Moduły v1 (19:00)" <<'EOF'
+**Makieta:** `design/makiety/Karta.dc.html`
 **Zrób przed 18:00:** na endpoincie edycji czeka panel ROPS (P4).
 - [ ] `/biblioteka/[id]`: opis, problem, dla kogo, kto wdraża, czy działa, materiały, link do karty ROPS
 - [ ] Przyciski: karta usługi (Middleman), pytanie do ROPS
@@ -234,6 +243,7 @@ issue p1_karta "[P1] Karta innowacji i endpoint edycji" "P1,II zasobnik" "M2 Mod
 EOF
 
 issue p1_mapa "[P1] Mapa Wyzwań i zasoby" "P1,II zasobnik" "M2 Moduły v1 (19:00)" <<'EOF'
+**Makieta:** `design/makiety/MapaWyzwan.dc.html`
 - [ ] `/mapa-wyzwan`: 8 obszarów, wyzwania, persony, wersja tabelaryczna
 - [ ] `/zasoby`: 51 raportów i 6 publikacji z tagami i filtrem roku
 EOF
@@ -267,12 +277,14 @@ EOF
 
 # ===== P2 Interfejs i Kreator =====
 issue p2_makiety "[P2] Makiety i system wizualny w kodzie" "P2,WCAG" "M1 Fundament (16:30)" <<'EOF'
+**Makieta:** `design/makiety/System.dc.html` (kolory, typografia, komponenty); źródło: artefakt Claude Design „HubMI.pl – makiety”
 - [ ] Eksport makiet do PDF (do zgłoszenia)
 - [ ] Tokeny w Tailwind: granat #1F3A8A, cegła #C2452B, zieleń #1D6B48, tło #F6F7F9, tekst #151A23
 - [ ] Fonty: Bricolage Grotesque (nagłówki), Atkinson Hyperlegible Next (tekst)
 EOF
 
 issue p2_komponenty "[P2] Komponenty UI i układ strony" "P2,WCAG" "M1 Fundament (16:30)" <<'EOF'
+**Makieta:** `design/makiety/System.dc.html`, `design/makiety/Naglowek.dc.html`, `design/makiety/Stopka.dc.html`
 **Zrób jako pierwsze:** na tych komponentach budują P1, P3 i P4.
 - [ ] Przycisk, karta, pole formularza z etykietą i błędem, kroki, kafelek wyboru, etykiety
 - [ ] Nagłówek (nawigacja, A+, dzwonek, użytkownik), stopka z deklaracją dostępności i informacją o AI
@@ -280,11 +292,13 @@ issue p2_komponenty "[P2] Komponenty UI i układ strony" "P2,WCAG" "M1 Fundament
 EOF
 
 issue p2_strona "[P2] Strona główna i wygląd logowania" "P2" "M2 Moduły v1 (19:00)" <<'EOF'
+**Makieta:** `design/makiety/Main.dc.html`, `design/makiety/Logowanie.dc.html`
 - [ ] `/`: hasło, trzy wejścia (mam problem / mam pomysł / chcę poznać), dane ROPS, zasada AI
 - [ ] Wygląd `/logowanie` i „Wejdź jako…” (logika od P4)
 EOF
 
 issue p2_kreator "[P2] Kreator: kroki kanwy i fiszka" "P2,III kreator" "M2 Moduły v1 (19:00)" <<'EOF'
+**Makieta:** `design/makiety/Kreator.dc.html`, `design/makiety/Fiszka.dc.html`
 **Zrób przed 18:00:** na tabeli `ideas` czekają panel ROPS i nabory (P4) oraz Tester.
 - [ ] Migracja `*_kreator_tester.sql` (ideas, idea_canvas, tests, test_signups, test_ratings) z RLS
 - [ ] Kroki z `data/rops/canvas_innowacji.json`: jedno pole = jeden ekran, zapis po każdym kroku
@@ -292,12 +306,14 @@ issue p2_kreator "[P2] Kreator: kroki kanwy i fiszka" "P2,III kreator" "M2 Modu�
 EOF
 
 issue p2_kreator_ai "[P2] Kreator: przyciski AI i wysłanie do ROPS" "P2,III kreator" "M4 Wszystkie moduły (23:00)" <<'EOF'
+**Makieta:** `design/makiety/Fiszka.dc.html`
 - [ ] „Podpowiedz”, „Wniosek pod nabór”, „Pokaż wizualizację” na endpointach P3 (wcześniej fixtures)
 - [ ] „Wyślij do ROPS” ustawia `wyslany_at` i woła `dodajPowiadomienie`
 - [ ] „Coś podobnego już działa” z wyniku dopasowania
 EOF
 
 issue p2_tester "[P2] Tester innowacji" "P2,IV tester" "M4 Wszystkie moduły (23:00)" <<'EOF'
+**Makieta:** `design/makiety/Tester.dc.html`
 - [ ] Lista testów, zapis i wypisanie się
 - [ ] Ocena 1–5, co działało, co poprawić; uwagi trafiają do autora
 EOF

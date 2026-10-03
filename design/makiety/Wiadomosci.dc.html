@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – wiadomości</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#EEF0F4;color:#4B5565}
+.tag-warn{background:#FFF1DB;color:#8A4B00}
+.tag-err{background:#FDECEA;color:#B42318}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.th{display:flex;flex-direction:column;gap:2px;padding:16px 18px;border-bottom:1px solid #D9DDE4;text-decoration:none;color:#151A23}
+.th:hover{background:#F3F6FD;color:#151A23}
+.msg{display:flex;flex-direction:column;gap:4px;padding:16px 0;border-bottom:1px solid #EEF0F4}
+label{font-weight:700}
+textarea{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+  <dc-import name="Naglowek" active="wiadomosci" rola="ngo" kto="Fundacja Dobry Start" hint-size="100%,112px"></dc-import>
+  <main class="wrap" style="padding-top: 36px; padding-bottom: 64px; display: flex; flex-direction: column; gap: 20px">
+    <h1 class="h" style="font-size: 40px">Wiadomości</h1>
+    <div style="display: flex; flex-wrap: wrap; background: #FFFFFF; border: 1px solid #D9DDE4; border-radius: 12px; overflow: hidden; min-height: 640px">
+      <nav aria-label="Rozmowy" style="flex: 1 1 300px; max-width: 360px; border-right: 1px solid #D9DDE4">
+        <a class="th" href="#w1" aria-current="true" style="background: #F3F6FD; box-shadow: inset 4px 0 0 #1F3A8A"><strong>Sąsiedzki dyżur po wypisie</strong><span class="muted" style="font-size: 16px">Redakcja ROPS, Ewa · dziś 17:12</span><span class="tag tag-err" style="align-self: flex-start; margin-top: 4px">Do poprawy</span></a>
+        <a class="th" href="#w2"><strong>Pytanie o wdrożenie: Organizator kompleksowej opieki</strong><span class="muted" style="font-size: 16px">Redakcja ROPS · wczoraj</span></a>
+        <a class="th" href="#w3"><strong>Nowy nabór pasuje do Twojej fiszki</strong><span class="muted" style="font-size: 16px">powiadomienie · 2 dni temu</span></a>
+      </nav>
+      <section aria-labelledby="w1t" style="flex: 999 1 480px; min-width: 0; padding: 24px 32px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: baseline">
+          <h2 id="w1t" class="h" style="font-size: 24px">Sąsiedzki dyżur po wypisie</h2>
+          <span class="muted" style="font-size: 15px">wysłany 16:42 → w weryfikacji 16:50 → do poprawy 17:05</span>
+        </div>
+        <ol aria-label="Wiadomości" style="list-style: none; margin: 0; padding: 0">
+          <li class="msg"><span style="font-size: 15px"><strong>Redakcja ROPS</strong> <span class="muted">· 17:05</span></span><p>Dziękujemy za fiszkę. Pomysł dobrze uzupełnia innowację „Organizator kompleksowej opieki w miejscu zamieszkania”. Prosimy dopisać, jak wolontariusze będą współpracować z ośrodkiem pomocy społecznej. Przypisaliśmy mentorkę.</p></li>
+          <li class="msg"><span style="font-size: 15px"><strong>Ewa, mentorka</strong> <span class="muted">· 17:12</span></span><p>Chętnie pomogę. Proponuję krótką rozmowę w tym tygodniu, przygotuję listę pytań do OPS.</p></li>
+          <li class="msg" style="border-bottom: none"><span style="font-size: 15px"><strong>Ty</strong> <span class="muted">· 17:20</span></span><p>Dziękujemy! Uzupełnimy fiszkę do jutra.</p></li>
+        </ol>
+        <form style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #D9DDE4; padding-top: 16px">
+          <label for="odp">Odpowiedz</label>
+          <textarea id="odp" rows="3"></textarea>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap"><button type="button" class="btn btn-p">Wyślij</button><a class="btn btn-s" href="Fiszka.dc.html">Popraw fiszkę</a></div>
+        </form>
+      </section>
+    </div>
+  </main>
+  <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

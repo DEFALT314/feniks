@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – logowanie</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}.btn-p:hover{background:#172C6B;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}.btn-s:hover{background:#E8EDFA;color:#172C6B}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+label{font-weight:700}
+input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+.acc{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;background:#fff;text-decoration:none;color:#151A23;min-height:64px}
+.acc:hover{border-color:#1F3A8A;background:#F3F6FD;color:#151A23}
+.av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 40px;color:#FFFFFF}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+  <dc-import name="Naglowek" active="start" rola="mieszkaniec" kto="Gość" hint-size="100%,112px"></dc-import>
+  <main class="wrap" style="padding-top: 56px; padding-bottom: 72px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+    <section class="card" aria-labelledby="zaloguj" style="flex: 1 1 460px; padding: 36px; display: flex; flex-direction: column; gap: 18px">
+      <h1 id="zaloguj" class="h" style="font-size: 36px">Zaloguj się kodem z maila</h1>
+      <p class="muted">Bez hasła. Wyślemy 6-cyfrowy kod, ważny przez 10 minut.</p>
+      <div style="display: flex; flex-direction: column; gap: 6px"><label for="l-mail">Adres e-mail</label><input id="l-mail" type="email" autocomplete="email" value="stanislaw@example.org"></div>
+      <button type="button" class="btn btn-p" style="align-self: flex-start">Wyślij kod</button>
+      <div style="display: flex; flex-direction: column; gap: 6px"><label for="l-kod">Kod z maila</label><input id="l-kod" inputmode="numeric" autocomplete="one-time-code" value="482913" style="font-size: 26px; letter-spacing: 0.25em; max-width: 240px"></div>
+      <button type="button" class="btn btn-s" style="align-self: flex-start">Zaloguj</button>
+      <div style="border-top: 1px solid #D9DDE4; padding-top: 18px; display: flex; flex-direction: column; gap: 10px">
+        <span class="lbl">Wkrótce, w pilotażu</span>
+        <button type="button" class="btn btn-s" disabled style="opacity: 0.6; cursor: not-allowed; justify-content: flex-start">Profil zaufany lub mObywatel (login.gov.pl)</button>
+        <button type="button" class="btn btn-s" disabled style="opacity: 0.6; cursor: not-allowed; justify-content: flex-start">Konto służbowe ROPS</button>
+      </div>
+    </section>
+    <section aria-labelledby="demo" style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="demo" class="h" style="font-size: 28px">Wersja pokazowa: wejdź jako…</h2>
+      <p class="muted">Fikcyjne konta z różnymi uprawnieniami. Działa tylko w wersji pokazowej.</p>
+      <a class="acc" href="Dopasuj.dc.html"><span class="av" style="background: #1F3A8A">S</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>Stanisław</strong><span class="muted" style="font-size: 16px">mieszkaniec, opiekuje się chorą mamą</span></span></a>
+      <a class="acc" href="Middleman.dc.html"><span class="av" style="background: #1D6B48">G</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>GOPS w Przykładowej Woli</strong><span class="muted" style="font-size: 16px">gmina (JST), gmina wiejska</span></span></a>
+      <a class="acc" href="Kreator.dc.html"><span class="av" style="background: #C2452B">F</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>Fundacja Dobry Start</strong><span class="muted" style="font-size: 16px">organizacja pozarządowa, autorka pomysłu</span></span></a>
+      <a class="acc" href="Wiadomosci.dc.html"><span class="av" style="background: #4B5565">E</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>Ewa</strong><span class="muted" style="font-size: 16px">ekspertka, mentorka innowacji</span></span></a>
+      <a class="acc" href="Admin.dc.html"><span class="av" style="background: #151A23">R</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>Redakcja ROPS</strong><span class="muted" style="font-size: 16px">administrator, Panel ROPS</span></span></a>
+    </section>
+  </main>
+  <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1150}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – tester innowacji</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#EEF0F4;color:#4B5565}
+.tag-ok{background:#E3F2EA;color:#1D6B48}
+.tag-ai{background:#E8EDFA;color:#1F3A8A}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+label{font-weight:700}
+textarea{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+fieldset{border:none;margin:0;padding:0}
+.sc{position:relative;display:flex;align-items:center;justify-content:center;width:60px;height:56px;border:1px solid #6B7487;border-radius:10px;background:#fff;cursor:pointer;font-weight:700;font-size:20px}
+.sc input{position:absolute;opacity:0;width:1px;height:1px}
+dl.m{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0;font-size:16px}
+dl.m dt{color:#4B5565}
+dl.m dd{margin:0}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+  <dc-import name="Naglowek" active="tester" rola="mieszkaniec" kto="Stanisław" hint-size="100%,112px"></dc-import>
+  <main>
+    <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
+      <div class="wrap" style="padding-top: 44px; padding-bottom: 36px; display: flex; flex-direction: column; gap: 12px">
+        <h1 class="h" style="font-size: 44px">Testy nowych rozwiązań</h1>
+        <p class="muted" style="max-width: 760px">Zapisz się na test, wypróbuj rozwiązanie i powiedz autorom, co działa, a co poprawić. Twoja opinia trafia do nich i do ROPS.</p>
+      </div>
+    </div>
+    <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 48px; padding-top: 36px; padding-bottom: 64px">
+      <section aria-labelledby="otwarte" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <h2 id="otwarte" class="h" style="font-size: 26px">Otwarte testy</h2>
+        <article class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
+          <h3 class="h" style="font-size: 22px">Merkury – symulator bankomatu i paczkomatu</h3>
+          <p>Sprawdź, czy ćwiczenia w domu pomagają potem pewniej obsłużyć urządzenia w mieście.</p>
+          <dl class="m"><dt>Gdzie</dt><dd>online, z domu</dd><dt>Kiedy</dt><dd>[termin do uzupełnienia]</dd><dt>Miejsca</dt><dd>[liczba]</dd></dl>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px"><button type="button" class="btn btn-p">Zapisz się</button><a class="btn btn-s" href="Karta.dc.html">O rozwiązaniu</a></div>
+        </article>
+        <article class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h3 class="h" style="font-size: 22px">Senior CUDER – gra karciana</h3><span class="tag tag-ok">Jesteś zapisany</span></div>
+          <p>Spotkanie przy grze w małej grupie, potem krótka rozmowa o wrażeniach.</p>
+          <dl class="m"><dt>Gdzie</dt><dd>klub seniora</dd><dt>Kiedy</dt><dd>[termin do uzupełnienia]</dd></dl>
+          <button type="button" class="btn btn-s" style="align-self: flex-start; margin-top: 4px">Wypisz się</button>
+        </article>
+      </section>
+      <aside aria-labelledby="ocena" style="flex: 1 1 360px; max-width: 420px; display: flex; flex-direction: column; gap: 16px">
+        <form class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 16px; border-top: 4px solid #1F3A8A">
+          <h2 id="ocena" class="h" style="font-size: 22px">Oceń: Senior CUDER</h2>
+          <fieldset style="display: flex; flex-direction: column; gap: 8px">
+            <legend style="font-weight: 700; margin-bottom: 8px">Na ile pomaga? (1 – wcale, 5 – bardzo)</legend>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <label class="sc"><input type="radio" name="oc" value="1">1</label>
+              <label class="sc"><input type="radio" name="oc" value="2">2</label>
+              <label class="sc"><input type="radio" name="oc" value="3">3</label>
+              <label class="sc" style="background: #1F3A8A; color: #FFFFFF; border-color: #1F3A8A"><input type="radio" name="oc" value="4" checked>4</label>
+              <label class="sc"><input type="radio" name="oc" value="5">5</label>
+            </div>
+          </fieldset>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label for="t-ok">Co działało?</label><textarea id="t-ok" rows="2">Dużo rozmów, nikt nie czuł się oceniany.</textarea></div>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label for="t-pop">Co poprawić?</label><textarea id="t-pop" rows="2">Większe litery na kartach.</textarea></div>
+          <button type="button" class="btn btn-p">Wyślij ocenę</button>
+        </form>
+        <p class="muted" style="font-size: 16px">Po zebraniu ocen autor dostanie krótkie podsumowanie uwag, oznaczone jako <span class="tag tag-ai">Propozycja AI</span>.</p>
+      </aside>
+    </div>
+  </main>
+  <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

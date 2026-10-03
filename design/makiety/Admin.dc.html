@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – panel ROPS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 18px;border-radius:10px;font:inherit;font-size:16px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
+.btn-d{background:#fff;color:#B42318;border-color:#B42318}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#EEF0F4;color:#4B5565}
+.tag-warn{background:#FFF1DB;color:#8A4B00}
+.tag-err{background:#FDECEA;color:#B42318}
+.tag-ai{background:#E8EDFA;color:#1F3A8A}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.tab{display:inline-flex;align-items:center;min-height:46px;text-decoration:none;color:#151A23;font-size:17px;border-bottom:3px solid transparent}
+table{border-collapse:collapse;width:100%;font-size:16px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid #D9DDE4;vertical-align:middle}
+th{font-size:15px;color:#4B5565}
+.bar{display:grid;grid-template-columns:180px 1fr 32px;gap:12px;align-items:center;font-size:16px}
+.bar span:nth-child(2){height:16px;border-radius:4px;background:#1F3A8A;display:block}
+label{font-weight:700}
+textarea{font:inherit;font-size:17px;padding:10px 12px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+  <dc-import name="Naglowek" active="admin" rola="rops" kto="Redakcja ROPS" hint-size="100%,112px"></dc-import>
+  <main>
+    <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
+      <div class="wrap" style="padding-top: 32px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px"><h1 class="h" style="font-size: 40px">Panel ROPS</h1><span class="tag tag-warn">Dane demonstracyjne</span></div>
+        <nav aria-label="Sekcje panelu" style="display: flex; flex-wrap: wrap; gap: 4px 28px">
+          <a class="tab" href="#kolejka" aria-current="page" style="color: #1F3A8A; font-weight: 700; border-bottom-color: #1F3A8A">Nowe pomysły (3)</a>
+          <a class="tab" href="#role">Prośby o rolę (1)</a>
+          <a class="tab" href="Biblioteka.dc.html">Biblioteka</a>
+          <a class="tab" href="#nabory">Nabory</a>
+          <a class="tab" href="#trendy">Potrzeby w regionie</a>
+          <a class="tab" href="#dziennik">Dziennik zmian</a>
+        </nav>
+      </div>
+    </div>
+    <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 40px; padding-top: 32px; padding-bottom: 64px">
+      <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 32px">
+        <section id="kolejka" aria-labelledby="kol" style="display: flex; flex-direction: column; gap: 12px">
+          <h2 id="kol" class="h" style="font-size: 24px">Nowe pomysły</h2>
+          <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D9DDE4; border-radius: 12px">
+            <table>
+              <thead><tr><th scope="col">Pomysł</th><th scope="col">Autor</th><th scope="col">Obszar</th><th scope="col">Wysłano</th><th scope="col">Status</th></tr></thead>
+              <tbody>
+                <tr style="background: #F3F6FD"><td><a href="#p1"><strong>Sąsiedzki dyżur po wypisie</strong></a></td><td>Fundacja Dobry Start</td><td>Seniorzy</td><td>dziś 16:42</td><td><span class="tag tag-warn">W weryfikacji</span></td></tr>
+                <tr><td><a href="#p2">Kawiarenka cyfrowa w bibliotece</a></td><td>mieszkanka (konto demo)</td><td>Seniorzy</td><td>dziś 15:10</td><td><span class="tag">Nowy</span></td></tr>
+                <tr><td><a href="#p3">Mapa miejsc przyjaznych osobom w spektrum autyzmu</a></td><td>stowarzyszenie (konto demo)</td><td>Niepełnosprawność</td><td>wczoraj</td><td><span class="tag tag-err">Do poprawy</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section id="trendy" aria-labelledby="tr" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: baseline"><h2 id="tr" class="h" style="font-size: 22px">Zgłoszenia według obszarów Mapy Wyzwań, ostatnie 30 dni</h2><span class="tag tag-warn">Dane demonstracyjne</span></div>
+          <div role="img" aria-label="Wykres słupkowy: Seniorzy 14, Niepełnosprawność 9, Zdrowie psychiczne 7, Ubóstwo 6, Rodzina i piecza 5, Zdrowie 4, Cudzoziemcy 3, Bezdomność 2" style="display: flex; flex-direction: column; gap: 8px">
+            <div class="bar"><span>Seniorzy</span><span style="width: 100%"></span><span>14</span></div>
+            <div class="bar"><span>Niepełnosprawność</span><span style="width: 64%"></span><span>9</span></div>
+            <div class="bar"><span>Zdrowie psychiczne</span><span style="width: 50%"></span><span>7</span></div>
+            <div class="bar"><span>Ubóstwo</span><span style="width: 43%"></span><span>6</span></div>
+            <div class="bar"><span>Rodzina i piecza</span><span style="width: 36%"></span><span>5</span></div>
+            <div class="bar"><span>Zdrowie</span><span style="width: 29%"></span><span>4</span></div>
+            <div class="bar"><span>Cudzoziemcy</span><span style="width: 21%"></span><span>3</span></div>
+            <div class="bar"><span>Bezdomność</span><span style="width: 14%"></span><span>2</span></div>
+          </div>
+          <div style="border-top: 1px solid #D9DDE4; padding-top: 12px; display: flex; flex-direction: column; gap: 6px"><span class="tag tag-ai" style="align-self: flex-start">Propozycja AI</span><p>Najczęściej wraca wyzwanie „Dostęp do usług opiekuńczych w gminie”. W Bibliotece są pasujące innowacje; warto rozważyć je w kolejnym naborze.</p></div>
+          <a href="#tabela" style="font-size: 16px">Pokaż dane w tabeli</a>
+        </section>
+      </div>
+      <aside aria-label="Szczegóły" style="flex: 1 1 340px; max-width: 400px; display: flex; flex-direction: column; gap: 20px">
+        <div id="p1" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px; border-top: 4px solid #1F3A8A">
+          <span class="lbl">Fundacja Dobry Start</span>
+          <h2 class="h" style="font-size: 22px">Sąsiedzki dyżur po wypisie</h2>
+          <p class="muted" style="font-size: 16px">Wolontariusze z sąsiedztwa odwiedzają seniorów przez dwa tygodnie po powrocie ze szpitala.</p>
+          <p style="font-size: 16px">Podobne w Bibliotece: <a href="Karta.dc.html">Organizator kompleksowej opieki</a></p>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label for="a-odp" style="font-size: 16px">Odpowiedź dla autora</label><textarea id="a-odp" rows="3">Prosimy dopisać współpracę z OPS. Przypisujemy mentorkę.</textarea></div>
+          <p style="font-size: 16px">Ekspertka: Ewa · <a href="#zmien">zmień</a></p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-p">Zatwierdź</button><button type="button" class="btn btn-s">Do poprawy</button><button type="button" class="btn btn-d">Odrzuć</button></div>
+        </div>
+        <div id="role" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+          <span class="lbl">Prośba o rolę</span>
+          <p><strong>GOPS w Przykładowej Woli</strong> prosi o rolę „gmina (JST)”.</p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-p">Zatwierdź</button><button type="button" class="btn btn-s">Odrzuć</button></div>
+        </div>
+        <div id="dziennik" style="display: flex; flex-direction: column; gap: 6px; font-size: 15px">
+          <span class="lbl">Dziennik zmian</span>
+          <p><span class="muted">17:05</span> status „do poprawy”: Sąsiedzki dyżur</p>
+          <p><span class="muted">16:58</span> przypisano ekspertkę</p>
+          <p><span class="muted">15:30</span> edycja karty: Merkury</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1650}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
