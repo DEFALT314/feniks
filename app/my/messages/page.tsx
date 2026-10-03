@@ -97,8 +97,9 @@ export default async function MessagesPage({ searchParams }: PageProps<"/my/mess
                       )}
                     >
                       <span className="flex items-start justify-between gap-2">
+                        {/* The open conversation is marked read on this render */}
                         <strong>{t.temat}</strong>
-                        {t.unread > 0 ? (
+                        {t.unread > 0 && !active ? (
                           <span className="bg-brick shrink-0 rounded-full px-2 text-sm font-bold text-white">
                             {t.unread}
                             <span className="sr-only"> nowe</span>
