@@ -75,6 +75,7 @@ beforeEach(() => {
   rerankMock.mockResolvedValue({
     picks: [{ id: "merkury", reason: "Pozwala bezpiecznie przećwiczyć bankomat.", quote: null }],
     noMatchReason: null,
+    challengeId: "uslugi-dla-starzejacych",
   });
 });
 
@@ -98,9 +99,7 @@ describe("POST /api/match", () => {
     const hybrid = await POST(post({ description: "Seniorzy boją się korzystać z bankomatu." }));
     expect(hybrid.headers.get("X-Match-Retrieval")).toBe("hybrid");
 
-    rpc
-      .mockResolvedValueOnce({ data: [], error: null })
-      .mockResolvedValueOnce({ data: [], error: null });
+    rpc.mockResolvedValueOnce({ data: [], error: null });
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     const empty = await POST(post({ description: "Seniorzy boją się korzystać z bankomatu." }));
     expect(empty.headers.get("X-Match-Retrieval")).toBe("keywords; reason=no-vectors");

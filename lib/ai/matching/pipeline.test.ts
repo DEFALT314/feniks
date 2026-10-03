@@ -86,10 +86,11 @@ describe("runMatch", () => {
         },
       ],
       no_match_reason: null,
+      challenge_id: "uslugi-opiekuncze",
     });
     const { response, stats } = await runMatch(
       request,
-      deps({ rerank: (d, c) => rerank(d, c, { client }) }),
+      deps({ rerank: (d, c, ch) => rerank(d, c, { client }, ch) }),
     );
     expect(MatchResponse.safeParse(response).success).toBe(true);
     expect(response.picked_by).toBe("ai");
@@ -108,9 +109,23 @@ describe("runMatch", () => {
     });
   });
 
-  it("takes the challenge from the area of the recommended innovation, not the plain best text match", async () => {
-    const { response } = await runMatch(request, deps({ rerank: undefined }));
-    expect(response.challenge?.area_id).toBe("seniorzy");
+  it("without the AI shows no challenge: a wrong one is worse than none", async () => {
+    const { response, stats } = await runMatch(request, deps({ rerank: undefined }));
+    expect(response.challenge).toBeNull();
+    expect(stats.challenge_id).toBeNull();
+  });
+
+  it("takes the challenge chosen by the AI", async () => {
+    const rerankFake: MatchDeps["rerank"] = async (_d, candidates, challenges) => {
+      expect(challenges.map((c) => c.id)).toEqual(["uslugi-opiekuncze", "przejscie-z-placowki"]);
+      return {
+        picks: [{ id: candidates[0].id, reason: "Pomaga.", quote: null }],
+        noMatchReason: null,
+        challengeId: "przejscie-z-placowki",
+      };
+    };
+    const { response } = await runMatch(request, deps({ rerank: rerankFake }));
+    expect(response.challenge?.challenge_id).toBe("przejscie-z-placowki");
   });
 
   it("never shows or sends the phone number", async () => {
@@ -241,6 +256,27 @@ describe("rerank", () => {
     const { client, calls } = fakeLlm({ picks: [{ id: "wymyslona", reason: "x", quote: null }] });
     await expect(rerank("seniorzy", candidates, { client })).rejects.toThrow();
     expect(calls).toHaveLength(2);
+  });
+
+  it("names a challenge only from the Challenges Map list, or none", async () => {
+    const challenges = [
+      { id: "uslugi-opiekuncze", area: "Seniorzy", text: "Dostęp do usług opiekuńczych" },
+    ];
+    const ok = fakeLlm({ picks: [], challenge_id: "uslugi-opiekuncze" });
+    expect(
+      (await rerank("seniorzy", candidates, { client: ok.client }, challenges)).challengeId,
+    ).toBe("uslugi-opiekuncze");
+    expect(ok.calls[0][1].content).toContain("Challenges Map (json)");
+
+    const none = fakeLlm({ picks: [], challenge_id: "none" });
+    expect(
+      (await rerank("seniorzy", candidates, { client: none.client }, challenges)).challengeId,
+    ).toBeNull();
+
+    const invented = fakeLlm({ picks: [], challenge_id: "wymyslone" });
+    await expect(
+      rerank("seniorzy", candidates, { client: invented.client }, challenges),
+    ).rejects.toThrow();
   });
 
   it("tells the model to choose only from the list and gives it the candidates", async () => {

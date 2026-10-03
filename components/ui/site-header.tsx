@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -13,11 +14,17 @@ type SiteHeaderProps = {
   user: CurrentUser | null;
   unreadNotifications?: number;
   demoMode?: boolean;
+  bell?: ReactNode; // live notification bell (P4, #7); falls back to a plain link
 };
 
 // Header per design/makiety/Naglowek.dc.html. From 1024 px: logo, one-row menu, A+, bell and the
 // account menu. Below that (and at 200% zoom): logo, A+, bell and a "Menu" button (#75).
-export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: SiteHeaderProps) {
+export function SiteHeader({
+  user,
+  unreadNotifications = 0,
+  demoMode = false,
+  bell,
+}: SiteHeaderProps) {
   const role = user?.role ?? null;
   const items = navItemsFor(role);
   const accountItems = accountItemsFor(role);
@@ -46,21 +53,23 @@ export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: 
           <TextSizeToggle />
           {user ? (
             <>
-              <Link
-                href="/my/messages"
-                aria-label={notificationsLabel(unreadNotifications)}
-                className={cn(buttonVariants({ variant: "outline", size: "icon" }), "relative")}
-              >
-                <Bell aria-hidden="true" />
-                {unreadNotifications > 0 ? (
-                  <span
-                    aria-hidden="true"
-                    className="bg-brick absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white"
-                  >
-                    {unreadNotifications}
-                  </span>
-                ) : null}
-              </Link>
+              {bell ?? (
+                <Link
+                  href="/my/messages"
+                  aria-label={notificationsLabel(unreadNotifications)}
+                  className={cn(buttonVariants({ variant: "outline", size: "icon" }), "relative")}
+                >
+                  <Bell aria-hidden="true" />
+                  {unreadNotifications > 0 ? (
+                    <span
+                      aria-hidden="true"
+                      className="bg-brick absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white"
+                    >
+                      {unreadNotifications}
+                    </span>
+                  ) : null}
+                </Link>
+              )}
               <AccountMenu user={user} items={accountItems} className="hidden lg:block" />
             </>
           ) : (

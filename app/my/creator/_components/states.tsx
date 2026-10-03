@@ -1,15 +1,6 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 
-// Drafts are read from the browser, so the first render has nothing to show yet
-export function Loading() {
-  return (
-    <main id="main-content" className="flex-1" aria-busy="true">
-      <p className="mx-auto max-w-[1200px] px-4 py-12 sm:px-10">Wczytywanie…</p>
-    </main>
-  );
-}
-
 export function IdeaNotFound() {
   return (
     <main
@@ -17,12 +8,20 @@ export function IdeaNotFound() {
       className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col items-start gap-4 px-4 py-12 sm:px-10"
     >
       <h1 className="text-3xl font-bold">Nie ma takiego pomysłu</h1>
-      <p>
-        Szkice pomysłów zapisują się w tej przeglądarce. Może pomysł powstał na innym urządzeniu?
-      </p>
+      <p>Ten pomysł nie istnieje albo należy do innego konta.</p>
       <Link href="/my/creator" className={buttonVariants({ variant: "secondary" })}>
         Wróć do moich pomysłów
       </Link>
     </main>
+  );
+}
+
+// Shown on the canvas and the card while ROPS has the idea (database lock in *_creator_submit.sql)
+export function LockedNotice() {
+  return (
+    <p className="bg-warning-soft text-ink rounded-[10px] px-4 py-3 text-base">
+      <strong>Pomysł jest w ROPS.</strong> Możesz go czytać, ale nie zmieniać. Edycja wróci, jeśli
+      ROPS poprosi o poprawki.
+    </p>
   );
 }
