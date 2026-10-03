@@ -168,6 +168,144 @@ export type Database = {
         }
         Relationships: []
       }
+      idea_canvas: {
+        Row: {
+          idea_id: string
+          odpowiedz: Json
+          pole_id: string
+          updated_at: string
+        }
+        Insert: {
+          idea_id: string
+          odpowiedz: Json
+          pole_id: string
+          updated_at?: string
+        }
+        Update: {
+          idea_id?: string
+          odpowiedz?: Json
+          pole_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_canvas_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      idea_reviews: {
+        Row: {
+          created_at: string
+          ekspert_id: string | null
+          id: string
+          idea_id: string
+          komentarz: string | null
+          reviewer_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          ekspert_id?: string | null
+          id?: string
+          idea_id: string
+          komentarz?: string | null
+          reviewer_id?: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          ekspert_id?: string | null
+          id?: string
+          idea_id?: string
+          komentarz?: string | null
+          reviewer_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_reviews_ekspert_id_fkey"
+            columns: ["ekspert_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "idea_reviews_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "idea_reviews_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ideas: {
+        Row: {
+          autor_id: string
+          created_at: string
+          dla_kogo: string | null
+          etap: string | null
+          id: string
+          istota: string | null
+          obszar_id: string | null
+          opis: string | null
+          tytul: string
+          updated_at: string
+          wyslany_at: string | null
+        }
+        Insert: {
+          autor_id?: string
+          created_at?: string
+          dla_kogo?: string | null
+          etap?: string | null
+          id?: string
+          istota?: string | null
+          obszar_id?: string | null
+          opis?: string | null
+          tytul: string
+          updated_at?: string
+          wyslany_at?: string | null
+        }
+        Update: {
+          autor_id?: string
+          created_at?: string
+          dla_kogo?: string | null
+          etap?: string | null
+          id?: string
+          istota?: string | null
+          obszar_id?: string | null
+          opis?: string | null
+          tytul?: string
+          updated_at?: string
+          wyslany_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ideas_autor_id_fkey"
+            columns: ["autor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ideas_obszar_id_fkey"
+            columns: ["obszar_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_areas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       innovation_categories: {
         Row: {
           id: string
@@ -535,9 +673,152 @@ export type Database = {
         }
         Relationships: []
       }
+      test_ratings: {
+        Row: {
+          co_dzialalo: string | null
+          co_poprawic: string | null
+          created_at: string
+          id: string
+          ocena: number
+          test_id: string
+          user_id: string
+        }
+        Insert: {
+          co_dzialalo?: string | null
+          co_poprawic?: string | null
+          created_at?: string
+          id?: string
+          ocena: number
+          test_id: string
+          user_id?: string
+        }
+        Update: {
+          co_dzialalo?: string | null
+          co_poprawic?: string | null
+          created_at?: string
+          id?: string
+          ocena?: number
+          test_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_ratings_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_ratings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      test_signups: {
+        Row: {
+          created_at: string
+          test_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          test_id: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          test_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_signups_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_signups_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tests: {
+        Row: {
+          created_at: string
+          id: string
+          idea_id: string
+          liczba_miejsc: number | null
+          miejsce: string | null
+          opis: string | null
+          termin: string | null
+          tytul: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          idea_id: string
+          liczba_miejsc?: number | null
+          miejsce?: string | null
+          opis?: string | null
+          termin?: string | null
+          tytul: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          idea_id?: string
+          liczba_miejsc?: number | null
+          miejsce?: string | null
+          opis?: string | null
+          termin?: string | null
+          tytul?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tests_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      idea_status: {
+        Row: {
+          ekspert_id: string | null
+          idea_id: string | null
+          komentarz: string | null
+          oceniony_at: string | null
+          status: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idea_reviews_ekspert_id_fkey"
+            columns: ["ekspert_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "idea_reviews_idea_id_fkey"
+            columns: ["idea_id"]
+            isOneToOne: false
+            referencedRelation: "ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       ai_cache_get: { Args: { p_key: string }; Returns: Json }
@@ -545,6 +826,7 @@ export type Database = {
         Args: { p_key: string; p_value: Json }
         Returns: undefined
       }
+      can_review_idea: { Args: { p_idea_id: string }; Returns: boolean }
       dodaj_powiadomienie: {
         Args: {
           p_link?: string
@@ -555,7 +837,11 @@ export type Database = {
         }
         Returns: number
       }
+      idea_author_email: { Args: { p_idea_id: string }; Returns: string }
+      is_idea_author: { Args: { p_idea_id: string }; Returns: boolean }
       is_rops: { Args: never; Returns: boolean }
+      is_signed_up: { Args: { p_test_id: string }; Returns: boolean }
+      is_test_author: { Args: { p_test_id: string }; Returns: boolean }
       match_embeddings: {
         Args: { match_count?: number; match_kind: string; query: string }
         Returns: {

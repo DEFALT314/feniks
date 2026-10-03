@@ -10,14 +10,31 @@ import { Role } from "./shared";
 // GET  /api/admin/nabory                      → Call[] (P3 also reads it for the grant application generator)
 
 // Idea status shown to the author (P2 reads it from idea_reviews; no review = "nowy").
-export const IdeaStatus = z.enum(["nowy", "zatwierdzony", "do_poprawy", "odrzucony"]);
+// "w_weryfikacji" = passed to an expert, no decision yet (design/makiety/Admin.dc.html).
+export const IdeaStatus = z.enum([
+  "nowy",
+  "w_weryfikacji",
+  "zatwierdzony",
+  "do_poprawy",
+  "odrzucony",
+]);
 export type IdeaStatus = z.infer<typeof IdeaStatus>;
 
-export const ReviewIdeaInput = z.object({
-  status: IdeaStatus.exclude(["nowy"]),
-  komentarz: z.string().max(2000).optional(), // for the author; required for do_poprawy and odrzucony
-  ekspert_id: z.uuid().optional(),
-});
+export const ReviewIdeaInput = z
+  .object({
+    status: IdeaStatus.exclude(["nowy"]),
+    komentarz: z.string().trim().max(2000).optional(), // for the author
+    ekspert_id: z.uuid().optional(),
+  })
+  // Messages are shown to ROPS staff in the panel, so they are in Polish.
+  .refine((r) => !["do_poprawy", "odrzucony"].includes(r.status) || Boolean(r.komentarz), {
+    message: "Napisz autorowi, co poprawić albo dlaczego odrzucacie pomysł.",
+    path: ["komentarz"],
+  })
+  .refine((r) => r.status !== "w_weryfikacji" || Boolean(r.ekspert_id), {
+    message: "Wybierz eksperta, któremu przekazujecie pomysł.",
+    path: ["ekspert_id"],
+  });
 export type ReviewIdeaInput = z.infer<typeof ReviewIdeaInput>;
 
 export const IdeaReview = z.object({
