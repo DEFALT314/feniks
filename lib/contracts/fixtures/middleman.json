@@ -1,0 +1,79 @@
+{
+  "request": {
+    "innovation_id": "organizator-kompleksowej-opieki-w-miejscu-zamieszkania",
+    "institution": {
+      "type": "gops",
+      "name": "GOPS w Przykładowej Woli",
+      "municipality_kind": "wiejska",
+      "staff": "Dwie pracownice socjalne, jedna może koordynować usługę.",
+      "constraints": "Brak własnego transportu, szpital powiatowy 30 km."
+    }
+  },
+  "card": {
+    "id": "5b1d6c1e-2f4a-4c1e-9b2a-1f0e8c7d6a51",
+    "version": 1,
+    "title": "Koordynacja opieki domowej po wypisie ze szpitala",
+    "for_whom": "Mieszkańcy niesamodzielni po pobycie w szpitalu, zwłaszcza seniorzy mieszkający samotnie, oraz ich rodziny.",
+    "how_it_works": [
+      "Szpital lub rodzina zgłasza wypis do GOPS.",
+      "Koordynator odwiedza dom i ustala potrzeby razem z rodziną.",
+      "GOPS organizuje usługi opiekuńcze, sprzęt i kontakt z pielęgniarką.",
+      "Po dwóch tygodniach wspólny przegląd planu opieki."
+    ],
+    "who_delivers": "Pracownik GOPS jako koordynator, we współpracy z podmiotem opieki długoterminowej.",
+    "cost": {
+      "estimate": null,
+      "funding_hint": "Sprawdź aktualne nabory w HubMI."
+    },
+    "risks": "Szybki obieg informacji ze szpitala, zgoda pacjenta na przekazanie danych, dostępność sprzętu w małej gminie.",
+    "first_steps": [
+      "Rozmowa z autorami innowacji przez ROPS.",
+      "Porozumienie ze szpitalem powiatowym.",
+      "Wskazanie koordynatora w GOPS."
+    ],
+    "based_on": {
+      "id": "organizator-kompleksowej-opieki-w-miejscu-zamieszkania",
+      "nazwa": "Organizator kompleksowej opieki w miejscu zamieszkania",
+      "kategoria_id": "dla-seniorow",
+      "etykieta": "MIWS",
+      "sprawdzona_przez_rops": true,
+      "opis_krotki": "Program pilnej, wielokierunkowej pomocy w domu dla osób niesamodzielnych po wyjściu ze szpitala i ich rodzin: organizacja opieki, sprzętu i wsparcia dostosowanych do możliwości bliskich.",
+      "dla_kogo": [
+        "osoby niesamodzielne po pobycie w szpitalu",
+        "seniorzy po nagłym pogorszeniu zdrowia",
+        "rodziny i opiekunowie nieformalni"
+      ],
+      "slowa_kluczowe": [
+        "opieka domowa",
+        "wypis ze szpitala",
+        "osoba leżąca",
+        "opiekun rodzinny",
+        "niesamodzielność",
+        "opieka długoterminowa",
+        "sprzęt rehabilitacyjny",
+        "pielęgniarka",
+        "usługi opiekuńcze",
+        "senior",
+        "po szpitalu"
+      ],
+      "spoza_biblioteki": false,
+      "opis_niepelny": false,
+      "ma_film": false,
+      "ma_pdf": true,
+      "kto_moze_wdrozyc": [
+        "podmioty organizujące pielęgniarstwo opieki długoterminowej",
+        "JST",
+        "OPS"
+      ]
+    },
+    "institution": {
+      "type": "gops",
+      "name": "GOPS w Przykładowej Woli",
+      "municipality_kind": "wiejska",
+      "staff": "Dwie pracownice socjalne, jedna może koordynować usługę.",
+      "constraints": "Brak własnego transportu, szpital powiatowy 30 km."
+    },
+    "status": "szkic",
+    "created_at": "2026-10-03T18:00:00Z"
+  }
+}
