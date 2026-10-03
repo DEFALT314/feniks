@@ -1,0 +1,1883 @@
+{
+ "opis": "Innowacje z inkubatorów ROPS nieobecne w Bibliotece online (stan 3.10.2026)",
+ "zrodla": [
+  "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,o-projekcie",
+  "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+  "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,wynik-naboru-do-projektu",
+  "https://rops.krakow.pl/pliki-do-pobrania/artykul,lista-rankingowa,1239",
+  "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,lista-akcelerowanych-innowacji",
+  "https://rops.krakow.pl/aktualnosci/wybralismy-9-innowacji-do-upowszechniania",
+  "https://rops.krakow.pl/mpliki/IS/PUBLIKACJE_INKUBATOROW/Pocz_kropki_Publikacja_IWS.pdf",
+  "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/Innowacje_spoleczne_dla_dostepnosci.pdf",
+  "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+  "https://rops.krakow.pl/zakonczone-projekty-i-zadania/malopolski-inkubator-innowacji-spolecznych-projekt-zakonczony-31072019",
+  "https://rops.krakow.pl/zakonczone-projekty-i-zadania/inkubator-dostepnosci-projekt-zakonczony-31122022",
+  "https://rops.krakow.pl/realizowane-projekty-i-zadania/usluga-wrazliwa-upowszechnianie-innowacji-spolecznych-w-srodowiskach-lokalnych",
+  "https://innowacjespoleczne.pl/profil/80cf1321-f5cd-405d-bc7d-4a9de54c6fa1/",
+  "https://innowacjespoleczne.pl/innowacja/asystent-osoby-starszej-3",
+  "https://innowacjespoleczne.pl/innowacja/model-mobilnego-spa-dla-seniorow-2",
+  "https://innowacjespoleczne.pl/innowacja/bazalnie-w-domu-model-pracy-domowej-z-dziecmi-gleboko-niepelnosprawnymi-2",
+  "https://cdn.innowacjespoleczne.pl/Attachments/i002/123/MODEL%20Innowacyjna%20terapia%20zaj%C4%99ciowa%20w%20domu%20osoby%20starszej.pdf"
+ ],
+ "licencja_zrodel": "Opisy własnymi słowami. Karty na innowacjespoleczne.pl są na licencji CC BY 4.0 (źródło: innowacjespoleczne.pl); publikacje i listy ROPS służyły jako źródło nazw, programów i instytucji.",
+ "legenda_pewnosci": "pewne = nazwa i program potwierdzone w publikacji lub na stronie ROPS ORAZ opis oparty na karcie/modelu lub jednoznacznym tytule; prawdopodobne = nazwa i program potwierdzone, ale opis wyprowadzony wyłącznie z tytułu albo powiązanie nazw wnioskowane",
+ "innowacje": [
+  {
+   "id": "innowacyjna-terapia-zajeciowa-w-domu-osoby-starszej",
+   "nazwa": "Innowacyjna terapia zajęciowa w domu osoby starszej",
+   "kategoria": "dla-seniorow",
+   "etykieta": "MIIS",
+   "opis_krotki": "Usługa terapii zajęciowej w domu seniora: ergoterapia, biblioterapia, muzykoterapia, hortiterapia, terapia kulinarna, trening pamięci oraz warsztaty zapobiegania upadkom.",
+   "problem": "Seniorzy, którzy nie wychodzą z domu, nie mają dostępu do zajęć aktywizujących; zostaje im opieka lub placówka.",
+   "dla_kogo": [
+    "osoby starsze o ograniczonej sprawności, które nie dotrą do placówki",
+    "seniorzy zagrożeni izolacją społeczną"
+   ],
+   "kto_moze_wdrozyc": [
+    "ośrodki pomocy społecznej",
+    "organizacje pozarządowe"
+   ],
+   "czy_dziala": "Półroczny test pokazał poprawę samodzielności i samopoczucia uczestników oraz mniejszą potrzebę opieki instytucjonalnej.",
+   "autor_instytucja": "Stowarzyszenie „Być”",
+   "materialy": {
+    "opis_pdf": "https://cdn.innowacjespoleczne.pl/Attachments/i002/123/MODEL%20Innowacyjna%20terapia%20zaj%C4%99ciowa%20w%20domu%20osoby%20starszej.pdf",
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://cdn.innowacjespoleczne.pl/Attachments/i002/123/MODEL%20Innowacyjna%20terapia%20zaj%C4%99ciowa%20w%20domu%20osoby%20starszej.pdf",
+   "slowa_kluczowe": [
+    "terapia zajęciowa",
+    "senior",
+    "w domu",
+    "samotność",
+    "izolacja",
+    "ergoterapia",
+    "muzykoterapia",
+    "trening pamięci",
+    "upadki",
+    "aktywizacja seniorów",
+    "osoba leżąca",
+    "opieka domowa"
+   ],
+   "przyklady_zapytan": [
+    "Mamy w gminie seniorów, którzy nie wychodzą z domu i nikt ich nie aktywizuje, szukamy gotowej usługi.",
+    "Tata rzadko wychodzi, chciałabym zajęć terapeutycznych u niego w domu."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 oraz model innowacji na innowacjespoleczne.pl (licencja CC BY 4.0)",
+   "pewnosc": "pewne"
+  },
+  {
+   "id": "agrotreningi-metody-pracy-z-osobami-starszymi-na-obszarach-wiejskich",
+   "nazwa": "Agrotreningi – metody pracy z osobami starszymi na obszarach wiejskich",
+   "kategoria": "dla-seniorow",
+   "etykieta": "MIIS",
+   "opis_krotki": "Zestaw metod pracy z osobami starszymi mieszkającymi na wsi, przetestowany w MIIS. Dostępny spis podaje tylko tytuł, typ (usługa) i autora; szczegółów metod brak.",
+   "problem": "Seniorzy na wsi mają mniej możliwości aktywizacji i wsparcia niż w mieście (wniosek z tytułu innowacji).",
+   "dla_kogo": [
+    "osoby starsze mieszkające na obszarach wiejskich"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "senior",
+    "wieś",
+    "obszary wiejskie",
+    "aktywizacja seniorów",
+    "metody pracy",
+    "trening",
+    "praca z seniorami",
+    "gospodarstwo",
+    "agroterapia",
+    "senior na wsi"
+   ],
+   "przyklady_zapytan": [
+    "Prowadzimy GOPS na wsi i szukamy sposobu na aktywizację starszych mieszkańców.",
+    "Jak zająć seniorów w małej miejscowości, gdzie nie ma klubu seniora?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł i autor; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "dzielnicowe-centrum-asystenckie-certyfikat-zaufanego-opiekuna-w",
+   "nazwa": "Dzielnicowe Centrum Asystenckie – Certyfikat Zaufanego Opiekuna w Lokalnej Sieci Wzajemnej Pomocy",
+   "kategoria": "dla-seniorow",
+   "etykieta": "MIIS",
+   "opis_krotki": "Dzielnicowe centrum organizujące pomoc asystencką dla osób starszych w lokalnej sieci wzajemnej pomocy; opiekunowie otrzymują Certyfikat Zaufanego Opiekuna. Szczegółów modelu spis nie podaje.",
+   "problem": "Seniorzy potrzebują zaufanej lokalnej pomocy asystenckiej, trudno ją znaleźć i zweryfikować (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby starsze potrzebujące asysty",
+    "lokalne społeczności dzielnic"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Spółdzielnia Socjalna Merchant",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "asystent",
+    "opiekun",
+    "certyfikat",
+    "zaufany opiekun",
+    "sąsiedzka pomoc",
+    "wzajemna pomoc",
+    "sieć wsparcia",
+    "senior",
+    "dzielnica",
+    "usługi opiekuńcze",
+    "lokalna sieć"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy zorganizować w dzielnicy sieć zaufanych opiekunów dla starszych sąsiadów.",
+    "Jak sprawdzić, czy opiekun do seniora jest godny zaufania i jak zbudować lokalną sieć pomocy?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł i autor; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "asystent-osoby-starszej-nowa-forma-uslug-opiekunczych",
+   "nazwa": "Asystent osoby starszej – nowa forma usług opiekuńczych",
+   "kategoria": "dla-seniorow",
+   "etykieta": "MIIS",
+   "opis_krotki": "Model nowego zawodu: asystent wspiera seniora w organizowaniu codziennego życia, współpracuje ze specjalistami i rodziną, pomaga m.in. w kontaktach rodzinnych, w czasie hospitalizacji i w ochronie przed oszustwami.",
+   "problem": "Wsparcie instytucjonalne nie pokrywa wszystkich potrzeb związanych ze starzeniem się.",
+   "dla_kogo": [
+    "osoby starsze zależne",
+    "rodziny seniorów"
+   ],
+   "kto_moze_wdrozyc": [
+    "samorządy lokalne",
+    "gminne ośrodki pomocy społecznej"
+   ],
+   "czy_dziala": "W półrocznym teście z 9 seniorami asystent pomógł rozwiązać co najmniej jeden problem każdego uczestnika.",
+   "autor_instytucja": "Gmina Miechów",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://innowacjespoleczne.pl/innowacja/asystent-osoby-starszej-3",
+   "slowa_kluczowe": [
+    "asystent seniora",
+    "senior",
+    "usługi opiekuńcze",
+    "opieka",
+    "hospitalizacja",
+    "oszustwa",
+    "kontakty z rodziną",
+    "samotny senior",
+    "wsparcie w codzienności",
+    "nowy zawód",
+    "gops"
+   ],
+   "przyklady_zapytan": [
+    "Samotni seniorzy w gminie nie radzą sobie z formalnościami i szpitalem, potrzebujemy kogoś, kto ich wesprze.",
+    "Czy da się wprowadzić w gminie asystenta osoby starszej zamiast zwykłych usług opiekuńczych?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 oraz karta na innowacjespoleczne.pl (CC BY 4.0)",
+   "pewnosc": "pewne"
+  },
+  {
+   "id": "postrewalidacja-forma-wsparcia-osob-z-gleboka-wieloraka",
+   "nazwa": "Postrewalidacja – forma wsparcia osób z głęboką, wieloraką niepełnosprawnością i ich rodzin",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-intelektualna",
+   "etykieta": "MIIS",
+   "opis_krotki": "Forma wsparcia dla osób z głęboką, wieloraką niepełnosprawnością po zakończeniu etapu rewalidacji oraz dla ich rodzin. Szczegółów modelu dostępny spis nie podaje.",
+   "problem": "Po rewalidacji osoby z głęboką niepełnosprawnością i rodziny mogą zostać bez ciągłego wsparcia (wniosek z nazwy).",
+   "dla_kogo": [
+    "osoby z głęboką, wieloraką niepełnosprawnością",
+    "rodziny i opiekunowie"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Polskie Stowarzyszenie na rzecz Osób z Niepełnosprawnością Intelektualną – Koło w Nowym Targu",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "postrewalidacja",
+    "głęboka niepełnosprawność",
+    "niepełnosprawność sprzężona",
+    "dorośli z niepełnosprawnością",
+    "rodzina",
+    "opiekunowie",
+    "wsparcie po szkole",
+    "rewalidacja",
+    "niepełnosprawność intelektualna",
+    "zajęcia dzienne"
+   ],
+   "przyklady_zapytan": [
+    "Syn z głęboką niepełnosprawnością kończy szkołę i nie wiemy, co dalej.",
+    "Jak wspierać dorosłe osoby z niepełnosprawnością sprzężoną po zakończeniu rewalidacji?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł i autor; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "oii-o-intymnosci-intelektualnych-innowacyjnie",
+   "nazwa": "OII! – O Intymności Intelektualnych Innowacyjnie",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-intelektualna",
+   "etykieta": "MIIS",
+   "opis_krotki": "Rozwiązanie z obszaru intymności osób z niepełnosprawnością intelektualną (typ: usługa). Dostępny spis podaje tylko tytuł; treść i metoda nie są opisane.",
+   "problem": "Osoby z niepełnosprawnością intelektualną rzadko mają wsparcie w sprawach intymności (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby z niepełnosprawnością intelektualną"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "intymność",
+    "seksualność",
+    "edukacja seksualna",
+    "niepełnosprawność intelektualna",
+    "relacje",
+    "dorośli z niepełnosprawnością",
+    "związki",
+    "granice",
+    "bezpieczeństwo",
+    "dojrzewanie"
+   ],
+   "przyklady_zapytan": [
+    "Prowadzimy WTZ i potrzebujemy materiałów o intymności i relacjach dla uczestników z niepełnosprawnością intelektualną.",
+    "Jak rozmawiać z dorosłym z niepełnosprawnością intelektualną o związkach i granicach?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "model-mobilnego-spa-dla-seniorow",
+   "nazwa": "Model mobilnego SPA dla seniorów",
+   "kategoria": "dla-seniorow",
+   "etykieta": "MIIS",
+   "opis_krotki": "Pary studentów odwiedzają seniorów w domu lub placówce i wykonują zabiegi spa (m.in. masaż klasyczny, masaż gorącymi kamieniami, masaż ziołowymi stemplami, rytuały spa) w cyklu ośmiu wizyt.",
+   "problem": "Seniorzy mają niezaspokojoną potrzebę odpoczynku, dbania o siebie i pielęgnacji ciała.",
+   "dla_kogo": [
+    "seniorzy w domach i placówkach"
+   ],
+   "kto_moze_wdrozyc": [
+    "uczelnie",
+    "szkoły policealne",
+    "centra aktywności seniorów"
+   ],
+   "czy_dziala": "Poprawił jakość życia seniorów, wzmocnił więzi międzypokoleniowe i wrażliwość studentów na potrzeby osób zależnych.",
+   "autor_instytucja": "Akademia Wychowania Fizycznego w Krakowie",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://innowacjespoleczne.pl/innowacja/model-mobilnego-spa-dla-seniorow-2",
+   "slowa_kluczowe": [
+    "spa",
+    "masaż",
+    "relaks",
+    "senior",
+    "studenci",
+    "wolontariat",
+    "międzypokoleniowość",
+    "pielęgnacja ciała",
+    "wypoczynek",
+    "dom pomocy społecznej",
+    "wizyty domowe"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy, żeby studenci odwiedzali seniorów w DPS i robili im masaże i zabiegi relaksacyjne.",
+    "Jak zadbać o przyjemność i dobre samopoczucie osób starszych, które nie wychodzą z domu?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 oraz karta na innowacjespoleczne.pl (CC BY 4.0)",
+   "pewnosc": "pewne"
+  },
+  {
+   "id": "wiejski-uniwersytet-miedzypokoleniowy",
+   "nazwa": "Wiejski Uniwersytet Międzypokoleniowy",
+   "kategoria": "dla-seniorow",
+   "etykieta": "MIIS",
+   "opis_krotki": "Rozwiązanie łączące pokolenia na obszarach wiejskich w formie uniwersytetu (typ: usługa). Dostępny spis podaje tylko tytuł; program i metody nie są opisane.",
+   "problem": "Na wsi brakuje ofert edukacyjnych i integracji międzypokoleniowej (wniosek z tytułu innowacji).",
+   "dla_kogo": [
+    "seniorzy i młodsi mieszkańcy obszarów wiejskich"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "uniwersytet",
+    "wieś",
+    "międzypokoleniowość",
+    "integracja pokoleń",
+    "senior",
+    "edukacja seniorów",
+    "zajęcia dla seniorów",
+    "młodzież",
+    "uniwersytet trzeciego wieku",
+    "aktywizacja"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy w naszej wsi połączyć starszych i młodych w jednym programie zajęć.",
+    "Czy jest gotowy pomysł na wiejski uniwersytet trzeciego wieku z udziałem młodzieży?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "pomost-aplikacja-wspierajaca-niezalezne-zycie-osob-starszych",
+   "nazwa": "poMOST – aplikacja wspierająca niezależne życie osób starszych",
+   "kategoria": "dla-seniorow",
+   "etykieta": "MIIS",
+   "opis_krotki": "Aplikacja (rozwiązanie teleinformatyczne) wspierająca niezależne życie osób starszych. Dostępny spis podaje tylko tytuł i typ rozwiązania; funkcje nie są opisane.",
+   "problem": "Seniorzy chcą jak najdłużej żyć samodzielnie i potrzebują do tego wsparcia (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby starsze",
+    "opiekunowie seniorów"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "aplikacja",
+    "senior",
+    "niezależność",
+    "samodzielne życie",
+    "technologia",
+    "teleopieka",
+    "wsparcie w domu",
+    "smartfon",
+    "aktywność",
+    "bezpieczeństwo seniora"
+   ],
+   "przyklady_zapytan": [
+    "Szukamy aplikacji, która pomoże seniorom dłużej mieszkać samodzielnie.",
+    "Mama mieszka sama, czy jest aplikacja, która ułatwi jej codzienne funkcjonowanie?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "dem-game-gry-do-diagnostyki-domowej-funkcji-poznawczych-seniora",
+   "nazwa": "DEM-GAME – gry do diagnostyki domowej funkcji poznawczych seniora",
+   "kategoria": "dla-seniorow",
+   "etykieta": "MIIS",
+   "opis_krotki": "Zestaw gier (rozwiązanie teleinformatyczne) pozwalający w domu oceniać funkcje poznawcze seniora. Dostępny spis podaje tylko tytuł; zasady i wyniki testów nie są opisane.",
+   "problem": "Brakuje prostych narzędzi do wstępnej oceny funkcji poznawczych seniora w domu.",
+   "dla_kogo": [
+    "osoby starsze",
+    "opiekunowie i rodziny seniorów"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "demencja",
+    "funkcje poznawcze",
+    "pamięć",
+    "gry",
+    "diagnostyka",
+    "przesiewowa ocena",
+    "alzheimer",
+    "senior",
+    "badanie w domu",
+    "zaburzenia pamięci",
+    "gra komputerowa"
+   ],
+   "przyklady_zapytan": [
+    "Babcia zapomina różne rzeczy i chcielibyśmy sprawdzić w domu, czy to coś poważnego.",
+    "Czy są gry pozwalające wstępnie ocenić pamięć i myślenie u seniora?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "vipande-aplikacja-ulatwiajaca-wstepna-domowa-diagnostyke",
+   "nazwa": "Vipande – aplikacja ułatwiająca wstępną, domową diagnostykę najczęstszych chorób wieku podeszłego",
+   "kategoria": "dla-zdrowia-i-medycyny",
+   "etykieta": "MIIS",
+   "opis_krotki": "Aplikacja pomagająca we wstępnej, domowej diagnostyce najczęstszych chorób wieku podeszłego. Dostępny spis podaje tylko tytuł i typ rozwiązania.",
+   "problem": "Trudno szybko wstępnie ocenić objawy chorób wieku podeszłego bez wizyty u lekarza.",
+   "dla_kogo": [
+    "osoby starsze",
+    "opiekunowie seniorów"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "aplikacja",
+    "diagnostyka",
+    "choroby wieku podeszłego",
+    "senior",
+    "objawy",
+    "badanie w domu",
+    "zdrowie seniora",
+    "telemedycyna",
+    "wstępna ocena",
+    "profilaktyka"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy, by starsi mieszkańcy mogli w domu wstępnie sprawdzić niepokojące objawy.",
+    "Jak wcześnie wychwycić choroby wieku podeszłego u osób, które rzadko chodzą do lekarza?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "acs-aplikacja-mierzaca-poziom-bolu",
+   "nazwa": "ACS – aplikacja mierząca poziom bólu",
+   "kategoria": "dla-zdrowia-i-medycyny",
+   "etykieta": "MIIS",
+   "opis_krotki": "Aplikacja do pomiaru poziomu bólu pacjenta (rozwiązanie teleinformatyczne). Dostępny spis podaje tylko tytuł i typ rozwiązania.",
+   "problem": "Trudno obiektywnie ocenić nasilenie bólu u pacjenta, zwłaszcza osoby zależnej.",
+   "dla_kogo": [
+    "pacjenci z bólem",
+    "osoby starsze i niesamodzielne",
+    "opiekunowie"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "ból",
+    "pomiar bólu",
+    "skala bólu",
+    "aplikacja",
+    "pacjent",
+    "ocena bólu",
+    "opieka",
+    "senior",
+    "choroba przewlekła",
+    "ból przewlekły"
+   ],
+   "przyklady_zapytan": [
+    "Jak ocenić, jak bardzo boli osobę, która nie potrafi tego dobrze opisać?",
+    "Szukamy narzędzia do monitorowania bólu u podopiecznych w domu."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "realizacja-domowej-antybiotykoterapii-dozylnej-u-chorych-na",
+   "nazwa": "Realizacja domowej antybiotykoterapii dożylnej u chorych na mukowiscydozę",
+   "kategoria": "dla-zdrowia-i-medycyny",
+   "etykieta": "MIIS",
+   "opis_krotki": "Model prowadzenia antybiotykoterapii dożylnej w domu chorego na mukowiscydozę. Dostępny spis podaje tylko tytuł i autora; szczegóły procedury nie są opisane.",
+   "problem": "Dożylne leczenie antybiotykiem chorych na mukowiscydozę wymaga zwykle pobytu w szpitalu.",
+   "dla_kogo": [
+    "chorzy na mukowiscydozę",
+    "rodziny i opiekunowie"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Polskie Towarzystwo Walki z Mukowiscydozą",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "mukowiscydoza",
+    "antybiotykoterapia",
+    "leczenie w domu",
+    "dożylne",
+    "choroba przewlekła",
+    "pacjent",
+    "szpital",
+    "opieka domowa",
+    "choroba rzadka",
+    "rodzice dzieci chorych"
+   ],
+   "przyklady_zapytan": [
+    "Dziecko z mukowiscydozą co jakiś czas leży w szpitalu na kroplówkach, czy można to robić w domu?",
+    "Szukamy sposobu na leczenie dożylne przewlekle chorych w domu."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł i autor; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "motyle-w-klinice-program-wsparcia-pacjentek-onkologicznych-i-ich",
+   "nazwa": "Motyle w klinice – program wsparcia pacjentek onkologicznych i ich opiekunów w szpitalu i domu",
+   "kategoria": "dla-zdrowia-i-medycyny",
+   "etykieta": "MIIS",
+   "opis_krotki": "Program wsparcia dla pacjentek onkologicznych i ich opiekunów, realizowany w szpitalu i w domu. Dostępny spis podaje tylko tytuł i autora; zakres działań nie jest opisany.",
+   "problem": "Pacjentki onkologiczne i ich opiekunowie potrzebują wsparcia w szpitalu i po powrocie do domu.",
+   "dla_kogo": [
+    "pacjentki onkologiczne",
+    "opiekunowie chorych"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Stowarzyszenie na rzecz walki z rakiem jajnika Niebieski Motyl",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "onkologia",
+    "rak",
+    "pacjentki",
+    "wsparcie psychiczne",
+    "opiekunowie",
+    "szpital",
+    "dom",
+    "choroba nowotworowa",
+    "kobiety",
+    "chemioterapia"
+   ],
+   "przyklady_zapytan": [
+    "Kobieta z rakiem i jej mąż nie wiedzą, gdzie szukać wsparcia w szpitalu i w domu.",
+    "Chcemy pomagać pacjentkom onkologicznym i ich rodzinom, jakie są gotowe programy?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł i autor; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "bazalnie-w-domu-model-pracy-domowej-z-dziecmi-gleboko",
+   "nazwa": "Bazalnie w domu – model pracy domowej z dziećmi głęboko niepełnosprawnymi",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-intelektualna",
+   "etykieta": "MIIS",
+   "opis_krotki": "Model domowej pracy z dziećmi z głęboką niepełnosprawnością oparty na stymulacji bazalnej: rodzice uczą się ułożenia dziecka i dobierania bodźców zmysłowych, które pomagają mu nawiązać kontakt z własnym ciałem i światem.",
+   "problem": "Rodzice nie mają materiałów edukacyjnych, a opieka domowa często sprowadza się do zaspokajania podstawowych potrzeb.",
+   "dla_kogo": [
+    "dzieci i osoby z głęboką niepełnosprawnością",
+    "rodzice i opiekunowie"
+   ],
+   "kto_moze_wdrozyc": [
+    "ośrodki rehabilitacyjne",
+    "szkoły dla dzieci z niepełnosprawnościami",
+    "organizacje pozarządowe",
+    "rodzice"
+   ],
+   "czy_dziala": "Pilotaż w czterech rodzinach: dzieci były bardziej aktywne, rodzice nauczyli się ułożenia dziecka i zasad stymulacji bazalnej.",
+   "autor_instytucja": "Polskie Stowarzyszenie na rzecz Osób z Niepełnosprawnością Intelektualną – Koło w Szczawnicy",
+   "materialy": {
+    "opis_pdf": "https://cdn.innowacjespoleczne.pl/Attachments/i002/469/Bazalnie%20w%20domu%20-%20model%20pracy%20domowej%20z%20dzie%C4%87mi%20g%C5%82%C4%99boko%20niepe%C5%82nosprawnymi.pdf",
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://innowacjespoleczne.pl/innowacja/bazalnie-w-domu-model-pracy-domowej-z-dziecmi-gleboko-niepelnosprawnymi-2",
+   "slowa_kluczowe": [
+    "stymulacja bazalna",
+    "głęboka niepełnosprawność",
+    "dziecko niepełnosprawne",
+    "rodzice",
+    "praca w domu",
+    "rehabilitacja",
+    "terapia",
+    "bodźce zmysłowe",
+    "niepełnosprawność sprzężona",
+    "opieka domowa"
+   ],
+   "przyklady_zapytan": [
+    "Mam w domu dziecko z głęboką niepełnosprawnością i nie wiem, jak z nim ćwiczyć i je stymulować.",
+    "Szukamy gotowego programu dla rodziców dzieci z niepełnosprawnością sprzężoną."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 oraz karta na innowacjespoleczne.pl (CC BY 4.0)",
+   "pewnosc": "pewne"
+  },
+  {
+   "id": "dotknij-kultury-aktywne-uczestnictwo-osob-niewidomych-i",
+   "nazwa": "Dotknij kultury – aktywne uczestnictwo osób niewidomych i słabowidzących w interpretacji dziedzictwa",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "MIIS",
+   "opis_krotki": "Rozwiązanie, w którym osoby niewidome i słabowidzące aktywnie uczestniczą w interpretacji dziedzictwa kulturowego. Dostępny spis podaje tylko tytuł i autora; formuła zajęć nie jest opisana.",
+   "problem": "Osoby niewidome i słabowidzące mają ograniczony dostęp do dziedzictwa kulturowego (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby niewidome i słabowidzące"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Stowarzyszenie Willa Decjusza",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "niewidomi",
+    "słabowidzący",
+    "kultura",
+    "dziedzictwo",
+    "muzeum",
+    "dotyk",
+    "zabytki",
+    "dostępność kultury",
+    "interpretacja",
+    "zwiedzanie",
+    "wycieczki"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy, by osoby niewidome mogły poznawać zabytki i muzeum przez dotyk.",
+    "Jak zorganizować w instytucji kultury zajęcia dostępne dla słabowidzących?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł i autor; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "przez-zabawe-do-samodzielnosci",
+   "nazwa": "Przez zabawę do samodzielności – model dla dzieci z niepełnosprawnością ze spektrum autyzmu",
+   "kategoria": "dla-dzieci-mlodziezy-i-rodziny",
+   "etykieta": "MIIS",
+   "opis_krotki": "Model ułatwiający dzieciom z niepełnosprawnością ze spektrum autyzmu zdobywanie samodzielności i niezależności poprzez zabawę. Dostępny spis podaje tylko tytuł i autora.",
+   "problem": "Dzieci z autyzmem potrzebują wsparcia w nabywaniu samodzielności i niezależności.",
+   "dla_kogo": [
+    "dzieci z autyzmem",
+    "rodzice i terapeuci"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Stowarzyszenie Dobroczynne „Res Sacra Miser”",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "autyzm",
+    "spektrum autyzmu",
+    "dziecko",
+    "samodzielność",
+    "zabawa",
+    "terapia",
+    "niezależność",
+    "umiejętności życiowe",
+    "rodzice",
+    "asd"
+   ],
+   "przyklady_zapytan": [
+    "Syn z autyzmem jest mało samodzielny, szukamy zabaw, które uczą codziennych czynności.",
+    "Jaki gotowy model pracy z dziećmi z ASD rozwija samodzielność?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł i autor; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "aparat-wspomagajacy-funkcje-konczyny-gornej-dla-osob-po-przebytym",
+   "nazwa": "Aparat wspomagający funkcję kończyny górnej dla osób po przebytym udarze mózgu z utrwaloną dysfunkcją",
+   "kategoria": "dla-osob-o-ograniczonej-mobilnosci",
+   "etykieta": "MIIS",
+   "opis_krotki": "Produkt: aparat wspomagający funkcję kończyny górnej u osób po udarze mózgu z utrwaloną dysfunkcją ręki. Dostępny spis podaje tylko tytuł; budowa i wyniki testów nie są opisane.",
+   "problem": "Po udarze utrwalona dysfunkcja ręki ogranicza samodzielność w codziennych czynnościach.",
+   "dla_kogo": [
+    "osoby po udarze mózgu",
+    "osoby z niedowładem kończyny górnej"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "udar",
+    "niedowład",
+    "ręka",
+    "kończyna górna",
+    "rehabilitacja",
+    "aparat",
+    "ortoza",
+    "pomoc ortopedyczna",
+    "samodzielność",
+    "po udarze"
+   ],
+   "przyklady_zapytan": [
+    "Ojciec po udarze nie włada ręką, szukamy urządzenia, które pomoże mu w codziennych czynnościach.",
+    "Czy jest wsparcie dla niedowładnej ręki po udarze poza standardową rehabilitacją?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "pomocnik-osoby-niewidomej-opaska-na-srodki-higieniczne",
+   "nazwa": "Pomocnik osoby niewidomej – opaska na środki higieniczne",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "MIIS",
+   "opis_krotki": "Produkt: opaska na środki higieniczne przeznaczona dla osób niewidomych. Dostępny spis podaje tylko tytuł; sposób użycia i wyniki testów nie są opisane.",
+   "problem": "Osoby niewidome potrzebują prostych pomocy do samodzielnej higieny (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby niewidome"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "niewidomi",
+    "higiena",
+    "opaska",
+    "samodzielność",
+    "pomoc dla niewidomych",
+    "środki higieniczne",
+    "gadżet",
+    "niepełnosprawność wzroku",
+    "życie codzienne",
+    "produkt"
+   ],
+   "przyklady_zapytan": [
+    "Mama jest niewidoma i ma kłopot z samodzielnym korzystaniem ze środków higienicznych.",
+    "Szukam prostych pomocy dla osoby niewidomej w łazience."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "finio-fitness-osob-niepelnosprawnych-intelektualnie",
+   "nazwa": "FiNIO – fitness osób niepełnosprawnych intelektualnie",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-intelektualna",
+   "etykieta": "MIIS",
+   "opis_krotki": "Produkt: FiNIO, fitness dla osób z niepełnosprawnością intelektualną. Dostępny spis podaje tylko tytuł; program ćwiczeń i wyniki testów nie są opisane.",
+   "problem": "Osoby z niepełnosprawnością intelektualną mają ograniczony dostęp do aktywności fizycznej dopasowanej do ich możliwości (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby z niepełnosprawnością intelektualną"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/mpliki/IS/ikony_PUBLIKACJE/InnMalopolska_przewodnik_po_innowacjach.pdf",
+   "slowa_kluczowe": [
+    "fitness",
+    "ćwiczenia",
+    "aktywność fizyczna",
+    "niepełnosprawność intelektualna",
+    "sport",
+    "zdrowie",
+    "otyłość",
+    "wtz",
+    "zajęcia ruchowe",
+    "sprawność"
+   ],
+   "przyklady_zapytan": [
+    "W naszym WTZ chcemy zacząć zajęcia ruchowe dostosowane do osób z niepełnosprawnością intelektualną.",
+    "Jak zachęcić dorosłych z niepełnosprawnością intelektualną do ćwiczeń?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Małopolski Inkubator Innowacji Społecznych (MIIS), 2016–2019",
+   "zrodlo": "Przewodnik po innowacjach społecznych (MIIS, 2019), część III „Pozostałe rozwiązania”, s. 44–46 (tytuł; brak opisu)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "moje-ja-laboratorium-jazni-odzwierciedlonej",
+   "nazwa": "Moje Ja (Laboratorium Jaźni Odzwierciedlonej)",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Rozwiązanie zwane Laboratorium Jaźni Odzwierciedlonej, które ma poprawić rozumienie zachowań społecznych u dzieci z niepełnosprawnością wzroku. W IWS 2.0 trwają testy.",
+   "problem": "Dzieci z niepełnosprawnością wzroku trudniej rozumieją zachowania społeczne innych osób.",
+   "dla_kogo": [
+    "dzieci z niepełnosprawnością wzroku"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Stowarzyszenie „Łazarz – Zakorzenieni w Tradycji”",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "niewidome dzieci",
+    "słabowidzące dzieci",
+    "zachowania społeczne",
+    "kompetencje społeczne",
+    "relacje z rówieśnikami",
+    "niepełnosprawność wzroku",
+    "terapia",
+    "dziecko",
+    "komunikacja",
+    "emocje"
+   ],
+   "przyklady_zapytan": [
+    "Syn jest niewidomy i trudno mu odczytywać zachowania rówieśników, szukamy wsparcia.",
+    "Jak uczyć dzieci słabowidzące rozumienia relacji społecznych?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "dotykowa-puzzlowa-mapa-polski-z-uksztaltowaniem-terenu-i-wojewodztwami",
+   "nazwa": "Dotykowa puzzlowa mapa Polski z ukształtowaniem terenu i województwami",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Dotykowa mapa Polski w formie puzzli, z odwzorowanym ukształtowaniem terenu i podziałem na województwa. W IWS 2.0 trwają testy.",
+   "problem": "Osoby, które poznają świat dotykiem, mają mało pomocy do nauki geografii kraju (wniosek z cechy „dotykowa”).",
+   "dla_kogo": [
+    "osoby niewidome i słabowidzące (wniosek z tytułu)"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "mapa dotykowa",
+    "puzzle",
+    "geografia",
+    "niewidomi",
+    "słabowidzący",
+    "edukacja",
+    "województwa",
+    "ukształtowanie terenu",
+    "pomoc dydaktyczna",
+    "dotyk"
+   ],
+   "przyklady_zapytan": [
+    "Uczę niewidome dziecko geografii Polski, szukam mapy, którą można dotykać.",
+    "Szkoła specjalna potrzebuje pomocy dydaktycznej z mapą Polski dla uczniów niewidomych."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "rehaoko-eyetracking-w-rehabilitacji-i-rozwoju-osob-niewidomych-i",
+   "nazwa": "Rehaoko – eyetracking w rehabilitacji i rozwoju osób niewidomych i słabowidzących",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Wykorzystanie technologii eyetrackingu (śledzenia ruchu oczu) w rehabilitacji i rozwoju osób niewidomych i słabowidzących. W IWS 2.0 trwają testy.",
+   "problem": "Rehabilitacja osób niewidomych i słabowidzących potrzebuje nowych narzędzi technologicznych (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby niewidome i słabowidzące"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "eyetracking",
+    "śledzenie wzroku",
+    "rehabilitacja wzroku",
+    "niewidomi",
+    "słabowidzący",
+    "technologia",
+    "terapia",
+    "dzieci niewidome",
+    "trening wzroku",
+    "niedowidzenie"
+   ],
+   "przyklady_zapytan": [
+    "Szukamy nowoczesnych narzędzi do rehabilitacji osób słabowidzących.",
+    "Czy technologie śledzenia wzroku pomagają w pracy z niewidomymi dziećmi?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025); nazwa projektu z listy grantów",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "dostepnik-model-organizacji-spotkan-inspirowanych-ksiazkami",
+   "nazwa": "Dostępnik – model organizacji spotkań inspirowanych książkami",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-intelektualna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Model organizowania spotkań wokół książek w formie dostępnej dla osób z niepełnosprawnością intelektualną. W IWS 2.0 trwają testy.",
+   "problem": "Osoby z niepełnosprawnością intelektualną rzadko uczestniczą w spotkaniach czytelniczych i kulturze literackiej (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby z niepełnosprawnością intelektualną"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "spotkania z książką",
+    "klub książki",
+    "niepełnosprawność intelektualna",
+    "dostępna kultura",
+    "czytanie",
+    "język łatwy",
+    "biblioteka",
+    "literatura",
+    "etr",
+    "warsztaty"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy prowadzić w bibliotece klub książki dostępny dla osób z niepełnosprawnością intelektualną.",
+    "Jak zorganizować spotkania wokół lektur zrozumiałe dla dorosłych z niepełnosprawnością intelektualną?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025) (pełna nazwa: „Spotkania przy książce” w Liście rankingowej)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "klocki-do-tworzenia-przenosnych-map-i-planow-dla-dzieci-z",
+   "nazwa": "Klocki do tworzenia przenośnych map i planów dla dzieci z niepełnosprawnością wzroku",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Zestaw klocków, z których dzieci z niepełnosprawnością wzroku układają przenośne mapy i plany. W IWS 2.0 trwają testy.",
+   "problem": "Dzieci z niepełnosprawnością wzroku mają mało pomocy do poznawania przestrzeni i orientacji w niej.",
+   "dla_kogo": [
+    "dzieci z niepełnosprawnością wzroku"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "klocki",
+    "mapy dotykowe",
+    "plan",
+    "orientacja w przestrzeni",
+    "niewidome dzieci",
+    "słabowidzące dzieci",
+    "pomoc dydaktyczna",
+    "nauka orientacji",
+    "zabawa",
+    "dotyk"
+   ],
+   "przyklady_zapytan": [
+    "Syn niewidomy uczy się orientacji w przestrzeni, szukam pomocy do układania planów.",
+    "Potrzebujemy w szkole klocków do tworzenia map dla dzieci niewidomych."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "moc-wspolpracy-miedzypokoleniowa-samoorganizacja-w-uslugach",
+   "nazwa": "Moc współpracy – międzypokoleniowa samoorganizacja w usługach opiekuńczych",
+   "kategoria": "inne",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Model, w którym różne pokolenia samoorganizują się w usługach opiekuńczych. Szczegółów nie opublikowano; w IWS 2.0 trwają testy.",
+   "problem": "Brakuje modeli usług opiekuńczych opartych na samoorganizacji i współpracy pokoleń (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby wymagające opieki",
+    "mieszkańcy różnych pokoleń"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Fundacja Turkusowa Droga",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "usługi opiekuńcze",
+    "międzypokoleniowość",
+    "samoorganizacja",
+    "sąsiedzka pomoc",
+    "współpraca",
+    "senior",
+    "opieka",
+    "wzajemna pomoc",
+    "wolontariat",
+    "lokalna społeczność"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy, żeby starsi i młodsi mieszkańcy sami organizowali sobie pomoc opiekuńczą.",
+    "Jak oprzeć usługi opiekuńcze w gminie na współpracy pokoleń?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025); tytuł pełny z Listy rankingowej",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "wnioskomat",
+   "nazwa": "Wnioskomat",
+   "kategoria": "inne",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Generator spersonalizowanych pism sądowych dla osób transpłciowych w procesie prawnej tranzycji (tytuł z listy rankingowej wniosku tej samej fundacji). W IWS 2.0 trwają testy.",
+   "problem": "Osoby transpłciowe w procesie prawnej tranzycji potrzebują pism sądowych; generator ma ułatwić ich przygotowanie.",
+   "dla_kogo": [
+    "osoby transpłciowe w procesie prawnej tranzycji"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Fundacja Instytut Spraw Społecznych",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "osoby transpłciowe",
+    "tranzycja",
+    "pisma sądowe",
+    "generator pism",
+    "wniosek",
+    "prawo",
+    "zmiana płci",
+    "wsparcie prawne",
+    "dokumenty",
+    "narzędzie online"
+   ],
+   "przyklady_zapytan": [
+    "Osoba transpłciowa chce przygotować pozew o ustalenie płci i nie wie, jak napisać pismo.",
+    "Szukamy narzędzia, które pomoże wygenerować wniosek do sądu w sprawie tranzycji."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025) (powiązanie „Wnioskomat” z „Generator spersonalizowanych pism sądowych…” wnioskuję po tym samym wnioskodawcy)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "braille-easy-access-bar-extension-for-nvda",
+   "nazwa": "Braille Easy-Access-Bar Extension for NVDA",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Rozszerzenie do czytnika ekranu NVDA obsługujące „Braille Easy-Access-Bar” (urządzenie lub funkcję brajlowską). W IWS 2.0 trwają testy.",
+   "problem": "Osoby niewidome potrzebują wygodniejszego dostępu do komputera przez brajla (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby niewidome korzystające z czytnika ekranu NVDA"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "nvda",
+    "czytnik ekranu",
+    "braille",
+    "brajl",
+    "niewidomi",
+    "komputer",
+    "rozszerzenie",
+    "dostępność cyfrowa",
+    "pasek brajlowski",
+    "oprogramowanie"
+   ],
+   "przyklady_zapytan": [
+    "Niewidomy pracownik używa NVDA i szukam narzędzia ułatwiającego pracę z brajlem.",
+    "Jak poprawić dostępność komputera dla osób niewidomych korzystających z brajla?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "tonobok-system-do-obslugi-bok-przez-osoby-niewidome",
+   "nazwa": "TonoBok – system do obsługi BOK przez osoby niewidome",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "System, który umożliwia osobom niewidomym obsługę biura obsługi klienta (BOK); nazwa TonoBok odpowiada tytułowi „System do obsługi BOK-u przez osoby niewidome”. W IWS 2.0 trwają testy.",
+   "problem": "Osoby niewidome mają utrudniony dostęp do pracy w obsłudze klienta (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby niewidome",
+    "pracodawcy"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Tono Praca Sp. z o.o.",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "biuro obsługi klienta",
+    "bok",
+    "niewidomi",
+    "praca",
+    "zatrudnienie",
+    "obsługa klienta",
+    "call center",
+    "aktywizacja zawodowa",
+    "dostępne stanowisko pracy",
+    "niepełnosprawność wzroku"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy zatrudnić osobę niewidomą w biurze obsługi klienta, jak dostosować stanowisko?",
+    "Czy niewidomy może obsługiwać klientów dzięki specjalnemu systemowi?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025) (powiązanie „TonoBok” z „System do obsługi BOK-u…” wnioskuję po tym samym wnioskodawcy)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "lokalny-doradca-ds-zadluzenia",
+   "nazwa": "Lokalny doradca ds. zadłużenia",
+   "kategoria": "inne",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Model usługi lokalnego doradcy, który wspiera osoby zadłużone w sprawach długów. Szczegóły nie zostały opublikowane; w IWS 2.0 trwają testy.",
+   "problem": "Osoby zadłużone mają ograniczony dostęp do lokalnego, fachowego wsparcia w sprawach zadłużenia.",
+   "dla_kogo": [
+    "osoby zadłużone",
+    "osoby zagrożone ubóstwem"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Stowarzyszenie Program Wsparcia Zadłużonych",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "zadłużenie",
+    "długi",
+    "doradca",
+    "poradnictwo",
+    "ubóstwo",
+    "komornik",
+    "windykacja",
+    "upadłość konsumencka",
+    "finanse osobiste",
+    "pomoc społeczna"
+   ],
+   "przyklady_zapytan": [
+    "Wielu klientów GOPS ma długi i komorników, a my nie mamy kogo do nich skierować.",
+    "Szukamy lokalnego doradcy, który pomoże osobom zadłużonym."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "pewne"
+  },
+  {
+   "id": "oddech-aplikacja-zwiekszajaca-samoswiadomosc-podczas-dlugotrwalego",
+   "nazwa": "ODDECH – aplikacja zwiększająca samoświadomość podczas długotrwałego scrollowania",
+   "kategoria": "inne",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Aplikacja, która ma zwiększać świadomość użytkownika podczas długiego przewijania treści w telefonie. W IWS 2.0 trwają testy.",
+   "problem": "Długotrwałe, nieuważne przewijanie treści w telefonie (wniosek z tytułu).",
+   "dla_kogo": [
+    "użytkownicy smartfonów"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "scrollowanie",
+    "uzależnienie od telefonu",
+    "higiena cyfrowa",
+    "aplikacja",
+    "samoświadomość",
+    "uważność",
+    "media społecznościowe",
+    "czas przed ekranem",
+    "dobrostan psychiczny",
+    "nawyki"
+   ],
+   "przyklady_zapytan": [
+    "Nastolatki całymi godzinami przewijają telefon, szukamy narzędzia, które to uświadamia.",
+    "Jak ograniczyć bezmyślne scrollowanie w mediach społecznościowych?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "pewne"
+  },
+  {
+   "id": "innowacyjny-przewodnik-konstrukcji-odziezy-dla-kobiet-na-wozkach",
+   "nazwa": "Innowacyjny Przewodnik Konstrukcji Odzieży dla Kobiet na Wózkach",
+   "kategoria": "dla-osob-o-ograniczonej-mobilnosci",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Przewodnik konstrukcji (kroju) odzieży dla kobiet poruszających się na wózkach. W IWS 2.0 trwają testy.",
+   "problem": "Kobiety na wózkach mają trudność ze znalezieniem odzieży dopasowanej do sylwetki w pozycji siedzącej (wniosek z tytułu).",
+   "dla_kogo": [
+    "kobiety poruszające się na wózkach",
+    "krawcy i projektanci odzieży"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "odzież",
+    "wózek inwalidzki",
+    "kobiety",
+    "krój",
+    "moda",
+    "szycie",
+    "przewodnik",
+    "niepełnosprawność ruchowa",
+    "ubranie",
+    "adaptacja odzieży"
+   ],
+   "przyklady_zapytan": [
+    "Nie mogę znaleźć ubrań, które dobrze leżą, gdy siedzę na wózku.",
+    "Jak uszyć wygodną odzież dla kobiety poruszającej się na wózku?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "tansze-i-innowacyjne-ksiazki-dotykowe-dla-niewidomych-i-slabowidzacych",
+   "nazwa": "Tańsze i innowacyjne książki dotykowe dla niewidomych i słabowidzących",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Tańsze i nowatorskie książki dotykowe dla osób niewidomych i słabowidzących. W IWS 2.0 trwają testy.",
+   "problem": "Książki dotykowe dla osób niewidomych i słabowidzących są drogie (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby niewidome i słabowidzące",
+    "dzieci niewidome",
+    "biblioteki"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Fundacja Kołobajki",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "książki dotykowe",
+    "niewidomi",
+    "słabowidzący",
+    "czytanie",
+    "dzieci",
+    "biblioteka",
+    "tańsze",
+    "edukacja",
+    "dotyk",
+    "książki tyflograficzne"
+   ],
+   "przyklady_zapytan": [
+    "Biblioteka chce kupić książki dotykowe dla niewidomych dzieci, ale są bardzo drogie.",
+    "Gdzie znaleźć tańsze książki dotykowe dla słabowidzących?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "uniwersalne-krzeslo-stolowe-z-opcja-pionizacji",
+   "nazwa": "Uniwersalne krzesło stołowe z opcją pionizacji",
+   "kategoria": "dla-osob-o-ograniczonej-mobilnosci",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Krzesło stołowe z funkcją pionizacji, czyli ustawiania użytkownika do pozycji stojącej. W IWS 2.0 trwają testy.",
+   "problem": "Brakuje uniwersalnego krzesła przy stole, które pozwala też na pionizację (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby z ograniczoną sprawnością ruchową",
+    "dzieci i dorośli wymagający pionizacji"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "krzesło",
+    "pionizacja",
+    "pionizator",
+    "niepełnosprawność ruchowa",
+    "wózek",
+    "stół",
+    "rehabilitacja",
+    "sprzęt rehabilitacyjny",
+    "meble dostosowane",
+    "uniwersalne projektowanie"
+   ],
+   "przyklady_zapytan": [
+    "Syn potrzebuje pionizacji, a przy stole siedzi na zwykłym wózku, szukamy rozwiązania.",
+    "Czy jest krzesło do jedzenia przy stole, które pozwala też ustawić dziecko pionowo?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "dom-przyjazny-demencji-platforma-internetowa-z-wizualizacja",
+   "nazwa": "Dom przyjazny demencji – platforma internetowa z wizualizacją",
+   "kategoria": "dla-seniorow",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Internetowa platforma oparta na wiedzy naukowej, z wizualizacją domu przyjaznego osobom z demencją. W IWS 2.0 trwają testy.",
+   "problem": "Dom osoby z demencją trzeba dostosować, a brakuje łatwo dostępnych wskazówek, jak to zrobić (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby z demencją",
+    "rodziny i opiekunowie"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "demencja",
+    "alzheimer",
+    "dom przyjazny",
+    "dostosowanie mieszkania",
+    "wizualizacja",
+    "platforma internetowa",
+    "opiekun",
+    "senior",
+    "bezpieczne mieszkanie",
+    "choroba otępienna"
+   ],
+   "przyklady_zapytan": [
+    "Tata ma demencję, jak urządzić mu mieszkanie, żeby było bezpieczne i zrozumiałe?",
+    "Szukamy wskazówek dla opiekunów, jak przystosować dom do osoby z Alzheimerem."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025) (pełny tytuł: Lista rankingowa)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "aplikacja-bezpieczny-swiat-cyfrowy",
+   "nazwa": "Aplikacja Bezpieczny Świat Cyfrowy",
+   "kategoria": "inne",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Edukacyjna aplikacja na telefony symulująca zagrożenia cyfrowe, by uczyć użytkowników ich rozpoznawania. W IWS 2.0 trwają testy.",
+   "problem": "Użytkownicy telefonów nie mają okazji praktycznie przećwiczyć rozpoznawania zagrożeń cyfrowych.",
+   "dla_kogo": [
+    "użytkownicy smartfonów",
+    "osoby zagrożone wykluczeniem cyfrowym"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": null,
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "bezpieczeństwo cyfrowe",
+    "oszustwa internetowe",
+    "phishing",
+    "symulacja",
+    "edukacja cyfrowa",
+    "aplikacja",
+    "cyberbezpieczeństwo",
+    "senior",
+    "dzieci",
+    "zagrożenia w sieci"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy nauczyć seniorów rozpoznawać oszustwa przez telefon i internet.",
+    "Szukamy aplikacji do ćwiczenia reakcji na zagrożenia w sieci."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "dopracypjm-platforma-komunikacyjna-online-wspierajaca-osoby-gluche-w",
+   "nazwa": "DoPracyPJM – platforma komunikacyjna online wspierająca osoby głuche w środowisku pracy",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Platforma komunikacyjna online wspierająca osoby głuche w środowisku pracy (nazwa wskazuje na polski język migowy). W IWS 2.0 trwają testy.",
+   "problem": "Osoby głuche mają bariery komunikacyjne w miejscu pracy.",
+   "dla_kogo": [
+    "osoby głuche",
+    "pracodawcy"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Sieć Badawcza Łukasiewicz – Instytut Technik Innowacyjnych EMAG",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "głusi",
+    "głuchota",
+    "pjm",
+    "język migowy",
+    "praca",
+    "zatrudnienie",
+    "komunikacja",
+    "tłumacz",
+    "platforma online",
+    "bariery w pracy",
+    "pracodawca"
+   ],
+   "przyklady_zapytan": [
+    "Zatrudniamy osobę głuchą i nie wiemy, jak z nią się komunikować w pracy.",
+    "Szukamy platformy, która pomoże głuchym w komunikacji z pracodawcą."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "znowu-w-biegu-proces-rehabilitacji-po-zabiegu-osseointegracji",
+   "nazwa": "Znowu w Biegu – proces rehabilitacji po zabiegu osseointegracji",
+   "kategoria": "dla-osob-o-ograniczonej-mobilnosci",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Proces rehabilitacji po zabiegu osseointegracji, czyli wszczepieniu protezy zakotwiczonej w kości. W IWS 2.0 trwają testy.",
+   "problem": "Osoby po zabiegu osseointegracji potrzebują wyspecjalizowanego procesu rehabilitacji (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby po amputacji",
+    "pacjenci po osseointegracji"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Fundacja Centrum Rehabilitacji Znowu w Biegu",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "osseointegracja",
+    "amputacja",
+    "proteza",
+    "rehabilitacja",
+    "po amputacji",
+    "kończyna dolna",
+    "chodzenie",
+    "bieganie",
+    "fizjoterapia",
+    "niepełnosprawność ruchowa"
+   ],
+   "przyklady_zapytan": [
+    "Mąż po amputacji ma mieć zabieg osseointegracji, gdzie znaleźć rehabilitację po nim?",
+    "Szukamy sprawdzonego modelu rehabilitacji po wszczepieniu protezy kotwiczonej w kości."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "abc-brd-pakiet-edukacyjny-o-bezpieczenstwie-ruchu-drogowego-dla",
+   "nazwa": "ABC BRD – pakiet edukacyjny o bezpieczeństwie ruchu drogowego dla uczniów z niepełnosprawnością wzrokową",
+   "kategoria": "dla-osob-z-niepelnosprawnoscia-sensoryczna",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Pakiet edukacyjny (w tytule wniosku: manual) wspierający naukę zasad bezpieczeństwa ruchu drogowego przez uczniów z niepełnosprawnością wzrokową. W IWS 2.0 trwają testy.",
+   "problem": "Uczniowie z niepełnosprawnością wzrokową mają mało dostosowanych materiałów do nauki bezpiecznego zachowania w ruchu drogowym.",
+   "dla_kogo": [
+    "uczniowie z niepełnosprawnością wzrokową",
+    "nauczyciele"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Instytut Transportu Samochodowego",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "ruch drogowy",
+    "bezpieczeństwo",
+    "brd",
+    "niewidomi",
+    "słabowidzący",
+    "uczniowie",
+    "edukacja",
+    "przejście dla pieszych",
+    "szkoła",
+    "nauka"
+   ],
+   "przyklady_zapytan": [
+    "Uczę niewidome dziecko bezpiecznego przechodzenia przez ulicę, szukam materiałów.",
+    "Szkoła dla niewidomych potrzebuje pakietu o bezpieczeństwie w ruchu drogowym."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025) (pełny tytuł: Lista rankingowa)",
+   "pewnosc": "prawdopodobne"
+  },
+  {
+   "id": "pierwsza-w-polsce-stacjonarna-szkola-higieny-cyfrowej-dla-rodzicow-i",
+   "nazwa": "Pierwsza w Polsce stacjonarna szkoła higieny cyfrowej dla rodziców i dzieci",
+   "kategoria": "dla-dzieci-mlodziezy-i-rodziny",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Stacjonarna szkoła higieny cyfrowej dla rodziców i dzieci w wieku przedszkolnym i wczesnoszkolnym („Higiena cyfrowa w rodzinie. Coś wielkiego od małego!”). W IWS 2.0 trwają testy.",
+   "problem": "Małe dzieci i ich rodzice potrzebują nauki zdrowych nawyków korzystania z urządzeń cyfrowych.",
+   "dla_kogo": [
+    "rodzice",
+    "dzieci przedszkolne i w wieku wczesnoszkolnym"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Fundacja Dbam o Mój Zasięg",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "higiena cyfrowa",
+    "dzieci",
+    "rodzice",
+    "ekrany",
+    "telefon",
+    "tablet",
+    "przedszkole",
+    "uzależnienie od ekranów",
+    "wychowanie",
+    "czas przed ekranem"
+   ],
+   "przyklady_zapytan": [
+    "Nasze przedszkolaki za dużo siedzą przed ekranem, szukamy zajęć dla rodziców i dzieci.",
+    "Jak nauczyć rodziców rozsądnego korzystania z urządzeń z małymi dziećmi?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025) (pełny tytuł: Lista rankingowa)",
+   "pewnosc": "pewne"
+  },
+  {
+   "id": "krok-po-kroku-do-sprawnosci-personalizowany-przewodnik-ruchu-dla",
+   "nazwa": "Krok po kroku do sprawności – personalizowany przewodnik ruchu dla seniorów",
+   "kategoria": "dla-seniorow",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Personalizowany przewodnik dotyczący ruchu dla seniorów. W IWS 2.0 trwają testy.",
+   "problem": "Seniorzy potrzebują aktywności ruchowej dopasowanej do własnej sprawności.",
+   "dla_kogo": [
+    "seniorzy"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Fundacja Tarnowskiej Agencji Rozwoju Regionalnego",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "senior",
+    "ruch",
+    "ćwiczenia",
+    "sprawność",
+    "aktywność fizyczna",
+    "przewodnik",
+    "personalizacja",
+    "zdrowie seniora",
+    "gimnastyka",
+    "profilaktyka upadków"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy w klubie seniora zachęcić starszych do ruchu, ale każdy ma inne możliwości.",
+    "Szukam indywidualnego planu ćwiczeń dla starszej osoby."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "pewne"
+  },
+  {
+   "id": "pastylki-wiedzy-cyfrowe-instrukcje-medyczne",
+   "nazwa": "Pastylki wiedzy – cyfrowe instrukcje medyczne",
+   "kategoria": "dla-zdrowia-i-medycyny",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Cyfrowe instrukcje medyczne udostępniane w formie „pastylek wiedzy”. W IWS 2.0 trwają testy.",
+   "problem": "Pacjenci potrzebują łatwo dostępnych instrukcji medycznych w formie cyfrowej.",
+   "dla_kogo": [
+    "pacjenci",
+    "opiekunowie"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Framica Polska Sp. z o.o.",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "instrukcje medyczne",
+    "pacjent",
+    "edukacja zdrowotna",
+    "cyfrowe",
+    "ulotka",
+    "zdrowie",
+    "instrukcja obsługi",
+    "wyroby medyczne",
+    "qr",
+    "zrozumiała informacja"
+   ],
+   "przyklady_zapytan": [
+    "Pacjenci nie rozumieją instrukcji do sprzętu medycznego, szukamy prostej wersji cyfrowej.",
+    "Jak przekazywać pacjentom krótkie, zrozumiałe instrukcje medyczne?"
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025)",
+   "pewnosc": "pewne"
+  },
+  {
+   "id": "swiadoma-integracja-ozn",
+   "nazwa": "Świadoma Integracja OzN",
+   "kategoria": "inne",
+   "etykieta": "IWS 2.0",
+   "opis_krotki": "Model integracji osób z niepełnosprawnościami (OzN); w Liście rankingowej wniosek nosi tytuł „Model Integracji OZN”. W IWS 2.0 trwają testy.",
+   "problem": "Integracja osób z niepełnosprawnościami ze społecznością wymaga nowych modeli (wniosek z tytułu).",
+   "dla_kogo": [
+    "osoby z niepełnosprawnościami"
+   ],
+   "kto_moze_wdrozyc": [],
+   "czy_dziala": null,
+   "autor_instytucja": "Fundacja Fireflies",
+   "materialy": {
+    "opis_pdf": null,
+    "film": null,
+    "pakiet_zip": null,
+    "zasady_wykorzystania": null,
+    "inne": []
+   },
+   "url": "https://rops.krakow.pl/realizowane-projekty-i-zadania/inkubator-wlaczenia-spolecznego-20,udzielone-granty-1",
+   "slowa_kluczowe": [
+    "integracja",
+    "niepełnosprawność",
+    "osoby z niepełnosprawnościami",
+    "włączenie społeczne",
+    "model",
+    "akceptacja",
+    "wspólne zajęcia",
+    "świadomość",
+    "społeczność",
+    "oz n"
+   ],
+   "przyklady_zapytan": [
+    "Chcemy lepiej zintegrować osoby z niepełnosprawnościami z resztą mieszkańców.",
+    "Szukamy gotowego modelu integracji w lokalnej społeczności."
+   ],
+   "spoza_biblioteki": true,
+   "program": "Inkubator Włączenia Społecznego 2.0 (IWS 2.0), 2024–2028; innowacja w fazie testów (grant podpisany)",
+   "zrodlo": "rops.krakow.pl: IWS 2.0 / Udzielone granty (lista grantobiorców) + Lista rankingowa (Zarządzenie IS-430-1/25 z 21.05.2025) (powiązanie „Świadoma Integracja OzN” z „Model Integracji OZN” wnioskuję po tym samym wnioskodawcy; rozwinięcie skrótu OzN domyślne)",
+   "pewnosc": "prawdopodobne"
+  }
+ ]
+}

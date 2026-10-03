@@ -12,11 +12,13 @@ Stan: 3.10.2026, pobrane ze stron rops.krakow.pl.
 | `gold_matchmaking.jsonl` | 230 przykładowych zapytań → oczekiwane `id` innowacji | test trafności dopasowania (I) |
 | `mapa_wyzwan.json` | Mapa Wyzwań Społecznych: 8 obszarów, 48 kluczowych wyzwań, dane, słowa kluczowe, 9 fikcyjnych person, mapowanie obszar → kategorie Biblioteki | I (klasyfikacja problemu), II, VI (trendy) |
 | `canvas_innowacji.json` | Social Innovation Canvas INNO AGH: 3 arkusze, 22 pola z typem (jeden wybór, wiele, skala, macierz) i opcjami | III Kreator pomysłów |
+| `biblioteka_spoza.json` + `biblioteka_spoza_notatki.md` | 43 innowacje z inkubatorów ROPS, których nie ma w Bibliotece online (20 z MIIS 2016–2019, 23 z IWS 2.0). 9 ma pełny opis (`do_matchmakingu: true`), 34 tylko nazwę, program i instytucję | II Zasobnik; do Matchmakingu tylko pełne |
 | `raporty_i_publikacje.json` | 51 raportów z badań ROPS (2010–2026) z tagami + 6 publikacji o innowacjach | II Zasobnik |
 | `scripts/sync-biblioteka.mjs` | Skrypt do ponownego pobrania Biblioteki (pełne teksty sekcji) | II, szybka aktualizacja |
 
 ## Liczby, które warto znać
 
+- Wszystkie inkubatory ROPS: 173 innowacje mają nazwę w źródłach (MIIS 39, Inkubator Dostępności 44, IWS 1.0 58, IWS 2.0 32). W Bibliotece online jest 115, w `biblioteka_spoza.json` kolejne 43, 15 znamy tylko z nazwy. „200+” od mentorów warto doprecyzować.
 - Biblioteka: seniorzy 20, dzieci/młodzież/rodzina 21, ograniczona mobilność 18, niepełnosprawność sensoryczna 20, intelektualna 14, zdrowie 9, cudzoziemcy 6, rynek pracy 5, bezdomność 2.
 - 27 innowacji ma etykietę „wybrana do upowszechniania” (IWS 9, Inkubator Dostępności 9, MIIS 8, MIWS 1). Te pokazujemy wyżej w wynikach jako sprawdzone.
 - 26 innowacji ma film na YouTube, 27 ma folder PDF, każda ma pakiet ZIP z materiałami.
