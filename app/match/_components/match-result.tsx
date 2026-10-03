@@ -297,7 +297,8 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
           ) : (
             "Nic nie pasuje? "
           )}
-          Zgłoś potrzebę do ROPS. Trafi na Mapę Wyzwań i pomoże zaplanować kolejne nabory.
+          Napisz o tym do ROPS. Przygotujemy wiadomość z Twoim opisem, a Ty zdecydujesz, czy ją
+          wysłać.
         </p>
         <Link
           href={reportNeedHref(result)}
@@ -307,9 +308,8 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
         </Link>
       </Card>
       <p className="text-ink-muted mt-4 text-[0.9375rem]">
-        Model wybiera wyłącznie spośród innowacji z Biblioteki ROPS i podkreśla słowa, które
-        zdecydowały o dopasowaniu. Twojego opisu nie zapisujemy, do statystyk trafia tylko obszar i
-        wyzwanie.
+        AI wybiera tylko spośród innowacji z Biblioteki ROPS. Twojego opisu nie zapisujemy. Do
+        statystyk trafia tylko obszar i wyzwanie.
       </p>
     </>
   );

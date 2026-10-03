@@ -121,13 +121,13 @@ export default async function MessagesPage({ searchParams }: PageProps<"/my/mess
                     href={`/my/creator/${thread.idea_id}`}
                     className={buttonVariants({ variant: "secondary" })}
                   >
-                    Popraw fiszkę
+                    Popraw pomysł
                   </Link>
                 ) : null}
               </ReplyForm>
             </section>
           ) : (
-            <p className="p-8">Nie znaleziono tej rozmowy.</p>
+            <p className="p-8">Nie ma takiej rozmowy. Wybierz rozmowę z listy.</p>
           )}
         </div>
       )}

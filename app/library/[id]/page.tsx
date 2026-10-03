@@ -92,8 +92,8 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
           {i.opis_niepelny ? (
             <Section title="Co wiemy" first>
               <p>
-                Znamy tylko nazwę, program i autora tej innowacji. Opis poniżej wynika z tytułu.
-                ROPS dopisze resztę.
+                Znamy tylko nazwę, program i autora tej innowacji. Krótki opis poniżej powstał na
+                podstawie samej nazwy. ROPS uzupełni resztę.
               </p>
             </Section>
           ) : null}
@@ -120,7 +120,7 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
             </p>
           </Section>
           {challenges.length > 0 ? (
-            <Section title="Wyzwania z Mapy Wyzwań">
+            <Section title="Na jakie wyzwania odpowiada">
               <ul className="m-0 flex list-none flex-col p-0">
                 {challenges.map(({ area, challenge }) => (
                   <li key={challenge.id}>

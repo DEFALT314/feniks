@@ -56,9 +56,9 @@ function planTestError(field: PropertyKey | undefined): string {
     case "miejsce":
       return "Miejsce może mieć najwyżej 200 znaków.";
     case "termin":
-      return "Podaj poprawny termin.";
+      return "Wpisz datę i godzinę testu albo zostaw pole puste.";
     case "liczba_miejsc":
-      return "Liczba miejsc: od 1 do 500.";
+      return "Wpisz liczbę miejsc od 1 do 500 albo zostaw pole puste.";
     default:
       return BAD_INPUT.error;
   }

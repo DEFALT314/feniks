@@ -52,8 +52,8 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
             Potrzeby w regionie
           </h1>
           <p className="text-muted-foreground max-w-[760px]">
-            Problemy opisane w „Mam problem” i pomysły wysłane do ROPS, według obszarów Mapy Wyzwań.
-            Bez treści zgłoszeń i bez danych osobowych.
+            Problemy opisane w „Dopasuj rozwiązanie” i pomysły wysłane do ROPS, w podziale na
+            obszary Mapy Wyzwań. Bez treści zgłoszeń i danych osobowych.
           </p>
           <nav aria-label="Okres" className="flex flex-wrap gap-2">
             {PERIODS.map((p) => (
@@ -80,7 +80,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
           className="border-border flex flex-col gap-4 rounded-xl border bg-white p-6"
         >
           <h2 id="wykres" className="text-[1.375rem] font-bold">
-            Zgłoszenia według obszarów, ostatnie {days} dni: {trends.total}
+            Zgłoszenia według obszarów z ostatnich {days} dni (razem: {trends.total})
           </h2>
           <div role="img" aria-label={chartLabel(trends.areas)} className="flex flex-col gap-2">
             {trends.areas.map((a) => (

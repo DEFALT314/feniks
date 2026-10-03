@@ -42,7 +42,7 @@ export function NewThreadForm({
       </Field>
       <Field
         label="Wiadomość"
-        hint="Odpowiedź dostaniesz tutaj i mailem."
+        hint="Odpowiedź zobaczysz w Wiadomościach i dostaniesz mailem."
         error={field === "tresc" ? state.error : undefined}
         required
       >

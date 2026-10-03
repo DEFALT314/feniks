@@ -49,8 +49,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
             Karty innowacji
           </h1>
           <p className="text-muted-foreground">
-            Popraw opis, materiały albo widoczność karty bez programisty. Zmiana jest widoczna w
-            Bibliotece od razu.
+            Popraw opis, materiały albo widoczność karty. Zmiany widać w Bibliotece od razu.
           </p>
           <form method="get" className="flex flex-wrap gap-3" role="search">
             <label htmlFor="szukaj" className="sr-only">
@@ -127,7 +126,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
             Dziennik zmian
           </h2>
           {edits.length === 0 ? (
-            <p className="text-muted-foreground text-base">Brak edycji kart.</p>
+            <p className="text-muted-foreground text-base">Nikt jeszcze nie zmieniał kart.</p>
           ) : (
             <ul className="m-0 flex list-none flex-col gap-2 p-0 text-base">
               {edits.map((e) => {
@@ -137,7 +136,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
                     <span className="text-muted-foreground">
                       {time.format(new Date(e.created_at))}
                     </span>{" "}
-                    edycja karty:{" "}
+                    zmieniono kartę:{" "}
                     <Link
                       href={`/admin/library/${id}`}
                       className="text-navy underline underline-offset-[3px]"

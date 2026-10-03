@@ -45,8 +45,8 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
             Mapa wyzwań społecznych
           </h1>
           <p className="text-ink-muted max-w-[820px]">
-            {areas.length} obszarów i {totalChallenges} wyzwań opisał ROPS w Krakowie. Każdy problem
-            zgłoszony w HubMI przypisujemy do obszaru. Dzięki temu widać, czego region potrzebuje
+            ROPS w Krakowie opisał {areas.length} obszarów i {totalChallenges} wyzwań. Każdy problem
+            zgłoszony w HubMI łączymy z jednym obszarem. Dzięki temu widać, czego region potrzebuje
             najbardziej.
           </p>
           <nav aria-label="Obszary" className="mt-2">
@@ -99,7 +99,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
               >
                 <span>{w.tekst}</span>
                 <Link href={innovationsUrl(selected, w.tekst)} className={`${LINK} ${TARGET}`}>
-                  Innowacje<span className="sr-only"> dla wyzwania: {w.tekst}</span>
+                  Pokaż rozwiązania<span className="sr-only"> dla wyzwania: {w.tekst}</span>
                 </Link>
               </li>
             ))}
@@ -139,7 +139,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
               className="border-line flex flex-col gap-2.5 rounded-xl border bg-white p-6"
             >
               <span className="text-ink-muted text-[0.9375rem] font-bold">
-                Przykładowa osoba z Mapy Wyzwań (fikcyjna)
+                Przykładowa osoba z Mapy Wyzwań (postać fikcyjna)
               </span>
               <h3 id={`${p.id}-name`} className="text-[1.625rem] leading-tight font-bold">
                 {p.imie}
@@ -159,7 +159,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
                 href={`/match?description=${encodeURIComponent(p.opis ?? "")}`}
                 className="border-navy text-navy mt-1.5 inline-flex min-h-[50px] items-center justify-center rounded-[10px] border bg-white px-[22px] text-[1.0625rem] font-bold no-underline"
               >
-                Dopasuj dla: {p.imie}
+                Znajdź rozwiązanie dla: {p.imie}
               </Link>
             </aside>
           ))}

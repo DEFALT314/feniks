@@ -32,7 +32,7 @@ describe("TesterView", () => {
 
   it("shows the sign-up, the user's rating and opens the rating form for it", () => {
     const html = render();
-    expect(card(html, cuder.id)).toContain("Jesteś zapisany");
+    expect(card(html, cuder.id)).toContain("Masz miejsce na teście");
     expect(card(html, cuder.id)).toMatch(/<button[^>]*>Wypisz się<\/button>/);
     expect(card(html, cuder.id)).toMatch(/<button[^>]*>Zmień ocenę<\/button>/);
     expect(html).toContain("Oceń: Senior CUDER");

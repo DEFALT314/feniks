@@ -142,7 +142,7 @@ describe("reportNeedHref", () => {
 
   it("without a challenge uses a plain topic", () => {
     const url = parse(reportNeedHref({ ...base, challenge: null }));
-    expect(url.searchParams.get("topic")).toBe("Potrzeba, na którą nie znalazłem rozwiązania");
+    expect(url.searchParams.get("topic")).toBe("Potrzeba bez gotowego rozwiązania");
   });
 
   it("sends the redacted description from the response, never more than the form accepts", () => {

@@ -35,7 +35,9 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
       <Field
         label="Identyfikator"
         hint={
-          call ? "Nie zmienia się po dodaniu." : "Małe litery i myślniki, np. nabor-seniorzy-2027."
+          call
+            ? "Tego nie można zmienić."
+            : "Małe litery, cyfry i myślniki, np. nabor-seniorzy-2027. Później nie można go zmienić."
         }
         error={e.id}
         required={!call}
@@ -68,7 +70,7 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
           )}
         </Field>
         <Field
-          label="Koniec (termin)"
+          label="Koniec naboru"
           hint={call ? "Zmiana powiadomi autorów pasujących pomysłów." : undefined}
           className="min-w-[180px] flex-1"
           error={e.termin_do}
@@ -102,7 +104,7 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
           defaultChecked={call?.opublikowany ?? false}
           className="accent-navy size-5 shrink-0"
         />
-        Nabór włączony (widoczny w generatorze wniosków)
+        Nabór włączony (widzą go autorzy pomysłów)
       </label>
       <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" disabled={pending}>

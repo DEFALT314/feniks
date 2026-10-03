@@ -35,7 +35,7 @@ type AiProgressProps = {
 export function AiProgress({
   title = "AI wybiera najlepiej pasujące innowacje",
   steps = AI_STEPS,
-  note = "Poniżej wstępne wyniki wyszukiwania. Za chwilę zastąpi je wybór AI z uzasadnieniem.",
+  note = "Poniżej wstępne wyniki. Za chwilę AI wybierze najlepiej pasujące i wyjaśni dlaczego.",
 }: AiProgressProps = {}) {
   const [seconds, setSeconds] = useState(0);
   useEffect(() => {

@@ -41,14 +41,14 @@ const ENTRIES = [
   {
     href: "/my/creator",
     title: "Mam pomysł",
-    text: "Kreator przeprowadzi mnie krok po kroku przez kanwę innowacji i przygotuje fiszkę dla ROPS.",
+    text: "Odpowiem na proste pytania o mój pomysł. Z odpowiedzi powstanie fiszka, czyli krótki opis pomysłu dla ROPS.",
     action: "Otwórz kreator",
     accent: "border-t-brick",
   },
   {
     href: "/library",
     title: "Chcę poznać, co działa",
-    text: "Biblioteka innowacji, Mapa Wyzwań Społecznych, raporty i materiały do pobrania.",
+    text: "Przejrzę Bibliotekę innowacji, Mapę Wyzwań i raporty ROPS.",
     action: "Przejdź do Biblioteki",
     accent: "border-t-success",
   },
@@ -79,7 +79,7 @@ export default async function Home() {
     },
     {
       value: stats.checkedByRops,
-      label: `${plural(stats.checkedByRops, "wybrana", "wybrane", "wybranych")} do upowszechniania`,
+      label: `${plural(stats.checkedByRops, "sprawdzona", "sprawdzone", "sprawdzonych")} przez ROPS`,
     },
     {
       value: stats.challenges,
@@ -123,7 +123,7 @@ export default async function Home() {
               className="m-0 flex flex-[1_1_420px] flex-col gap-4 rounded-xl border border-[#b8c0cd] bg-white p-7"
             >
               <p id="example-heading" className="text-ink-muted text-base font-bold">
-                Tak to wygląda
+                Przykład
               </p>
               <blockquote className="m-0 text-[1.1875rem]">
                 „Tata wraca{" "}
@@ -163,7 +163,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section aria-label="Dane na start" className={`${WRAP} py-10`}>
+      <section aria-label="HubMI w liczbach" className={`${WRAP} py-10`}>
         {/* min-w-0 and the narrower gap on phones: long words like "upowszechniania" wrap inside
             the column at 320 px with A+ instead of pushing the page sideways (WCAG 1.4.10) */}
         <dl
@@ -216,8 +216,7 @@ export default async function Home() {
               AI proponuje. Człowiek decyduje.
             </h2>
             <p className="text-ink-muted">
-              Model językowy pomaga zrozumieć opis i uzasadnić wybór. Nie podejmuje decyzji za
-              nikogo.
+              AI podpowiada, które innowacje pasują do Twojego opisu, i wyjaśnia dlaczego.
             </p>
           </div>
           <ul
@@ -238,7 +237,7 @@ export default async function Home() {
         >
           <div className="flex flex-wrap items-baseline justify-between gap-3">
             <h2 id="featured-heading" className={`${H2} min-w-0`}>
-              Wybrane do upowszechniania
+              Sprawdzone przez ROPS
             </h2>
             <Link
               href="/library"
