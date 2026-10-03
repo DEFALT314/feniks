@@ -9,9 +9,15 @@ const IDEA = {
   autor_id: "author-1",
 };
 const EXPERT = "44444444-4444-4444-8444-444444444444";
+const THREAD = "t1";
 
 function deps(
-  opts: { idea?: typeof IDEA | null; insertError?: string; email?: string | null } = {},
+  opts: {
+    idea?: typeof IDEA | null;
+    insertError?: string;
+    email?: string | null;
+    thread?: string | null;
+  } = {},
 ) {
   const insert = vi.fn(async () => ({
     error: opts.insertError ? { message: opts.insertError } : null,
@@ -23,9 +29,11 @@ function deps(
     maybeSingle: vi.fn(async () => ({ data: opts.idea === undefined ? IDEA : opts.idea })),
   };
   const from = vi.fn((table: string) => (table === "ideas" ? ideaQuery : { insert }));
-  const rpc = vi.fn(async () => ({
-    data: opts.email === undefined ? "anna@gmail.com" : opts.email,
-  }));
+  const rpc = vi.fn(async (fn: string) =>
+    fn === "start_thread"
+      ? { data: opts.thread === undefined ? THREAD : opts.thread }
+      : { data: opts.email === undefined ? "anna@gmail.com" : opts.email },
+  );
   const d: ReviewDeps = {
     supabase: { from, rpc } as unknown as SupabaseClient<Database>,
     writeAudit: vi.fn(async () => 1),
@@ -126,5 +134,34 @@ describe("reviewIdea", () => {
 
     expect(state).toMatchObject({ status: "saved", emailSent: false });
     expect(d.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("posts the comment into the idea thread with the expert and links the author there", async () => {
+    const { d, rpc } = deps();
+
+    await reviewIdea(d, IDEA.id, {
+      status: "w_weryfikacji",
+      komentarz: "Przypisujemy mentorkę.",
+      ekspert_id: EXPERT,
+    });
+
+    expect(rpc).toHaveBeenCalledWith("start_thread", {
+      p_temat: IDEA.tytul,
+      p_tresc: "Przypisujemy mentorkę.",
+      p_idea_id: IDEA.id,
+      p_uczestnicy: [EXPERT],
+    });
+    expect(d.addNotification).toHaveBeenCalledWith(
+      expect.objectContaining({ userIds: ["author-1"], link: "/my/messages?thread=t1" }),
+    );
+    expect(d.sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ action: expect.objectContaining({ label: "Zobacz i odpowiedz" }) }),
+    );
+  });
+
+  it("does not open a thread for a plain approval without a comment", async () => {
+    const { d, rpc } = deps();
+    await reviewIdea(d, IDEA.id, { status: "zatwierdzony" });
+    expect(rpc).not.toHaveBeenCalledWith("start_thread", expect.anything());
   });
 });
