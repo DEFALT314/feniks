@@ -11,10 +11,10 @@ echo "Repozytorium: $REPO"
 
 # ---------- etykiety ----------
 lab() { gh label create "$1" --color "$2" --description "$3" --repo "$REPO" --force >/dev/null; }
-lab "P1" "C2452B" "Treść i Zasobnik"
-lab "P2" "1D6B48" "Interfejs i Kreator"
-lab "P3" "5B3FB6" "AI i dopasowanie"
-lab "P4" "1F3A8A" "Platforma i ROPS"
+lab "P1" "C2452B" "Radek: Treść i Zasobnik"
+lab "P2" "1D6B48" "Paweł: Interfejs i Kreator"
+lab "P3" "5B3FB6" "Konrad: AI i dopasowanie"
+lab "P4" "1F3A8A" "Domik: Platforma i ROPS"
 lab "I matchmaking" "E8EDFA" "Moduł I"
 lab "II zasobnik" "E8EDFA" "Moduł II"
 lab "III kreator" "E8EDFA" "Moduł III"
