@@ -50,8 +50,8 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
             Potrzeby w regionie
           </h1>
           <p className="text-muted-foreground max-w-[760px]">
-            Opisane problemy (dopasowania) i pomysły wysłane do ROPS, przypisane do obszarów Mapy
-            Wyzwań. Bez treści zgłoszeń i danych osobowych.
+            Problemy opisane w „Mam problem” i pomysły wysłane do ROPS, według obszarów Mapy Wyzwań.
+            Bez treści zgłoszeń i bez danych osobowych.
           </p>
           <nav aria-label="Okres" className="flex flex-wrap gap-2">
             {PERIODS.map((p) => (
@@ -144,8 +144,8 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
             </table>
           </div>
           <p className="text-muted-foreground text-base">
-            „Bez dobrego dopasowania” to problemy, do których Biblioteka nie ma pasującej innowacji:
-            podpowiedź, czego szukać w kolejnym naborze.
+            „Bez dobrego dopasowania” to problemy, na które Biblioteka nie ma jeszcze rozwiązania.
+            Warto o nich pomyśleć przy kolejnym naborze.
             {trends.unassigned > 0 ? ` Bez przypisanego obszaru: ${trends.unassigned}.` : ""}
           </p>
         </section>
