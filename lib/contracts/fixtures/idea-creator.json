@@ -1,0 +1,30 @@
+{
+  "idea": {
+    "id": "3f6d2c1e-8b7a-4e5f-9c1d-2a3b4c5d6e7f",
+    "tytul": "Sąsiedzki dyżur po wypisie",
+    "opis": "Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala: zakupy, leki, rozmowa i kontakt z ośrodkiem pomocy społecznej.",
+    "istota": "Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu.",
+    "dla_kogo": "Seniorzy mieszkający samotnie w gminach wiejskich i ich rodziny",
+    "etap": "pomysl",
+    "obszar_id": "seniorzy",
+    "wyslany_at": null,
+    "created_at": "2026-10-03T18:00:00+02:00",
+    "updated_at": "2026-10-03T18:20:00+02:00",
+    "answers": {
+      "intensywnosc": { "choice": "Mocno przeszkadza" },
+      "gotowosc": { "choice": "Pomysł" },
+      "wspieraja-zmiane": { "items": ["rodziny seniorów", "ośrodek pomocy społecznej"] },
+      "koszty-stale": {
+        "choices": ["koordynacja projektu", "inne"],
+        "other": "ubezpieczenie wolontariuszy"
+      },
+      "glowny-dochod": { "choice": "Mamy pomysł", "text": "Dotacja gminy na usługi sąsiedzkie" },
+      "partnerzy": {
+        "partners": [
+          { "name": "Koło Gospodyń Wiejskich", "axis": "dotarcie", "status": "w rozmowach" }
+        ]
+      },
+      "wplyw": { "cells": { "Osoba": "Silny", "Społeczność": "Wyraźny" } }
+    }
+  }
+}
