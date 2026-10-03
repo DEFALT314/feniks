@@ -71,9 +71,12 @@ function toStatus(value: string | undefined): IdeaStatus {
 
 // A review older than the latest submission is about an earlier version: the author sent a
 // corrected idea after "do_poprawy" (#35), so it is new again and back in the open queue.
+function isStale(wyslanyAt: string, review: StatusRow | undefined): boolean {
+  return Boolean(review?.oceniony_at && Date.parse(review.oceniony_at) < Date.parse(wyslanyAt));
+}
+
 function statusOf(wyslanyAt: string, review: StatusRow | undefined): IdeaStatus {
-  if (review?.oceniony_at && Date.parse(review.oceniony_at) < Date.parse(wyslanyAt)) return "nowy";
-  return toStatus(review?.status);
+  return isStale(wyslanyAt, review) ? "nowy" : toStatus(review?.status);
 }
 
 /** Sent ideas, newest first, with author name, area and current status. */
@@ -143,7 +146,8 @@ export async function loadIdeaDetail(supabase: Client, ideaId: string): Promise<
     obszar_nazwa: idea.challenge_areas?.nazwa ?? null,
     wyslany_at: idea.wyslany_at!,
     status: statusOf(idea.wyslany_at!, status),
-    komentarz: status?.komentarz ?? null,
+    // The comment belonged to the earlier version; the assigned expert still applies
+    komentarz: isStale(idea.wyslany_at!, status) ? null : (status?.komentarz ?? null),
     ekspert_id: status?.ekspert_id ?? null,
   };
 }

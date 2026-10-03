@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { IdeaStatus } from "@/lib/contracts/admin";
@@ -43,6 +43,14 @@ export function SubmitPanel({
     },
     { status: "idle" },
   );
+
+  // Show the confirmation once: drop ?sent= so a reload or Back doesn't repeat it
+  useEffect(() => {
+    if (!justSent) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("sent");
+    window.history.replaceState(window.history.state, "", url);
+  }, [justSent]);
 
   const label = authorStatus(sentAt, status);
   const allowed = canSubmit(sentAt, status) && state.status !== "sent";

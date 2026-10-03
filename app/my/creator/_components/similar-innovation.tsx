@@ -45,6 +45,7 @@ export function SimilarInnovation({ description }: { description: string }) {
         lastChecked.current = description;
         return setState({ status: "too-short" });
       }
+      lastChecked.current = null; // nothing shown until this answer arrives
       setState({ status: "loading" });
       const next = await findSimilar(description);
       if (!current) return;

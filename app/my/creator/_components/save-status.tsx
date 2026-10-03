@@ -30,14 +30,17 @@ export function SaveStatusText({ autosave }: { autosave: Autosave }) {
 
 /**
  * Keeps the page in step with the database:
- *  - refreshes once on mount, because browser Back/Forward reuses a cached copy of the page;
- *  - on a click on an in-app link, saves pending changes first, so the next page shows them.
+ *  - after browser Back/Forward (which reuses a cached copy of the page) it reloads the data;
+ *  - on a click on an in-app link it saves pending changes first, so the next page shows them,
+ *    and stays put if saving fails (the error and "Spróbuj ponownie" are on screen).
  * Returns the onClickCapture handler for the page's root element.
  */
 export function useSavedNavigation(autosave: Autosave) {
   const router = useRouter();
   useEffect(() => {
-    router.refresh();
+    const reload = () => router.refresh();
+    window.addEventListener("popstate", reload);
+    return () => window.removeEventListener("popstate", reload);
   }, [router]);
 
   return async (event: MouseEvent<HTMLElement>) => {
@@ -48,7 +51,6 @@ export function useSavedNavigation(autosave: Autosave) {
     if (url.origin !== window.location.origin) return;
     event.preventDefault();
     event.stopPropagation();
-    await autosave.flush();
-    router.push(url.pathname + url.search + url.hash);
+    if (await autosave.flush()) router.push(url.pathname + url.search + url.hash);
   };
 }

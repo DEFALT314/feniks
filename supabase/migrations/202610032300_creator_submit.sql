@@ -6,8 +6,8 @@
 --   * the card and its canvas are read-only from sending until ROPS asks for changes ("do_poprawy").
 
 -- ---------------------------------------------------------------------------
--- May the author edit (and send) the idea now? Never sent, or the latest review asks for changes
--- and is newer than the latest submission.
+-- May the signed-in author edit (and send) their idea now? Never sent, or the latest review asks for
+-- changes and is newer than the latest submission. False for anyone else's idea.
 -- ---------------------------------------------------------------------------
 create function public.idea_editable(p_idea_id uuid)
 returns boolean
@@ -29,7 +29,7 @@ as $$
       where latest.status = 'do_poprawy' and latest.created_at >= i.wyslany_at
     )
     from public.ideas i
-    where i.id = p_idea_id
+    where i.id = p_idea_id and i.autor_id = auth.uid()
   ), false)
 $$;
 
@@ -75,7 +75,9 @@ begin
   if current_user in ('postgres', 'service_role', 'supabase_admin') then
     return coalesce(new, old);
   end if;
-  if not public.idea_editable(coalesce(new.idea_id, old.idea_id)) then
+  -- Both ends of an UPDATE count: moving answers out of a locked idea changes it too
+  if (tg_op in ('UPDATE', 'DELETE') and not public.idea_editable(old.idea_id))
+     or (tg_op in ('INSERT', 'UPDATE') and not public.idea_editable(new.idea_id)) then
     raise exception 'Pomysł jest w ROPS. Edycja wróci, jeśli ROPS poprosi o poprawki.'
       using errcode = 'HM423';
   end if;
@@ -110,7 +112,7 @@ begin
 
   select * into v_idea from public.ideas
   where id = p_idea_id and autor_id = auth.uid()
-  for update;
+  for no key update; -- serialises sends without blocking ROPS from adding a review
   if not found then
     raise exception 'Nie ma takiego pomysłu' using errcode = 'HM404';
   end if;
