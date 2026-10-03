@@ -42,8 +42,8 @@ export default async function Page({ searchParams }: PageProps<"/admin/roles">) 
       <div className="mx-auto flex max-w-[1200px] flex-col gap-5 px-4 py-8 sm:px-10">
         <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-tight">Prośby o rolę</h1>
         <p className="text-muted-foreground max-w-[760px]">
-          Organizacje, gminy i eksperci proszą o rolę w swoim profilu. Po zatwierdzeniu dostają
-          dodatkowe narzędzia, a o decyzji informuje ich powiadomienie.
+          Organizacje, gminy i eksperci proszą o rolę w swoim profilu. Zatwierdź albo odrzuć prośbę.
+          Osoba dostanie powiadomienie o decyzji. Rolę może zatwierdzić tylko administrator ROPS.
         </p>
         <FlashMessage message={typeof msg === "string" ? msg : null} ok={ok === "1"} />
 
@@ -67,7 +67,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/roles">) 
                     <strong>„{REQUESTABLE_LABELS[r.wnioskowana_rola as RequestableRole]}”</strong>
                   </p>
                   <p className="text-muted-foreground m-0 flex flex-wrap items-center gap-2 text-base">
-                    Teraz: <Badge>{current ? roleLabel(current) : r.role}</Badge>
+                    Obecna rola: <Badge>{current ? roleLabel(current) : r.role}</Badge>
                     {r.instytucje ? <span>· {r.instytucje.nazwa}</span> : null}
                     <span>· {time.format(new Date(r.updated_at))}</span>
                   </p>

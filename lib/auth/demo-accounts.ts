@@ -32,7 +32,7 @@ export const DEMO_ACCOUNTS: readonly DemoAccount[] = [
     email: "demo.gops@example.org",
     role: "jst",
     displayName: "GOPS w Przykładowej Woli",
-    description: "gmina (JST), gmina wiejska",
+    description: "ośrodek pomocy społecznej w gminie wiejskiej",
     startPath: "/my/middleman",
     avatarClass: "bg-success",
     institution: {
@@ -69,7 +69,7 @@ export const DEMO_ACCOUNTS: readonly DemoAccount[] = [
     email: "demo.rops@example.org",
     role: "rops_admin",
     displayName: "Redakcja ROPS",
-    description: "administrator, Panel ROPS",
+    description: "administracja ROPS, pełny dostęp do Panelu ROPS",
     startPath: "/admin",
     avatarClass: "bg-ink",
   },

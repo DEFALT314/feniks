@@ -173,7 +173,7 @@ describe("ApplicationDraft", () => {
       select.dispatchEvent(new Event("change", { bubbles: true }));
     });
     expect(container.querySelector("textarea")).not.toBeNull();
-    expect(container.textContent).toContain(`Ten szkic powstał dla naboru „${calls[0].name}”`);
+    expect(container.textContent).toContain(`Ten szkic dotyczy naboru „${calls[0].name}”`);
   });
 });
 

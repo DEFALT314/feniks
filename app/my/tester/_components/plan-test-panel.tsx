@@ -52,7 +52,10 @@ export function PlanTestPanel({
       if (result.ok) {
         setDraft(defaults);
         setOpen(false);
-        setMessage({ error: false, text: "Test zaplanowany. Mieszkańcy widzą go w Testerze." });
+        setMessage({
+          error: false,
+          text: "Test zaplanowany. Mieszkańcy mogą się już zapisać w zakładce „Testy”.",
+        });
         toggle.current?.focus();
       } else {
         setMessage({ error: true, text: result.error ?? "" });

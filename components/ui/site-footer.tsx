@@ -14,8 +14,8 @@ export function SiteFooter() {
             fikcyjne.
           </p>
           <p className="text-muted-foreground">
-            Treści oznaczone „Propozycja AI” przygotował model językowy. Wybiera tylko spośród
-            innowacji z Biblioteki ROPS, a decyzję podejmuje człowiek.
+            Napis „Propozycja AI” oznacza, że tekst przygotowała sztuczna inteligencja. Decyduje
+            człowiek.
           </p>
         </div>
         <nav aria-label="Stopka" className="flex flex-[1_1_220px] flex-col gap-1.5">

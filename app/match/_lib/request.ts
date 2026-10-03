@@ -47,7 +47,7 @@ export async function fetchMatch(
     if (!response.ok) {
       return {
         ok: false,
-        error: body?.error ?? "Nie udało się dopasować. Spróbuj ponownie za chwilę.",
+        error: body?.error ?? "Wyszukiwanie nie zadziałało. Spróbuj ponownie za chwilę.",
       };
     }
     const parsed = MatchResponse.safeParse(body);
@@ -87,7 +87,7 @@ export function reportNeedHref(result: MatchResponse): string {
   const c = result.challenge;
   const topic = c
     ? `Potrzeba: ${c.area_name}${c.challenge_text ? ` – ${c.challenge_text}` : ""}`
-    : "Potrzeba, na którą nie znalazłem rozwiązania";
+    : "Potrzeba bez gotowego rozwiązania";
   const text = result.description_segments.map((s) => s.text).join("");
   const params = new URLSearchParams({ topic: topic.slice(0, 200), text: text.slice(0, 5000) });
   return `/my/messages/new?${params}`;

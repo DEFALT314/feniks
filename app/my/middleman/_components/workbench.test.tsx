@@ -126,7 +126,7 @@ describe("MiddlemanWorkbench focus and announcements", () => {
   it("after sending focuses the confirmation that replaced the button", async () => {
     reply({ ...card, status: "wyslana_do_rops" });
     renderWorkbench({ cards: [card], open: true });
-    await click(button("Wyślij do ROPS"));
+    await click(button("Poproś ROPS o opinię"));
     expect(document.activeElement?.id).toBe(FOCUS.sent);
     expect(document.activeElement?.textContent).toMatch(/Wysłano do ROPS/);
   });

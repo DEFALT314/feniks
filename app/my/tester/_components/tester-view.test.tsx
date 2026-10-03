@@ -33,7 +33,7 @@ describe("TesterView", () => {
 
   it("shows the sign-up, the user's rating and opens the rating form for it", () => {
     const html = render();
-    expect(card(html, cuder.id)).toContain("Jesteś zapisany");
+    expect(card(html, cuder.id)).toContain("Masz miejsce na teście");
     expect(card(html, cuder.id)).toMatch(/<button[^>]*>Zmień ocenę<\/button>/);
     // Rated means the test took place: withdrawing would leave a rating without a participant
     expect(card(html, cuder.id)).not.toContain("Wypisz się");

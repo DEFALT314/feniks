@@ -67,7 +67,7 @@ export function ResendConfirmation({ email, next }: { email: string; next?: stri
     <form ref={formRef} action={action} className="flex flex-col gap-2">
       <input type="hidden" name="email" value={email} />
       <input type="hidden" name="next" value={next ?? ""} />
-      <p className="text-base">Nie dostałeś maila albo link wygasł?</p>
+      <p className="text-base">Mail nie przyszedł albo link wygasł?</p>
       <Button type="submit" variant="secondary" className="self-start" disabled={pending}>
         {pending ? "Wysyłamy…" : "Wyślij link ponownie"}
       </Button>
