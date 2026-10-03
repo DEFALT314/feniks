@@ -31,7 +31,7 @@ export type ThreadMessage = {
   mine: boolean;
 };
 
-export type StatusStep = { status: IdeaStatus | "wyslany"; at: string };
+export type StatusStep = { status: IdeaStatus | "wyslany" | "wyslany_ponownie"; at: string };
 
 export type ThreadDetail = Omit<ThreadSummary, "unread"> & {
   messages: ThreadMessage[];
@@ -54,16 +54,64 @@ function parseRole(value: unknown): Role | null {
   return r.success ? r.data : null;
 }
 
+/**
+ * Current status of an idea, with the same rule as the ROPS queue (app/admin/_lib/queue.ts): a review
+ * older than the latest submission was about an earlier version, so the idea is "nowy" again.
+ */
+export function currentStatus(
+  wyslanyAt: string | null | undefined,
+  review: { status: string; oceniony_at: string | null } | undefined,
+): IdeaStatus {
+  if (!review) return "nowy";
+  if (wyslanyAt && review.oceniony_at && Date.parse(review.oceniony_at) < Date.parse(wyslanyAt)) {
+    return "nowy";
+  }
+  const s = IdeaStatus.safeParse(review.status);
+  return s.success ? s.data : "nowy";
+}
+
+/**
+ * "wysłany → w weryfikacji → do poprawy → wysłany ponownie" in time order. wyslany_at holds only the
+ * latest submission, so a submission after the last review is shown as a resubmission at the end.
+ */
+export function statusHistory(
+  wyslanyAt: string | null,
+  reviews: { status: string; created_at: string }[],
+): StatusStep[] {
+  const steps: StatusStep[] = [];
+  for (const r of reviews) {
+    const s = IdeaStatus.safeParse(r.status);
+    if (s.success) steps.push({ status: s.data, at: r.created_at });
+  }
+  steps.sort((a, b) => Date.parse(a.at) - Date.parse(b.at));
+  if (!wyslanyAt) return steps;
+  const sent = Date.parse(wyslanyAt);
+  if (steps.length === 0 || sent <= Date.parse(steps[0].at)) {
+    return [{ status: "wyslany", at: wyslanyAt }, ...steps];
+  }
+  return sent > Date.parse(steps.at(-1)!.at)
+    ? [...steps, { status: "wyslany_ponownie", at: wyslanyAt }]
+    : steps;
+}
+
 async function ideaStatuses(supabase: Client, ideaIds: string[]) {
-  if (ideaIds.length === 0) return new Map<string, IdeaStatus>();
-  const { data } = await supabase
-    .from("idea_status")
-    .select("idea_id, status")
-    .in("idea_id", ideaIds);
   const map = new Map<string, IdeaStatus>();
-  for (const row of data ?? []) {
-    const s = IdeaStatus.safeParse(row.status);
-    if (row.idea_id && s.success) map.set(row.idea_id, s.data);
+  if (ideaIds.length === 0) return map;
+  const [{ data: reviews }, { data: ideas }] = await Promise.all([
+    supabase.from("idea_status").select("idea_id, status, oceniony_at").in("idea_id", ideaIds),
+    supabase.from("ideas").select("id, wyslany_at").in("id", ideaIds),
+  ]);
+  const sentAt = new Map((ideas ?? []).map((i) => [i.id, i.wyslany_at]));
+  const byIdea = new Map((reviews ?? []).map((r) => [r.idea_id, r]));
+  for (const id of ideaIds) {
+    const r = byIdea.get(id);
+    map.set(
+      id,
+      currentStatus(
+        sentAt.get(id),
+        r?.status ? { status: r.status, oceniony_at: r.oceniony_at } : undefined,
+      ),
+    );
   }
   return map;
 }
@@ -159,12 +207,8 @@ export async function loadThread(
       : Promise.resolve({ data: [] as { status: string; created_at: string }[] }),
   ]);
 
-  const history: StatusStep[] = [];
-  if (idea.data?.wyslany_at) history.push({ status: "wyslany", at: idea.data.wyslany_at });
-  for (const r of reviews.data ?? []) {
-    const s = IdeaStatus.safeParse(r.status);
-    if (s.success) history.push({ status: s.data, at: r.created_at });
-  }
+  const history = statusHistory(idea.data?.wyslany_at ?? null, reviews.data ?? []);
+  const lastReview = reviews.data?.at(-1);
 
   return {
     id: thread.id,
@@ -174,7 +218,12 @@ export async function loadThread(
     last_message_at: thread.last_message_at,
     others: thread.thread_participants.filter((p) => p.user_id !== userId).map(displayName),
     idea_status: thread.idea_id
-      ? ((history.at(-1)?.status as IdeaStatus | undefined) ?? "nowy")
+      ? currentStatus(
+          idea.data?.wyslany_at,
+          lastReview
+            ? { status: lastReview.status, oceniony_at: lastReview.created_at }
+            : undefined,
+        )
       : null,
     i_am_author: idea.data?.autor_id === userId,
     history: history.length > 1 || thread.idea_id ? history : [],
