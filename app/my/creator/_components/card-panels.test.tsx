@@ -58,8 +58,11 @@ describe("ApplicationDraft", () => {
     expect(html).toMatch(new RegExp(`id="${reasonId}"[^>]*>Najpierw opisz pomysł`));
   });
 
-  it("renders nothing without calls", () => {
-    expect(renderToStaticMarkup(<ApplicationDraft calls={[]} draft={draft} />)).toBe("");
+  it("explains that no call is open instead of disappearing", () => {
+    const html = renderToStaticMarkup(<ApplicationDraft calls={[]} draft={draft} />);
+    expect(html).toContain("Teraz nie ma otwartych naborów");
+    expect(html).not.toContain("<select");
+    expect(html).not.toContain("Przygotuj szkic");
   });
 });
 
