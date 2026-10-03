@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { day, historyLine, newMessageHref, recipientOptions, stamp } from "./format";
+import { day, historyLine, newMessageHref, offersIdeaFix, recipientOptions, stamp } from "./format";
 
 const now = new Date("2026-10-04T10:00:00Z"); // 12:00 in Warsaw
 
@@ -59,5 +59,24 @@ describe("recipientOptions", () => {
       { value: "n1", label: "Fundacja Dobry Start (organizacja)" },
       { value: "g1", label: "GOPS (gmina)" },
     ]);
+  });
+});
+
+describe("offersIdeaFix", () => {
+  const thread = { i_am_author: true, idea_id: "i1", idea_status: "do_poprawy" };
+
+  it("offers a fix to the author when ROPS asked for changes", () => {
+    expect(offersIdeaFix(thread)).toBe(true);
+  });
+
+  it("does not offer it once the idea is approved, rejected or waiting", () => {
+    for (const status of ["zatwierdzony", "odrzucony", "nowy", "w_weryfikacji"]) {
+      expect(offersIdeaFix({ ...thread, idea_status: status })).toBe(false);
+    }
+  });
+
+  it("does not offer it to other people or in threads without an idea", () => {
+    expect(offersIdeaFix({ ...thread, i_am_author: false })).toBe(false);
+    expect(offersIdeaFix({ ...thread, idea_id: null })).toBe(false);
   });
 });
