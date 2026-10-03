@@ -15,23 +15,10 @@ HubMI.pl – Małopolski Hub Innowacji Społecznych
 Bez znaczenia na tym etapie (organizator). Zostaw zaznaczone.
 
 ## Problem
-ROPS Kraków od 10 lat testuje innowacje społeczne i ma ich w portfolio blisko 200, ale wiedza o nich jest rozproszona. Biblioteka Innowacji online opisuje 115 z nich i jest „w przebudowie”. Mapa Wyzwań Społecznych wskazuje 8 obszarów i 48 kluczowych wyzwań społecznych. Przytacza m.in. dane ogólnopolskie: w 2023 r. ubóstwo skrajne dotyczyło 6,6% gospodarstw domowych (wzrost o 2 pp., GUS), wskaźnik zatrudnienia osób z niepełnosprawnością w wieku 16–64 lata wynosił 30,1% (GUS), a liczba dzieci w pieczy zastępczej wzrosła o 3,5% (GUS). Seniorzy mierzą się m.in. z samotnością, chorobami i wykluczeniem cyfrowym.
-
-Gminy, organizacje i mieszkańcy Małopolski tworzą wartościowe rozwiązania, ale nie mają jednego miejsca, które łączy diagnozę problemu, rozwój pomysłu, testowanie i upowszechnianie sprawdzonych innowacji. Gmina szukająca rozwiązania nie wie, że inna gmina już je przetestowała, a ROPS nie widzi na bieżąco, jakich rozwiązań ludzie potrzebują najbardziej.
+ROPS Kraków ma w portfolio blisko 200 przetestowanych innowacji społecznych, ale wiedza o nich jest rozproszona, a Biblioteka online (115 opisów) jest „w przebudowie”. Gmina, organizacja czy mieszkaniec z konkretnym problemem nie wie, że ktoś w Małopolsce już go rozwiązał, a ROPS nie widzi na bieżąco, jakich rozwiązań ludzie potrzebują.
 
 ## Solution
-HubMI.pl to „cyfrowe serce” Małopolskiego Hubu Innowacji Społecznych. Użytkownik opisuje problem własnymi słowami, a sztuczna inteligencja przypisuje go do obszaru i wyzwania z Mapy Wyzwań i wskazuje do 3 innowacji z Biblioteki ROPS, z uzasadnieniem i podświetlonymi słowami kluczowymi. AI wybiera wyłącznie spośród innowacji z Biblioteki (odpowiedź jest sprawdzana względem katalogu), nie wymyśla nowych.
-
-Siedem modułów dla mieszkańców i NGO, samorządów, ekspertów i pracowników ROPS:
-1. Matchmaking społeczny – dopasowanie problemu do innowacji.
-2. Zasobnik wiedzy – Biblioteka 158 innowacji z wyszukiwarką, filtrami i linkami do filmów, Mapa Wyzwań z personami, 57 raportów i publikacji ROPS.
-3. Kreator pomysłów – kanwa innowacji krok po kroku, fiszka pomysłu, wniosek pod aktywny nabór, wizualizacja od AI.
-4. Tester innowacji – zapis na test, ocena i uwagi dla autora.
-5. Komunikacja – wątki z ROPS i ekspertami, powiadomienia w aplikacji i mailem.
-6. Panel ROPS – ocena pomysłów, edycja Biblioteki bez programisty, trendy potrzeb według Mapy Wyzwań.
-7. Middleman innowacji – karta usługi dopasowana do konkretnej gminy lub instytucji.
-
-Korzyści: gmina w kilka minut znajduje sprawdzone rozwiązanie zamiast wymyślać je od nowa, autor pomysłu dostaje szybką odpowiedź od ROPS, a ROPS widzi trendy potrzeb w regionie. AI tylko proponuje, a decyduje człowiek. Przed wysłaniem tekstu do modelu automatycznie usuwamy e-maile, telefony, numery PESEL i numery kont. Interfejs projektujemy zgodnie z WCAG 2.1 AA, z myślą o seniorach i osobach z niepełnosprawnościami. Aplikacja i baza danych działają w UE (Frankfurt), a modele AI mają otwarte wagi, więc ROPS może je w przyszłości uruchomić na własnym serwerze. Szacowany koszt infrastruktury: ok. 300 zł miesięcznie przy ok. 2000 zapytań.
+HubMI.pl: opisujesz problem własnymi słowami, a AI przypisuje go do wyzwania z Mapy Wyzwań ROPS i wskazuje do 3 sprawdzonych innowacji z Biblioteki, z uzasadnieniem i podświetlonymi słowami, które zadecydowały. AI wybiera tylko z katalogu ROPS (odpowiedź jest sprawdzana) i niczego nie publikuje bez człowieka. Wokół dopasowania budujemy wszystkie 7 modułów z zadania, na jednej platformie dla mieszkańców, NGO, gmin, ekspertów i ROPS. Projektujemy pod WCAG 2.1 AA i seniorów: duże elementy, prosty język, każda mapa także jako tabela.
 
 ## Challenges
 PARTNER TASK [UMWM]: HubMi.pl
