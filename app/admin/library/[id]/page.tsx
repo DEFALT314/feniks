@@ -5,7 +5,7 @@ import { getCategories, getInnovationById } from "@/app/library/_lib/data";
 import { AdminNav } from "../../_components/admin-nav";
 import { EditForm } from "./edit-form";
 
-export const metadata: Metadata = { title: "Edycja karty innowacji – Panel ROPS" };
+export const metadata: Metadata = { title: "Edycja karty innowacji – Panel ROPS – HubMI.pl" };
 
 // Access is checked in app/admin/layout.tsx; writes go through RLS (rops_redaktor, rops_admin)
 export default async function Page({ params }: PageProps<"/admin/library/[id]">) {

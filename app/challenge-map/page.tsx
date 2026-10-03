@@ -3,22 +3,23 @@ import Link from "next/link";
 import { getCategories } from "@/app/library/_lib/data";
 import { getChallengeAreas } from "./_lib/data";
 import type { FullChallengeArea } from "./_lib/from-files";
+import { challengeMapTitle, formatChallengeCount } from "./_lib/format";
+import { HashFocus } from "@/app/library/_components/hash-focus";
 
-export const metadata: Metadata = {
-  title: "Mapa wyzwań społecznych – HubMI.pl",
-  description: "8 obszarów i 48 kluczowych wyzwań społecznych Małopolski według ROPS w Krakowie.",
-};
-
-const FOCUS = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick";
-const LINK = `text-navy underline underline-offset-[3px] hover:text-navy-strong ${FOCUS}`;
-
-// Polish plural forms: 1 wyzwanie, 2–4 wyzwania, 5+ wyzwań
-function formatChallengeCount(n: number): string {
-  if (n === 1) return "1 wyzwanie";
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  return mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? `${n} wyzwania` : `${n} wyzwań`;
+export async function generateMetadata({
+  searchParams,
+}: PageProps<"/challenge-map">): Promise<Metadata> {
+  const { area } = await searchParams;
+  const picked = (await getChallengeAreas()).find((o) => o.id === area);
+  return {
+    title: challengeMapTitle(picked?.nazwa ?? null),
+    description: "8 obszarów i 48 kluczowych wyzwań społecznych Małopolski według ROPS w Krakowie.",
+  };
 }
+
+const LINK = "text-navy underline underline-offset-[3px] hover:text-navy-strong";
+// A link that stands on its own gets a 44px target (project rule 7)
+const TARGET = "inline-flex min-h-11 items-center";
 
 // Link to the Library: categories linked to the area + words from the challenge
 function innovationsUrl(area: FullChallengeArea, text: string): string {
@@ -36,6 +37,8 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
 
   return (
     <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
+      {/* A picked area jumps to #area: move focus there too, not only the scroll (WCAG 2.4.3) */}
+      <HashFocus hash="area" targetId="area-title" changeKey={selected.id} />
       <section className="border-line border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-10 sm:px-10">
           <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
@@ -55,7 +58,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
                     <Link
                       href={`/challenge-map?area=${o.id}#area`}
                       aria-current={active ? "true" : undefined}
-                      className={`text-ink hover:border-navy flex min-h-[84px] flex-col gap-0.5 rounded-[10px] px-[18px] py-4 no-underline ${FOCUS} ${
+                      className={`text-ink hover:border-navy flex min-h-[84px] flex-col gap-0.5 rounded-[10px] px-[18px] py-4 no-underline ${
                         active ? "border-navy bg-navy-soft border-2" : "border-line border bg-white"
                       }`}
                     >
@@ -64,7 +67,8 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
                         className={`text-[0.9375rem] ${active ? "text-navy" : "text-ink-muted"}`}
                       >
                         {formatChallengeCount(o.wyzwania.length)}
-                        {active ? " · wybrany" : ""}
+                        {/* aria-current already says it to screen readers */}
+                        {active ? <span aria-hidden="true"> · wybrany</span> : null}
                       </span>
                     </Link>
                   </li>
@@ -94,7 +98,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
                 className="border-line flex flex-wrap items-baseline justify-between gap-4 border-b py-3.5"
               >
                 <span>{w.tekst}</span>
-                <Link href={innovationsUrl(selected, w.tekst)} className={LINK}>
+                <Link href={innovationsUrl(selected, w.tekst)} className={`${LINK} ${TARGET}`}>
                   Innowacje<span className="sr-only"> dla wyzwania: {w.tekst}</span>
                 </Link>
               </li>
@@ -117,9 +121,10 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
                 href={selected.zrodlo_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={LINK}
+                className={`${LINK} ${TARGET}`}
               >
-                Mapa Wyzwań Społecznych ROPS (PDF) ↗
+                Mapa Wyzwań Społecznych ROPS (PDF)
+                <span aria-hidden="true">&nbsp;↗</span>
                 <span className="sr-only"> (otwiera się w nowej karcie)</span>
               </a>
             </p>
@@ -152,7 +157,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
               ) : null}
               <Link
                 href={`/match?description=${encodeURIComponent(p.opis ?? "")}`}
-                className={`border-navy text-navy mt-1.5 inline-flex min-h-[50px] items-center justify-center rounded-[10px] border bg-white px-[22px] text-[1.0625rem] font-bold no-underline ${FOCUS}`}
+                className="border-navy text-navy mt-1.5 inline-flex min-h-[50px] items-center justify-center rounded-[10px] border bg-white px-[22px] text-[1.0625rem] font-bold no-underline"
               >
                 Dopasuj dla: {p.imie}
               </Link>
@@ -161,10 +166,9 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
         </div>
       </div>
 
-      <section
-        aria-labelledby="challenge-table"
-        className="mx-auto flex max-w-[1200px] flex-col gap-3 px-4 pb-16 sm:px-10"
-      >
+      {/* One region only: the scroll container, named by the heading. The table lists every
+          challenge, so it gives the same information as the tiles and panels above (WCAG 1.3.1). */}
+      <section className="mx-auto flex max-w-[1200px] flex-col gap-3 px-4 pb-16 sm:px-10">
         <h2 id="challenge-table" className="text-2xl font-bold tracking-tight">
           Cała mapa w tabeli
         </h2>
@@ -175,16 +179,20 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
           aria-labelledby="challenge-table"
         >
           <table className="w-full border-collapse text-left text-[1.0625rem]">
+            <caption className="sr-only">
+              Wszystkie obszary Mapy wyzwań: kluczowe wyzwania, przykładowe osoby i kategorie
+              Biblioteki
+            </caption>
             <thead>
               <tr className="border-ink border-b-2">
                 <th scope="col" className="px-4 py-3">
                   Obszar
                 </th>
-                <th scope="col" className="px-4 py-3">
-                  Wyzwań
+                <th scope="col" className="min-w-[18rem] px-4 py-3">
+                  Kluczowe wyzwania
                 </th>
                 <th scope="col" className="px-4 py-3">
-                  Persona
+                  Przykładowe osoby
                 </th>
                 <th scope="col" className="px-4 py-3">
                   Kategoria Biblioteki
@@ -193,13 +201,22 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/cha
             </thead>
             <tbody>
               {areas.map((o) => (
-                <tr key={o.id} className="border-line border-b last:border-b-0">
+                <tr key={o.id} className="border-line border-b align-top last:border-b-0">
                   <th scope="row" className="px-4 py-3 font-normal">
-                    <Link href={`/challenge-map?area=${o.id}#area`} className={LINK}>
+                    <Link href={`/challenge-map?area=${o.id}#area`} className={`${LINK} ${TARGET}`}>
                       {o.nazwa}
                     </Link>
+                    <span className="text-ink-muted block text-[0.9375rem]">
+                      {formatChallengeCount(o.wyzwania.length)}
+                    </span>
                   </th>
-                  <td className="px-4 py-3">{o.wyzwania.length}</td>
+                  <td className="px-4 py-3">
+                    <ul className="m-0 list-disc pl-5 text-base">
+                      {o.wyzwania.map((w) => (
+                        <li key={w.id}>{w.tekst}</li>
+                      ))}
+                    </ul>
+                  </td>
                   <td className="px-4 py-3">{o.persony.map((p) => p.imie).join(", ")}</td>
                   <td className="px-4 py-3">
                     {o.kategorie_biblioteki.map(categoryName).join("; ")}

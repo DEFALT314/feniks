@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { announce } from "@/components/ui/announcer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
@@ -12,15 +13,18 @@ type Section = ApplicationResponse["sections"][number];
 type State =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "done"; sections: Section[] }
+  | { status: "done"; sections: Section[]; callId: string }
   | { status: "error"; message: string };
 
 const date = new Intl.DateTimeFormat("pl-PL", { dateStyle: "long", timeZone: "Europe/Warsaw" });
 
 // "Wniosek pod nabór" (#35): a draft grant application for an open call (P3: POST /api/ai/application).
 // The draft is editable text the author copies; AI leaves numbers and costs as [placeholders].
+// Accessibility: the draft is announced as one short sentence, not read out whole (WCAG 4.1.3);
+// changing the call keeps the edited draft until the author asks for a new one.
 export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft: IdeaDraft }) {
   const selectId = useId();
+  const reasonId = useId();
   const [callId, setCallId] = useState(calls[0]?.id ?? "");
   const [state, setState] = useState<State>({ status: "idle" });
   const [texts, setTexts] = useState<Record<string, string>>({});
@@ -30,20 +34,26 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
   const generate = async () => {
     setState({ status: "loading" });
     setCopied(null);
+    announce("Asystent AI pisze szkic wniosku.");
     const result = await postJson(
       "/api/ai/application",
       { idea: draft, call_id: callId },
       ApplicationResponse,
     );
-    if (!result.ok) return setState({ status: "error", message: result.error });
+    if (!result.ok) {
+      announce(result.error);
+      return setState({ status: "error", message: result.error });
+    }
     setTexts(Object.fromEntries(result.data.sections.map((s) => [s.key, s.text])));
-    setState({ status: "done", sections: result.data.sections });
+    setState({ status: "done", sections: result.data.sections, callId });
+    announce(applicationAnnouncement(result.data.sections.length));
   };
 
   const copy = async (key: string, text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(key);
+      announce("Skopiowano do schowka.");
     } catch {
       setCopied(null);
     }
@@ -53,6 +63,12 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
     state.status === "done"
       ? state.sections.map((s) => `${s.title}\n${texts[s.key] ?? s.text}`).join("\n\n")
       : "";
+
+  const noDescription = draft.description === "";
+  const draftCall =
+    state.status === "done" && state.callId !== callId
+      ? calls.find((c) => c.id === state.callId)
+      : undefined;
 
   if (calls.length === 0) return null;
   return (
@@ -73,10 +89,7 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
         <select
           id={selectId}
           value={callId}
-          onChange={(e) => {
-            setCallId(e.target.value);
-            setState({ status: "idle" });
-          }}
+          onChange={(e) => setCallId(e.target.value)}
           className="border-input min-h-[50px] w-full rounded-[10px] border bg-white px-3 text-lg"
         >
           {calls.map((c) => (
@@ -99,24 +112,30 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
         variant="secondary"
         className="self-start"
         onClick={generate}
-        disabled={state.status === "loading" || !callId || draft.description === ""}
+        disabled={state.status === "loading" || !callId || noDescription}
+        aria-describedby={noDescription ? reasonId : undefined}
       >
         {state.status === "done" ? "Przygotuj szkic od nowa" : "Przygotuj szkic wniosku"}
       </Button>
-      {draft.description === "" ? (
-        <p className="text-muted-foreground text-base">Najpierw opisz pomysł w polu „Opis”.</p>
+      {noDescription ? (
+        <p id={reasonId} className="text-base font-bold">
+          Najpierw opisz pomysł w polu „Opis”.
+        </p>
       ) : null}
-      <div aria-live="polite" className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         {state.status === "loading" ? (
-          <p role="status">Asystent AI pisze szkic wniosku. To trwa około 10–20 sekund.</p>
+          <p>Asystent AI pisze szkic wniosku. To trwa około 10–20 sekund.</p>
         ) : null}
-        {state.status === "error" ? (
-          <p role="alert" className="text-danger font-bold">
-            {state.message}
-          </p>
-        ) : null}
+        {state.status === "error" ? <p className="text-danger font-bold">{state.message}</p> : null}
         {state.status === "done" ? (
           <>
+            {draftCall ? (
+              <p className="bg-warning-soft rounded-[10px] px-4 py-3 text-base">
+                Ten szkic powstał dla naboru „{draftCall.name}”. Żeby dopasować go do wybranego
+                naboru, kliknij „Przygotuj szkic od nowa”. Twoje poprawki w obecnym szkicu wtedy
+                znikną.
+              </p>
+            ) : null}
             <p className="text-muted-foreground text-base">
               To szkic do poprawienia. Fragmenty w nawiasach [ ] uzupełnij sam: AI nie podaje liczb
               ani kwot.
@@ -125,8 +144,16 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
               <div key={section.key} className="flex flex-col gap-2">
                 <Field
                   label={section.title}
+                  // Rule 5: every AI text says so, also when Tabbing from field to field
                   hint={
-                    section.needs_user_input ? "Uzupełnij fragmenty w nawiasach [ ]." : undefined
+                    <>
+                      <Badge variant="ai" className="mr-2">
+                        Propozycja AI
+                      </Badge>
+                      {section.needs_user_input
+                        ? "Uzupełnij fragmenty w nawiasach [ ]."
+                        : "Sprawdź i popraw przed wysłaniem."}
+                    </>
                   }
                 >
                   {(control) => (
@@ -161,4 +188,10 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
       </div>
     </section>
   );
+}
+
+/** One sentence for the screen reader instead of the whole draft. */
+export function applicationAnnouncement(sections: number): string {
+  const parts = sections === 1 ? "1 część" : `${sections} części`;
+  return `Gotowe: szkic wniosku ma ${parts}. Propozycja AI do sprawdzenia.`;
 }

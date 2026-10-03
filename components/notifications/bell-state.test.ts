@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Notification } from "@/lib/contracts/notifications";
-import { bellReducer, shortTime, type BellState } from "./bell-state";
+import { bellReducer, loadedSummary, shortTime, type BellState } from "./bell-state";
 
 const n = (id: string, przeczytane = false): Notification => ({
   id,
@@ -12,7 +12,7 @@ const n = (id: string, przeczytane = false): Notification => ({
   created_at: "2026-10-03T18:00:00+02:00",
 });
 
-const empty: BellState = { unread: 2, items: null, announcement: "" };
+const empty: BellState = { unread: 2, items: null, announcement: "", announcementId: 0 };
 
 describe("bellReducer", () => {
   it("counts and announces a live notification even before the list is loaded", () => {
@@ -55,6 +55,32 @@ describe("shortTime", () => {
   it("uses relative time for recent notifications", () => {
     expect(shortTime("2026-10-03T16:29:40Z", now)).toBe("przed chwilą");
     expect(shortTime("2026-10-03T16:10:00Z", now)).toBe("20 min temu");
-    expect(shortTime("2026-10-03T12:00:00Z", now)).toBe("14:00");
+    expect(shortTime("2026-10-03T12:00:00Z", now)).toBe("dziś, 14:00");
+  });
+
+  it("adds the day to older notifications", () => {
+    expect(shortTime("2026-10-02T12:00:00Z", now)).toBe("wczoraj, 14:00");
+    expect(shortTime("2026-09-28T12:00:00Z", now)).toBe("28 września, 14:00");
+  });
+});
+
+describe("loadedSummary", () => {
+  it("says how many notifications there are, with Polish plurals", () => {
+    expect(loadedSummary(0, 0)).toBe("Nie masz jeszcze powiadomień.");
+    expect(loadedSummary(1, 1)).toBe("1 powiadomienie, w tym 1 nowe.");
+    expect(loadedSummary(3, 0)).toBe("3 powiadomienia, wszystkie przeczytane.");
+    expect(loadedSummary(12, 5)).toBe("12 powiadomień, w tym 5 nowych.");
+  });
+});
+
+describe("announcements", () => {
+  it("bumps the id even when the text repeats, so it is read again", () => {
+    const one = bellReducer(empty, { type: "received", item: n("a") });
+    const two = bellReducer(one, {
+      type: "received",
+      item: { ...n("b"), tytul: "Powiadomienie a" },
+    });
+    expect(two.announcement).toBe(one.announcement);
+    expect(two.announcementId).toBe(one.announcementId + 1);
   });
 });

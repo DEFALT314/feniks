@@ -39,3 +39,16 @@ export function describeAudit(akcja: string, szczegoly: unknown): string {
   }
   return akcja;
 }
+
+// Polish plural: 1 pomysł, 2–4 pomysły (but 12–14 pomysłów), 5+ pomysłów
+export function plural(n: number, one: string, few: string, many: string): string {
+  if (n === 1) return one;
+  const tens = n % 100;
+  const units = n % 10;
+  return units >= 2 && units <= 4 && (tens < 12 || tens > 14) ? few : many;
+}
+
+/** Announced after a status filter change, e.g. "Do poprawy: 3 pomysły". */
+export function filterSummary(label: string, count: number): string {
+  return `${label}: ${count} ${plural(count, "pomysł", "pomysły", "pomysłów")}`;
+}

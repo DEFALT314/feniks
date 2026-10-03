@@ -96,7 +96,7 @@ export default async function Home() {
       <section className="border-line border-b bg-white">
         <div className={`${WRAP} flex flex-wrap items-center gap-12 py-12 sm:py-[72px]`}>
           <div data-ruch="wejscie" className="flex flex-[1_1_520px] flex-col gap-[22px]">
-            <p className="text-ink-muted text-[0.9375rem] font-bold">
+            <p className="text-ink-muted text-base font-bold">
               Małopolski Hub Innowacji Społecznych
             </p>
             <h1 className="font-heading text-[clamp(2.5rem,7vw,3.625rem)] leading-[1.1] font-bold tracking-tight">
@@ -122,20 +122,23 @@ export default async function Home() {
               aria-labelledby="example-heading"
               className="m-0 flex flex-[1_1_420px] flex-col gap-4 rounded-xl border border-[#b8c0cd] bg-white p-7"
             >
-              <p id="example-heading" className="text-ink-muted text-[0.9375rem] font-bold">
+              <p id="example-heading" className="text-ink-muted text-base font-bold">
                 Tak to wygląda
               </p>
               <blockquote className="m-0 text-[1.1875rem]">
                 „Tata wraca{" "}
-                <mark className="bg-[linear-gradient(transparent_55%,#ffe08a_55%)] px-px text-inherit">
+                <mark className="decoration-warning bg-transparent bg-[linear-gradient(transparent_55%,#ffe08a_55%)] px-px text-inherit underline decoration-2 underline-offset-4">
                   ze szpitala
                 </mark>{" "}
                 po udarze. Nie wiemy, jak zorganizować{" "}
-                <mark className="bg-[linear-gradient(transparent_55%,#ffe08a_55%)] px-px text-inherit">
+                <mark className="decoration-warning bg-transparent bg-[linear-gradient(transparent_55%,#ffe08a_55%)] px-px text-inherit underline decoration-2 underline-offset-4">
                   opiekę w domu
                 </mark>
                 .”
               </blockquote>
+              <p className="text-ink-muted text-base">
+                Podkreślone słowa zdecydowały o dopasowaniu.
+              </p>
               {example.map((i) => (
                 <div key={i.id} className="border-line flex flex-col gap-1.5 border-t pt-4">
                   <Link
@@ -161,9 +164,14 @@ export default async function Home() {
       </section>
 
       <section aria-label="Dane na start" className={`${WRAP} py-10`}>
-        <dl data-ruch="pokaz" className="m-0 grid grid-cols-2 gap-x-10 gap-y-6 lg:grid-cols-4">
+        {/* min-w-0 and the narrower gap on phones: long words like "upowszechniania" wrap inside
+            the column at 320 px with A+ instead of pushing the page sideways (WCAG 1.4.10) */}
+        <dl
+          data-ruch="pokaz"
+          className="m-0 grid grid-cols-1 gap-x-6 gap-y-6 min-[360px]:grid-cols-2 sm:gap-x-10 lg:grid-cols-4"
+        >
           {statItems.map((s) => (
-            <div key={s.label} className="flex flex-col-reverse justify-end">
+            <div key={s.label} className="flex min-w-0 flex-col-reverse justify-end">
               <dt className="text-ink-muted font-normal">{s.label}</dt>
               <dd
                 data-ruch="licznik"
@@ -229,7 +237,7 @@ export default async function Home() {
           className={`${WRAP} flex flex-col gap-6 pt-16 pb-[72px]`}
         >
           <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h2 id="featured-heading" className={H2}>
+            <h2 id="featured-heading" className={`${H2} min-w-0`}>
               Wybrane do upowszechniania
             </h2>
             <Link
@@ -246,9 +254,7 @@ export default async function Home() {
             {featured.map((i) => (
               <li key={i.id} className="flex">
                 <Link href={`/library/${i.id}`} className={`${CARD_LINK} w-full gap-2 p-6`}>
-                  <span className="text-ink-muted text-[0.9375rem]">
-                    {categoryName(i.kategoria_id)}
-                  </span>
+                  <span className="text-ink-muted text-base">{categoryName(i.kategoria_id)}</span>
                   <strong className="text-xl leading-snug">{i.nazwa}</strong>
                   {i.opis_krotki ? (
                     <span className="text-ink-muted line-clamp-3">{i.opis_krotki}</span>

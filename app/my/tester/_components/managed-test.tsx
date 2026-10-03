@@ -47,7 +47,7 @@ export function ManagedTest({ test, feedback }: { test: TesterTest; feedback: Te
                 key={`${uwaga.created_at}-${index}`}
                 className="border-border flex flex-col gap-1 rounded-[10px] border px-4 py-3 text-base"
               >
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-base">
                   Ocena {uwaga.ocena} z 5 · {dateTime.format(new Date(uwaga.created_at))}
                 </p>
                 {uwaga.co_dzialalo ? (

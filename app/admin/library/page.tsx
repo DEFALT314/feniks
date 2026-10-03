@@ -5,8 +5,9 @@ import { getCategories, getInnovations } from "@/app/library/_lib/data";
 import { queryStems, score } from "@/app/library/_lib/search";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
+import { plural } from "../_lib/format";
 
-export const metadata: Metadata = { title: "Biblioteka – Panel ROPS" };
+export const metadata: Metadata = { title: "Biblioteka – Panel ROPS – HubMI.pl" };
 
 type AuditRow = { id: number; akcja: string; obiekt: string; created_at: string };
 
@@ -65,13 +66,13 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
             />
             <button
               type="submit"
-              className="bg-navy hover:bg-navy-strong min-h-[50px] rounded-[10px] px-[22px] text-[1.0625rem] font-bold text-white"
+              className="bg-navy hover:bg-navy-strong min-h-[50px] rounded-[10px] border border-transparent px-[22px] text-[1.0625rem] font-bold text-white"
             >
               Szukaj
             </button>
           </form>
           <p aria-live="polite" className="m-0 text-base font-bold">
-            {list.length} {list.length === 1 ? "karta" : "kart"}
+            {list.length} {plural(list.length, "karta", "karty", "kart")}
           </p>
           <div className="border-border overflow-x-auto rounded-xl border bg-white">
             <table className="w-full border-collapse text-left text-[1.0625rem]">

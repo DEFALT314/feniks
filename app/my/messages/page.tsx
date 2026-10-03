@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { FocusHeading } from "@/components/ui/param-focus";
 import { STATUS_BADGE, STATUS_LABELS } from "@/app/admin/_lib/status";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth";
-import { loadThread, loadThreads } from "@/lib/messaging";
+import { loadThread, loadThreads, type ThreadMessage } from "@/lib/messaging";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 import { LiveRefresh } from "./_components/live-refresh";
 import { MessageList } from "./_components/message-list";
 import { ReplyForm } from "./_components/reply-form";
-import { historyLine, when } from "./_lib/format";
+import type { LastMessage } from "./_lib/announce";
+import { historyLine, newMessageHref, when } from "./_lib/format";
 
 export const metadata: Metadata = { title: "Wiadomości – HubMI.pl" };
 
@@ -18,6 +21,9 @@ export const metadata: Metadata = { title: "Wiadomości – HubMI.pl" };
 export default async function MessagesPage({ searchParams }: PageProps<"/my/messages">) {
   const user = (await getCurrentUser())!;
   const params = await searchParams;
+  // Old "Zapytaj ROPS" links (/my/messages?innovation=…) open the new-message form, not the list
+  const prefill = newMessageHref(params);
+  if (prefill) redirect(prefill);
   const supabase = await createClient();
   const threads = await loadThreads(supabase, user.id);
   const selectedId = (typeof params.thread === "string" && params.thread) || threads[0]?.id || null;
@@ -92,11 +98,16 @@ export default async function MessagesPage({ searchParams }: PageProps<"/my/mess
               aria-labelledby="thread-heading"
               className="flex min-w-0 flex-[999_1_480px] flex-col gap-2 px-5 py-6 sm:px-8"
             >
-              <LiveRefresh threadId={thread.id} />
+              <LiveRefresh threadId={thread.id} last={lastMessage(thread)} />
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h2 id="thread-heading" className="font-heading text-2xl font-bold">
+                {/* Picking another conversation (?thread=) moves focus here */}
+                <FocusHeading
+                  id="thread-heading"
+                  focusKey={thread.id}
+                  className="font-heading text-2xl font-bold"
+                >
                   {thread.temat}
-                </h2>
+                </FocusHeading>
                 {thread.history.length > 0 ? (
                   <span className="text-muted-foreground text-[0.9375rem]">
                     {historyLine(thread.history)}
@@ -104,7 +115,7 @@ export default async function MessagesPage({ searchParams }: PageProps<"/my/mess
                 ) : null}
               </div>
               <MessageList messages={thread.messages} />
-              <ReplyForm threadId={thread.id}>
+              <ReplyForm key={thread.id} threadId={thread.id}>
                 {thread.i_am_author && thread.idea_id ? (
                   <Link
                     href={`/my/creator/${thread.idea_id}`}
@@ -122,4 +133,15 @@ export default async function MessagesPage({ searchParams }: PageProps<"/my/mess
       )}
     </main>
   );
+}
+
+function lastMessage(thread: { id: string; messages: ThreadMessage[] }): LastMessage {
+  const m = thread.messages.at(-1);
+  return {
+    threadId: thread.id,
+    id: m?.id ?? null,
+    mine: m?.mine ?? false,
+    author: m?.autor_nazwa ?? "ROPS",
+    text: m?.tresc ?? "",
+  };
 }

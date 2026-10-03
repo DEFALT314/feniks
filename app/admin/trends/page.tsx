@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
+import { AnnounceOnChange } from "@/components/ui/param-focus";
+import { plural } from "../_lib/format";
 import {
   aggregateTrends,
   chartLabel,
@@ -12,7 +14,7 @@ import {
   type QueryRow,
 } from "./_lib/aggregate";
 
-export const metadata: Metadata = { title: "Potrzeby w regionie – Panel ROPS" };
+export const metadata: Metadata = { title: "Potrzeby w regionie – Panel ROPS – HubMI.pl" };
 
 // Match queries (P3) and ideas sent to ROPS (P2); both are readable only by ROPS roles under RLS
 async function loadRows(days: number): Promise<{ queries: QueryRow[]; ideas: IdeaRow[] }> {
@@ -67,6 +69,10 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
               </Link>
             ))}
           </nav>
+          <AnnounceOnChange
+            changeKey={String(days)}
+            message={`Ostatnie ${days} dni: ${trends.total} ${plural(trends.total, "zgłoszenie", "zgłoszenia", "zgłoszeń")}`}
+          />
         </div>
 
         <section
@@ -83,9 +89,9 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
                 className="grid grid-cols-[minmax(8rem,14rem)_1fr_3rem] items-center gap-3"
               >
                 <span className="text-base">{a.name}</span>
-                <span className="bg-neutral-soft h-6 overflow-hidden rounded-md">
+                <span className="bg-neutral-soft h-6 overflow-hidden rounded-md border border-transparent forced-colors:border-[CanvasText]">
                   <span
-                    className="bg-navy block h-full rounded-md"
+                    className="bg-navy block h-full rounded-md forced-colors:bg-[CanvasText]"
                     style={{ width: `${(a.total / max) * 100}%` }}
                   />
                 </span>

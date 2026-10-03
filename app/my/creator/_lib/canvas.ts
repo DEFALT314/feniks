@@ -46,6 +46,23 @@ export function fieldIndex(fieldId: string): number {
   return fields.findIndex((f) => f.id === fieldId);
 }
 
+/** Index of the wizard step for `?step=`; the first question when it is missing or unknown. */
+export function stepIndex(stepId: string | undefined): number {
+  return Math.max(0, stepId ? fieldIndex(stepId) : 0);
+}
+
+/** "Krok 3 z 22" for the visible counter, the progress bar and the page title. */
+export function stepLabel(index: number): string {
+  return `Krok ${index + 1} z ${fields.length}`;
+}
+
+/** Page title of a wizard step, so every step has its own title (WCAG 2.4.2). */
+export function stepTitle(stepId: string | undefined): string {
+  const index = stepIndex(stepId);
+  const field = fields[index];
+  return `${stepLabel(index)}: ${field.pytanie ?? field.nazwa} – Kanwa innowacji – HubMI.pl`;
+}
+
 export function sectionOf(fieldId: string): CanvasSection | undefined {
   return sections.find((s) => s.fields.some((f) => f.id === fieldId));
 }

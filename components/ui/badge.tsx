@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 // Few labels only: "Propozycja AI", "Sprawdzona przez ROPS" and statuses (design/makiety/System.dc.html)
 const badgeVariants = cva(
-  "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-sm leading-normal font-bold",
+  "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-base leading-normal font-bold",
   {
     variants: {
       variant: {

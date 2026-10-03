@@ -106,4 +106,22 @@ export const GLOSSARY: { term: string; meaning: string }[] = [
     term: "Karta usługi",
     meaning: "Opis, jak dana instytucja może prowadzić innowację: kto, za ile, od czego zacząć.",
   },
+  // Abbreviations used in the titles of ROPS reports
+  {
+    term: "JST",
+    meaning: "Jednostka samorządu terytorialnego, czyli gmina, powiat albo województwo.",
+  },
+  {
+    term: "PES",
+    meaning:
+      "Podmiot ekonomii społecznej, na przykład spółdzielnia socjalna albo fundacja, która zatrudnia osoby potrzebujące wsparcia.",
+  },
+  {
+    term: "PS",
+    meaning: "Przedsiębiorstwo społeczne: firma, która zarabia, żeby pomagać ludziom.",
+  },
+  {
+    term: "NGO",
+    meaning: "Organizacja pozarządowa, na przykład stowarzyszenie albo fundacja.",
+  },
 ];

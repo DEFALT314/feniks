@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { announce } from "@/components/ui/announcer";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { focusElement, useFocusFirstError } from "@/components/ui/focus";
 import { Input, Textarea } from "@/components/ui/input";
 import type { CallSummary } from "@/lib/contracts/ai";
 import type { InstitutionProfile, ServiceCard, ServiceCardEdit } from "@/lib/contracts/middleman";
@@ -19,6 +21,16 @@ const STEPS = [
   "Opisuję, jak to działa krok po kroku…",
   "Sprawdzam ryzyka i pierwsze kroki…",
 ];
+
+// Ids of the elements that take focus after an action replaced the control the user pressed
+// (WCAG 2.4.3): the new card's title, the first field of the edit form, "Edytuj szkic" again,
+// or the "Wysłano" confirmation that replaced the send button.
+export const FOCUS = {
+  cardTitle: "card-title",
+  editFirstField: "edit-title",
+  editButton: "edit-draft",
+  sent: "sent-status",
+} as const;
 
 type Props = {
   innovations: { id: string; nazwa: string }[];
@@ -54,8 +66,24 @@ export function MiddlemanWorkbench(props: Props) {
   );
   const [busy, setBusy] = useState<null | "drafting" | "saving" | "sending">(null);
   const [error, setError] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
+  // Counts failed drafts, so each one moves focus back to the invalid field
+  const [failedDrafts, setFailedDrafts] = useState(0);
   const [editing, setEditing] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const [focusRequest, setFocusRequest] = useState<{ id: string; n: number } | null>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  useFocusFirstError(formRef, failedDrafts || undefined);
+  useEffect(() => {
+    if (focusRequest) focusElement(document.getElementById(focusRequest.id));
+  }, [focusRequest]);
+  // Focus after the next render, once the target exists
+  const focusAfterRender = (id: string) => setFocusRequest((f) => ({ id, n: (f?.n ?? 0) + 1 }));
+
+  function fail(message: string) {
+    setError(message);
+    announce(message);
+  }
 
   const set = <K extends keyof InstitutionProfile>(key: K, value: InstitutionProfile[K]) =>
     setInstitution((i) => ({ ...i, [key]: value }));
@@ -68,12 +96,15 @@ export function MiddlemanWorkbench(props: Props) {
 
   async function draft() {
     if (institution.name.trim().length < 2) {
-      setError("Wpisz nazwę instytucji, np. GOPS w Przykładowej Woli.");
+      setNameError("Wpisz nazwę instytucji, np. GOPS w Przykładowej Woli.");
+      setFailedDrafts((n) => n + 1);
       return;
     }
+    setNameError(null);
     setBusy("drafting");
     setError(null);
     setEditing(false);
+    announce("AI przygotowuje szkic karty usługi. To potrwa kilka sekund.");
     const result = await call("/api/ai/middleman", "POST", {
       innovation_id: innovationId,
       institution: {
@@ -84,9 +115,9 @@ export function MiddlemanWorkbench(props: Props) {
       },
     });
     setBusy(null);
-    if (result.error) return setError(result.error);
+    if (result.error) return fail(result.error);
     show(result.card!);
-    cardRef.current?.focus();
+    focusAfterRender(FOCUS.cardTitle);
   }
 
   async function save(edit: ServiceCardEdit) {
@@ -94,9 +125,11 @@ export function MiddlemanWorkbench(props: Props) {
     setError(null);
     const result = await call(`/api/ai/middleman/${card!.id}`, "PATCH", edit);
     setBusy(null);
-    if (result.error) return setError(result.error);
+    if (result.error) return fail(result.error);
     show(result.card!);
     setEditing(false);
+    announce("Zapisano zmiany w szkicu.");
+    focusAfterRender(FOCUS.editButton);
   }
 
   async function send() {
@@ -104,8 +137,10 @@ export function MiddlemanWorkbench(props: Props) {
     setError(null);
     const result = await call(`/api/ai/middleman/${card!.id}/send`, "POST");
     setBusy(null);
-    if (result.error) return setError(result.error);
+    if (result.error) return fail(result.error);
     show(result.card!);
+    // Focusing the confirmation reads it once; it is not a live region, so it isn't read twice
+    focusAfterRender(FOCUS.sent);
   }
 
   const sent = card?.status === "wyslana_do_rops";
@@ -121,7 +156,7 @@ export function MiddlemanWorkbench(props: Props) {
             Wybierz innowację i opisz instytucję. Przygotujemy szkic usługi w języku, w którym gmina
             ją zamawia i finansuje. Ty decydujesz, co w nim zostaje.
           </p>
-          <div className="flex max-w-[1000px] flex-col gap-4">
+          <div ref={formRef} className="flex max-w-[1000px] flex-col gap-4">
             <div className="flex flex-wrap items-end gap-4">
               <Field label="Innowacja" className="flex-[1_1_320px]">
                 {(p) => (
@@ -139,12 +174,19 @@ export function MiddlemanWorkbench(props: Props) {
                   </select>
                 )}
               </Field>
-              <Field label="Nazwa instytucji" className="flex-[1_1_280px]">
+              <Field
+                label="Nazwa instytucji"
+                error={nameError}
+                required
+                className="flex-[1_1_280px]"
+              >
                 {(p) => (
                   <Input
                     {...p}
                     value={institution.name}
                     placeholder="np. GOPS w Przykładowej Woli"
+                    required
+                    autoComplete="organization"
                     onChange={(e) => set("name", e.target.value)}
                   />
                 )}
@@ -231,26 +273,24 @@ export function MiddlemanWorkbench(props: Props) {
       </section>
 
       <div className="mx-auto max-w-[1200px] px-4 pt-8 pb-16 sm:px-10">
-        <div aria-live="polite">
-          {error ? (
-            <p role="alert" className="text-danger mb-5 font-bold">
-              {error}
-            </p>
-          ) : null}
-          {busy === "drafting" ? (
-            <AiProgress title="AI przygotowuje szkic karty usługi" steps={STEPS} note={null} />
-          ) : null}
-        </div>
+        {/* Errors and progress are announced through announce(); no live region of their own */}
+        {error ? <p className="text-danger mb-5 font-bold">{error}</p> : null}
+        {busy === "drafting" ? (
+          <AiProgress title="AI przygotowuje szkic karty usługi" steps={STEPS} note={null} />
+        ) : null}
 
         {card && busy !== "drafting" ? (
-          <div ref={cardRef} tabIndex={-1} className="flex flex-wrap gap-12 outline-none">
+          <div className="flex flex-wrap gap-12">
             <div className="min-w-0 flex-[999_1_560px]">
               {editing ? (
                 <EditForm
                   card={card}
                   saving={busy === "saving"}
                   onSave={save}
-                  onCancel={() => setEditing(false)}
+                  onCancel={() => {
+                    setEditing(false);
+                    focusAfterRender(FOCUS.editButton);
+                  }}
                 />
               ) : (
                 <ServiceCardBody card={card} />
@@ -262,7 +302,7 @@ export function MiddlemanWorkbench(props: Props) {
             >
               <div className="flex flex-col gap-2.5 print:hidden">
                 {sent ? (
-                  <p role="status" className="text-success font-bold">
+                  <p id={FOCUS.sent} className="text-success font-bold">
                     Wysłano do ROPS. Odpowiedź zobaczysz w Wiadomościach.
                   </p>
                 ) : (
@@ -272,9 +312,13 @@ export function MiddlemanWorkbench(props: Props) {
                 )}
                 {!sent && !editing ? (
                   <Button
+                    id={FOCUS.editButton}
                     type="button"
                     variant="secondary"
-                    onClick={() => setEditing(true)}
+                    onClick={() => {
+                      setEditing(true);
+                      focusAfterRender(FOCUS.editFirstField);
+                    }}
                     disabled={busy !== null}
                   >
                     Edytuj szkic
@@ -286,7 +330,7 @@ export function MiddlemanWorkbench(props: Props) {
                   onClick={() => window.print()}
                   disabled={editing}
                 >
-                  Pobierz PDF
+                  Drukuj albo zapisz jako PDF
                 </Button>
               </div>
               <ServiceCardFacts card={card} calls={props.calls} />
@@ -303,17 +347,21 @@ export function MiddlemanWorkbench(props: Props) {
             <ul className="flex flex-col gap-2">
               {cards.map((c) => (
                 <li key={c.id}>
-                  <button
-                    type="button"
-                    className="text-navy hover:text-navy-strong cursor-pointer text-left underline underline-offset-[3px]"
+                  {/* A link (it opens a card and changes the address), handled on the client */}
+                  <a
+                    href={`/my/middleman?card=${c.id}`}
+                    className="text-navy hover:text-navy-strong inline-flex min-h-11 items-center text-left underline underline-offset-[3px]"
                     aria-current={c.id === card?.id ? "true" : undefined}
-                    onClick={() => {
+                    onClick={(e) => {
+                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                      e.preventDefault();
                       setEditing(false);
                       show(c);
+                      focusAfterRender(FOCUS.cardTitle);
                     }}
                   >
                     {c.title}
-                  </button>{" "}
+                  </a>{" "}
                   <span className="text-ink-muted text-base">
                     · {c.based_on.nazwa} ·{" "}
                     {c.status === "wyslana_do_rops" ? "wysłana do ROPS" : `szkic ${c.version}`}
@@ -370,21 +418,28 @@ function EditForm({
         });
       }}
     >
-      <Field label="Nazwa usługi">{(p) => <Input {...p} {...field("title")} required />}</Field>
-      <Field label="Dla kogo w gminie">
+      <Field label="Nazwa usługi" id={FOCUS.editFirstField} required>
+        {(p) => <Input {...p} {...field("title")} required />}
+      </Field>
+      <Field label="Dla kogo w gminie" required>
         {(p) => <Textarea {...p} {...field("for_whom")} required />}
       </Field>
-      <Field label="Jak to działa w praktyce" hint="Jeden krok w linii.">
+      <Field label="Jak to działa w praktyce" hint="Jeden krok w linii." required>
         {(p) => <Textarea {...p} rows={5} {...field("how_it_works")} required />}
       </Field>
-      <Field label="Kto realizuje">
+      <Field label="Kto realizuje" required>
         {(p) => <Textarea {...p} {...field("who_delivers")} required />}
       </Field>
-      <Field label="Szacunkowy koszt" hint="Uzupełnia instytucja, np. po rozmowie z księgowością.">
+      <Field
+        label="Szacunkowy koszt (nieobowiązkowo)"
+        hint="Uzupełnia instytucja, np. po rozmowie z księgowością."
+      >
         {(p) => <Input {...p} {...field("cost_estimate")} />}
       </Field>
-      <Field label="Na co uważać">{(p) => <Textarea {...p} {...field("risks")} required />}</Field>
-      <Field label="Pierwsze kroki" hint="Jeden krok w linii.">
+      <Field label="Na co uważać" required>
+        {(p) => <Textarea {...p} {...field("risks")} required />}
+      </Field>
+      <Field label="Pierwsze kroki" hint="Jeden krok w linii." required>
         {(p) => <Textarea {...p} rows={3} {...field("first_steps")} required />}
       </Field>
       <div className="flex flex-wrap gap-2.5">

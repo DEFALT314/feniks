@@ -8,7 +8,8 @@ import { Button } from "./button";
 import { Field } from "./field";
 import { Input } from "./input";
 import { PasswordInput } from "./password-input";
-import { a11yPlusFromCookie, TextSizeToggle, toggleA11yPlus } from "./text-size-toggle";
+import { a11yPlusFromCookie } from "./a11y-plus";
+import { TextSizeToggle, toggleA11yPlus } from "./text-size-toggle";
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 

@@ -5,10 +5,11 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
+import { FocusHeading } from "@/components/ui/param-focus";
 import { loadSentCard, loadSentCards } from "../_lib/cards";
 import { formatSentAt } from "../_lib/format";
 
-export const metadata: Metadata = { title: "Karty usług – Panel ROPS" };
+export const metadata: Metadata = { title: "Karty usług – Panel ROPS – HubMI.pl" };
 
 const MUNICIPALITY: Record<string, string> = {
   wiejska: "gmina wiejska",
@@ -37,7 +38,7 @@ export default async function CardsPage({ searchParams }: PageProps<"/admin/card
             Karty usług do konsultacji
           </h1>
           <p className="text-muted-foreground text-base">
-            Gminy i organizacje przygotowują je w Middlemanie i wysyłają do ROPS.
+            Gminy i organizacje przygotowują je w module „Karta usługi” i wysyłają do ROPS.
           </p>
           {cards.length === 0 ? (
             <Card>
@@ -78,9 +79,14 @@ export default async function CardsPage({ searchParams }: PageProps<"/admin/card
                 <Badge variant="ai">Propozycja AI</Badge>
                 <span className="text-muted-foreground text-base">szkic {card.version}</span>
               </div>
-              <h2 id="card-heading" className="font-heading text-[1.75rem] font-bold">
+              {/* Picking a card (?card=) moves focus here */}
+              <FocusHeading
+                id="card-heading"
+                focusKey={typeof params.card === "string" ? params.card : null}
+                className="font-heading text-[1.75rem] font-bold"
+              >
                 {card.title}
-              </h2>
+              </FocusHeading>
               <p className="text-base">
                 <strong>{card.institution}</strong>
                 {card.profile ? ` · ${MUNICIPALITY[card.profile.municipality_kind] ?? ""}` : null}

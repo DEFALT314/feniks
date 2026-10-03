@@ -125,4 +125,11 @@ describe("pageStart", () => {
     document.body.innerHTML = `<main id="main-content"><p>…</p></main>`;
     expect(pageStart()?.tagName).toBe("MAIN");
   });
+
+  it("respects a #hash target such as /library#results", () => {
+    document.body.innerHTML = `<main id="main-content"><h1>Biblioteka</h1><h2 id="results">12 wyników</h2></main>`;
+    window.location.hash = "#results";
+    expect(pageStart()?.id).toBe("results");
+    window.location.hash = "";
+  });
 });

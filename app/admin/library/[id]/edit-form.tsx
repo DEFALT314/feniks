@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { useFocusFirstError } from "@/components/ui/focus";
 import { Input, Textarea } from "@/components/ui/input";
 import type { Category, Innovation } from "@/lib/contracts/knowledge-base";
 import { editFromForm, formFromInnovation, type InnovationForm } from "../_lib/edit-diff";
@@ -31,6 +32,9 @@ export function EditForm({
   const [saved, setSaved] = useState(innovation);
   const [form, setForm] = useState<InnovationForm>(() => formFromInnovation(innovation));
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const formRef = useRef<HTMLFormElement>(null);
+  // A repeated error ("Nic nie zmieniono.") is not read again by a live region: focus it instead
+  useFocusFirstError(formRef, status.kind === "error" ? status : undefined);
 
   const update = (changes: Partial<InnovationForm>) => {
     setForm((f) => ({ ...f, ...changes }));
@@ -69,8 +73,10 @@ export function EditForm({
   }
 
   return (
-    <form onSubmit={save} className="flex flex-col gap-6" noValidate>
-      <Field label="Nazwa">{(p) => <Input {...p} required {...text("nazwa")} />}</Field>
+    <form ref={formRef} onSubmit={save} className="flex flex-col gap-6" noValidate>
+      <Field label="Nazwa" required>
+        {(p) => <Input {...p} required {...text("nazwa")} />}
+      </Field>
       <Field label="Kategoria">
         {(p) => (
           <select
@@ -154,7 +160,11 @@ export function EditForm({
               Zapisano. Karta w Bibliotece jest już zaktualizowana.
             </span>
           ) : null}
-          {status.kind === "error" ? <span className="text-danger">{status.message}</span> : null}
+          {status.kind === "error" ? (
+            <span data-form-error className="text-danger">
+              {status.message}
+            </span>
+          ) : null}
         </p>
       </div>
     </form>

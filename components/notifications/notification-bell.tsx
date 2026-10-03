@@ -3,13 +3,14 @@
 import { Bell } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useId, useReducer, useRef, useState } from "react";
+import { announce } from "@/components/ui/announcer";
 import { buttonVariants } from "@/components/ui/button";
 import { notificationsLabel } from "@/components/ui/navigation";
 import { Notification } from "@/lib/contracts/notifications";
 import { createClient } from "@/lib/supabase/client";
 import { authorizeRealtime } from "@/lib/supabase/realtime";
 import { cn } from "@/lib/utils";
-import { bellReducer, shortTime } from "./bell-state";
+import { bellReducer, loadedSummary, shortTime } from "./bell-state";
 
 // Header bell (#7): unread count, live updates through Supabase Realtime (RLS: own rows only),
 // a list of the latest notifications and "mark all as read".
@@ -24,11 +25,18 @@ export function NotificationBell({
     unread: initialUnread,
     items: null,
     announcement: "",
+    announcementId: 0,
   });
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  // New live notifications go to the one global live region; the id makes a repeat readable
+  useEffect(() => {
+    if (state.announcementId > 0) announce(state.announcement);
+  }, [state.announcementId, state.announcement]);
 
   // Live updates: a new notification bumps the counter and is announced to screen readers.
   useEffect(() => {
@@ -73,6 +81,7 @@ export function NotificationBell({
     if (!res.ok) return;
     const body = await res.json();
     dispatch({ type: "loaded", items: body.powiadomienia, unread: body.nieprzeczytane });
+    announce(loadedSummary(body.powiadomienia?.length ?? 0, body.nieprzeczytane ?? 0));
   }, []);
 
   const markRead = useCallback(async (ids?: string[]) => {
@@ -131,9 +140,6 @@ export function NotificationBell({
           </span>
         ) : null}
       </button>
-      <p aria-live="polite" className="sr-only">
-        {state.announcement}
-      </p>
 
       {open ? (
         <div
@@ -143,11 +149,18 @@ export function NotificationBell({
           className="border-border absolute right-0 z-40 mt-2 flex w-[min(360px,calc(100vw-2rem))] flex-col rounded-xl border bg-white shadow-[0_12px_32px_-12px_rgba(21,26,35,0.3)]"
         >
           <div className="border-border flex items-center justify-between gap-2 border-b px-4 py-3">
-            <h2 className="font-bold">Powiadomienia</h2>
+            <h2 ref={headingRef} tabIndex={-1} className="font-bold">
+              Powiadomienia
+            </h2>
             {state.unread > 0 ? (
               <button
                 type="button"
-                onClick={() => void markRead()}
+                onClick={() => {
+                  // The button disappears once nothing is unread: keep focus in the panel
+                  headingRef.current?.focus();
+                  announce("Wszystkie powiadomienia oznaczone jako przeczytane.");
+                  void markRead();
+                }}
                 className="text-navy min-h-11 cursor-pointer text-base underline underline-offset-[3px]"
               >
                 Oznacz wszystkie jako przeczytane

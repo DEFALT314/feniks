@@ -21,7 +21,7 @@ export default async function RegisterPage({ searchParams }: PageProps<"/registe
       footer={
         <>
           Masz już konto?{" "}
-          <Link href={loginHref} className="font-bold">
+          <Link href={loginHref} className="inline-flex min-h-11 items-center font-bold">
             Zaloguj się
           </Link>
         </>

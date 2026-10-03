@@ -1,41 +1,63 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import { ResourceFilters } from "@/lib/contracts/knowledge-base";
+import { HashFocus } from "@/app/library/_components/hash-focus";
 import { getResources } from "./_lib/data";
 import { availableValues, filterResources } from "./_lib/filter";
 import { GLOSSARY, GUIDES } from "./_lib/guides";
-
-export const metadata: Metadata = {
-  title: "Wiedza o innowacjach – HubMI.pl",
-  description:
-    "Poradniki o innowacjach społecznych, słowniczek oraz raporty i publikacje ROPS w Krakowie.",
-};
+import {
+  formatItemCount,
+  resourceDescription,
+  resourceLang,
+  resourceLinkLabel,
+  resourcesTitle,
+  tagLabel,
+} from "./_lib/display";
 
 // No mockup: same style as the Library (design/makiety/Biblioteka.dc.html)
-const FOCUS = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick";
-const LINK = `text-navy underline underline-offset-[3px] hover:text-navy-strong ${FOCUS}`;
-const FIELD = `min-h-[50px] rounded-[10px] border border-field-border bg-white px-3 text-lg ${FOCUS}`;
+const LINK = "text-navy underline underline-offset-[3px] hover:text-navy-strong";
+// A link that stands on its own gets a 44px target (project rule 7)
+const TARGET = "inline-flex min-h-11 items-center";
+// w-full + min-w-0: a select may shrink below its longest option at 320px (WCAG 1.4.10)
+const FIELD =
+  "min-h-[50px] w-full min-w-0 max-w-full rounded-[10px] border border-field-border bg-white px-3 text-lg";
+const FIELD_BOX = "flex min-w-0 flex-[1_1_14rem] flex-col gap-1";
+// The filter form jumps to the results; HashFocus then moves focus to their heading
+const RESULTS = "results";
 
-// Polish plural forms: 1 pozycja, 2–4 pozycje, 5+ pozycji
-function formatItemCount(n: number): string {
-  if (n === 1) return "1 pozycja";
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  return mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? `${n} pozycje` : `${n} pozycji`;
-}
-
-export default async function ResourcesPage({ searchParams }: PageProps<"/resources">) {
+async function loadResources(searchParams: PageProps<"/resources">["searchParams"]) {
   // Empty form fields ("Wszystkie") count as no filter
   const params = Object.fromEntries(
     Object.entries(await searchParams).filter(([, v]) => typeof v === "string" && v !== ""),
   );
   const filters = ResourceFilters.safeParse(params).data ?? {};
   const resources = await getResources();
-  const list = filterResources(resources, filters);
+  return { filters, resources, list: filterResources(resources, filters) };
+}
+
+export async function generateMetadata({
+  searchParams,
+}: PageProps<"/resources">): Promise<Metadata> {
+  const { filters, list } = await loadResources(searchParams);
+  return {
+    title: resourcesTitle(filters, list.length),
+    description:
+      "Poradniki o innowacjach społecznych, słowniczek oraz raporty i publikacje ROPS w Krakowie.",
+  };
+}
+
+export default async function ResourcesPage({ searchParams }: PageProps<"/resources">) {
+  const { filters, resources, list } = await loadResources(searchParams);
   const { years, tags } = availableValues(resources);
 
   return (
     <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
+      <HashFocus
+        hash={RESULTS}
+        targetId={RESULTS}
+        changeKey={`${filters.type ?? ""}|${filters.year ?? ""}|${filters.tag ?? ""}`}
+      />
       <section className="border-line border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-9 sm:px-10">
           <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
@@ -45,27 +67,35 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
             Krótkie poradniki, jak działać z innowacją społeczną, oraz badania i publikacje ROPS w
             Krakowie. Każdy raport prowadzi do źródła na stronie ROPS.
           </p>
-          <p className="m-0 text-base">
-            <a href="#poradniki" className={LINK}>
-              Poradniki
-            </a>{" "}
-            ·{" "}
-            <a href="#slowniczek" className={LINK}>
-              Słowniczek
-            </a>{" "}
-            ·{" "}
-            <a href="#results" className={LINK}>
-              Raporty i publikacje
-            </a>
-          </p>
+          <nav aria-label="Na tej stronie" className="text-base">
+            <ul className="m-0 flex list-none flex-wrap items-center gap-x-2 p-0">
+              <li>
+                <a href="#poradniki" className={`${LINK} ${TARGET}`}>
+                  Poradniki
+                </a>
+              </li>
+              <li aria-hidden="true">·</li>
+              <li>
+                <a href="#slowniczek" className={`${LINK} ${TARGET}`}>
+                  Słowniczek
+                </a>
+              </li>
+              <li aria-hidden="true">·</li>
+              <li>
+                <a href={`#${RESULTS}`} className={`${LINK} ${TARGET}`}>
+                  Raporty i publikacje
+                </a>
+              </li>
+            </ul>
+          </nav>
           <h2 className="mt-4 text-xl font-bold">Raporty i publikacje: filtry</h2>
           <form
             method="get"
-            action="/resources"
+            action={`/resources#${RESULTS}`}
             className="flex flex-wrap items-end gap-4"
-            aria-label="Filtry"
+            aria-label="Filtry raportów i publikacji"
           >
-            <div className="flex flex-col gap-1">
+            <div className={FIELD_BOX}>
               <label htmlFor="type" className="text-ink-muted text-[0.9375rem] font-bold">
                 Rodzaj
               </label>
@@ -75,7 +105,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
                 <option value="publikacja">Publikacje o innowacjach</option>
               </select>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className={FIELD_BOX}>
               <label htmlFor="year" className="text-ink-muted text-[0.9375rem] font-bold">
                 Rok
               </label>
@@ -93,7 +123,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
                 ))}
               </select>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className={FIELD_BOX}>
               <label htmlFor="tag" className="text-ink-muted text-[0.9375rem] font-bold">
                 Temat
               </label>
@@ -101,19 +131,16 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
                 <option value="">Wszystkie</option>
                 {tags.map((t) => (
                   <option key={t} value={t}>
-                    {t}
+                    {tagLabel(t)}
                   </option>
                 ))}
               </select>
             </div>
-            <button
-              type="submit"
-              className={`bg-navy hover:bg-navy-strong inline-flex min-h-[50px] items-center rounded-[10px] px-[22px] text-[1.0625rem] font-bold text-white ${FOCUS}`}
-            >
-              Pokaż
+            <button type="submit" className={buttonVariants()}>
+              Pokaż wyniki
             </button>
             <Link href="/resources" className={`inline-flex min-h-[50px] items-center ${LINK}`}>
-              Wyczyść
+              Wyczyść filtry
             </Link>
           </form>
         </div>
@@ -147,8 +174,9 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
               <ul className="m-0 mt-auto flex list-none flex-col gap-1 p-0 pt-2 text-base">
                 {g.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className={`${LINK} font-bold`}>
-                      {l.label} →
+                    <Link href={l.href} className={`${LINK} ${TARGET} font-bold`}>
+                      {l.label}
+                      <span aria-hidden="true">&nbsp;→</span>
                     </Link>
                   </li>
                 ))}
@@ -177,14 +205,10 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
       </section>
 
       <section
-        aria-labelledby="results"
+        aria-labelledby={RESULTS}
         className="mx-auto flex max-w-[1200px] flex-col px-4 pt-8 pb-16 sm:px-10"
       >
-        <h2
-          id="results"
-          aria-live="polite"
-          className="border-ink border-b-2 pb-2 text-lg font-bold"
-        >
+        <h2 id={RESULTS} className="border-ink scroll-mt-4 border-b-2 pb-2 text-lg font-bold">
           {formatItemCount(list.length)}
         </h2>
         {list.length === 0 ? (
@@ -195,24 +219,28 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/resour
               <li key={r.id} className="border-line flex flex-col gap-1.5 border-b py-5">
                 <h3 className="text-xl leading-snug font-bold">
                   <a href={r.url} target="_blank" rel="noopener noreferrer" className={LINK}>
-                    {r.tytul}
+                    <span lang={resourceLang(r)}>{resourceLinkLabel(r, list)}</span>
                     <span className="sr-only"> (otwiera się w nowej karcie)</span>
                   </a>
                 </h3>
-                {r.opis ? <p>{r.opis}</p> : null}
+                {resourceDescription(r.opis) ? <p>{resourceDescription(r.opis)}</p> : null}
                 <div className="text-ink-muted flex flex-wrap items-center gap-2 text-[0.9375rem]">
                   <span>
                     {r.typ === "raport" ? "Raport z badań" : "Publikacja"}
                     {r.rok ? ` · ${r.rok}` : ""}
                   </span>
                   {r.tagi.map((t) => (
+                    // The link is 44px tall (project rule 7); the pill inside stays compact. Navy
+                    // underlined text and a 4.7:1 border make it look like a link (WCAG 1.4.1, 1.4.11).
                     <Link
                       key={t}
-                      href={`/resources?tag=${encodeURIComponent(t)}`}
-                      className={`bg-neutral-soft text-ink-muted inline-flex min-h-6 items-center rounded-full px-2.5 font-bold no-underline hover:underline ${FOCUS}`}
+                      href={`/resources?tag=${encodeURIComponent(t)}#${RESULTS}`}
+                      className="inline-flex min-h-11 items-center rounded-full no-underline"
                     >
-                      <span className="sr-only">Temat: </span>
-                      {t}
+                      <span className="border-field-border text-navy hover:bg-navy-soft inline-flex min-h-7 items-center rounded-full border bg-white px-2.5 font-bold underline underline-offset-[3px]">
+                        <span className="sr-only">Temat: </span>
+                        {tagLabel(t)}
+                      </span>
                     </Link>
                   ))}
                 </div>
