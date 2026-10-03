@@ -92,7 +92,7 @@ export async function reviewIdea(
     });
     threadId = typeof data === "string" ? data : null;
   }
-  const authorLink = threadId ? `/my/messages?thread=${threadId}` : `/my/creator/${idea.id}`;
+  const authorLink = threadId ? `/my/messages?thread=${threadId}` : `/my/creator/${idea.id}/card`;
 
   // Side effects must not undo a saved decision: log failures and carry on.
   const results = await Promise.allSettled([

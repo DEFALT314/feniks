@@ -82,3 +82,24 @@ export function newMessageHref(
   }
   return query.size ? `/my/messages/new?${query}` : null;
 }
+
+export type Contact = { id: string; nazwa: string; rola: string };
+
+const CONTACT_ROLES: Record<string, string> = {
+  ekspert: "ekspert, mentor",
+  ngo: "organizacja",
+  jst: "gmina",
+};
+
+/**
+ * "Do kogo" options on the new-message form: ROPS first (always in every conversation), then
+ * experts, organisations and municipalities from public.contact_directory().
+ */
+export function recipientOptions(contacts: Contact[]): { value: string; label: string }[] {
+  return [
+    { value: "", label: "Zespół ROPS" },
+    ...contacts
+      .filter((c) => c.rola in CONTACT_ROLES)
+      .map((c) => ({ value: c.id, label: `${c.nazwa} (${CONTACT_ROLES[c.rola]})` })),
+  ];
+}

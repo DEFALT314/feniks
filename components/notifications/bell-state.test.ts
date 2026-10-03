@@ -50,6 +50,28 @@ describe("bellReducer", () => {
   });
 });
 
+describe("bellReducer polled (Realtime fallback)", () => {
+  it("announces a notification that appeared since the last poll", () => {
+    const loaded = bellReducer(empty, { type: "loaded", items: [n("b")], unread: 1 });
+    const s = bellReducer(loaded, { type: "polled", items: [n("a"), n("b")], unread: 2 });
+    expect(s.unread).toBe(2);
+    expect(s.items?.map((i) => i.id)).toEqual(["a", "b"]);
+    expect(s.announcement).toBe("Nowe powiadomienie: Powiadomienie a");
+    expect(s.announcementId).toBe(loaded.announcementId + 1);
+  });
+
+  it("stays quiet when nothing new arrived, also before the list was opened", () => {
+    const loaded = bellReducer(empty, { type: "loaded", items: [n("b")], unread: 1 });
+    const same = bellReducer(loaded, { type: "polled", items: [n("b")], unread: 1 });
+    expect(same.announcementId).toBe(loaded.announcementId);
+
+    const closed = bellReducer(empty, { type: "polled", items: [n("a"), n("b")], unread: 2 });
+    expect(closed.announcementId).toBe(0);
+    const more = bellReducer(empty, { type: "polled", items: [n("c"), n("a")], unread: 3 });
+    expect(more.announcement).toBe("Nowe powiadomienie: Powiadomienie c");
+  });
+});
+
 describe("shortTime", () => {
   const now = new Date("2026-10-03T16:30:00Z");
   it("uses relative time for recent notifications", () => {

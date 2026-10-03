@@ -15,12 +15,14 @@ export function NewThreadForm({
   ideaId,
   innovationId,
   toUserId,
+  recipients,
 }: {
   topic?: string;
   text?: string;
   ideaId?: string;
   innovationId?: string;
   toUserId?: string;
+  recipients: { value: string; label: string }[] | null; // null: no choice (idea conversation)
 }) {
   const [state, action, pending] = useActionState<FormState, FormData>(startAction, {});
   const formRef = useRef<HTMLFormElement>(null);
@@ -36,7 +38,29 @@ export function NewThreadForm({
     >
       <input type="hidden" name="idea" value={ideaId ?? ""} />
       <input type="hidden" name="innovation" value={innovationId ?? ""} />
-      <input type="hidden" name="to" value={toUserId ?? ""} />
+      {recipients && (!toUserId || recipients.some((r) => r.value === toUserId)) ? (
+        <Field
+          label="Do kogo"
+          hint="Zespół ROPS czyta każdą rozmowę, także z ekspertem, organizacją albo gminą."
+        >
+          {(p) => (
+            <select
+              {...p}
+              name="to"
+              defaultValue={toUserId ?? ""}
+              className="border-input text-ink focus:border-navy min-h-11 w-full rounded-[10px] border bg-white px-3 text-base"
+            >
+              {recipients.map((r) => (
+                <option key={r.value} value={r.value}>
+                  {r.label}
+                </option>
+              ))}
+            </select>
+          )}
+        </Field>
+      ) : (
+        <input type="hidden" name="to" value={toUserId ?? ""} />
+      )}
       <Field label="Temat" error={field === "temat" ? state.error : undefined} required>
         {(p) => <Input {...p} name="temat" required maxLength={200} defaultValue={topic} />}
       </Field>
@@ -56,7 +80,7 @@ export function NewThreadForm({
         </p>
       ) : null}
       <Button type="submit" className="self-start" disabled={pending}>
-        {pending ? "Wysyłamy…" : "Wyślij do ROPS"}
+        {pending ? "Wysyłamy…" : "Wyślij"}
       </Button>
     </form>
   );

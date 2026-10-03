@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useEffect, useId, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -83,6 +84,10 @@ export function SubmitPanel({
               <strong>Uwagi ROPS:</strong> {comment}
             </p>
           ) : null}
+          {/* Opens the idea's conversation (or a new message about it): answer ROPS or ask */}
+          <Link href={`/my/messages?idea=${ideaId}`} className="self-start text-base">
+            {comment ? "Odpowiedz ROPS w Wiadomościach" : "Napisz do ROPS o tym pomyśle"}
+          </Link>
         </div>
       ) : null}
       {allowed ? (

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { day, historyLine, newMessageHref, stamp } from "./format";
+import { day, historyLine, newMessageHref, recipientOptions, stamp } from "./format";
 
 const now = new Date("2026-10-04T10:00:00Z"); // 12:00 in Warsaw
 
@@ -41,5 +41,23 @@ describe("newMessageHref", () => {
   it("keeps the conversation list for a thread or no parameters", () => {
     expect(newMessageHref({})).toBeNull();
     expect(newMessageHref({ thread: "t1", innovation: "bawita" })).toBeNull();
+  });
+});
+
+describe("recipientOptions", () => {
+  it("puts ROPS first and names the role of each contact", () => {
+    expect(
+      recipientOptions([
+        { id: "e1", nazwa: "Ewa", rola: "ekspert" },
+        { id: "n1", nazwa: "Fundacja Dobry Start", rola: "ngo" },
+        { id: "g1", nazwa: "GOPS", rola: "jst" },
+        { id: "x", nazwa: "Stanisław", rola: "mieszkaniec" },
+      ]),
+    ).toEqual([
+      { value: "", label: "Zespół ROPS" },
+      { value: "e1", label: "Ewa (ekspert, mentor)" },
+      { value: "n1", label: "Fundacja Dobry Start (organizacja)" },
+      { value: "g1", label: "GOPS (gmina)" },
+    ]);
   });
 });

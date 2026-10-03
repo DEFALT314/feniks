@@ -39,6 +39,8 @@ describe("submitIdea", () => {
     expect(d.writeAudit).toHaveBeenCalledWith({
       akcja: "pomysl.wyslanie",
       obiekt: `ideas:${IDEA.id}`,
+      // The ROPS panel's change log shows the title, not just the id
+      szczegoly: { tytul: "Sąsiedzki dyżur po wypisie" },
     });
   });
 

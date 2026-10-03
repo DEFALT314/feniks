@@ -108,7 +108,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
             </Card>
           ) : (
             <div className="border-border overflow-x-auto rounded-xl border bg-white">
-              <table className="w-full border-collapse text-base">
+              <table className="w-full min-w-[600px] border-collapse text-base">
                 <caption className="sr-only">Pomysły wysłane do ROPS, najnowsze na górze</caption>
                 <thead>
                   <tr className="text-muted-foreground text-[0.9375rem]">
@@ -150,7 +150,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                           {formatSentAt(row.wyslany_at)}
                         </td>
                         <td className="border-border border-b px-3.5 py-3">
-                          <Badge variant={STATUS_BADGE[row.status]}>
+                          <Badge variant={STATUS_BADGE[row.status]} className="whitespace-nowrap">
                             {STATUS_LABELS[row.status]}
                           </Badge>
                         </td>
@@ -207,10 +207,10 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                 currentExpertId={detail.ekspert_id}
               />
               <Link
-                href={`/my/messages/new?idea=${detail.idea_id}&topic=${encodeURIComponent(detail.tytul)}`}
+                href={`/my/messages?idea=${detail.idea_id}&topic=${encodeURIComponent(detail.tytul)}`}
                 className="self-start text-base"
               >
-                Napisz do autora
+                Rozmowa z autorem
               </Link>
             </Card>
           ) : null}

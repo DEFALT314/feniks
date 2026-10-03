@@ -5,15 +5,22 @@ import { FocusHeading } from "@/components/ui/param-focus";
 import { STATUS_BADGE, STATUS_LABELS } from "@/app/admin/_lib/status";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/auth";
-import { loadThread, loadThreads, type ThreadMessage } from "@/lib/messaging";
+import { getCurrentUser, isRopsRole } from "@/lib/auth";
+import {
+  ideaThreadId,
+  loadThread,
+  loadThreads,
+  markThreadSeen,
+  type ThreadMessage,
+} from "@/lib/messaging";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
+import { InviteForm } from "./_components/invite-form";
 import { LiveRefresh } from "./_components/live-refresh";
 import { MessageList } from "./_components/message-list";
 import { ReplyForm } from "./_components/reply-form";
 import type { LastMessage } from "./_lib/announce";
-import { historyLine, newMessageHref, when } from "./_lib/format";
+import { historyLine, newMessageHref, recipientOptions, when } from "./_lib/format";
 
 export const metadata: Metadata = { title: "Wiadomości – HubMI.pl" };
 
@@ -21,14 +28,27 @@ export const metadata: Metadata = { title: "Wiadomości – HubMI.pl" };
 export default async function MessagesPage({ searchParams }: PageProps<"/my/messages">) {
   const user = (await getCurrentUser())!;
   const params = await searchParams;
+  const supabase = await createClient();
+  // ?idea=<id>: open the conversation about that idea when there already is one
+  if (typeof params.idea === "string" && !params.thread) {
+    const existing = await ideaThreadId(supabase, params.idea);
+    if (existing) redirect(`/my/messages?thread=${existing}`);
+  }
   // Old "Zapytaj ROPS" links (/my/messages?innovation=…) open the new-message form, not the list
   const prefill = newMessageHref(params);
   if (prefill) redirect(prefill);
-  const supabase = await createClient();
   const threads = await loadThreads(supabase, user.id);
   const selectedId = (typeof params.thread === "string" && params.thread) || threads[0]?.id || null;
   const thread = selectedId ? await loadThread(supabase, selectedId, user.id) : null;
-  if (thread) await supabase.rpc("mark_thread_read", { p_thread_id: thread.id });
+  if (thread) await markThreadSeen(supabase, thread.id);
+  const fromRops = isRopsRole(user.role);
+  // ROPS can invite people who are not in the conversation yet
+  const invitees =
+    thread && fromRops
+      ? recipientOptions((await supabase.rpc("contact_directory")).data ?? []).filter(
+          (o) => o.value && !thread.participant_ids.includes(o.value),
+        )
+      : [];
 
   return (
     <main
@@ -37,17 +57,24 @@ export default async function MessagesPage({ searchParams }: PageProps<"/my/mess
     >
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <h1 className="font-heading text-[2.5rem] font-bold tracking-tight">Wiadomości</h1>
-        <Link href="/my/messages/new" className={buttonVariants({ variant: "secondary" })}>
-          Napisz do ROPS
-        </Link>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          {user.role !== "ekspert" && !isRopsRole(user.role) ? (
+            <Link href="/my/messages/new?recipient=ekspert" className="text-base">
+              Zapytaj eksperta (mentora)
+            </Link>
+          ) : null}
+          <Link href="/my/messages/new" className={buttonVariants({ variant: "secondary" })}>
+            {isRopsRole(user.role) ? "Nowa wiadomość" : "Napisz do ROPS"}
+          </Link>
+        </div>
       </div>
 
       {threads.length === 0 ? (
         <div className="border-border flex flex-col gap-3 rounded-xl border bg-white p-8">
           <p className="text-lg">Nie masz jeszcze żadnych rozmów.</p>
           <p className="text-muted-foreground">
-            Napisz do ROPS z pytaniem albo potrzebą. Gdy ROPS oceni Twój pomysł, rozmowa o nim
-            pojawi się tutaj.
+            Napisz do ROPS z pytaniem albo potrzebą, zapytaj eksperta (mentora) albo napisz do
+            organizacji lub gminy. Gdy ROPS oceni Twój pomysł, rozmowa o nim też pojawi się tutaj.
           </p>
         </div>
       ) : (
@@ -114,6 +141,11 @@ export default async function MessagesPage({ searchParams }: PageProps<"/my/mess
                   </span>
                 ) : null}
               </div>
+              <p className="text-muted-foreground text-base">
+                W rozmowie: {[...thread.others, "Ty"].join(", ")}.
+                {fromRops ? null : " Zespół ROPS widzi każdą rozmowę i może pomóc."}
+              </p>
+              {fromRops ? <InviteForm threadId={thread.id} people={invitees} /> : null}
               <MessageList messages={thread.messages} />
               <ReplyForm key={thread.id} threadId={thread.id}>
                 {thread.i_am_author && thread.idea_id ? (

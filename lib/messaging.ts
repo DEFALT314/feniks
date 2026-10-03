@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { NewNotification } from "@/lib/contracts/notifications";
 import { IdeaStatus } from "@/lib/contracts/admin";
+import type { NewNotification } from "@/lib/contracts/notifications";
 import { Role } from "@/lib/contracts/shared";
 import type { EmailMessage, EmailResult } from "@/lib/email";
 import type { Database } from "@/lib/supabase/types";
@@ -34,6 +34,7 @@ export type ThreadMessage = {
 export type StatusStep = { status: IdeaStatus | "wyslany" | "wyslany_ponownie"; at: string };
 
 export type ThreadDetail = Omit<ThreadSummary, "unread"> & {
+  participant_ids: string[];
   messages: ThreadMessage[];
   history: StatusStep[];
   i_am_author: boolean;
@@ -217,6 +218,7 @@ export async function loadThread(
     innowacja_id: thread.innowacja_id,
     last_message_at: thread.last_message_at,
     others: thread.thread_participants.filter((p) => p.user_id !== userId).map(displayName),
+    participant_ids: thread.thread_participants.map((p) => p.user_id),
     idea_status: thread.idea_id
       ? currentStatus(
           idea.data?.wyslany_at,
@@ -239,10 +241,34 @@ export async function loadThread(
   };
 }
 
+/**
+ * The conversation about an idea, if the user can see it (one thread per idea). "Napisz do autora"
+ * and "Rozmowa z ROPS" link to /my/messages?idea=<id>, which opens it instead of a new message.
+ */
+export async function ideaThreadId(supabase: Client, ideaId: string): Promise<string | null> {
+  if (!/^[0-9a-f-]{36}$/i.test(ideaId)) return null;
+  const { data } = await supabase.from("threads").select("id").eq("idea_id", ideaId).maybeSingle();
+  return data?.id ?? null;
+}
+
+/**
+ * Opening a conversation marks it read and also clears the bell notifications that point to it,
+ * so the counter in the header matches what the user has already seen.
+ */
+export async function markThreadSeen(supabase: Client, threadId: string): Promise<void> {
+  await Promise.all([
+    supabase.rpc("mark_thread_read", { p_thread_id: threadId }),
+    supabase
+      .from("notifications")
+      .update({ przeczytane: true })
+      .eq("przeczytane", false)
+      .eq("link", `/my/messages?thread=${threadId}`),
+  ]);
+}
+
 export type MessagingDeps = {
   supabase: Client;
   me: { id: string; role: Role; name: string };
-  addNotification: (n: NewNotification) => Promise<unknown>;
   sendEmail: (m: EmailMessage) => Promise<EmailResult>;
   ropsInbox?: string;
   siteUrl: string;
@@ -250,7 +276,8 @@ export type MessagingDeps = {
 
 /**
  * After a message: notify everyone else in the thread live, plus all of ROPS when the writer is
- * not ROPS; e-mail the author when ROPS or an expert answered, or the ROPS inbox otherwise.
+ * not ROPS (public.notify_thread, so an NGO can notify a municipality too); e-mail the other
+ * people when ROPS or an expert answered, or the ROPS inbox otherwise.
  * Best effort: failures are logged and never undo the message.
  */
 export async function announceMessage(
@@ -260,26 +287,16 @@ export async function announceMessage(
   tresc: string,
 ) {
   const link = `/my/messages?thread=${threadId}`;
-  const { data: participants } = await deps.supabase
-    .from("thread_participants")
-    .select("user_id")
-    .eq("thread_id", threadId);
-  const others = (participants ?? []).map((p) => p.user_id).filter((id) => id !== deps.me.id);
   const fromRops = isRops(deps.me.role);
   const tytul = `${deps.me.name}: nowa wiadomość w rozmowie „${temat}”`;
 
-  const jobs: Promise<unknown>[] = [];
-  if (others.length || !fromRops) {
-    jobs.push(
-      deps.addNotification({
-        typ: "wiadomosc",
-        tytul,
-        link,
-        ...(others.length ? { userIds: others } : {}),
-        ...(!fromRops ? { role: ["rops_redaktor", "rops_admin"] } : {}),
-      }),
-    );
-  }
+  const jobs: Promise<unknown>[] = [
+    Promise.resolve(
+      deps.supabase.rpc("notify_thread", { p_thread_id: threadId, p_tytul: tytul.slice(0, 200) }),
+    ).then(({ error }) => {
+      if (error) throw new Error(`notify_thread: ${error.message}`);
+    }),
+  ];
 
   const excerpt = tresc.length > 400 ? `${tresc.slice(0, 400)}…` : tresc;
   const email = (to: string) =>
@@ -302,6 +319,43 @@ export async function announceMessage(
   for (const r of await Promise.allSettled(jobs)) {
     if (r.status === "rejected") console.error("message side effect failed", r.reason);
   }
+}
+
+/**
+ * ROPS invites an expert (mentor), an organisation or a municipality into a conversation; the
+ * person gets a notification with a link to it. The database checks the role (invite_to_thread).
+ */
+export async function inviteToThread(
+  deps: {
+    supabase: Client;
+    me: { role: Role };
+    addNotification: (n: NewNotification) => Promise<unknown>;
+  },
+  threadId: string,
+  userId: unknown,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  if (!isRops(deps.me.role)) return { ok: false, message: "Tylko ROPS może zapraszać do rozmowy." };
+  if (typeof userId !== "string" || !userId) return { ok: false, message: "Wybierz osobę." };
+  const { data: thread } = await deps.supabase
+    .from("threads")
+    .select("temat")
+    .eq("id", threadId)
+    .maybeSingle();
+  if (!thread) return { ok: false, message: "Nie znaleziono tej rozmowy." };
+  const { error } = await deps.supabase.rpc("invite_to_thread", {
+    p_thread_id: threadId,
+    p_user_id: userId,
+  });
+  if (error) return { ok: false, message: "Nie udało się zaprosić tej osoby." };
+  await deps
+    .addNotification({
+      userIds: [userId],
+      typ: "wiadomosc",
+      tytul: `ROPS zaprasza Cię do rozmowy „${thread.temat}”`.slice(0, 200),
+      link: `/my/messages?thread=${threadId}`,
+    })
+    .catch((e) => console.error("invite notification failed", e));
+  return { ok: true };
 }
 
 export type SendResult = { ok: true; threadId: string } | { ok: false; message: string };
