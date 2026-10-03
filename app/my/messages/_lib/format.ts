@@ -24,12 +24,17 @@ export function time(iso: string): string {
   return TIME.format(new Date(iso));
 }
 
+const STEP_LABELS: Record<string, string> = {
+  wyslany: "wysłany",
+  wyslany_ponownie: "wysłany ponownie",
+};
+
 // "wysłany 16:42 → w weryfikacji 16:50 → do poprawy 17:05" (design/makiety/Wiadomosci.dc.html)
 export function historyLine(steps: StatusStep[]): string {
   return steps
     .map(
       (s) =>
-        `${s.status === "wyslany" ? "wysłany" : STATUS_LABELS[s.status].toLowerCase()} ${time(s.at)}`,
+        `${STEP_LABELS[s.status] ?? STATUS_LABELS[s.status as keyof typeof STATUS_LABELS].toLowerCase()} ${time(s.at)}`,
     )
     .join(" → ");
 }

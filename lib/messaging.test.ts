@@ -1,7 +1,14 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { describe, expect, it, vi } from "vitest";
 import type { Database } from "@/lib/supabase/types";
-import { announceMessage, sendReply, startConversation, type MessagingDeps } from "./messaging";
+import {
+  announceMessage,
+  currentStatus,
+  sendReply,
+  startConversation,
+  statusHistory,
+  type MessagingDeps,
+} from "./messaging";
 
 type Role = MessagingDeps["me"]["role"];
 
@@ -109,5 +116,40 @@ describe("sendReply / startConversation", () => {
     const { d } = deps({ rpcError: true });
     expect(await sendReply(d, "t1", "hej")).toMatchObject({ ok: false });
     expect(d.addNotification).not.toHaveBeenCalled();
+  });
+});
+
+describe("idea status after a resubmission", () => {
+  it("treats a review older than the latest submission as stale (like the ROPS queue)", () => {
+    expect(
+      currentStatus("2026-10-03T16:00:00Z", {
+        status: "do_poprawy",
+        oceniony_at: "2026-10-03T15:30:00Z",
+      }),
+    ).toBe("nowy");
+    expect(
+      currentStatus("2026-10-03T15:00:00Z", {
+        status: "do_poprawy",
+        oceniony_at: "2026-10-03T15:30:00Z",
+      }),
+    ).toBe("do_poprawy");
+    expect(currentStatus("2026-10-03T15:00:00Z", undefined)).toBe("nowy");
+  });
+
+  it("orders the history and shows a resubmission at the end", () => {
+    const reviews = [
+      { status: "do_poprawy", created_at: "2026-10-03T15:30:00Z" },
+      { status: "w_weryfikacji", created_at: "2026-10-03T15:10:00Z" },
+    ];
+    expect(statusHistory("2026-10-03T15:00:00Z", reviews).map((s) => s.status)).toEqual([
+      "wyslany",
+      "w_weryfikacji",
+      "do_poprawy",
+    ]);
+    expect(statusHistory("2026-10-03T16:00:00Z", reviews).map((s) => s.status)).toEqual([
+      "w_weryfikacji",
+      "do_poprawy",
+      "wyslany_ponownie",
+    ]);
   });
 });
