@@ -18,6 +18,7 @@ import {
   toIdeaDraft,
 } from "../_lib/submission";
 import { useAutosave } from "../_lib/use-autosave";
+import { AiAlternatives } from "./ai-alternatives";
 import { AiHints, type CardField } from "./ai-hints";
 import { ApplicationDraft } from "./application-draft";
 import { SaveStatusText, useSavedNavigation } from "./save-status";
@@ -166,7 +167,15 @@ export function IdeaCard({
           </fieldset>
 
           {editable ? (
-            <AiHints draft={toIdeaDraft(card)} onUse={(field, text) => change(field, text, 0)} />
+            <>
+              <AiHints draft={toIdeaDraft(card)} onUse={(field, text) => change(field, text, 0)} />
+              <AiAlternatives
+                draft={toIdeaDraft(card)}
+                onAdd={(text) =>
+                  change("opis", draft.opis.trim() ? `${draft.opis.trimEnd()}\n\n${text}` : text, 0)
+                }
+              />
+            </>
           ) : null}
           <ApplicationDraft calls={calls} draft={toIdeaDraft(card)} />
         </section>

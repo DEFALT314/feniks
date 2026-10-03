@@ -1,7 +1,8 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { testerFixture, type TesterTest } from "@/lib/contracts/innovation-tester";
-import { PlanTestPanel, planTestDefaults } from "./plan-test-panel";
+import { planTestDefaults } from "../_lib/model";
+import { PlanTestPanel } from "./plan-test-panel";
 import { TesterView } from "./tester-view";
 
 vi.mock("../actions", () => ({

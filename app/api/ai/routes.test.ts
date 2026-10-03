@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { ApplicationResponse, CallList, HintResponse } from "@/lib/contracts/ai";
+import {
+  AlternativesResponse,
+  ApplicationResponse,
+  CallList,
+  HintResponse,
+} from "@/lib/contracts/ai";
 
 vi.mock("server-only", () => ({}));
 
@@ -21,6 +26,7 @@ vi.mock("@/lib/ai/creator/open-calls", () => ({ openCalls: () => calls() }));
 
 const { POST: hintsRoute } = await import("./hints/route");
 const { POST: applicationRoute } = await import("./application/route");
+const { POST: alternativesRoute } = await import("./alternatives/route");
 const { GET: callsRoute } = await import("./calls/route");
 const { LlmError } = await import("@/lib/ai/llm");
 
@@ -58,6 +64,22 @@ describe("AI creator endpoints", () => {
     const res = await applicationRoute(post({ idea, call_id: "nabor-demo-seniorzy-2026" }));
     expect(res.status).toBe(404);
     expect(generate).not.toHaveBeenCalled();
+  });
+
+  it("alternatives answer with the contract shape; a bad body gets 400", async () => {
+    generate.mockResolvedValue({
+      alternatives: [{ title: "Telefon", text: "Codzienny telefon od sąsiada.", why: null }],
+    });
+    const res = await alternativesRoute(post({ idea }));
+    expect(AlternativesResponse.safeParse(await res.json()).success).toBe(true);
+    expect((await alternativesRoute(post({ nothing: true }))).status).toBe(400);
+  });
+
+  it("alternatives fail gracefully when the model does not answer", async () => {
+    generate.mockRejectedValue(new LlmError("timeout", "request"));
+    const res = await alternativesRoute(post({ idea }));
+    expect(res.status).toBe(503);
+    expect((await res.json()).error).toContain("Asystent AI");
   });
 
   it("hints answer with the contract shape", async () => {
