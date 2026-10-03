@@ -1,28 +1,38 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Steps } from "@/components/ui/steps";
-import type { CanvasAnswer } from "@/lib/contracts/idea-creator";
+import type { CanvasAnswer, CanvasField, IdeaWithCanvas } from "@/lib/contracts/idea-creator";
+import { saveCanvasAnswer } from "../actions";
 import { answeredCount, fieldIndex, fields, sectionOf, sections } from "../_lib/canvas";
-import { ideaStore, useIdea } from "../_lib/use-ideas";
-import { IdeaNotFound, Loading } from "./states";
+import { saveStatusText, useAutosave } from "../_lib/use-autosave";
 import { Question } from "./question";
 
 const stepHref = (ideaId: string, fieldId: string) => `/my/creator/${ideaId}?step=${fieldId}`;
 
+// Choices save at once; typed text waits for a pause in typing
+const TYPED: CanvasField["typ"][] = ["tekst_lista", "jeden_wybor_plus_tekst", "lista_partnerow"];
+
 // The canvas wizard: one question per screen, saved after every change (design/makiety/Kreator.dc.html)
-export function Wizard({ ideaId, stepId }: { ideaId: string; stepId: string | undefined }) {
-  const idea = useIdea(ideaId);
-  if (idea === null) return <Loading />;
-  if (idea === undefined) return <IdeaNotFound />;
+export function Wizard({ idea, stepId }: { idea: IdeaWithCanvas; stepId: string | undefined }) {
+  const ideaId = idea.id;
+  const [answers, setAnswers] = useState(idea.answers);
+  const autosave = useAutosave<CanvasAnswer>((fieldId, answer) =>
+    saveCanvasAnswer(ideaId, fieldId, answer),
+  );
 
   const index = Math.max(0, stepId ? fieldIndex(stepId) : 0);
   const field = fields[index];
   const previous = fields[index - 1];
   const next = fields[index + 1];
   const cardHref = `/my/creator/${ideaId}/card`;
-  const save = (answer: CanvasAnswer) => ideaStore().saveAnswer(ideaId, field.id, answer);
+  const save = (answer: CanvasAnswer) => {
+    setAnswers((current) => ({ ...current, [field.id]: answer }));
+    const typed = TYPED.includes(field.typ) || ("other" in answer && answer.other !== undefined);
+    autosave.schedule(field.id, answer, typed ? 600 : 0);
+  };
 
   return (
     <main id="main-content" className="flex-1">
@@ -31,7 +41,13 @@ export function Wizard({ ideaId, stepId }: { ideaId: string; stepId: string | un
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <h1 className="font-sans text-lg font-bold">Pomysł: {idea.tytul}</h1>
             <p className="text-muted-foreground text-base">
-              Krok {index + 1} z {fields.length} · zapisuje się automatycznie
+              Krok {index + 1} z {fields.length} ·{" "}
+              <span
+                role="status"
+                className={autosave.status === "error" ? "text-danger font-bold" : undefined}
+              >
+                {saveStatusText(autosave.status, autosave.error)}
+              </span>
             </p>
           </div>
           <div
@@ -60,7 +76,7 @@ export function Wizard({ ideaId, stepId }: { ideaId: string; stepId: string | un
               id: section.id,
               label: section.label,
               href: stepHref(ideaId, section.fields[0].id),
-              done: answeredCount(section.fields, idea.answers),
+              done: answeredCount(section.fields, answers),
               total: section.fields.length,
             }))}
           />
@@ -74,7 +90,7 @@ export function Wizard({ ideaId, stepId }: { ideaId: string; stepId: string | un
           className="flex max-w-[680px] min-w-0 flex-[999_1_480px] flex-col gap-6"
         >
           {/* key: a new question starts with fresh local state (partners list) */}
-          <Question key={field.id} field={field} answer={idea.answers[field.id]} onChange={save} />
+          <Question key={field.id} field={field} answer={answers[field.id]} onChange={save} />
 
           <nav
             aria-label="Nawigacja kreatora"

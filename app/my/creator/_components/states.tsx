@@ -1,11 +1,29 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 
-// Drafts are read from the browser, so the first render has nothing to show yet
-export function Loading() {
+// Shown instead of the creator when nobody is signed in: ideas are saved on the author's account
+export function SignInPrompt({ next }: { next: string }) {
   return (
-    <main id="main-content" className="flex-1" aria-busy="true">
-      <p className="mx-auto max-w-[1200px] px-4 py-12 sm:px-10">Wczytywanie…</p>
+    <main
+      id="main-content"
+      className="mx-auto flex w-full max-w-[820px] flex-1 flex-col items-start gap-4 px-4 py-16 sm:px-10"
+    >
+      <h1 className="text-[2.5rem] leading-tight font-bold">Kreator pomysłów</h1>
+      <p>
+        Kreator prowadzi przez kanwę innowacji: jedno pytanie na ekranie. Na końcu powstaje fiszka,
+        którą możesz wysłać do ROPS. Zaloguj się, żeby zapisywać pomysły na swoim koncie.
+      </p>
+      <div className="flex flex-wrap gap-3">
+        <Link href={`/login?next=${encodeURIComponent(next)}`} className={buttonVariants()}>
+          Zaloguj się
+        </Link>
+        <Link
+          href={`/register?next=${encodeURIComponent(next)}`}
+          className={buttonVariants({ variant: "secondary" })}
+        >
+          Załóż konto
+        </Link>
+      </div>
     </main>
   );
 }
@@ -17,9 +35,7 @@ export function IdeaNotFound() {
       className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col items-start gap-4 px-4 py-12 sm:px-10"
     >
       <h1 className="text-3xl font-bold">Nie ma takiego pomysłu</h1>
-      <p>
-        Szkice pomysłów zapisują się w tej przeglądarce. Może pomysł powstał na innym urządzeniu?
-      </p>
+      <p>Ten pomysł nie istnieje albo należy do innego konta.</p>
       <Link href="/my/creator" className={buttonVariants({ variant: "secondary" })}>
         Wróć do moich pomysłów
       </Link>
