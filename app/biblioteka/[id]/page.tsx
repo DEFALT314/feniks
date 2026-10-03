@@ -14,10 +14,9 @@ const PROGRAMS: Record<string, string> = {
   "Inkubator Dostępności": "Inkubator Dostępności",
 };
 
-const LINK = "text-[#1F3A8A] underline underline-offset-[3px] hover:text-[#172C6B]";
-const FOCUS =
-  "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#C2452B]";
-const BUTTON = `inline-flex min-h-[50px] items-center justify-center gap-2 rounded-[10px] px-[22px] text-[17px] font-bold no-underline ${FOCUS}`;
+const LINK = "text-navy underline underline-offset-[3px] hover:text-navy-strong";
+const FOCUS = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick";
+const BUTTON = `inline-flex min-h-[50px] items-center justify-center gap-2 rounded-[10px] px-[22px] text-[1.0625rem] font-bold no-underline ${FOCUS}`;
 const BADGE = "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-sm font-bold";
 
 export async function generateMetadata({
@@ -48,8 +47,8 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
   const challenges = challengesForInnovation(i, areas);
 
   return (
-    <main id="tresc" className="bg-[#F6F7F9] text-lg leading-relaxed text-[#151A23]">
-      <div className="border-b border-[#D9DDE4] bg-white">
+    <main id="tresc" className="bg-surface text-ink text-lg leading-relaxed">
+      <div className="border-line border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-3.5 px-4 pt-5 pb-9 sm:px-10">
           <nav aria-label="Ścieżka" className="text-base">
             <ol className="flex flex-wrap gap-1">
@@ -67,7 +66,7 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
                   ›
                 </li>
               ) : null}
-              <li aria-current="page" className="text-[#4B5565]">
+              <li aria-current="page" className="text-ink-muted">
                 {i.nazwa}
               </li>
             </ol>
@@ -77,14 +76,14 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
           </h1>
           <div className="flex flex-wrap items-center gap-2">
             {i.sprawdzona_przez_rops ? (
-              <span className={`${BADGE} bg-[#E3F2EA] text-[#1D6B48]`}>
+              <span className={`${BADGE} bg-success-soft text-success`}>
                 Wybrana do upowszechniania
               </span>
             ) : null}
             {i.opis_niepelny ? (
-              <span className={`${BADGE} bg-[#FFF1DB] text-[#8A4B00]`}>Opis niepełny</span>
+              <span className={`${BADGE} bg-warning-soft text-warning`}>Opis niepełny</span>
             ) : null}
-            {program ? <span className="text-base text-[#4B5565]">{program}</span> : null}
+            {program ? <span className="text-ink-muted text-base">{program}</span> : null}
           </div>
         </div>
       </div>
@@ -128,7 +127,7 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
             </Section>
           ) : null}
           {i.zrodlo ? (
-            <p className="pt-4 text-base text-[#4B5565]">Źródło opisu: {i.zrodlo}</p>
+            <p className="text-ink-muted pt-4 text-base">Źródło opisu: {i.zrodlo}</p>
           ) : null}
         </article>
 
@@ -136,17 +135,17 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
           aria-label="Materiały i działania"
           className="flex max-w-[380px] flex-[1_1_320px] flex-col gap-5 pt-6"
         >
-          <div className="flex flex-col gap-3 rounded-xl border border-t-4 border-[#D9DDE4] border-t-[#1F3A8A] bg-white p-6">
-            <h2 className="text-[19px] font-bold">Chcesz to wdrożyć?</h2>
+          <div className="border-line border-t-navy flex flex-col gap-3 rounded-xl border border-t-4 bg-white p-6">
+            <h2 className="text-[1.1875rem] font-bold">Chcesz to wdrożyć?</h2>
             <Link
               href={`/moje/middleman?innowacja=${encodeURIComponent(i.id)}`}
-              className={`${BUTTON} bg-[#1F3A8A] text-white hover:bg-[#172C6B]`}
+              className={`${BUTTON} bg-navy hover:bg-navy-strong text-white`}
             >
               Przygotuj kartę usługi
             </Link>
             <Link
               href={`/moje/wiadomosci?innowacja=${encodeURIComponent(i.id)}`}
-              className={`${BUTTON} border border-[#1F3A8A] bg-white text-[#1F3A8A]`}
+              className={`${BUTTON} border-navy text-navy border bg-white`}
             >
               Zapytaj ROPS
             </Link>
@@ -154,7 +153,7 @@ export default async function InnovationPage({ params }: PageProps<"/biblioteka/
           <MaterialsPanel innovation={i} />
           {similar.length > 0 ? (
             <div className="flex flex-col gap-1.5">
-              <h2 className="text-[17px] font-bold">Podobne innowacje</h2>
+              <h2 className="text-[1.0625rem] font-bold">Podobne innowacje</h2>
               <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
                 {similar.map((p) => (
                   <li key={p.id}>
@@ -182,8 +181,8 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className={`flex flex-col gap-2 py-6 ${first ? "" : "border-t border-[#D9DDE4]"}`}>
-      <h2 className="text-[22px] font-bold tracking-tight">{title}</h2>
+    <section className={`flex flex-col gap-2 py-6 ${first ? "" : "border-line border-t"}`}>
+      <h2 className="text-[1.375rem] font-bold tracking-tight">{title}</h2>
       {children}
     </section>
   );
@@ -216,7 +215,7 @@ function MaterialsPanel({ innovation: i }: { innovation: Innovation }) {
   ].filter((p): p is { label: string; kind: string; url: string } => Boolean(p.url));
 
   return (
-    <div className="rounded-xl border border-[#D9DDE4] bg-white px-6 pt-2 pb-5">
+    <div className="border-line rounded-xl border bg-white px-6 pt-2 pb-5">
       <h2 className="sr-only">Materiały</h2>
       {files.length > 0 ? (
         <ul className="m-0 list-none p-0">
@@ -226,19 +225,19 @@ function MaterialsPanel({ innovation: i }: { innovation: Innovation }) {
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex min-h-12 items-center justify-between gap-3 border-b border-[#D9DDE4] py-3 text-[#1F3A8A] no-underline hover:underline ${FOCUS}`}
+                className={`border-line text-navy flex min-h-12 items-center justify-between gap-3 border-b py-3 no-underline hover:underline ${FOCUS}`}
               >
                 <span>
                   {p.label}
                   <span className="sr-only"> (otwiera się w nowej karcie)</span>
                 </span>
-                <span className="text-[15px] text-[#4B5565]">{p.kind}</span>
+                <span className="text-ink-muted text-[0.9375rem]">{p.kind}</span>
               </a>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="py-3 text-[#4B5565]">Brak materiałów do pobrania.</p>
+        <p className="text-ink-muted py-3">Brak materiałów do pobrania.</p>
       )}
       <p className="pt-3 text-base">
         <a href={i.url} target="_blank" rel="noopener noreferrer" className={`${LINK} ${FOCUS}`}>

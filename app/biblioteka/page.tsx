@@ -11,9 +11,9 @@ export const metadata: Metadata = {
   description: "Rozwiązania społeczne przetestowane w inkubatorach ROPS w Krakowie.",
 };
 
-// Colors and layout per design/makiety/Biblioteka.dc.html; switch to theme classes once P2 adds the tokens
+// Colors and layout per design/makiety/Biblioteka.dc.html (theme tokens from app/globals.css)
 const BUTTON =
-  "inline-flex min-h-[50px] items-center justify-center gap-2 rounded-[10px] px-[22px] text-[17px] font-bold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#C2452B]";
+  "inline-flex min-h-[50px] items-center justify-center gap-2 rounded-[10px] px-[22px] text-[1.0625rem] font-bold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick";
 const BADGE = "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-sm font-bold";
 
 export default async function LibraryPage({ searchParams }: PageProps<"/biblioteka">) {
@@ -31,14 +31,14 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
     .join(" · ");
 
   return (
-    <main id="tresc" className="bg-[#F6F7F9] text-lg leading-relaxed text-[#151A23]">
+    <main id="tresc" className="bg-surface text-ink text-lg leading-relaxed">
       <FilterForm id="filtry" aria-label="Szukaj i filtruj innowacje">
-        <section className="border-b border-[#D9DDE4] bg-white">
+        <section className="border-line border-b bg-white">
           <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-9 sm:px-10">
             <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
               Biblioteka innowacji
             </h1>
-            <p className="max-w-[760px] text-[#4B5565]">
+            <p className="text-ink-muted max-w-[760px]">
               Rozwiązania przetestowane w inkubatorach ROPS. Każda karta mówi, dla kogo jest
               rozwiązanie, kto może je wdrożyć i jakie są materiały.
             </p>
@@ -52,18 +52,15 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
                 type="search"
                 defaultValue={filters.q ?? ""}
                 placeholder="np. samotność seniorów"
-                className="min-h-[50px] flex-[1_1_320px] rounded-[10px] border border-[#6B7487] bg-white px-3.5 py-3 text-lg focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#C2452B]"
+                className="border-field-border focus-visible:outline-brick min-h-[50px] flex-[1_1_320px] rounded-[10px] border bg-white px-3.5 py-3 text-lg focus-visible:outline-3 focus-visible:outline-offset-2"
               />
-              <button
-                type="submit"
-                className={`${BUTTON} bg-[#1F3A8A] text-white hover:bg-[#172C6B]`}
-              >
+              <button type="submit" className={`${BUTTON} bg-navy hover:bg-navy-strong text-white`}>
                 Szukaj
               </button>
             </div>
             <p className="text-base">
               Nie wiesz, czego szukać?{" "}
-              <Link href="/dopasuj" className="text-[#1F3A8A] underline underline-offset-[3px]">
+              <Link href="/dopasuj" className="text-navy underline underline-offset-[3px]">
                 Opisz problem, a dopasujemy rozwiązanie
               </Link>
               .
@@ -109,15 +106,12 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
               <input type="hidden" name="etykieta" value={filters.etykieta} />
             ) : null}
             <div className="flex flex-wrap gap-3">
-              <button
-                type="submit"
-                className={`${BUTTON} border border-[#1F3A8A] bg-white text-[#1F3A8A]`}
-              >
+              <button type="submit" className={`${BUTTON} border-navy text-navy border bg-white`}>
                 Pokaż wyniki
               </button>
               <Link
                 href="/biblioteka"
-                className="inline-flex min-h-[50px] items-center text-[#1F3A8A] underline"
+                className="text-navy inline-flex min-h-[50px] items-center underline"
               >
                 Wyczyść filtry
               </Link>
@@ -125,12 +119,12 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
           </aside>
 
           <section aria-labelledby="wyniki" className="flex min-w-0 flex-[999_1_560px] flex-col">
-            <div className="flex flex-wrap items-baseline justify-between gap-2 border-b-2 border-[#151A23] pb-2">
+            <div className="border-ink flex flex-wrap items-baseline justify-between gap-2 border-b-2 pb-2">
               <h2 id="wyniki" aria-live="polite" className="text-lg font-bold">
                 {heading ? `${heading}: ` : ""}
                 {formatResultCount(list.liczba)}
               </h2>
-              <span className="text-base text-[#4B5565]">
+              <span className="text-ink-muted text-base">
                 Sortowanie: {filters.q ? "najlepiej pasujące" : "najpierw sprawdzone przez ROPS"}
               </span>
             </div>
@@ -140,7 +134,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
                 <p>Nic nie pasuje do tych filtrów.</p>
                 <p>
                   Spróbuj innych słów albo{" "}
-                  <Link href="/dopasuj" className="text-[#1F3A8A] underline">
+                  <Link href="/dopasuj" className="text-navy underline">
                     opisz swój problem własnymi słowami
                   </Link>
                   .
@@ -159,7 +153,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
                 {list.strona > 1 ? (
                   <Link
                     href={libraryUrl(filters, { strona: list.strona - 1 })}
-                    className="px-2.5 font-bold text-[#1F3A8A]"
+                    className="text-navy px-2.5 font-bold"
                   >
                     ← Poprzednia strona
                   </Link>
@@ -172,8 +166,8 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
                     aria-label={`Strona ${s}`}
                     className={
                       s === list.strona
-                        ? "inline-flex h-11 min-w-11 items-center justify-center rounded-[10px] bg-[#1F3A8A] font-bold text-white"
-                        : "inline-flex h-11 min-w-11 items-center justify-center rounded-[10px] border border-[#D9DDE4] bg-white text-[#1F3A8A]"
+                        ? "bg-navy inline-flex h-11 min-w-11 items-center justify-center rounded-[10px] font-bold text-white"
+                        : "border-line text-navy inline-flex h-11 min-w-11 items-center justify-center rounded-[10px] border bg-white"
                     }
                   >
                     {s}
@@ -182,7 +176,7 @@ export default async function LibraryPage({ searchParams }: PageProps<"/bibliote
                 {list.strona < list.liczba_stron ? (
                   <Link
                     href={libraryUrl(filters, { strona: list.strona + 1 })}
-                    className="px-2.5 font-bold text-[#1F3A8A]"
+                    className="text-navy px-2.5 font-bold"
                   >
                     Następna strona →
                   </Link>
@@ -208,7 +202,7 @@ function formatResultCount(n: number): string {
 function FilterGroup({ legend, children }: { legend: string; children: React.ReactNode }) {
   return (
     <fieldset className="m-0 flex flex-col gap-0.5 border-0 p-0">
-      <legend className="mb-2 text-[15px] font-bold text-[#4B5565]">{legend}</legend>
+      <legend className="text-ink-muted mb-2 text-[0.9375rem] font-bold">{legend}</legend>
       {children}
     </fieldset>
   );
@@ -228,16 +222,16 @@ function FilterOption({
   children: React.ReactNode;
 }) {
   return (
-    <label className="flex min-h-11 cursor-pointer items-center gap-2.5 text-[17px]">
+    <label className="flex min-h-11 cursor-pointer items-center gap-2.5 text-[1.0625rem]">
       <input
         type="checkbox"
         name={name}
         value={value}
         defaultChecked={checked}
-        className="size-5 accent-[#1F3A8A] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#C2452B]"
+        className="accent-navy focus-visible:outline-brick size-5 focus-visible:outline-3 focus-visible:outline-offset-2"
       />
       <span>{children}</span>
-      <span className="ml-auto text-[15px] text-[#4B5565]">
+      <span className="text-ink-muted ml-auto text-[0.9375rem]">
         {count}
         <span className="sr-only"> pozycji</span>
       </span>
@@ -251,33 +245,35 @@ function ResultRow({ innovation: i }: { innovation: InnovationSummary }) {
     .filter(Boolean)
     .join(" · ");
   return (
-    <li className="flex flex-col gap-1.5 border-b border-[#D9DDE4] py-5">
-      <h3 className="text-[22px] leading-snug font-bold tracking-tight">
+    <li className="border-line flex flex-col gap-1.5 border-b py-5">
+      <h3 className="text-[1.375rem] leading-snug font-bold tracking-tight">
         <Link
           href={`/biblioteka/${i.id}`}
-          className="text-[#151A23] no-underline hover:text-[#1F3A8A] hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#C2452B]"
+          className="text-ink hover:text-navy focus-visible:outline-brick no-underline hover:underline focus-visible:outline-3 focus-visible:outline-offset-2"
         >
           {i.nazwa}
         </Link>
       </h3>
       {i.opis_niepelny ? (
-        <p className="text-[#4B5565]">Znamy nazwę, program i autora. Pełny opis uzupełni ROPS.</p>
+        <p className="text-ink-muted">Znamy nazwę, program i autora. Pełny opis uzupełni ROPS.</p>
       ) : (
         <p>{i.opis_krotki}</p>
       )}
       <div className="flex flex-wrap items-center gap-2">
         {i.sprawdzona_przez_rops ? (
-          <span className={`${BADGE} bg-[#E3F2EA] text-[#1D6B48]`}>Wybrana do upowszechniania</span>
+          <span className={`${BADGE} bg-success-soft text-success`}>
+            Wybrana do upowszechniania
+          </span>
         ) : null}
         {i.opis_niepelny ? (
-          <span className={`${BADGE} bg-[#FFF1DB] text-[#8A4B00]`}>Opis niepełny</span>
+          <span className={`${BADGE} bg-warning-soft text-warning`}>Opis niepełny</span>
         ) : null}
         {i.spoza_biblioteki ? (
-          <span className={`${BADGE} bg-[#EEF0F4] text-[#4B5565]`}>
+          <span className={`${BADGE} bg-neutral-soft text-ink-muted`}>
             Z inkubatora ROPS, spoza Biblioteki online
           </span>
         ) : null}
-        {meta ? <span className="text-[15px] text-[#4B5565]">{meta}</span> : null}
+        {meta ? <span className="text-ink-muted text-[0.9375rem]">{meta}</span> : null}
       </div>
     </li>
   );

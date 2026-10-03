@@ -17,7 +17,7 @@ export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: 
   return (
     <header className="border-border border-b bg-white">
       {demoMode ? (
-        <div className="bg-warning-soft text-warning text-[15px]">
+        <div className="bg-warning-soft text-warning text-[0.9375rem]">
           <p className="mx-auto max-w-[1200px] px-4 py-1.5 sm:px-10">
             Wersja pokazowa, dane osób są fikcyjne.{" "}
             <Link href="/logowanie" className="text-warning hover:text-warning font-bold">
@@ -34,8 +34,8 @@ export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: 
         >
           <Logo />
           <span className="flex flex-col leading-[1.05]">
-            <span className="font-heading text-[23px] font-bold tracking-tight">HubMI</span>
-            <span className="text-muted-foreground text-[13px]">
+            <span className="font-heading text-[1.4375rem] font-bold tracking-tight">HubMI</span>
+            <span className="text-muted-foreground text-[0.8125rem]">
               innowacje społeczne Małopolski
             </span>
           </span>

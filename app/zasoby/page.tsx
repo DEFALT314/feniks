@@ -10,10 +10,9 @@ export const metadata: Metadata = {
 };
 
 // No mockup: same style as the Library (design/makiety/Biblioteka.dc.html)
-const FOCUS =
-  "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#C2452B]";
-const LINK = `text-[#1F3A8A] underline underline-offset-[3px] hover:text-[#172C6B] ${FOCUS}`;
-const FIELD = `min-h-[50px] rounded-[10px] border border-[#6B7487] bg-white px-3 text-lg ${FOCUS}`;
+const FOCUS = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brick";
+const LINK = `text-navy underline underline-offset-[3px] hover:text-navy-strong ${FOCUS}`;
+const FIELD = `min-h-[50px] rounded-[10px] border border-field-border bg-white px-3 text-lg ${FOCUS}`;
 
 // Polish plural forms: 1 pozycja, 2–4 pozycje, 5+ pozycji
 function formatItemCount(n: number): string {
@@ -34,13 +33,13 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
   const { years, tags } = availableValues(resources);
 
   return (
-    <main id="tresc" className="bg-[#F6F7F9] text-lg leading-relaxed text-[#151A23]">
-      <section className="border-b border-[#D9DDE4] bg-white">
+    <main id="tresc" className="bg-surface text-ink text-lg leading-relaxed">
+      <section className="border-line border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-9 sm:px-10">
           <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
             Raporty i publikacje
           </h1>
-          <p className="max-w-[760px] text-[#4B5565]">
+          <p className="text-ink-muted max-w-[760px]">
             Badania ROPS w Krakowie o potrzebach mieszkańców Małopolski i publikacje o innowacjach
             społecznych. Każda pozycja prowadzi do źródła na stronie ROPS.
           </p>
@@ -51,7 +50,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
             aria-label="Filtry"
           >
             <div className="flex flex-col gap-1">
-              <label htmlFor="typ" className="text-[15px] font-bold text-[#4B5565]">
+              <label htmlFor="typ" className="text-ink-muted text-[0.9375rem] font-bold">
                 Rodzaj
               </label>
               <select id="typ" name="typ" defaultValue={filters.typ ?? ""} className={FIELD}>
@@ -61,7 +60,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="rok" className="text-[15px] font-bold text-[#4B5565]">
+              <label htmlFor="rok" className="text-ink-muted text-[0.9375rem] font-bold">
                 Rok
               </label>
               <select
@@ -79,7 +78,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="tag" className="text-[15px] font-bold text-[#4B5565]">
+              <label htmlFor="tag" className="text-ink-muted text-[0.9375rem] font-bold">
                 Temat
               </label>
               <select id="tag" name="tag" defaultValue={filters.tag ?? ""} className={FIELD}>
@@ -93,7 +92,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
             </div>
             <button
               type="submit"
-              className={`inline-flex min-h-[50px] items-center rounded-[10px] bg-[#1F3A8A] px-[22px] text-[17px] font-bold text-white hover:bg-[#172C6B] ${FOCUS}`}
+              className={`bg-navy hover:bg-navy-strong inline-flex min-h-[50px] items-center rounded-[10px] px-[22px] text-[1.0625rem] font-bold text-white ${FOCUS}`}
             >
               Pokaż
             </button>
@@ -108,11 +107,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
         aria-labelledby="wyniki"
         className="mx-auto flex max-w-[1200px] flex-col px-4 pt-8 pb-16 sm:px-10"
       >
-        <h2
-          id="wyniki"
-          aria-live="polite"
-          className="border-b-2 border-[#151A23] pb-2 text-lg font-bold"
-        >
+        <h2 id="wyniki" aria-live="polite" className="border-ink border-b-2 pb-2 text-lg font-bold">
           {formatItemCount(list.length)}
         </h2>
         {list.length === 0 ? (
@@ -120,7 +115,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
         ) : (
           <ul className="m-0 list-none p-0">
             {list.map((r) => (
-              <li key={r.id} className="flex flex-col gap-1.5 border-b border-[#D9DDE4] py-5">
+              <li key={r.id} className="border-line flex flex-col gap-1.5 border-b py-5">
                 <h3 className="text-xl leading-snug font-bold">
                   <a href={r.url} target="_blank" rel="noopener noreferrer" className={LINK}>
                     {r.tytul}
@@ -128,7 +123,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
                   </a>
                 </h3>
                 {r.opis ? <p>{r.opis}</p> : null}
-                <div className="flex flex-wrap items-center gap-2 text-[15px] text-[#4B5565]">
+                <div className="text-ink-muted flex flex-wrap items-center gap-2 text-[0.9375rem]">
                   <span>
                     {r.typ === "raport" ? "Raport z badań" : "Publikacja"}
                     {r.rok ? ` · ${r.rok}` : ""}
@@ -137,7 +132,7 @@ export default async function ResourcesPage({ searchParams }: PageProps<"/zasoby
                     <Link
                       key={t}
                       href={`/zasoby?tag=${encodeURIComponent(t)}`}
-                      className={`inline-flex min-h-6 items-center rounded-full bg-[#EEF0F4] px-2.5 font-bold text-[#4B5565] no-underline hover:underline ${FOCUS}`}
+                      className={`bg-neutral-soft text-ink-muted inline-flex min-h-6 items-center rounded-full px-2.5 font-bold no-underline hover:underline ${FOCUS}`}
                     >
                       <span className="sr-only">Temat: </span>
                       {t}
