@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>HubMI – logowanie</title>
+<title>HubMI – rejestracja</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -28,28 +28,32 @@ input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;bor
 .acc{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;background:#fff;text-decoration:none;color:#151A23;min-height:64px}
 .acc:hover{border-color:#1F3A8A;background:#F3F6FD;color:#151A23}
 .av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 40px;color:#FFFFFF}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;font-weight:400;cursor:pointer}
+.opt input{accent-color:#1F3A8A;width:22px;height:22px;margin-top:3px;flex:none}
 </style>
 </helmet>
-<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6; min-height: 820px; display: flex; flex-direction: column; align-items: center; padding: 72px 24px">
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6; min-height: 900px; display: flex; flex-direction: column; align-items: center; padding: 72px 24px">
   <a href="Main.dc.html" aria-label="HubMI – strona główna" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #151A23; margin-bottom: 32px">
     <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14.5" cy="9" r="5.5" fill="#1F3A8A"></circle><circle cx="33.5" cy="9" r="5.5" fill="#C2452B"></circle><path d="M23.4 44 C 12 36.5, 3.5 29, 5.5 21.5 C 7 16.5, 13.5 15.5, 17.5 18.5 C 20.3 20.6, 22.3 23, 23.4 25.5 Z" fill="#1F3A8A"></path><path d="M24.6 44 C 36 36.5, 44.5 29, 42.5 21.5 C 41 16.5, 34.5 15.5, 30.5 18.5 C 27.7 20.6, 25.7 23, 24.6 25.5 Z" fill="#C2452B"></path></svg>
     <span style="display: flex; flex-direction: column; line-height: 1.05"><span class="h" style="font-size: 28px">HubMI</span><span style="font-size: 14px; color: #4B5565">innowacje społeczne Małopolski</span></span>
   </a>
-  <main class="card" aria-labelledby="zaloguj" style="width: 100%; max-width: 460px; padding: 40px; display: flex; flex-direction: column; gap: 22px">
-    <h1 id="zaloguj" class="h" style="font-size: 34px">Zaloguj się</h1>
+  <main class="card" aria-labelledby="rej" style="width: 100%; max-width: 520px; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+    <h1 id="rej" class="h" style="font-size: 34px">Załóż konto</h1>
     <form style="display: flex; flex-direction: column; gap: 20px">
-      <div style="display: flex; flex-direction: column; gap: 6px"><label for="l-mail">Adres e-mail</label><input id="l-mail" type="email" autocomplete="email" value="stanislaw@example.org"></div>
+      <div style="display: flex; flex-direction: column; gap: 6px"><label for="r-mail">Adres e-mail</label><input id="r-mail" type="email" autocomplete="email"></div>
       <div style="display: flex; flex-direction: column; gap: 6px">
-        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><label for="l-haslo">Hasło</label><a href="#reset-hasla" style="font-size: 16px">Nie pamiętasz hasła?</a></div>
-        <div style="position: relative"><input id="l-haslo" type="password" autocomplete="current-password" value="••••••••••" style="padding-right: 96px"><button type="button" aria-pressed="false" aria-controls="l-haslo" style="position: absolute; right: 6px; top: 6px; bottom: 6px; padding: 0 14px; border: 0; border-radius: 8px; background: #E8EDFA; color: #1F3A8A; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Pokaż</button></div>
+        <label for="r-haslo">Hasło</label>
+        <div style="position: relative"><input id="r-haslo" type="password" autocomplete="new-password" aria-describedby="r-haslo-op" style="padding-right: 96px"><button type="button" aria-pressed="false" aria-controls="r-haslo" style="position: absolute; right: 6px; top: 6px; bottom: 6px; padding: 0 14px; border: 0; border-radius: 8px; background: #E8EDFA; color: #1F3A8A; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Pokaż</button></div>
+        <span id="r-haslo-op" class="muted" style="font-size: 16px">Co najmniej 10 znaków.</span>
       </div>
-      <button type="submit" class="btn btn-p" style="width: 100%">Zaloguj</button>
+      <label style="display: flex; gap: 10px; align-items: flex-start; font-weight: 400"><input type="checkbox" style="accent-color: #1F3A8A; width: 22px; height: 22px; margin-top: 3px; flex: none"> <span>Akceptuję <a href="#regulamin">regulamin</a> i <a href="#rodo">informację o danych osobowych</a>.</span></label>
+      <button type="submit" class="btn btn-p" style="width: 100%">Załóż konto</button>
     </form>
-    <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Nie masz konta? <a href="Rejestracja.dc.html" style="font-weight: 700">Załóż konto</a></p>
+    <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Masz już konto? <a href="Logowanie.dc.html" style="font-weight: 700">Zaloguj się</a></p>
   </main>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":820}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

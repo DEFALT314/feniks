@@ -9,8 +9,10 @@ export function mockAuthClient(opts: {
   user?: { id: string; email?: string } | null;
   getUserError?: unknown;
   profile?: Record<string, unknown> | null;
-  signInWithOtp?: Result;
-  verifyOtp?: Result;
+  signInWithPassword?: Result;
+  signUp?: Result;
+  resetPasswordForEmail?: Result;
+  updateUser?: Result;
 }) {
   const query = {
     select: vi.fn(() => query),
@@ -23,10 +25,16 @@ export function mockAuthClient(opts: {
     getUser: vi.fn(() =>
       Promise.resolve({ data: { user: opts.user ?? null }, error: opts.getUserError ?? null }),
     ),
-    signInWithOtp: vi.fn(() => Promise.resolve({ data: {}, error: null, ...opts.signInWithOtp })),
-    verifyOtp: vi.fn(() =>
-      Promise.resolve({ data: { user: null }, error: null, ...opts.verifyOtp }),
+    signInWithPassword: vi.fn(() =>
+      Promise.resolve({ data: { user: null }, error: null, ...opts.signInWithPassword }),
     ),
+    signUp: vi.fn(() =>
+      Promise.resolve({ data: { user: null, session: null }, error: null, ...opts.signUp }),
+    ),
+    resetPasswordForEmail: vi.fn(() =>
+      Promise.resolve({ data: {}, error: null, ...opts.resetPasswordForEmail }),
+    ),
+    updateUser: vi.fn(() => Promise.resolve({ data: {}, error: null, ...opts.updateUser })),
   };
   const from = vi.fn(() => query);
   return { client: { auth, from } as unknown as SupabaseClient<Database>, auth, from, query };

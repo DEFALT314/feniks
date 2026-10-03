@@ -4,6 +4,7 @@
 import { NextResponse } from "next/server";
 import { DemoAccountKey, demoAccount, isDemoMode } from "@/lib/auth/demo-accounts";
 import { signInAsDemo } from "@/lib/auth/demo-login";
+import { requestOrigin } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 
@@ -31,10 +32,15 @@ export async function POST(request: Request) {
     await signInAsDemo(createServiceClient(), await createClient(), account);
   } catch (error) {
     console.error("demo login failed", error);
-    if (isForm) return NextResponse.redirect(new URL("/login?error=demo", request.url), 303);
+    if (isForm)
+      return NextResponse.redirect(
+        new URL("/login?error=demo", requestOrigin(request.headers)),
+        303,
+      );
     return NextResponse.json({ error: "Nie udało się wejść na konto pokazowe." }, { status: 500 });
   }
 
-  if (isForm) return NextResponse.redirect(new URL(account.startPath, request.url), 303);
+  if (isForm)
+    return NextResponse.redirect(new URL(account.startPath, requestOrigin(request.headers)), 303);
   return NextResponse.json({ ok: true, next: account.startPath });
 }

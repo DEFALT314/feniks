@@ -1,103 +1,171 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/types";
-import { SendCodeInput, VerifyCodeInput } from "./validation";
+import { PasswordResetInput, SignInInput, SignUpInput, UpdatePasswordInput } from "./validation";
 
-export type LoginState = {
-  status: "idle" | "code-sent" | "error";
+type FieldName = "email" | "password" | "consent";
+
+export type AuthFormState = {
+  status: "idle" | "error" | "sent";
   email?: string;
   message?: string;
-  fieldErrors?: Partial<Record<"email" | "code" | "consent", string>>;
+  fieldErrors?: Partial<Record<FieldName, string>>;
 };
 
 type FormFields = Record<string, FormDataEntryValue | null>;
+type AuthResult = { ok: true; userId: string } | { ok: false; state: AuthFormState };
 
 function firstErrors(issues: { path: PropertyKey[]; message: string }[]) {
-  const errors: LoginState["fieldErrors"] = {};
+  const errors: AuthFormState["fieldErrors"] = {};
   for (const issue of issues) {
     const key = issue.path[0];
-    if ((key === "email" || key === "code" || key === "consent") && !errors[key]) {
+    if ((key === "email" || key === "password" || key === "consent") && !errors[key]) {
       errors[key] = issue.message;
     }
   }
   return errors;
 }
 
+const text = (v: FormDataEntryValue | null | undefined) => (typeof v === "string" ? v : "");
+
 // Supabase Auth error → plain Polish message for the user.
 export function authErrorMessage(error: { message?: string; code?: string; status?: number }) {
-  const text = `${error.code ?? ""} ${error.message ?? ""}`.toLowerCase();
-  if (error.status === 429 || text.includes("rate") || text.includes("too many")) {
-    return "Wysłaliśmy już kilka kodów. Odczekaj kilka minut i spróbuj ponownie.";
+  const t = `${error.code ?? ""} ${error.message ?? ""}`.toLowerCase();
+  if (error.status === 429 || t.includes("rate") || t.includes("too many")) {
+    return "Zbyt wiele prób. Odczekaj kilka minut i spróbuj ponownie.";
   }
-  if (text.includes("expired") || text.includes("invalid") || text.includes("otp")) {
-    return "Kod jest nieprawidłowy albo wygasł. Wyślij nowy kod.";
+  if (t.includes("invalid_credentials") || t.includes("invalid login credentials")) {
+    return "Nieprawidłowy e-mail lub hasło.";
   }
-  if (text.includes("not authorized") || text.includes("not allowed")) {
-    return "Na ten adres nie możemy teraz wysłać maila. Skorzystaj z wersji pokazowej.";
+  if (t.includes("already") || t.includes("user_already_exists") || t.includes("email_exists")) {
+    return "Konto z tym adresem już istnieje. Zaloguj się.";
+  }
+  if (t.includes("weak_password") || t.includes("weak password")) {
+    return "To hasło jest zbyt łatwe do odgadnięcia. Wybierz dłuższe.";
+  }
+  if (t.includes("same_password") || t.includes("different from the old")) {
+    return "Nowe hasło musi się różnić od poprzedniego.";
+  }
+  if (t.includes("email_not_confirmed") || t.includes("not confirmed")) {
+    return "Ten adres e-mail nie jest jeszcze potwierdzony.";
   }
   return "Coś poszło nie tak. Spróbuj ponownie za chwilę.";
 }
 
-/** Step 1: validate the form and ask Supabase to e-mail a one-time code (and a sign-in link). */
-export async function requestLoginCode(
+/** Sign in with e-mail and password. On success the Supabase client sets the session cookies. */
+export async function signInWithPassword(
   supabase: SupabaseClient<Database>,
   fields: FormFields,
-  emailRedirectTo: string,
-): Promise<LoginState> {
-  const parsed = SendCodeInput.safeParse({
-    email: fields.email ?? "",
-    consent: fields.consent === "on" || fields.consent === "true",
-    next: typeof fields.next === "string" ? fields.next : undefined,
-  });
-  if (!parsed.success) {
-    return {
-      status: "error",
-      email: typeof fields.email === "string" ? fields.email : undefined,
-      fieldErrors: firstErrors(parsed.error.issues),
-    };
-  }
-
-  const { error } = await supabase.auth.signInWithOtp({
-    email: parsed.data.email,
-    options: { shouldCreateUser: true, emailRedirectTo },
-  });
-  if (error) return { status: "error", email: parsed.data.email, message: authErrorMessage(error) };
-
-  return { status: "code-sent", email: parsed.data.email };
-}
-
-/** Step 2: check the 6-digit code. On success the session cookies are set by the Supabase client. */
-export async function confirmLoginCode(
-  supabase: SupabaseClient<Database>,
-  fields: FormFields,
-): Promise<{ ok: true; userId: string } | { ok: false; state: LoginState }> {
-  const email = typeof fields.email === "string" ? fields.email : "";
-  const parsed = VerifyCodeInput.safeParse({ email, code: fields.code ?? "" });
+): Promise<AuthResult> {
+  const email = text(fields.email);
+  const parsed = SignInInput.safeParse({ email, password: text(fields.password) });
   if (!parsed.success) {
     return {
       ok: false,
-      state: { status: "code-sent", email, fieldErrors: firstErrors(parsed.error.issues) },
+      state: { status: "error", email, fieldErrors: firstErrors(parsed.error.issues) },
     };
   }
-
-  const { data, error } = await supabase.auth.verifyOtp({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: parsed.data.email,
-    token: parsed.data.code,
-    type: "email",
+    password: parsed.data.password,
   });
   if (error || !data.user) {
     return {
       ok: false,
       state: {
-        status: "code-sent",
-        email,
-        fieldErrors: { code: error ? authErrorMessage(error) : "Nie udało się zalogować." },
+        status: "error",
+        email: parsed.data.email,
+        message: error ? authErrorMessage(error) : "Nie udało się zalogować.",
       },
     };
   }
   return { ok: true, userId: data.user.id };
 }
 
-/** The consent checkbox is required before a code is sent; store its time on the first sign-in. */
+/**
+ * Create an account. With "Confirm email" switched off in Supabase the user gets a session at once
+ * and no e-mail is sent. New accounts are residents; other roles are approved by ROPS later.
+ */
+export async function signUpWithPassword(
+  supabase: SupabaseClient<Database>,
+  fields: FormFields,
+): Promise<AuthResult> {
+  const email = text(fields.email);
+  const parsed = SignUpInput.safeParse({
+    email,
+    password: text(fields.password),
+    consent: fields.consent === "on" || fields.consent === "true",
+  });
+  if (!parsed.success) {
+    return {
+      ok: false,
+      state: { status: "error", email, fieldErrors: firstErrors(parsed.error.issues) },
+    };
+  }
+  const { data, error } = await supabase.auth.signUp({
+    email: parsed.data.email,
+    password: parsed.data.password,
+  });
+  if (error) {
+    return {
+      ok: false,
+      state: { status: "error", email: parsed.data.email, message: authErrorMessage(error) },
+    };
+  }
+  // Supabase hides existing addresses: it returns a user without identities and no session.
+  if (data.user && data.user.identities?.length === 0) {
+    return {
+      ok: false,
+      state: {
+        status: "error",
+        email: parsed.data.email,
+        message: authErrorMessage({ code: "user_already_exists" }),
+      },
+    };
+  }
+  if (!data.user || !data.session) {
+    return {
+      ok: false,
+      state: {
+        status: "error",
+        email: parsed.data.email,
+        message: "Konto założone, ale wymaga potwierdzenia adresu e-mail. Sprawdź skrzynkę.",
+      },
+    };
+  }
+  return { ok: true, userId: data.user.id };
+}
+
+/** Send a password-reset link. The answer is the same whether or not the account exists. */
+export async function requestPasswordReset(
+  supabase: SupabaseClient<Database>,
+  fields: FormFields,
+  redirectTo: string,
+): Promise<AuthFormState> {
+  const email = text(fields.email);
+  const parsed = PasswordResetInput.safeParse({ email });
+  if (!parsed.success) {
+    return { status: "error", email, fieldErrors: firstErrors(parsed.error.issues) };
+  }
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, { redirectTo });
+  if (error && (error.status === 429 || /rate/i.test(error.message ?? ""))) {
+    return { status: "error", email: parsed.data.email, message: authErrorMessage(error) };
+  }
+  return { status: "sent", email: parsed.data.email };
+}
+
+/** Set a new password for the signed-in user (after the reset link). */
+export async function changePassword(
+  supabase: SupabaseClient<Database>,
+  fields: FormFields,
+): Promise<AuthFormState | null> {
+  const parsed = UpdatePasswordInput.safeParse({ password: text(fields.password) });
+  if (!parsed.success) return { status: "error", fieldErrors: firstErrors(parsed.error.issues) };
+  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
+  if (error) return { status: "error", message: authErrorMessage(error) };
+  return null;
+}
+
+/** Store the time of the consent given at sign-up (only once). */
 export async function recordConsent(supabase: SupabaseClient<Database>, userId: string) {
   await supabase
     .from("profiles")

@@ -1,24 +1,32 @@
 "use client";
 
-import Link from "next/link";
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
-import { signIn } from "@/lib/auth/actions";
+import { sendPasswordReset } from "@/lib/auth/actions";
 import type { AuthFormState } from "@/lib/auth/login";
 import { FormMessage } from "./form-message";
 
 const initialState: AuthFormState = { status: "idle" };
 
-// E-mail and password sign-in from design/makiety/Logowanie.dc.html
-export function LoginForm({ next }: { next?: string }) {
-  const [state, action, pending] = useActionState(signIn, initialState);
+export function ForgotPasswordForm() {
+  const [state, action, pending] = useActionState(sendPasswordReset, initialState);
+
+  if (state.status === "sent") {
+    return (
+      <p role="status" aria-live="polite">
+        Jeśli konto <strong>{state.email}</strong> istnieje, wysłaliśmy na ten adres link do
+        ustawienia nowego hasła. Sprawdź skrzynkę, także folder ze spamem.
+      </p>
+    );
+  }
 
   return (
     <form action={action} className="flex flex-col gap-5" noValidate>
-      <input type="hidden" name="next" value={next ?? ""} />
+      <p className="text-muted-foreground">
+        Podaj adres e-mail konta. Wyślemy link do ustawienia nowego hasła.
+      </p>
       <Field label="Adres e-mail" error={state.fieldErrors?.email}>
         {(p) => (
           <Input
@@ -31,17 +39,9 @@ export function LoginForm({ next }: { next?: string }) {
           />
         )}
       </Field>
-      <div className="relative">
-        <Field label="Hasło" error={state.fieldErrors?.password}>
-          {(p) => <PasswordInput {...p} name="password" autoComplete="current-password" required />}
-        </Field>
-        <Link href="/forgot-password" className="absolute top-0 right-0 text-base">
-          Nie pamiętasz hasła?
-        </Link>
-      </div>
       <FormMessage message={state.message} />
       <Button type="submit" className="w-full" disabled={pending}>
-        {pending ? "Logujemy…" : "Zaloguj"}
+        {pending ? "Wysyłamy…" : "Wyślij link"}
       </Button>
     </form>
   );
