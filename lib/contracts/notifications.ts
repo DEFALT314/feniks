@@ -3,8 +3,8 @@ import fixture from "./fixtures/notifications.json";
 import { Role } from "./shared";
 
 // Module V: notifications (P4). Table public.notifications.
-// GET  /api/powiadomienia             → NotificationList (own, latest 50)
-// POST /api/powiadomienia/przeczytane { ids?: uuid[] } → { ok: true } (no ids: all)
+// GET  /api/notifications             → NotificationList (own, latest 50)
+// POST /api/notifications/read { ids?: uuid[] } → { ok: true } (no ids: all)
 // Other modules add notifications with addNotification() from lib/notifications.ts.
 
 export const Notification = z.object({
