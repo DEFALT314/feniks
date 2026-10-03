@@ -97,11 +97,22 @@ const SECTION_TITLES: Record<z.infer<typeof ApplicationSectionKey>, string> = {
   budget: "Budżet",
 };
 
+// Order of a typical grant application form: who it is for comes before what will be done
+const SECTION_ORDER: z.infer<typeof ApplicationSectionKey>[] = [
+  "goal",
+  "audience",
+  "activities",
+  "results",
+  "budget",
+];
+
+/** `calls`: the open calls (lib/ai/creator/open-calls.ts); an unknown or closed call gives null. */
 export async function applicationDraft(
   request: ApplicationRequest,
   options: GenerateJsonOptions = {},
+  calls: CallSummary[] = CALLS,
 ): Promise<ApplicationResponse | null> {
-  const call = CALLS.find((c) => c.id === request.call_id);
+  const call = calls.find((c) => c.id === request.call_id);
   if (!call) return null;
   const Schema = z.object({
     sections: z.array(z.object({ key: ApplicationSectionKey, text: z.string().min(1) })),
@@ -124,8 +135,7 @@ Return json: {"sections": [{"key": "goal"|"audience"|"activities"|"results"|"bud
     { temperature: 0.3, maxTokens: 3000, ...options },
   );
   const source = `${ideaText(request.idea)}\n${call.name}\n${call.goal}`;
-  const order = ApplicationSectionKey.options;
-  const sections = order.flatMap((key) => {
+  const sections = SECTION_ORDER.flatMap((key) => {
     const s = out.sections.find((x) => x.key === key);
     if (!s) return [];
     const { text, replaced } = removeInventedNumbers(s.text.trim(), source);

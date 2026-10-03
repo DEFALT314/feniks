@@ -70,7 +70,22 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
       ? calls.find((c) => c.id === state.callId)
       : undefined;
 
-  if (calls.length === 0) return null;
+  if (calls.length === 0) {
+    return (
+      <section
+        aria-labelledby="application-heading"
+        className="border-border flex flex-col gap-2 border-t pt-6"
+      >
+        <h2 id="application-heading" className="text-[1.625rem] font-bold">
+          Wniosek pod nabór
+        </h2>
+        <p className="text-base">
+          Teraz nie ma otwartych naborów. Gdy ROPS ogłosi nabór, tutaj przygotujesz szkic wniosku
+          dopasowany do jego celu.
+        </p>
+      </section>
+    );
+  }
   return (
     <section
       aria-labelledby="application-heading"
@@ -82,6 +97,9 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
         </h2>
         <Badge variant="ai">Propozycja AI</Badge>
       </div>
+      <p className="text-base">
+        Asystent AI ułoży szkic wniosku z Twojej fiszki, dopasowany do celu wybranego naboru.
+      </p>
       <div className="flex flex-col gap-1.5">
         <label htmlFor={selectId} className="font-bold">
           Nabór
@@ -126,7 +144,15 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
         {state.status === "loading" ? (
           <p>Asystent AI pisze szkic wniosku. To trwa około 10–20 sekund.</p>
         ) : null}
-        {state.status === "error" ? <p className="text-danger font-bold">{state.message}</p> : null}
+        {state.status === "error" ? (
+          <div className="flex flex-col gap-1 text-base">
+            <p className="text-danger font-bold">{state.message}</p>
+            <p>
+              Wniosek możesz też napisać sam: opis, istota i odbiorcy z fiszki to dobry początek.
+              Wysłanie fiszki do ROPS działa bez asystenta.
+            </p>
+          </div>
+        ) : null}
         {state.status === "done" ? (
           <>
             {draftCall ? (

@@ -15,6 +15,10 @@ vi.mock("@/lib/ai/usage", async (original) => ({
   dailyQuotaForCurrentUser: () => quota(),
 }));
 
+// Open calls come from the calls table; the tests use the demo list (same ids as seed_demo.sql)
+const calls = vi.fn();
+vi.mock("@/lib/ai/creator/open-calls", () => ({ openCalls: () => calls() }));
+
 const { POST: hintsRoute } = await import("./hints/route");
 const { POST: applicationRoute } = await import("./application/route");
 const { GET: callsRoute } = await import("./calls/route");
@@ -32,7 +36,9 @@ const post = (body: unknown, fixedIp?: string) =>
     body: JSON.stringify(body),
   });
 
-beforeEach(() => {
+beforeEach(async () => {
+  const { CALLS } = await import("@/lib/ai/creator/creator");
+  calls.mockReset().mockResolvedValue(CALLS);
   quota.mockReset().mockResolvedValue({ ok: true, left: null });
   generate.mockReset();
   vi.stubEnv("LLM_BASE_URL", "http://llm");
@@ -42,9 +48,16 @@ beforeEach(() => {
 
 describe("AI creator endpoints", () => {
   it("GET /api/ai/calls lists the demo calls", async () => {
-    const body = await callsRoute().json();
+    const body = await (await callsRoute()).json();
     expect(CallList.safeParse(body).success).toBe(true);
     expect(body.calls.every((c: { demo: boolean }) => c.demo)).toBe(true);
+  });
+
+  it("application draft refuses a call ROPS closed or unpublished", async () => {
+    calls.mockResolvedValue([]);
+    const res = await applicationRoute(post({ idea, call_id: "nabor-demo-seniorzy-2026" }));
+    expect(res.status).toBe(404);
+    expect(generate).not.toHaveBeenCalled();
   });
 
   it("hints answer with the contract shape", async () => {
