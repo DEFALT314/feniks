@@ -6,7 +6,12 @@ import { getInnovations } from "@/app/library/_lib/data";
 import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { supabaseCache } from "@/lib/ai/cache";
 import { embedQuery } from "@/lib/ai/embed";
-import { runMatch, type MatchDeps, type VectorHit } from "@/lib/ai/matching/pipeline";
+import {
+  retrievalHeader,
+  runMatch,
+  type MatchDeps,
+  type VectorHit,
+} from "@/lib/ai/matching/pipeline";
 import { rerank } from "@/lib/ai/matching/rerank";
 import { clientIp, createRateLimiter } from "@/lib/ai/rate-limit";
 import { MatchRequest } from "@/lib/contracts/match";
@@ -67,7 +72,10 @@ export async function POST(request: Request) {
         : undefined,
   };
 
-  const { response, stats } = await runMatch(parsed.data, deps);
+  const { response, stats, retrieval } = await runMatch(parsed.data, deps);
+  if (retrieval.mode === "keywords") {
+    console.warn(`match: keywords only (${retrieval.reason}), vectors not used`);
+  }
 
   // Statistics for trends: area, challenge and quality only; the description is never stored.
   // Once per search: the ranking-only request that precedes the AI request is not counted.
@@ -75,5 +83,7 @@ export async function POST(request: Request) {
     const { error } = await db!.from("match_queries").insert(stats);
     if (error) console.error("match_queries insert failed:", error.message);
   }
-  return NextResponse.json(response);
+  return NextResponse.json(response, {
+    headers: { "X-Match-Retrieval": retrievalHeader(retrieval) },
+  });
 }

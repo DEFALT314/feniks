@@ -87,6 +87,20 @@ describe("POST /api/match", () => {
     expect(JSON.stringify(insert.mock.calls)).not.toContain("bankomat");
   });
 
+  it("tells in X-Match-Retrieval whether vectors were used", async () => {
+    const hybrid = await POST(post({ description: "Seniorzy boją się korzystać z bankomatu." }));
+    expect(hybrid.headers.get("X-Match-Retrieval")).toBe("hybrid");
+
+    rpc
+      .mockResolvedValueOnce({ data: [], error: null })
+      .mockResolvedValueOnce({ data: [], error: null });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const empty = await POST(post({ description: "Seniorzy boją się korzystać z bankomatu." }));
+    expect(empty.headers.get("X-Match-Retrieval")).toBe("keywords; reason=no-vectors");
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("no-vectors"));
+    warn.mockRestore();
+  });
+
   it("ai: false skips the LLM and does not count as a search in the statistics", async () => {
     const res = await POST(
       post({ description: "Seniorzy boją się korzystać z bankomatu.", ai: false }),
