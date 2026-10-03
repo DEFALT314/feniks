@@ -37,6 +37,15 @@ export type MatchDeps = {
   rerank?: (description: string, candidates: Innovation[]) => Promise<RerankResult>;
 };
 
+// How the candidates were found; sent as the X-Match-Retrieval header so a silent fallback to
+// keywords is visible (DevTools, logs). "keywords" reasons: the embedding service gave no vector,
+// the vector search failed, or the embeddings table has no innovation vectors yet.
+export type Retrieval =
+  { mode: "hybrid" } | { mode: "keywords"; reason: "no-embed" | "vector-error" | "no-vectors" };
+
+export const retrievalHeader = (r: Retrieval) =>
+  r.mode === "hybrid" ? "hybrid" : `keywords; reason=${r.reason}`;
+
 export type MatchStats = {
   area_id: string | null;
   challenge_id: string | null;
@@ -108,7 +117,7 @@ function searchReason(keywords: string[]): string {
 export async function runMatch(
   request: MatchRequest,
   deps: MatchDeps,
-): Promise<{ response: MatchResponse; stats: MatchStats }> {
+): Promise<{ response: MatchResponse; stats: MatchStats; retrieval: Retrieval }> {
   const description = redactPersonalData(request.description);
   const { catalog, index } = catalogIndex(deps.innovations);
   const byId = new Map(catalog.map((i) => [i.id, i]));
@@ -116,15 +125,21 @@ export async function runMatch(
   const vector = await deps.embedQuery(description);
   const similarities = new Map<string, number>();
   let challengeHits: VectorHit[] = [];
+  let retrieval: Retrieval = { mode: "keywords", reason: "no-embed" };
   if (vector) {
+    let failed = false;
+    const fail = () => ((failed = true), [] as VectorHit[]);
     const [innovationHits, challenges] = await Promise.all([
-      deps.vectorSearch(vector, "innovation", 50).catch(() => []),
-      deps.vectorSearch(vector, "challenge", CHALLENGE_CANDIDATES).catch(() => []),
+      deps.vectorSearch(vector, "innovation", 50).catch(fail),
+      deps.vectorSearch(vector, "challenge", CHALLENGE_CANDIDATES).catch(fail),
     ]);
     for (const hit of innovationHits) {
       if (byId.has(hit.ref_id)) similarities.set(hit.ref_id, hit.similarity);
     }
     challengeHits = challenges;
+    retrieval = similarities.size
+      ? { mode: "hybrid" }
+      : { mode: "keywords", reason: failed ? "vector-error" : "no-vectors" };
   }
   const lexical = search(index, description);
   const ranked: Ranked[] = fuse(similarities, lexical);
@@ -193,5 +208,6 @@ export async function runMatch(
       challenge_id: challenge?.challenge_id ?? null,
       match_quality: response.match_quality,
     },
+    retrieval,
   };
 }
