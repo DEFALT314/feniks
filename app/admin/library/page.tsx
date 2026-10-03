@@ -6,6 +6,7 @@ import { queryStems, score } from "@/app/library/_lib/search";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
 import { plural } from "../_lib/format";
+import { NewCardForm } from "./new-card-form";
 
 export const metadata: Metadata = { title: "Biblioteka – Panel ROPS – HubMI.pl" };
 
@@ -36,7 +37,11 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
   const stems = queryStems(query);
   const list = innovations
     .filter((i) => score(i, stems) !== null)
-    .sort((a, b) => a.nazwa.localeCompare(b.nazwa, "pl"));
+    // Hidden cards first: a new card waits there for its description and publishing
+    .sort(
+      (a, b) =>
+        Number(a.opublikowana) - Number(b.opublikowana) || a.nazwa.localeCompare(b.nazwa, "pl"),
+    );
   const categoryName = (id: string) => categories.find((c) => c.id === id)?.nazwa ?? id;
   const nameById = new Map(innovations.map((i) => [i.id, i.nazwa]));
 
@@ -123,6 +128,18 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
           aria-labelledby="dziennik"
           className="flex max-w-[360px] flex-[1_1_280px] flex-col gap-3"
         >
+          <section
+            aria-labelledby="nowa-karta"
+            className="border-border mb-4 flex flex-col gap-3 rounded-xl border bg-white p-5"
+          >
+            <h2 id="nowa-karta" className="text-xl font-bold">
+              Nowa karta
+            </h2>
+            <p className="text-muted-foreground m-0 text-base">
+              Karta zaczyna jako ukryta. Uzupełnij opis, a potem zaznacz „Opublikowana”.
+            </p>
+            <NewCardForm categories={categories} />
+          </section>
           <h2 id="dziennik" className="text-xl font-bold">
             Dziennik zmian
           </h2>
@@ -137,7 +154,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
                     <span className="text-muted-foreground">
                       {time.format(new Date(e.created_at))}
                     </span>{" "}
-                    edycja karty:{" "}
+                    {e.akcja === "innowacja.nowa" ? "nowa karta" : "edycja karty"}:{" "}
                     <Link
                       href={`/admin/library/${id}`}
                       className="text-navy underline underline-offset-[3px]"
