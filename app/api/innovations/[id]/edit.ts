@@ -1,5 +1,5 @@
 import { InnovationEdit, type Innovation } from "@/lib/contracts/knowledge-base";
-import { innovationFromRow } from "@/app/biblioteka/_lib/row";
+import { innovationFromRow } from "@/app/library/_lib/row";
 
 export const ROPS_ROLES = ["rops_redaktor", "rops_admin"] as const;
 

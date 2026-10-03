@@ -5,33 +5,33 @@ const hrefs = (role: Parameters<typeof navItemsFor>[0]) => navItemsFor(role).map
 
 describe("navItemsFor", () => {
   it("shows only public pages to signed-out visitors", () => {
-    expect(hrefs(null)).toEqual(["/dopasuj", "/biblioteka", "/mapa-wyzwan"]);
+    expect(hrefs(null)).toEqual(["/match", "/library", "/challenge-map"]);
   });
 
   it("adds personal pages for a signed-in resident", () => {
     expect(hrefs("mieszkaniec")).toEqual([
-      "/dopasuj",
-      "/biblioteka",
-      "/mapa-wyzwan",
-      "/moje/kreator",
-      "/moje/tester",
-      "/moje/wiadomosci",
+      "/match",
+      "/library",
+      "/challenge-map",
+      "/my/creator",
+      "/my/tester",
+      "/my/messages",
     ]);
   });
 
   it.each(["jst", "ngo"] as const)("adds the service card for %s", (role) => {
-    expect(hrefs(role)).toContain("/moje/middleman");
+    expect(hrefs(role)).toContain("/my/middleman");
     expect(hrefs(role)).not.toContain("/admin");
   });
 
   it.each(["rops_redaktor", "rops_admin"] as const)("adds the ROPS panel for %s", (role) => {
     expect(hrefs(role)).toContain("/admin");
-    expect(hrefs(role)).not.toContain("/moje/middleman");
+    expect(hrefs(role)).not.toContain("/my/middleman");
   });
 
   it("gives experts neither the service card nor the ROPS panel", () => {
     expect(hrefs("ekspert")).not.toContain("/admin");
-    expect(hrefs("ekspert")).not.toContain("/moje/middleman");
+    expect(hrefs("ekspert")).not.toContain("/my/middleman");
   });
 
   it("does not mutate the shared list between calls", () => {
@@ -42,13 +42,13 @@ describe("navItemsFor", () => {
 
 describe("isActivePath", () => {
   it("matches the page itself and pages below it", () => {
-    expect(isActivePath("/biblioteka", "/biblioteka")).toBe(true);
-    expect(isActivePath("/biblioteka/bawita", "/biblioteka")).toBe(true);
+    expect(isActivePath("/library", "/library")).toBe(true);
+    expect(isActivePath("/library/bawita", "/library")).toBe(true);
   });
 
   it("does not match a page that only shares a prefix", () => {
-    expect(isActivePath("/bibliotekarz", "/biblioteka")).toBe(false);
-    expect(isActivePath("/", "/biblioteka")).toBe(false);
+    expect(isActivePath("/library-old", "/library")).toBe(false);
+    expect(isActivePath("/", "/library")).toBe(false);
   });
 });
 

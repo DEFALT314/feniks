@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getCategories } from "@/app/biblioteka/_lib/data";
+import { getCategories } from "@/app/library/_lib/data";
 import { getChallengeAreas } from "./_lib/data";
 import type { FullChallengeArea } from "./_lib/from-files";
 
@@ -23,19 +23,19 @@ function formatChallengeCount(n: number): string {
 // Link to the Library: categories linked to the area + words from the challenge
 function innovationsUrl(area: FullChallengeArea, text: string): string {
   const p = new URLSearchParams({ q: text });
-  for (const k of area.kategorie_biblioteki) p.append("kategoria", k);
-  return `/biblioteka?${p.toString()}`;
+  for (const k of area.kategorie_biblioteki) p.append("category", k);
+  return `/library?${p.toString()}`;
 }
 
-export default async function ChallengeMapPage({ searchParams }: PageProps<"/mapa-wyzwan">) {
-  const { obszar: selectedId } = await searchParams;
+export default async function ChallengeMapPage({ searchParams }: PageProps<"/challenge-map">) {
+  const { area: selectedId } = await searchParams;
   const [areas, categories] = await Promise.all([getChallengeAreas(), getCategories()]);
   const selected = areas.find((o) => o.id === selectedId) ?? areas[0];
   const categoryName = (id: string) => categories.find((k) => k.id === id)?.nazwa ?? id;
   const totalChallenges = areas.reduce((s, o) => s + o.wyzwania.length, 0);
 
   return (
-    <main id="tresc" className="bg-surface text-ink text-lg leading-relaxed">
+    <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
       <section className="border-line border-b bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-10 sm:px-10">
           <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
@@ -53,7 +53,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/map
                 return (
                   <li key={o.id}>
                     <Link
-                      href={`/mapa-wyzwan?obszar=${o.id}#obszar`}
+                      href={`/challenge-map?area=${o.id}#area`}
                       aria-current={active ? "true" : undefined}
                       className={`text-ink hover:border-navy flex min-h-[84px] flex-col gap-0.5 rounded-[10px] px-[18px] py-4 no-underline ${FOCUS} ${
                         active ? "border-navy bg-navy-soft border-2" : "border-line border bg-white"
@@ -77,11 +77,11 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/map
 
       <div className="mx-auto flex max-w-[1200px] flex-wrap gap-12 px-4 py-10 sm:px-10">
         <section
-          id="obszar"
-          aria-labelledby="obszar-tytul"
+          id="area"
+          aria-labelledby="area-title"
           className="flex min-w-0 flex-[999_1_560px] scroll-mt-4 flex-col gap-3"
         >
-          <h2 id="obszar-tytul" className="text-[2.125rem] leading-tight font-bold tracking-tight">
+          <h2 id="area-title" className="text-[2.125rem] leading-tight font-bold tracking-tight">
             {selected.nazwa}
           </h2>
           {selected.definicja ? <p>{selected.definicja}</p> : null}
@@ -130,13 +130,13 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/map
           {selected.persony.map((p) => (
             <aside
               key={p.id}
-              aria-labelledby={`${p.id}-imie`}
+              aria-labelledby={`${p.id}-name`}
               className="border-line flex flex-col gap-2.5 rounded-xl border bg-white p-6"
             >
               <span className="text-ink-muted text-[0.9375rem] font-bold">
                 Persona z Mapy Wyzwań (fikcyjna)
               </span>
-              <h3 id={`${p.id}-imie`} className="text-[1.625rem] leading-tight font-bold">
+              <h3 id={`${p.id}-name`} className="text-[1.625rem] leading-tight font-bold">
                 {p.imie}
               </h3>
               {p.opis ? <p>{p.opis}</p> : null}
@@ -151,7 +151,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/map
                 </p>
               ) : null}
               <Link
-                href={`/dopasuj?opis=${encodeURIComponent(p.opis ?? "")}`}
+                href={`/match?description=${encodeURIComponent(p.opis ?? "")}`}
                 className={`border-navy text-navy mt-1.5 inline-flex min-h-[50px] items-center justify-center rounded-[10px] border bg-white px-[22px] text-[1.0625rem] font-bold no-underline ${FOCUS}`}
               >
                 Dopasuj dla: {p.imie}
@@ -162,17 +162,17 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/map
       </div>
 
       <section
-        aria-labelledby="tabela"
+        aria-labelledby="challenge-table"
         className="mx-auto flex max-w-[1200px] flex-col gap-3 px-4 pb-16 sm:px-10"
       >
-        <h2 id="tabela" className="text-2xl font-bold tracking-tight">
+        <h2 id="challenge-table" className="text-2xl font-bold tracking-tight">
           Cała mapa w tabeli
         </h2>
         <div
           className="border-line overflow-x-auto rounded-xl border bg-white"
           tabIndex={0}
           role="region"
-          aria-labelledby="tabela"
+          aria-labelledby="challenge-table"
         >
           <table className="w-full border-collapse text-left text-[1.0625rem]">
             <thead>
@@ -195,7 +195,7 @@ export default async function ChallengeMapPage({ searchParams }: PageProps<"/map
               {areas.map((o) => (
                 <tr key={o.id} className="border-line border-b last:border-b-0">
                   <th scope="row" className="px-4 py-3 font-normal">
-                    <Link href={`/mapa-wyzwan?obszar=${o.id}#obszar`} className={LINK}>
+                    <Link href={`/challenge-map?area=${o.id}#area`} className={LINK}>
                       {o.nazwa}
                     </Link>
                   </th>

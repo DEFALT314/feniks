@@ -20,7 +20,7 @@ export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: 
         <div className="bg-warning-soft text-warning text-[0.9375rem]">
           <p className="mx-auto max-w-[1200px] px-4 py-1.5 sm:px-10">
             Wersja pokazowa, dane osób są fikcyjne.{" "}
-            <Link href="/logowanie" className="text-warning hover:text-warning font-bold">
+            <Link href="/login" className="text-warning hover:text-warning font-bold">
               Zmień konto
             </Link>
           </p>
@@ -46,7 +46,7 @@ export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: 
           {user ? (
             <>
               <Link
-                href="/moje/wiadomosci"
+                href="/my/messages"
                 aria-label={notificationsLabel(unreadNotifications)}
                 className={cn(buttonVariants({ variant: "outline", size: "icon" }), "relative")}
               >
@@ -66,10 +66,7 @@ export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: 
               </p>
             </>
           ) : (
-            <Link
-              href="/logowanie"
-              className={buttonVariants({ variant: "secondary", size: "sm" })}
-            >
+            <Link href="/login" className={buttonVariants({ variant: "secondary", size: "sm" })}>
               Zaloguj się
             </Link>
           )}

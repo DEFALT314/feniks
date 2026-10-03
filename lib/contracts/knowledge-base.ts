@@ -1,7 +1,7 @@
 // Contract for module II, the knowledge base ("Zasobnik wiedzy", P1).
-// The /biblioteka, /mapa-wyzwan and /zasoby pages read the knowledge base tables through the session client (RLS).
+// The /library, /challenge-map and /resources pages read the knowledge base tables through the session client (RLS).
 // Others: P3 (Matchmaking, Middleman) uses the Innovation and ChallengeArea types; P4 (ROPS panel) calls
-// PATCH /api/zasoby/innowacje/[id]. Sample data: lib/contracts/fixtures/knowledge-base.json.
+// PATCH /api/innovations/[id]. Sample data: lib/contracts/fixtures/knowledge-base.json.
 // After 17:00, changes only by adding fields.
 import { z } from "zod";
 
@@ -25,7 +25,7 @@ export type Materials = z.infer<typeof Materials>;
 
 export const Confidence = z.enum(["pewne", "prawdopodobne"]);
 
-// An item on the /biblioteka list
+// An item on the /library list
 export const InnovationSummary = z.object({
   id: z.string(), // slug from data/rops, shared across the whole app
   nazwa: z.string(),
@@ -43,7 +43,7 @@ export const InnovationSummary = z.object({
 });
 export type InnovationSummary = z.infer<typeof InnovationSummary>;
 
-// The /biblioteka/[id] card. autor_instytucja is deliberately left out until ROPS approves it.
+// The /library/[id] card. autor_instytucja is deliberately left out until ROPS approves it.
 export const Innovation = InnovationSummary.extend({
   problem: z.string().nullable(),
   czy_dziala: z.string().nullable(),
@@ -61,7 +61,7 @@ export type Innovation = z.infer<typeof Innovation>;
 // Flag from the page URL: "1" or "true" = on (z.coerce.boolean() would turn "false" into true)
 const flag = z.preprocess((v) => v === true || v === "1" || v === "true", z.boolean());
 
-// A parameter that can appear in the URL several times (?kategoria=a&kategoria=b)
+// A parameter that can appear in the URL several times (?category=a&category=b)
 const repeatedParam = z.preprocess(
   (v) => (v === undefined || v === "" ? [] : [v].flat()),
   z.array(z.string()),
@@ -70,13 +70,13 @@ const repeatedParam = z.preprocess(
 // List filters, kept in the page URL (searchParams)
 export const LibraryFilters = z.object({
   q: z.string().trim().max(200).optional(), // name and keywords
-  kategoria: repeatedParam,
-  grupa: z.string().optional(), // one of the dla_kogo values
-  etykieta: z.string().optional(),
-  sprawdzona: flag,
-  film: flag,
+  category: repeatedParam,
+  group: z.string().optional(), // one of the dla_kogo values
+  label: z.string().optional(),
+  verified: flag,
+  video: flag,
   pdf: flag,
-  strona: z.coerce.number().int().min(1).catch(1),
+  page: z.coerce.number().int().min(1).catch(1),
 });
 export type LibraryFilters = z.infer<typeof LibraryFilters>;
 
@@ -100,7 +100,7 @@ export const InnovationList = z.object({
 });
 export type InnovationList = z.infer<typeof InnovationList>;
 
-// PATCH /api/zasoby/innowacje/[id] (rops_redaktor and rops_admin only); response: Innovation
+// PATCH /api/innovations/[id] (rops_redaktor and rops_admin only); response: Innovation
 export const InnovationEdit = z
   .object({
     nazwa: z.string().min(1).max(200),
@@ -154,7 +154,7 @@ export const ChallengeArea = z.object({
 });
 export type ChallengeArea = z.infer<typeof ChallengeArea>;
 
-// /mapa-wyzwan/[id]: an area with its challenges, personas and related innovations
+// /challenge-map/[id]: an area with its challenges, personas and related innovations
 export const ChallengeAreaDetails = ChallengeArea.extend({
   wyzwania: z.array(Challenge),
   persony: z.array(Persona),
@@ -176,8 +176,8 @@ export const Resource = z.object({
 export type Resource = z.infer<typeof Resource>;
 
 export const ResourceFilters = z.object({
-  typ: z.enum(["raport", "publikacja"]).optional(),
-  rok: z.coerce.number().int().optional(),
+  type: z.enum(["raport", "publikacja"]).optional(),
+  year: z.coerce.number().int().optional(),
   tag: z.string().optional(),
 });
 export type ResourceFilters = z.infer<typeof ResourceFilters>;

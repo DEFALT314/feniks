@@ -8,7 +8,7 @@ export function FilterForm(props: ComponentProps<"form">) {
   return (
     <form
       method="get"
-      action="/biblioteka"
+      action="/library"
       onChange={(e) => {
         if (e.target instanceof HTMLInputElement && e.target.type === "checkbox") {
           e.currentTarget.requestSubmit();
