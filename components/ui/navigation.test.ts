@@ -6,6 +6,7 @@ import {
   notificationsBadge,
   notificationsLabel,
   roleLabel,
+  withoutDuplicates,
 } from "./navigation";
 
 type RoleOrNull = Parameters<typeof navItemsFor>[0];
@@ -13,17 +14,23 @@ const hrefs = (role: RoleOrNull) => navItemsFor(role).map((i) => i.href);
 const accountHrefs = (role: RoleOrNull) => accountItemsFor(role).map((i) => i.href);
 
 describe("navItemsFor", () => {
+  const PUBLIC = ["/match", "/library", "/challenge-map", "/resources"];
+
   it("shows only public pages to signed-out visitors", () => {
-    expect(hrefs(null)).toEqual(["/match", "/library", "/challenge-map", "/resources"]);
+    expect(hrefs(null)).toEqual(PUBLIC);
   });
 
-  it("keeps personal pages out of the main menu so it fits in one row", () => {
-    expect(hrefs("mieszkaniec")).toEqual(["/match", "/library", "/challenge-map", "/resources"]);
-    expect(hrefs("jst")).not.toContain("/my/messages");
+  it.each([
+    ["mieszkaniec", "/my/creator"],
+    ["ngo", "/my/creator"],
+    ["jst", "/my/middleman"],
+    ["ekspert", "/my/tester"],
+  ] as const)("adds only the main task of %s, so the menu fits in one row", (role, task) => {
+    expect(hrefs(role)).toEqual([...PUBLIC, task]);
   });
 
   it.each(["rops_redaktor", "rops_admin"] as const)("adds the ROPS panel for %s", (role) => {
-    expect(hrefs(role)).toEqual(["/match", "/library", "/challenge-map", "/resources", "/admin"]);
+    expect(hrefs(role)).toEqual([...PUBLIC, "/admin"]);
   });
 
   it.each(["mieszkaniec", "ngo", "jst", "ekspert"] as const)("has no ROPS panel for %s", (role) => {
@@ -33,6 +40,13 @@ describe("navItemsFor", () => {
   it("does not mutate the shared list between calls", () => {
     navItemsFor("rops_admin");
     expect(hrefs("mieszkaniec")).not.toContain("/admin");
+  });
+});
+
+describe("withoutDuplicates", () => {
+  it("drops account items the main menu already shows", () => {
+    const left = withoutDuplicates(accountItemsFor("jst"), navItemsFor("jst")).map((i) => i.href);
+    expect(left).toEqual(["/my/creator", "/my/tester", "/my/messages", "/my/profile"]);
   });
 });
 

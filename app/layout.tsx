@@ -8,7 +8,7 @@ import { SiteHeader } from "@/components/ui/site-header";
 import { Motion } from "@/components/ui/motion";
 import { MOTION_WAIT_SCRIPT } from "@/components/ui/motion-core";
 import { A11Y_PLUS_COOKIE, A11Y_PLUS_SCRIPT, a11yPlusFromCookie } from "@/components/ui/a11y-plus";
-import { NotificationBell } from "@/components/notifications/notification-bell";
+import { LazyNotificationBell } from "@/components/notifications/lazy-notification-bell";
 import { getCurrentUser, headerName } from "@/lib/auth";
 import { unreadCount } from "@/lib/notification-feed";
 import { createClient } from "@/lib/supabase/server";
@@ -59,7 +59,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           demoMode={process.env.DEMO_MODE === "true"}
           a11yPlus={a11yPlus}
           bell={
-            current ? <NotificationBell userId={current.id} initialUnread={unread} /> : undefined
+            current ? (
+              <LazyNotificationBell userId={current.id} initialUnread={unread} />
+            ) : undefined
           }
         />
         <div className="flex flex-1 flex-col">{children}</div>
