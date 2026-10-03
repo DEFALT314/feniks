@@ -1,0 +1,40 @@
+{"query": "pomoc osoba ze stresem", "expected": ["centrum-antydepresyjne", "pacjent-pro", "bez-presji-z-depresji", "oncotriada", "edu-gra-hahaha", "niewypaleni", "gra-o-zdrowie"]}
+{"query": "dziadek ciągle siedzi smutny i nic mu się nie chce", "expected": ["centrum-antydepresyjne", "senior-cuder", "edu-gra-hahaha"]}
+{"query": "syn wrócił ze szpitala psychiatrycznego i boi się iść do szkoły", "expected": ["bez-presji-z-depresji", "pacjent-pro"]}
+{"query": "pracownicy warsztatów są przemęczeni i wszystko ich przytłacza", "expected": ["niewypaleni"]}
+{"query": "babcia zapomina gdzie mieszka i gubi się na mieście", "expected": ["kody-qr-na-pomoc-seniorom"]}
+{"query": "mama nie pamięta kiedy brać tabletki", "expected": ["inteligentny-organizer-do-lekow"]}
+{"query": "tata przewrócił się w domu, boimy się że to się powtórzy", "expected": ["obu-obuwie-po-domu", "terapeuta-przestrzeni"]}
+{"query": "starsza pani nie umie zapłacić kartą w automacie", "expected": ["merkury"]}
+{"query": "babcię naciągnęli na umowę przez telefon", "expected": ["e-rzecznik-konsumenta-seniora"]}
+{"query": "dziadek chce spisać ostatnią wolę ale nie wie jak", "expected": ["stworzenie-narzedzia-ulatwiajacego-seniorom-prawidlowe-regulowanie-spraw-spadkowych"]}
+{"query": "starsi ludzie na wsi nie mają jak dojechać do lekarza ani prawnika", "expected": ["mobilne-centrum-pomocy-dla-osob-starszych"]}
+{"query": "w mieszkaniu komunalnym nie ma łazienki", "expected": ["przenosne-modularne-lazienki"]}
+{"query": "seniorzy w klubie się nudzą, chcemy ich rozruszać i rozśmieszyć", "expected": ["edu-gra-hahaha", "senior-cuder", "sciezka-treningu-umyslu"]}
+{"query": "dziecko z autyzmem panikuje przy pobieraniu krwi", "expected": ["himalaje-autyzmu"]}
+{"query": "cukrzyk musi wozić insulinę latem w podróży", "expected": ["cold-box"]}
+{"query": "pacjenci gubią się w wielkim szpitalu", "expected": ["drogowskazy-ajkum", "ta-sciezka-terapeutyczna-sciezka-kulturowa-dla-dzieci-i-doroslych-z-autyzmem", "ngoz-nawigacja-glosowa-osob-zaleznych"]}
+{"query": "kobieta właśnie usłyszała że ma raka i jest w szoku", "expected": ["oncotriada"]}
+{"query": "bezdomni nie mają gdzie się umyć", "expected": ["szlakiem-ludzi-bezdomnych"]}
+{"query": "ludzie z ulicy na wsi, jak ich wyciągnąć z tego na stałe", "expected": ["wiejski-program-pomocy-osobom-w-kryzysie-bezdomnosci-sciezka-feniksa"]}
+{"query": "nastolatki z domu dziecka nie radzą sobie z emocjami", "expected": ["komix-zyciowy", "marimbaza"]}
+{"query": "adoptowana córka w wieku dojrzewania się buntuje", "expected": ["rodzina-adopcyjna-dorasta"]}
+{"query": "dziecko z porażeniem ma zaciśniętą rączkę i nie może rysować", "expected": ["edki-kredki-terapeutyczne"]}
+{"query": "niewidome dziecko uczy się kształtów zwierząt", "expected": ["puzzle-3d"]}
+{"query": "w rodzinie podejrzewamy przemoc ale nie są pod opieką MOPS", "expected": ["mobilna-pomoc-terapeutyczna"]}
+{"query": "starsze rodzeństwo czuje się pominięte bo brat jest chory", "expected": ["uwaznione-rodzienstwo", "to-nie-koniec-swiata-to-poczatek-swiata"]}
+{"query": "dzieci z Ukrainy nie rozumieją zasad w polskiej szkole", "expected": ["moj-pomocny-virtual-world"]}
+{"query": "uchodźcy z Afganistanu nie wiedzą jak załatwić sprawy", "expected": ["wortal-informacyjny", "dialog-ponad-kulturami-1"]}
+{"query": "obcokrajowiec nie wie jak iść do lekarza rodzinnego", "expected": ["health-guide-pl"]}
+{"query": "ojciec obcokrajowiec grozi że wywiezie dziecko za granicę", "expected": ["dialog-ponad-kulturami"]}
+{"query": "dorosły z zespołem Downa nie umie sam iść do urzędu", "expected": ["urzedowy-ambaras", "zalatw-to-sam", "dostepny-wniosek-dla-ggluchych"]}
+{"query": "podopieczny z upośledzeniem ma iść do sądu jako świadek", "expected": ["pelna-wokanda"]}
+{"query": "mieszkańcy DPS z niepełnosprawnością umysłową mają dużą nadwagę", "expected": ["stop-otylosci-innowacyjna-metoda-pracy-z-osobami-niepelnosprawnymi-intelektualnie", "talerze-zdrowia"]}
+{"query": "wózkiem nie da się wjechać do sklepu przez schodek", "expected": ["puzzles-ramp"]}
+{"query": "osoba na wózku moknie na deszczu", "expected": ["uniodziez"]}
+{"query": "głuchy nie usłyszy alarmu przeciwpożarowego w nocy", "expected": ["straznik"]}
+{"query": "niewidomy nie wie kiedy przyjedzie autobus", "expected": ["dostepny-transport-publiczny", "teleasystent"]}
+{"query": "głusi chcą zostać programistami", "expected": ["hear-it"]}
+{"query": "osoba niepełnosprawna chce iść do teatru ale nie ma z kim", "expected": ["spotkania-kulturlove"]}
+{"query": "ludzie mają w domu niepotrzebne rzeczy i chcą komuś pomóc", "expected": ["oddawacze"]}
+{"query": "na wsi nie ma pracy i urząd pracy jest daleko", "expected": ["mobilna-gielda-pracy", "agencja-pracy-incydentalnej"]}
