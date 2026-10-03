@@ -14,6 +14,7 @@ from `app/layout.tsx`.
 | `Main.dc.html` | `/` | Strona główna (P2) |
 | `Logowanie.dc.html` | `/login`: e-mail i hasło | Strona główna i wygląd logowania (P2), logika P4 |
 | `Rejestracja.dc.html` | `/register`: e-mail i hasło | Strona główna i wygląd logowania (P2), logika P4 |
+| `Profil.dc.html` | `/my/profile`: nazwa, rola, prośba o rolę, zmiana hasła, wylogowanie | Profil (P2) |
 | `Dopasuj.dc.html` | `/match` | Strona /match (P3) |
 | `Biblioteka.dc.html` | `/library` | Biblioteka (P1) |
 | `Karta.dc.html` | `/library/[id]` | Karta innowacji (P1) |
