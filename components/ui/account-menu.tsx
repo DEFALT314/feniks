@@ -6,10 +6,10 @@ import { ChevronDown } from "lucide-react";
 import { useId } from "react";
 import { cn } from "@/lib/utils";
 import { isActivePath, roleLabel, type CurrentUser, type NavItem } from "./navigation";
-import { useDisclosure } from "./use-disclosure";
+import { dropdownClass, useDisclosure } from "./use-disclosure";
 
 const itemClass =
-  "flex min-h-11 w-full items-center rounded-lg px-3 text-left text-base text-ink no-underline hover:bg-navy-soft hover:text-ink";
+  "flex min-h-11 w-full items-center rounded-lg px-3 transition-colors text-left text-base text-ink no-underline hover:bg-navy-soft hover:text-ink";
 
 // "Imię ▾" on wide screens: personal pages, profile and sign-out (disclosure, not an ARIA menu,
 // so it works with Tab like any list of links).
@@ -22,7 +22,7 @@ export function AccountMenu({
   items: NavItem[];
   className?: string;
 }) {
-  const { open, toggle, wrapperRef, buttonRef } = useDisclosure<
+  const { open, state, toggle, wrapperRef, buttonRef } = useDisclosure<
     HTMLDivElement,
     HTMLButtonElement
   >();
@@ -37,7 +37,7 @@ export function AccountMenu({
         aria-expanded={open}
         aria-controls={panelId}
         onClick={toggle}
-        className="text-ink hover:bg-navy-soft aria-expanded:bg-navy-soft flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] px-2.5 text-left leading-tight"
+        className="text-ink hover:bg-navy-soft aria-expanded:bg-navy-soft flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] px-2.5 text-left leading-tight transition-colors"
       >
         {/* 1024–1279 px: initial only, so the menu stays in one row; name and role from 1280 px */}
         <span
@@ -54,14 +54,22 @@ export function AccountMenu({
         </span>
         <ChevronDown
           aria-hidden="true"
-          className={cn("size-4 transition-transform", open && "rotate-180")}
+          className={cn(
+            "size-4 transition-transform duration-(--duration-fast) motion-reduce:transition-none",
+            open && "rotate-180",
+          )}
         />
         <span className="sr-only">: menu konta</span>
       </button>
       <div
         id={panelId}
-        hidden={!open}
-        className="border-border absolute top-full right-0 z-50 mt-2 w-64 rounded-xl border bg-white p-2 shadow-lg"
+        hidden={state === "closed"}
+        inert={state === "closing"}
+        data-origin="top-right"
+        className={cn(
+          dropdownClass(state),
+          "border-border absolute top-full right-0 z-50 mt-2 w-64 rounded-xl border bg-white p-2 shadow-[0_16px_40px_-16px_rgba(21,26,35,0.35)]",
+        )}
       >
         <p className="border-border mb-2 border-b px-3 pt-1 pb-2.5 leading-tight">
           <strong className="block">{user.name}</strong>

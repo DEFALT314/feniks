@@ -22,7 +22,7 @@ function ChoiceTile({
     <label
       data-slot="choice-tile"
       className={cn(
-        "border-border hover:border-navy has-checked:border-navy has-focus-visible:outline-ring flex cursor-pointer items-start gap-3.5 rounded-xl border bg-white px-5 transition-[border-color,box-shadow] duration-200 has-checked:border-2 has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-disabled:cursor-not-allowed has-disabled:opacity-60",
+        "border-border hover:border-navy has-checked:border-navy has-focus-visible:outline-ring flex cursor-pointer items-start gap-3.5 rounded-xl border bg-white px-5 transition-[border-color,box-shadow] has-checked:border-2 has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-disabled:cursor-not-allowed has-disabled:opacity-60",
         size === "compact" ? "min-h-14 py-3" : "min-h-[84px] py-[18px]",
         className,
       )}

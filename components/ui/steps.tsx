@@ -29,7 +29,7 @@ function Steps({ label, steps, currentId, className }: StepsProps) {
                 href={step.href}
                 aria-current={current ? "step" : undefined}
                 className={cn(
-                  "text-ink flex justify-between gap-2 rounded-lg px-3 py-2.5 text-[1.0625rem] no-underline transition-colors duration-200",
+                  "text-ink flex justify-between gap-2 rounded-lg px-3 py-2.5 text-[1.0625rem] no-underline transition-colors",
                   current
                     ? "bg-navy-soft text-navy hover:text-navy font-bold"
                     : "hover:bg-neutral-soft hover:text-ink",

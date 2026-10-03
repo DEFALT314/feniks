@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { useId } from "react";
+import { useId, useState } from "react";
 import { cn } from "@/lib/utils";
 import { isActivePath, roleLabel, type CurrentUser, type NavItem } from "./navigation";
-import { useDisclosure } from "./use-disclosure";
+import { dropdownClass, useDisclosure } from "./use-disclosure";
 
 const linkClass =
-  "flex min-h-12 items-center rounded-lg px-3 text-[1.0625rem] text-ink no-underline hover:bg-navy-soft hover:text-ink aria-[current=page]:font-bold aria-[current=page]:text-navy";
+  "flex min-h-12 items-center rounded-lg px-3 transition-colors text-[1.0625rem] text-ink no-underline hover:bg-navy-soft hover:text-ink aria-[current=page]:font-bold aria-[current=page]:text-navy";
 
 function Links({ items, pathname }: { items: NavItem[]; pathname: string }) {
   return (
@@ -42,13 +42,15 @@ export function MobileMenu({
   accountItems: NavItem[];
   className?: string;
 }) {
-  const { open, toggle, wrapperRef, buttonRef } = useDisclosure<
+  const { open, state, toggle, wrapperRef, buttonRef } = useDisclosure<
     HTMLDivElement,
     HTMLButtonElement
   >();
   const panelId = useId();
   const pathname = usePathname();
   const Icon = open ? X : Menu;
+  // The icon swap animates only after the first toggle, not on page load
+  const [swapped, setSwapped] = useState(false);
 
   return (
     <div ref={wrapperRef} className={className}>
@@ -57,16 +59,28 @@ export function MobileMenu({
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
-        onClick={toggle}
-        className="border-input text-ink hover:border-navy aria-expanded:border-navy aria-expanded:bg-navy flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] border bg-white px-2.5 text-base font-bold aria-expanded:text-white"
+        onClick={() => {
+          setSwapped(true);
+          toggle();
+        }}
+        className="border-input text-ink hover:border-navy aria-expanded:border-navy aria-expanded:bg-navy flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] border bg-white px-2.5 text-base font-bold transition-colors aria-expanded:text-white"
       >
-        <Icon aria-hidden="true" className="size-5" />
+        <Icon
+          key={open ? "close" : "menu"}
+          aria-hidden="true"
+          className={cn("size-5", swapped && "t-icon-in")}
+        />
         Menu
       </button>
       <div
         id={panelId}
-        hidden={!open}
-        className="border-border absolute inset-x-0 top-full z-50 border-b bg-white shadow-lg"
+        hidden={state === "closed"}
+        inert={state === "closing"}
+        data-origin="top-center"
+        className={cn(
+          dropdownClass(state),
+          "border-border absolute inset-x-0 top-full z-50 border-b bg-white shadow-[0_16px_40px_-16px_rgba(21,26,35,0.35)]",
+        )}
       >
         <div className="mx-auto flex max-w-[1200px] flex-col gap-3 px-4 py-3 sm:px-10">
           <nav aria-label="Menu główne">
