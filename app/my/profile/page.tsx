@@ -6,17 +6,28 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { roleLabel } from "@/components/ui/navigation";
 import { getCurrentUser, headerName } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 import { DisplayNameForm } from "./_components/display-name-form";
+import { RoleRequestForm } from "./_components/role-request-form";
+import { RequestableRole } from "./_lib/role-request";
 
 export const metadata = { title: "Twój profil – HubMI.pl" };
 
-// Layout per design/makiety/Profil.dc.html: account, password and sign-out.
-// The role request section of the mockup waits for the ROPS approval screen (#6).
+// Layout per design/makiety/Profil.dc.html: account, role request (#6), password and sign-out.
 export default async function ProfilePage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/my/profile");
 
   const role = roleLabel(user.role);
+  const isRops = user.role === "rops_redaktor" || user.role === "rops_admin";
+  const { data: profile } = await (
+    await createClient()
+  )
+    .from("profiles")
+    .select("wnioskowana_rola")
+    .eq("id", user.id)
+    .maybeSingle();
+  const pendingRole = RequestableRole.safeParse(profile?.wnioskowana_rola).data ?? null;
 
   return (
     <main
@@ -47,6 +58,23 @@ export default async function ProfilePage() {
           </div>
         </dl>
       </Card>
+
+      {isRops ? null : (
+        <Card
+          role="region"
+          aria-labelledby="role-heading"
+          className="flex flex-col gap-3.5 p-7 sm:px-8"
+        >
+          <h2 id="role-heading" className="font-heading text-2xl font-bold">
+            Działasz w imieniu instytucji?
+          </h2>
+          <p className="text-muted-foreground m-0">
+            Organizacje, gminy i eksperci mają dodatkowe narzędzia, np. kartę usługi dla gminy. Rolę
+            zatwierdza ROPS.
+          </p>
+          <RoleRequestForm pending={pendingRole} />
+        </Card>
+      )}
 
       <Card
         role="region"
