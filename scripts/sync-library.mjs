@@ -1,8 +1,8 @@
-// Synchronizacja Biblioteki Innowacji Społecznych ROPS -> data/biblioteka_raw.json
-// Uruchom z laptopa (nie z serwera w chmurze, ROPS blokuje część botów):
-//   npm i linkedom && node scripts/sync-biblioteka.mjs
-// Pobiera 9 kategorii i wszystkie karty innowacji, dzieli tekst na sekcje.
-// Pełne teksty traktujemy jako materiał ROPS: pokazujemy w aplikacji z linkiem do źródła.
+// Syncs the ROPS Social Innovation Library -> data/biblioteka_raw.json
+// Run from a laptop (not from a cloud server, ROPS blocks some bots):
+//   npm i linkedom && node scripts/sync-library.mjs
+// Fetches 9 categories and all innovation cards, splits the text into sections.
+// Full texts are ROPS material: we show them in the app with a link to the source.
 import { DOMParser } from 'linkedom';
 import { writeFile, mkdir } from 'node:fs/promises';
 
@@ -23,7 +23,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 async function get(url) {
   const res = await fetch(url, { headers: { 'User-Agent': 'HubMI-sync/0.1 (hackathon; kontakt: zespol)' } });
   if (!res.ok) throw new Error(`${res.status} ${url}`);
-  await sleep(300); // grzecznie dla serwera ROPS
+  await sleep(300); // be polite to the ROPS server
   return new DOMParser().parseFromString(await res.text(), 'text/html');
 }
 function sections(text) {
@@ -69,4 +69,4 @@ for (const cat of CATS) {
 await mkdir('data', { recursive: true });
 await writeFile('data/biblioteka_raw.json', JSON.stringify(items, null, 1));
 console.log(`\n${items.length} innowacji -> data/biblioteka_raw.json`);
-// UWAGA: sekcja "autorzy" zawiera nazwiska. Nie pokazuj jej w demo bez zgody ROPS; w seedzie trzymaj tylko instytucje.
+// NOTE: the "autorzy" section contains surnames. Do not show it in the demo without ROPS consent; keep only institutions in the seed.
