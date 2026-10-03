@@ -238,7 +238,13 @@ html[data-a11y-plus] :focus-visible {
     @apply bg-background text-foreground text-lg leading-relaxed;
     /* Long Polish words ("upowszechniania") must wrap instead of overflowing at 320 px or 200% */
     overflow-wrap: break-word;
-    hyphens: auto;
+  }
+  /* Hyphenate only where columns are narrow (phones, 200–400% zoom): on wide screens split words
+     ("fisz-ka") make plain text harder to read for seniors */
+  @media (max-width: 40rem) {
+    body {
+      hyphens: auto;
+    }
   }
   /* Focus targets reached by script or the skip link (tabIndex=-1) don't need a ring */
   [tabindex="-1"]:focus:not(:focus-visible) {
