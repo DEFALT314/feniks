@@ -60,6 +60,16 @@ describe("MatchResult", () => {
     expect(html).toContain('href="/my/messages/new?topic=Potrzeba');
   });
 
+  it("leaves out the service card for users who can't prepare one", () => {
+    const html = renderToStaticMarkup(
+      <MatchResult result={ai} choosing={false} serviceCard={false} />,
+    );
+    expect(html).not.toContain("/my/middleman");
+    expect(html).toContain(
+      'href="/library/organizator-kompleksowej-opieki-w-miejscu-zamieszkania"',
+    );
+  });
+
   it("without a match explains why and stresses reporting the need", () => {
     const html = render(fixture.response_no_match as MatchResponse);
     expect(html).toContain("nie ma jeszcze innowacji o opiece nad małymi dziećmi");

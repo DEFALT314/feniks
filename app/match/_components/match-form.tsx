@@ -18,7 +18,13 @@ import {
 import { ResultSkeleton } from "./ai-progress";
 import { MatchResult } from "./match-result";
 
-export function MatchForm({ initialDescription }: { initialDescription: string }) {
+export function MatchForm({
+  initialDescription,
+  serviceCard = true,
+}: {
+  initialDescription: string;
+  serviceCard?: boolean;
+}) {
   const [description, setDescription] = useState(initialDescription);
   const [municipality, setMunicipality] = useState("");
   const [fieldError, setFieldError] = useState<string | null>(null);
@@ -137,7 +143,9 @@ export function MatchForm({ initialDescription }: { initialDescription: string }
       >
         {error ? <p className="text-danger font-bold">{error}</p> : null}
         {phase === "searching" ? <ResultSkeleton /> : null}
-        {result ? <MatchResult result={result} choosing={phase === "choosing"} /> : null}
+        {result ? (
+          <MatchResult result={result} choosing={phase === "choosing"} serviceCard={serviceCard} />
+        ) : null}
       </section>
     </>
   );
