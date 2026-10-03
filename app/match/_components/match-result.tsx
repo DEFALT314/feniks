@@ -4,6 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { MatchResponse, MatchedInnovation, TextSegment } from "@/lib/contracts/match";
 import { cn } from "@/lib/utils";
+import { AiProgress } from "./ai-progress";
 
 // The result of /match, laid out as in design/makiety/Dopasuj.dc.html: description → challenge → innovations.
 
@@ -163,15 +164,23 @@ export function MatchResult({ result, choosing }: { result: MatchResponse; choos
           </Step>
         ) : null}
 
-        <Step n={result.challenge ? 3 : 2} title="Pasujące innowacje" active>
-          {choosing ? (
-            <p role="status" className="text-ink-muted mb-3">
-              AI czyta opisy innowacji i wybiera najlepiej pasujące. To może potrwać do pół minuty;
-              poniżej wyniki wyszukiwania.
-            </p>
-          ) : null}
+        <Step
+          n={result.challenge ? 3 : 2}
+          title={choosing ? "Wstępne wyniki wyszukiwania" : "Pasujące innowacje"}
+          active
+        >
+          {choosing ? <AiProgress /> : null}
           {result.innovations.length ? (
-            <div className="flex flex-col gap-4">
+            <div
+              // key changes when the AI answer replaces the ranking, so the cards fade in anew
+              key={result.picked_by}
+              className={cn(
+                "flex flex-col gap-4 transition-opacity duration-300",
+                choosing && "opacity-60",
+                ai &&
+                  "animate-in fade-in slide-in-from-bottom-2 duration-500 motion-reduce:animate-none",
+              )}
+            >
               {result.innovations.map((m, n) => (
                 <InnovationCard key={m.innovation.id} match={m} first={n === 0} ai={ai} />
               ))}
