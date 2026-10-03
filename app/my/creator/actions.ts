@@ -2,10 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, headerName } from "@/lib/auth";
 import { writeAudit } from "@/lib/audit";
 import type { CanvasAnswer, IdeaCardInput } from "@/lib/contracts/idea-creator";
-import { addNotification } from "@/lib/notifications";
+import { notifyIdeaSent } from "@/lib/notifications";
 import { createClient } from "@/lib/supabase/server";
 import { fields } from "./_lib/canvas";
 import {
@@ -57,7 +57,8 @@ export async function sendToRops(ideaId: string): Promise<SubmitState> {
     {
       loadIdea: (id) => getMyIdea(db, user.id, id),
       send: (id) => sendIdea(db, id),
-      addNotification: (n) => addNotification(n, db),
+      notifyRops: ({ ideaId, tytul }) =>
+        notifyIdeaSent({ ideaId, tytul, autorNazwa: headerName(user) }, db),
       writeAudit: (e) => writeAudit(e, db),
     },
     ideaId,

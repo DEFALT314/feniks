@@ -1,5 +1,4 @@
 import type { AuditEntry } from "@/lib/audit";
-import type { NewNotification } from "@/lib/contracts/notifications";
 import type { MyIdea, SendResult } from "./ideas";
 import { canSubmit, missingForSubmission } from "./submission";
 
@@ -11,11 +10,10 @@ export type SubmitState =
 export type SubmitDeps = {
   loadIdea: (id: string) => Promise<MyIdea | null>;
   send: (id: string) => Promise<SendResult>;
-  addNotification: (n: NewNotification) => Promise<unknown>;
+  // P4's notifyIdeaSent(): a notification for every ROPS user and an e-mail to the ROPS inbox
+  notifyRops: (idea: { ideaId: string; tytul: string }) => Promise<unknown>;
   writeAudit: (e: AuditEntry) => Promise<unknown>;
 };
-
-const ROPS_ROLES = ["rops_redaktor", "rops_admin"] as const;
 
 const SEND_FAILED: Record<Exclude<SendResult, { ok: true }>["reason"], string> = {
   "not-found": "Nie ma takiego pomysłu albo nie jest Twój.",
@@ -47,14 +45,9 @@ export async function submitIdea(deps: SubmitDeps, ideaId: string): Promise<Subm
   const { resent } = sent;
 
   const followUps = await Promise.allSettled([
-    deps.addNotification({
-      role: [...ROPS_ROLES],
-      typ: "pomysl_wyslany",
-      tytul: `${resent ? "Poprawiony pomysł" : "Nowy pomysł"} do oceny: ${idea.tytul}`.slice(
-        0,
-        200,
-      ),
-      link: `/admin?idea=${idea.id}`,
+    deps.notifyRops({
+      ideaId: idea.id,
+      tytul: resent ? `${idea.tytul} (poprawiona wersja)` : idea.tytul,
     }),
     deps.writeAudit({
       akcja: resent ? "pomysl.ponowne_wyslanie" : "pomysl.wyslanie",
