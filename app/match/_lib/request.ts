@@ -1,13 +1,7 @@
 // Client-side logic of the /match page: request building and the two-phase fetch.
 // Phase 1 asks for the ranking only (ai: false, well under a second); phase 2 asks again with AI
 // for the picks and reasons (8–25 s on the free LLM tier, instant when cached).
-import { MatchResponse, type MatchRequest, type MatchRole } from "@/lib/contracts/match";
-
-export const ROLE_OPTIONS: { value: MatchRole; label: string }[] = [
-  { value: "mieszkaniec", label: "Mieszkaniec" },
-  { value: "jst", label: "Gmina lub ośrodek pomocy" },
-  { value: "ngo", label: "Organizacja pozarządowa" },
-];
+import { MatchResponse, type MatchRequest } from "@/lib/contracts/match";
 
 export const EXAMPLES = [
   "Samotni seniorzy na wsi z objawami depresji",
@@ -18,13 +12,12 @@ export const EXAMPLES = [
 export const MIN_LENGTH = 10;
 export const MAX_LENGTH = 2000;
 
-export type FormValues = { description: string; role: MatchRole; municipality: string };
+export type FormValues = { description: string; municipality: string };
 
 export function buildRequest(values: FormValues, ai: boolean): MatchRequest {
   const municipality = values.municipality.trim();
   return {
     description: values.description.trim(),
-    role: values.role,
     ...(municipality ? { municipality } : {}),
     ai,
   };
