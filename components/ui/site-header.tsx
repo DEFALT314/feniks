@@ -55,10 +55,14 @@ export function SiteHeader({ user, unreadNotifications = 0, demoMode = false }: 
                   </span>
                 ) : null}
               </Link>
-              <p className="flex flex-col pl-1.5 leading-tight">
+              <Link
+                href="/my/profile"
+                aria-label={`Twój profil: ${user.name}, ${roleLabel(user.role)}`}
+                className="text-ink hover:bg-navy-soft hover:text-ink flex min-h-11 flex-col justify-center rounded-[10px] px-2.5 leading-tight no-underline"
+              >
                 <strong className="text-base">{user.name}</strong>
                 <span className="text-muted-foreground text-sm">{roleLabel(user.role)}</span>
-              </p>
+              </Link>
             </>
           ) : (
             <Link href="/login" className={buttonVariants({ variant: "secondary", size: "sm" })}>
