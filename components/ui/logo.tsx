@@ -28,7 +28,15 @@ export function LogoMark({ variant = "light", size = 40 }: { variant?: Variant; 
 }
 
 // Mark + "HubMI" + tagline. Decorative: wrap it in a link with an aria-label where it leads somewhere.
-export function Logo({ variant = "light", className }: { variant?: Variant; className?: string }) {
+export function Logo({
+  variant = "light",
+  className,
+  taglineClassName,
+}: {
+  variant?: Variant;
+  className?: string;
+  taglineClassName?: string;
+}) {
   return (
     <span className={cn("flex items-center gap-2.5", className)}>
       <LogoMark variant={variant} />
@@ -38,6 +46,7 @@ export function Logo({ variant = "light", className }: { variant?: Variant; clas
           className={cn(
             "text-[0.8125rem]",
             variant === "light" ? "text-muted-foreground" : "text-white/85",
+            taglineClassName,
           )}
         >
           innowacje społeczne Małopolski

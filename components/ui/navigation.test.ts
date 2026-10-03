@@ -1,42 +1,60 @@
 import { describe, expect, it } from "vitest";
-import { isActivePath, navItemsFor, notificationsLabel, roleLabel } from "./navigation";
+import {
+  accountItemsFor,
+  isActivePath,
+  navItemsFor,
+  notificationsLabel,
+  roleLabel,
+} from "./navigation";
 
-const hrefs = (role: Parameters<typeof navItemsFor>[0]) => navItemsFor(role).map((i) => i.href);
+type RoleOrNull = Parameters<typeof navItemsFor>[0];
+const hrefs = (role: RoleOrNull) => navItemsFor(role).map((i) => i.href);
+const accountHrefs = (role: RoleOrNull) => accountItemsFor(role).map((i) => i.href);
 
 describe("navItemsFor", () => {
   it("shows only public pages to signed-out visitors", () => {
     expect(hrefs(null)).toEqual(["/match", "/library", "/challenge-map"]);
   });
 
-  it("adds personal pages for a signed-in resident", () => {
-    expect(hrefs("mieszkaniec")).toEqual([
-      "/match",
-      "/library",
-      "/challenge-map",
-      "/my/creator",
-      "/my/tester",
-      "/my/messages",
-    ]);
-  });
-
-  it.each(["jst", "ngo"] as const)("adds the service card for %s", (role) => {
-    expect(hrefs(role)).toContain("/my/middleman");
-    expect(hrefs(role)).not.toContain("/admin");
+  it("keeps personal pages out of the main menu so it fits in one row", () => {
+    expect(hrefs("mieszkaniec")).toEqual(["/match", "/library", "/challenge-map"]);
+    expect(hrefs("jst")).not.toContain("/my/messages");
   });
 
   it.each(["rops_redaktor", "rops_admin"] as const)("adds the ROPS panel for %s", (role) => {
-    expect(hrefs(role)).toContain("/admin");
-    expect(hrefs(role)).not.toContain("/my/middleman");
+    expect(hrefs(role)).toEqual(["/match", "/library", "/challenge-map", "/admin"]);
   });
 
-  it("gives experts neither the service card nor the ROPS panel", () => {
-    expect(hrefs("ekspert")).not.toContain("/admin");
-    expect(hrefs("ekspert")).not.toContain("/my/middleman");
+  it.each(["mieszkaniec", "ngo", "jst", "ekspert"] as const)("has no ROPS panel for %s", (role) => {
+    expect(hrefs(role)).not.toContain("/admin");
   });
 
   it("does not mutate the shared list between calls", () => {
     navItemsFor("rops_admin");
     expect(hrefs("mieszkaniec")).not.toContain("/admin");
+  });
+});
+
+describe("accountItemsFor", () => {
+  it("is empty for visitors", () => {
+    expect(accountItemsFor(null)).toEqual([]);
+  });
+
+  it("lists personal pages and the profile for a resident", () => {
+    expect(accountHrefs("mieszkaniec")).toEqual([
+      "/my/creator",
+      "/my/tester",
+      "/my/messages",
+      "/my/profile",
+    ]);
+  });
+
+  it.each(["jst", "ngo"] as const)("adds the service card for %s", (role) => {
+    expect(accountHrefs(role)).toContain("/my/middleman");
+  });
+
+  it.each(["ekspert", "rops_admin"] as const)("has no service card for %s", (role) => {
+    expect(accountHrefs(role)).not.toContain("/my/middleman");
   });
 });
 
