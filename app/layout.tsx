@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "Innowacje społeczne w Małopolsce: dopasowanie rozwiązań, biblioteka, kreator pomysłów.",
 };
 
-// Every page renders its own <main id="tresc">, the target of the skip link.
+// Every page renders its own <main id="main-content">, the target of the skip link.
 export default function RootLayout({ children }: LayoutProps<"/">) {
   // TODO(P4): pass getCurrentUser() from lib/auth and the unread notification count once they exist
   const user = null;
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-full flex-col">
         <a
-          href="#tresc"
+          href="#main-content"
           className="sr-only z-50 rounded-[10px] bg-white px-4 py-3 font-bold focus:not-sr-only focus:absolute focus:top-2 focus:left-2"
         >
           Przejdź do treści

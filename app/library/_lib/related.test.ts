@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { challengeAreasFromFiles } from "@/app/mapa-wyzwan/_lib/from-files";
+import { challengeAreasFromFiles } from "@/app/challenge-map/_lib/from-files";
 import { innovationsFromFiles } from "./from-files";
 import { similarInnovations, challengesForInnovation } from "./related";
 
