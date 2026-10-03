@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – kreator pomysłów</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
+.btn-t{background:transparent;color:#1F3A8A;text-decoration:underline}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700}
+.tag-ai{background:#E8EDFA;color:#1F3A8A}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.step{display:flex;justify-content:space-between;gap:8px;padding:9px 12px;border-radius:8px;font-size:17px;color:#151A23;text-decoration:none}
+.tile{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-radius:12px;cursor:pointer;min-height:84px}
+.tile input{width:22px;height:22px;margin-top:4px;accent-color:#1F3A8A;flex:0 0 22px}
+fieldset{border:none;margin:0;padding:0}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+  <dc-import name="Naglowek" active="kreator" rola="ngo" kto="Fundacja Dobry Start" hint-size="100%,112px"></dc-import>
+  <main>
+    <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
+      <div class="wrap" style="padding-top: 20px; padding-bottom: 20px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: baseline">
+          <strong style="font-size: 18px">Nowy pomysł: Sąsiedzki dyżur po wypisie</strong>
+          <span class="muted" style="font-size: 16px">Krok 1 z 22 · zapisuje się automatycznie</span>
+        </div>
+        <div role="progressbar" aria-label="Postęp kreatora" aria-valuemin="1" aria-valuemax="22" aria-valuenow="1" style="height: 8px; border-radius: 999px; background: #E9ECF1; overflow: hidden"><div style="width: 4.5%; height: 100%; background: #1F3A8A"></div></div>
+      </div>
+    </div>
+    <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 40px; padding-top: 32px; padding-bottom: 64px">
+      <nav aria-label="Części kanwy" style="flex: 1 1 220px; max-width: 250px; display: flex; flex-direction: column; gap: 2px">
+        <span class="lbl" style="margin-bottom: 6px">Kanwa innowacji</span>
+        <a class="step" href="#problem" aria-current="step" style="background: #E8EDFA; color: #1F3A8A; font-weight: 700"><span>Problem</span><span style="font-size: 15px">0/3</span></a>
+        <a class="step" href="#aktorzy"><span>Kto pomoże, kto przeszkodzi</span><span class="muted" style="font-size: 15px">0/2</span></a>
+        <a class="step" href="#rozwiazanie"><span>Rozwiązanie</span><span class="muted" style="font-size: 15px">0/3</span></a>
+        <a class="step" href="#koszty"><span>Koszty</span><span class="muted" style="font-size: 15px">0/2</span></a>
+        <a class="step" href="#odbiorcy"><span>Odbiorcy</span><span class="muted" style="font-size: 15px">0/3</span></a>
+        <a class="step" href="#dochody"><span>Skąd pieniądze</span><span class="muted" style="font-size: 15px">0/2</span></a>
+        <a class="step" href="#wartosc"><span>Co to daje ludziom</span><span class="muted" style="font-size: 15px">0/2</span></a>
+        <a class="step" href="#kanaly"><span>Jak dotrzeć</span><span class="muted" style="font-size: 15px">0/3</span></a>
+        <a class="step" href="#partnerzy"><span>Partnerzy</span><span class="muted" style="font-size: 15px">0/1</span></a>
+        <a class="step" href="#wplyw"><span>Wpływ</span><span class="muted" style="font-size: 15px">0/1</span></a>
+        <a href="Fiszka.dc.html" style="margin-top: 12px; font-weight: 700">Podgląd fiszki →</a>
+      </nav>
+      <section style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 22px; max-width: 680px">
+        <fieldset style="display: flex; flex-direction: column; gap: 12px">
+          <legend class="h" style="font-size: 32px; margin-bottom: 6px">Jak bardzo źle jest ludziom bez Waszego rozwiązania?</legend>
+          <p class="muted" style="margin-bottom: 4px">Wybierz jedną odpowiedź. Zawsze możesz wrócić i ją zmienić.</p>
+          <sc-for list="{{opcje}}" as="o" hint-placeholder-count="4">
+            <label class="tile" style="{{o.styl}}">
+              <input type="radio" name="intensywnosc" value="{{o.id}}" checked="{{o.wybrana}}" onChange="{{o.wybierz}}">
+              <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 19px">{{o.nazwa}}</strong><span class="muted">{{o.opis}}</span></span>
+            </label>
+          </sc-for>
+        </fieldset>
+        <div class="card" aria-live="polite" style="padding: 18px 20px; background: #F3F6FD; border-color: #C9D3EE; display: flex; flex-direction: column; gap: 10px">
+          <span class="tag tag-ai" style="align-self: flex-start">Propozycja AI</span>
+          <p>W opisie piszesz, że seniorzy po wyjściu ze szpitala zostają sami na kilka dni. To zwykle odpowiedź <strong>„Mocno przeszkadza”</strong>.</p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-s" onClick="{{uzyjPodpowiedzi}}" style="min-height: 44px">Użyj tej odpowiedzi</button><button type="button" class="btn btn-t" style="min-height: 44px">Nie teraz</button></div>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; border-top: 1px solid #D9DDE4; padding-top: 20px">
+          <button type="button" class="btn btn-s">Wstecz</button>
+          <button type="button" class="btn btn-t">Pomiń pytanie</button>
+          <button type="button" class="btn btn-p" style="margin-left: auto">Dalej</button>
+        </div>
+      </section>
+    </div>
+  </main>
+  <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { wybrana: 'utrudnia' };
+  }
+  renderVals() {
+    const lista = [
+      { id: 'bardzo', nazwa: 'Bardzo poważny problem', opis: 'Ludzie cierpią, są wykluczeni albo dzieje się im krzywda.' },
+      { id: 'mocno', nazwa: 'Mocno przeszkadza', opis: 'Regularnie blokuje ważne sprawy w ich życiu.' },
+      { id: 'utrudnia', nazwa: 'Utrudnia działanie', opis: 'Trzeba szukać obejść, ludzie tracą czas i siły.' },
+      { id: 'lekko', nazwa: 'Lekko przeszkadza', opis: 'Da się z tym żyć, raczej irytuje, niż blokuje.' }
+    ];
+    const on = 'background: #FFFFFF; border: 2px solid #1F3A8A;';
+    const off = 'background: #FFFFFF; border: 1px solid #D9DDE4;';
+    const opcje = lista.map((o) => ({
+      ...o,
+      wybrana: this.state.wybrana === o.id,
+      styl: this.state.wybrana === o.id ? on : off,
+      wybierz: () => this.setState({ wybrana: o.id })
+    }));
+    return { opcje, uzyjPodpowiedzi: () => this.setState({ wybrana: 'mocno' }) };
+  }
+}
+</script>
+</body>
+</html>

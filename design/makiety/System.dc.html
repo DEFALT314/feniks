@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – system wizualny</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
+.btn-t{background:transparent;color:#1F3A8A;text-decoration:underline}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#EEF0F4;color:#4B5565}
+.tag-ok{background:#E3F2EA;color:#1D6B48}
+.tag-ai{background:#E8EDFA;color:#1F3A8A}
+.tag-warn{background:#FFF1DB;color:#8A4B00}
+.tag-err{background:#FDECEA;color:#B42318}
+mark{background:linear-gradient(transparent 55%,#FFE08A 55%);color:inherit;padding:0 1px}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.sw{border:1px solid #D9DDE4;border-radius:12px;overflow:hidden;background:#fff}
+.sw div:first-child{height:80px}
+.sw div:last-child{padding:12px 14px;font-size:15px;line-height:1.45}
+label{font-weight:700}
+input,textarea{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+section{padding:44px 0;border-bottom:1px solid #D9DDE4;display:flex;flex-direction:column;gap:20px}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+  <main class="wrap">
+    <section style="padding-top: 64px">
+      <span class="lbl">HubMI · system wizualny v2</span>
+      <h1 class="h" style="font-size: 52px">Spokojny, czytelny, urzędowy, ale ciepły</h1>
+      <p style="max-width: 820px; font-size: 20px">Jasne tło, granat jako kolor działania, ceglasty akcent i zieleń dla rzeczy sprawdzonych. Nagłówki w Bricolage Grotesque, tekst w Atkinson Hyperlegible Next: kroju zaprojektowanym z myślą o osobach słabowidzących. Każdy kolor tekstu ma kontrast co najmniej 4,5:1.</p>
+    </section>
+    <section>
+      <h2 class="h" style="font-size: 28px">Kolory</h2>
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px">
+        <div class="sw"><div style="background: #1F3A8A"></div><div><strong>Granat</strong><br>#1F3A8A · działanie, linki<br><span class="muted">biały tekst 10,3:1</span></div></div>
+        <div class="sw"><div style="background: #C2452B"></div><div><strong>Cegła</strong><br>#C2452B · akcent, fokus<br><span class="muted">na bieli 5,0:1</span></div></div>
+        <div class="sw"><div style="background: #1D6B48"></div><div><strong>Zieleń</strong><br>#1D6B48 · sprawdzone<br><span class="muted">na #E3F2EA 5,6:1</span></div></div>
+        <div class="sw"><div style="background: #151A23"></div><div><strong>Atrament</strong><br>#151A23 · tekst<br><span class="muted">na bieli 17,4:1</span></div></div>
+        <div class="sw"><div style="background: #4B5565"></div><div><strong>Łupek</strong><br>#4B5565 · tekst pomocniczy<br><span class="muted">na tle 7,0:1</span></div></div>
+        <div class="sw"><div style="background: #F6F7F9; border-bottom: 1px solid #D9DDE4"></div><div><strong>Tło</strong><br>#F6F7F9</div></div>
+        <div class="sw"><div style="background: #E8EDFA"></div><div><strong>Granat jasny</strong><br>#E8EDFA · panele AI</div></div>
+        <div class="sw"><div style="background: #FFE08A"></div><div><strong>Zakreślacz</strong><br>#FFE08A · dopasowane słowa</div></div>
+        <div class="sw"><div style="background: #FFF1DB"></div><div><strong>Bursztyn</strong><br>#FFF1DB / #8A4B00 · uwagi</div></div>
+        <div class="sw"><div style="background: #D9DDE4"></div><div><strong>Linia</strong><br>#D9DDE4 · obramowania</div></div>
+      </div>
+    </section>
+    <section>
+      <h2 class="h" style="font-size: 28px">Typografia</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+        <div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px"><span class="lbl">Nagłówki · Bricolage Grotesque 700</span><span class="h" style="font-size: 44px">Mapa wyzwań</span><span class="muted">Zdania, nie wersaliki. Ciasne odstępy między literami.</span></div>
+        <div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px"><span class="lbl">Tekst · Atkinson Hyperlegible Next 400/700, 18 px</span><span style="font-size: 22px; font-weight: 700">Opisz problem własnymi słowami</span><span>Litery łatwe do odróżnienia (I, l, 1; O, 0). Interlinia 1,6, krótkie zdania.</span></div>
+      </div>
+    </section>
+    <section>
+      <h2 class="h" style="font-size: 28px">Przyciski, etykiety, wyróżnienia</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+        <button type="button" class="btn btn-p">Dopasuj</button>
+        <button type="button" class="btn btn-s">Zobacz kartę</button>
+        <button type="button" class="btn btn-t">Pomiń</button>
+        <button type="button" class="btn btn-s" style="outline: 3px solid #C2452B; outline-offset: 2px">Fokus z klawiatury</button>
+        <button type="button" class="btn btn-s" disabled style="opacity: 0.6; cursor: not-allowed">Niedostępny</button>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <span class="tag tag-ai">Propozycja AI</span>
+        <span class="tag tag-ok">Sprawdzona przez ROPS</span>
+        <span class="tag">Z inkubatora MIIS</span>
+        <span class="tag tag-warn">Opis niepełny</span>
+        <span class="tag tag-warn">W weryfikacji</span>
+        <span class="tag tag-ok">Zatwierdzony</span>
+        <span class="tag tag-err">Do poprawy</span>
+      </div>
+      <p>Słowa, które zdecydowały o dopasowaniu, podkreślamy zakreślaczem: rodzina nie wie, jak zorganizować <mark>opiekę w domu</mark> po <mark>wypisie ze szpitala</mark>.</p>
+    </section>
+    <section>
+      <h2 class="h" style="font-size: 28px">Pola formularza</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="s-opis">Opisz problem</label><span id="s-opis-h" class="muted" style="font-size: 16px">Nie podawaj imion ani nazwisk.</span><textarea id="s-opis" aria-describedby="s-opis-h" rows="3">Samotni seniorzy na wsi nie wychodzą z domu.</textarea></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="s-mail">Adres e-mail</label><span id="s-mail-e" style="font-size: 16px; color: #B42318; font-weight: 700">Wpisz adres w formie nazwa@domena.pl</span><input id="s-mail" type="email" aria-invalid="true" aria-describedby="s-mail-e" value="stanislaw@" style="border: 2px solid #B42318"></div>
+      </div>
+    </section>
+    <section style="border-bottom: none; padding-bottom: 64px">
+      <h2 class="h" style="font-size: 28px">Zasady</h2>
+      <ul style="margin: 0; padding-left: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 32px">
+        <li>Tekst 18 px, kontrast co najmniej 4,5:1.</li>
+        <li>Przyciski 50 px wysokości, cele dotykowe min. 44 px.</li>
+        <li>Fokus: ceglasta obwódka 3 px.</li>
+        <li>Mało etykiet: tylko „Propozycja AI”, „Sprawdzona przez ROPS” i statusy.</li>
+        <li>Wykresy zawsze z tabelą z tymi samymi danymi.</li>
+        <li>Wyniki AI ogłaszane czytnikom ekranu (aria-live).</li>
+        <li>Układ działa przy 200% i na ekranie 320 px.</li>
+        <li>Przycisk A+ powiększa tekst i podnosi kontrast.</li>
+      </ul>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1750}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

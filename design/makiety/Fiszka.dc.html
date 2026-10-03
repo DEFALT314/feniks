@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – fiszka pomysłu i wniosek</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#EEF0F4;color:#4B5565}
+.tag-ok{background:#E3F2EA;color:#1D6B48}
+.tag-ai{background:#E8EDFA;color:#1F3A8A}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+label{font-weight:700}
+input,textarea,select{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+.f{display:flex;flex-direction:column;gap:6px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{min-height:46px;padding:0 16px;border-radius:10px;border:1px solid #6B7487;background:#fff;font:inherit;font-size:17px;cursor:pointer;color:#151A23}
+.ai{border-left:3px solid #1F3A8A;padding:4px 0 4px 16px;display:flex;flex-direction:column;gap:6px}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+  <dc-import name="Naglowek" active="kreator" rola="ngo" kto="Fundacja Dobry Start" hint-size="100%,112px"></dc-import>
+  <main>
+    <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
+      <div class="wrap" style="padding-top: 32px; padding-bottom: 28px; display: flex; flex-direction: column; gap: 10px">
+        <a href="Kreator.dc.html" style="font-size: 16px">← Wróć do kreatora</a>
+        <h1 class="h" style="font-size: 40px">Sąsiedzki dyżur po wypisie</h1>
+        <span class="muted" style="font-size: 16px">Szkic · obszar: Seniorzy, usługi opiekuńcze w gminie</span>
+      </div>
+    </div>
+    <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 48px; padding-top: 32px; padding-bottom: 64px">
+      <section aria-label="Fiszka" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 18px; max-width: 700px">
+        <h2 class="h" style="font-size: 26px">Fiszka</h2>
+        <div class="f"><label for="f-tyt">Tytuł</label><input id="f-tyt" value="Sąsiedzki dyżur po wypisie"></div>
+        <div class="f"><label for="f-opis">Opis</label><textarea id="f-opis" rows="3">Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala: zakupy, leki, rozmowa i kontakt z ośrodkiem pomocy społecznej.</textarea></div>
+        <div class="f"><label for="f-ist">Istota</label><textarea id="f-ist" rows="2">Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu.</textarea></div>
+        <div class="f"><label for="f-dk">Dla kogo</label><input id="f-dk" value="Seniorzy mieszkający samotnie w gminach wiejskich i ich rodziny"></div>
+        <div class="f"><span style="font-weight: 700" id="etap">Etap</span><div class="seg" role="group" aria-labelledby="etap"><button type="button" aria-pressed="true" style="background: #1F3A8A; color: #FFFFFF; border-color: #1F3A8A">Pomysł</button><button type="button" aria-pressed="false">Prototyp</button><button type="button" aria-pressed="false">Przetestowane</button><button type="button" aria-pressed="false">Gotowe do wdrożenia</button></div></div>
+
+        <div style="border-top: 1px solid #D9DDE4; margin-top: 12px; padding-top: 24px; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h2 class="h" style="font-size: 26px">Wniosek pod nabór</h2><span class="tag tag-ai">Propozycja AI</span></div>
+          <div class="f"><label for="f-nab">Nabór</label><select id="f-nab"><option>[Nabór z listy ROPS]</option></select></div>
+          <div class="ai"><span class="lbl">Cel projektu</span><p>Zapewnienie seniorom mieszkającym samotnie wsparcia sąsiedzkiego w pierwszych dwóch tygodniach po wypisie ze szpitala, w porozumieniu z ośrodkiem pomocy społecznej.</p><div style="display: flex; gap: 14px"><button type="button" class="btn btn-s" style="min-height: 44px">Użyj</button><button type="button" class="btn btn-s" style="min-height: 44px">Popraw</button></div></div>
+          <div class="ai"><span class="lbl">Działania</span><p>Rekrutacja i szkolenie wolontariuszy, grafik dyżurów, karta kontaktu z OPS, spotkanie podsumowujące z rodzinami.</p><div style="display: flex; gap: 14px"><button type="button" class="btn btn-s" style="min-height: 44px">Użyj</button><button type="button" class="btn btn-s" style="min-height: 44px">Popraw</button></div></div>
+          <div class="ai" style="border-left-color: #8A4B00"><span class="lbl">Rezultaty</span><p>[Liczba seniorów objętych wsparciem] · [liczba przeszkolonych wolontariuszy]. Uzupełnij sam, AI nie podaje liczb.</p></div>
+        </div>
+      </section>
+      <aside style="flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 20px">
+        <div class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+          <span class="lbl">Coś podobnego już działa</span>
+          <strong style="font-size: 19px">Organizator kompleksowej opieki w miejscu zamieszkania</strong>
+          <span class="tag tag-ok" style="align-self: flex-start">Sprawdzona przez ROPS</span>
+          <p class="muted" style="font-size: 16px">Twój pomysł może ją uzupełnić. Warto porozmawiać z autorami, zanim wyślesz fiszkę.</p>
+          <a href="Karta.dc.html" style="font-weight: 700">Zobacz kartę →</a>
+        </div>
+        <div class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px"><span class="lbl">Wizualizacja</span><span class="tag tag-ai">Propozycja AI</span></div>
+          <div role="img" aria-label="Miejsce na obraz wygenerowany przez model" class="muted" style="height: 180px; border-radius: 10px; border: 1px dashed #8A93A3; background: #F6F7F9; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 16px">[Obraz z modelu na Hugging Face]</div>
+          <div class="f"><label for="f-alt" style="font-size: 16px">Opis obrazu dla czytnika ekranu</label><input id="f-alt" value="Wolontariuszka z torbą zakupów rozmawia z seniorem przy drzwiach domu"></div>
+          <button type="button" class="btn btn-s">Wygeneruj ponownie</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <button type="button" class="btn btn-p">Wyślij do ROPS</button>
+          <p class="muted" style="font-size: 16px">Zespół ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1650}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
