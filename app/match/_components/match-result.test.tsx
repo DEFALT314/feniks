@@ -68,6 +68,22 @@ describe("MatchResult", () => {
     expect(link).toContain("bg-primary");
   });
 
+  it("calls a weak result with picks a partial fit, not 'no solution yet'", () => {
+    const html = render({ ...ai, match_quality: "weak" });
+    expect(html).toContain("Te innowacje pasują tylko częściowo.");
+    expect(html).not.toContain("takiego rozwiązania jeszcze nie ma");
+  });
+
+  it("puts the emergency numbers above the result when the description is an emergency", () => {
+    const segments = (text: string) => [{ text, highlight: false }];
+    const violence = render({ ...ai, description_segments: segments("sasiad bije zone") });
+    expect(violence.indexOf('href="tel:112"')).toBeLessThan(violence.indexOf("Wynik"));
+    expect(violence).toContain('href="tel:800120002"');
+    const suicide = render({ ...ai, description_segments: segments("syn nie chce żyć") });
+    expect(suicide).toContain('href="tel:800702222"');
+    expect(render(ai)).not.toContain("tel:112");
+  });
+
   it("numbers the steps without a gap when there is no challenge", () => {
     const html = render({ ...ai, challenge: null });
     expect(html).not.toContain("Wyzwanie z Mapy Wyzwań ROPS");

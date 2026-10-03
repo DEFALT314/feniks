@@ -8,7 +8,11 @@ import { respond, SIGN_IN, signedInDeps } from "./deps";
 export async function POST(request: Request) {
   const deps = await signedInDeps();
   if (!deps) return SIGN_IN.clone();
-  const read = await readAiRequest(request, ServiceCardRequest);
+  const read = await readAiRequest(
+    request,
+    ServiceCardRequest,
+    "Wybierz innowację i wpisz nazwę instytucji, a potem spróbuj ponownie.",
+  );
   if ("response" in read) return read.response;
   try {
     return respond(await createCard(read.data, deps));
