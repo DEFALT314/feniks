@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
 import { plural } from "../_lib/format";
 import { NewCardForm } from "./new-card-form";
+import { requireRops } from "@/lib/auth/require-rops";
 
 export const metadata: Metadata = { title: "Biblioteka – Panel ROPS – HubMI.pl" };
 
@@ -27,6 +28,7 @@ async function recentEdits(): Promise<AuditRow[]> {
 const time = new Intl.DateTimeFormat("pl-PL", { dateStyle: "short", timeStyle: "short" });
 
 export default async function Page({ searchParams }: PageProps<"/admin/library">) {
+  await requireRops();
   const { q } = await searchParams;
   const query = typeof q === "string" ? q : "";
   const [innovations, categories, edits] = await Promise.all([

@@ -4,11 +4,13 @@ import { notFound } from "next/navigation";
 import { getCategories, getInnovationById } from "@/app/library/_lib/data";
 import { AdminNav } from "../../_components/admin-nav";
 import { EditForm } from "./edit-form";
+import { requireRops } from "@/lib/auth/require-rops";
 
 export const metadata: Metadata = { title: "Edycja karty innowacji – Panel ROPS – HubMI.pl" };
 
 // Access is checked in app/admin/layout.tsx; writes go through RLS (rops_redaktor, rops_admin)
 export default async function Page({ params, searchParams }: PageProps<"/admin/library/[id]">) {
+  await requireRops();
   const { id } = await params;
   const justCreated = (await searchParams).new === "1";
   const [innovation, categories] = await Promise.all([getInnovationById(id), getCategories()]);

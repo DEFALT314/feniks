@@ -9,11 +9,13 @@ import { AdminNav } from "../_components/admin-nav";
 import { FocusHeading } from "@/components/ui/param-focus";
 import { CallForm } from "./_components/call-form";
 import { TogglePublishedForm } from "./_components/toggle-published-form";
+import { requireRops } from "@/lib/auth/require-rops";
 
 export const metadata: Metadata = { title: "Nabory – Panel ROPS – HubMI.pl" };
 
 // Module VI, calls for proposals (#10): list, add, edit, switch on/off. Role checked in ../layout.tsx.
 export default async function CallsPage({ searchParams }: PageProps<"/admin/calls">) {
+  await requireRops();
   const params = await searchParams;
   const supabase = await createClient();
   const editId = typeof params.edit === "string" ? params.edit : null;

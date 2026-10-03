@@ -14,6 +14,7 @@ import {
   type IdeaRow,
   type QueryRow,
 } from "./_lib/aggregate";
+import { requireRops } from "@/lib/auth/require-rops";
 
 export const metadata: Metadata = { title: "Potrzeby w regionie – Panel ROPS – HubMI.pl" };
 
@@ -39,6 +40,7 @@ async function loadRows(days: number): Promise<{ queries: QueryRow[]; ideas: Ide
 }
 
 export default async function Page({ searchParams }: PageProps<"/admin/trends">) {
+  await requireRops();
   const days = parsePeriod((await searchParams).days);
   const [areas, rows] = await Promise.all([getChallengeAreas(), loadRows(days)]);
   const trends = aggregateTrends(areas, rows.queries, rows.ideas);
