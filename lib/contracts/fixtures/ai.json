@@ -35,21 +35,29 @@
         "key": "goal",
         "title": "Cel projektu",
         "text": "Zapewnienie seniorom mieszkającym samotnie wsparcia sąsiedzkiego w pierwszych dwóch tygodniach po wypisie ze szpitala, w porozumieniu z ośrodkiem pomocy społecznej.",
-        "needs_user_input": false
+        "needs_user_input": false,
+        "sources": ["Fiszka: Opis"]
       },
       {
         "key": "activities",
         "title": "Działania",
         "text": "Rekrutacja i szkolenie wolontariuszy, grafik dyżurów, karta kontaktu z OPS, spotkanie podsumowujące z rodzinami.",
-        "needs_user_input": false
+        "needs_user_input": false,
+        "sources": ["Fiszka: Opis"]
       },
       {
         "key": "results",
         "title": "Rezultaty",
         "text": "[Liczba seniorów objętych wsparciem] · [liczba przeszkolonych wolontariuszy]",
-        "needs_user_input": true
+        "needs_user_input": true,
+        "sources": ["Fiszka: Opis"]
       }
-    ]
+    ],
+    "fit": {
+      "level": "dobra",
+      "note": "Nabór finansuje wsparcie seniorów w domu, a Twój pomysł pomaga seniorom po wypisie ze szpitala."
+    },
+    "missing": ["Liczba seniorów, którym pomożecie", "Koszty: [kwota] przy każdej pozycji budżetu"]
   },
   "call_list": {
     "calls": [
@@ -76,6 +84,115 @@
         "goal": "Rozwiązania, które usuwają bariery w dostępie do urzędów, transportu, kultury i usług społecznych.",
         "deadline": "2027-01-31",
         "demo": true
+      }
+    ]
+  },
+  "review_response": {
+    "progress": {
+      "card_filled": 3,
+      "card_total": 4,
+      "canvas_answered": 14,
+      "canvas_total": 22
+    },
+    "checks": [
+      {
+        "id": "pusty-dla-kogo",
+        "kind": "brakuje",
+        "title": "Napisz, dla kogo jest pomysł",
+        "detail": "Pole „Dla kogo” jest puste. ROPS i grantodawca najpierw sprawdzają, komu dokładnie pomagasz.",
+        "field": "audience",
+        "step": null,
+        "suggestion": null,
+        "source": {
+          "kind": "fiszka",
+          "field": "audience"
+        },
+        "ai": false
+      },
+      {
+        "id": "kto-zaplaci",
+        "kind": "brakuje",
+        "title": "Nie wiadomo, kto zapłaci",
+        "detail": "W kanwie przy głównym dochodzie zaznaczyłeś „Nie wiemy jeszcze”. Bez płatnika pomysł nie przetrwa po pierwszym projekcie.",
+        "field": null,
+        "step": "glowny-dochod",
+        "suggestion": null,
+        "source": {
+          "kind": "kanwa",
+          "step": "glowny-dochod",
+          "label": "Główny dochód",
+          "answer": "Nie wiemy jeszcze"
+        },
+        "ai": false
+      },
+      {
+        "id": "ai-kontakt-ze-szpitalem",
+        "kind": "do_przemyslenia",
+        "title": "Skąd dowiecie się o wypisie ze szpitala?",
+        "detail": "Opis nie mówi, jak wolontariusz trafi do seniora. W podobnej innowacji robi to jedna osoba, która łączy rodzinę, ośrodek i sprzęt.",
+        "field": "description",
+        "step": null,
+        "suggestion": "O wypisie seniora informuje nas ośrodek pomocy społecznej.",
+        "source": {
+          "kind": "biblioteka",
+          "innovation_id": "organizator-kompleksowej-opieki-w-miejscu-zamieszkania",
+          "name": "Organizator kompleksowej opieki w miejscu zamieszkania",
+          "quote": "organizacja opieki, sprzętu i wsparcia dostosowanych do możliwości bliskich"
+        },
+        "ai": true
+      },
+      {
+        "id": "mocny-problem",
+        "kind": "mocna_strona",
+        "title": "Mocny argument: problem jest poważny i częsty",
+        "detail": "W kanwie oceniasz problem jako bardzo poważny i występujący codziennie. Napisz to wprost w opisie.",
+        "field": "description",
+        "step": "intensywnosc",
+        "suggestion": null,
+        "source": {
+          "kind": "kanwa",
+          "step": "intensywnosc",
+          "label": "Intensywność",
+          "answer": "Bardzo poważny problem"
+        },
+        "ai": false
+      }
+    ],
+    "similar": [
+      {
+        "id": "organizator-kompleksowej-opieki-w-miejscu-zamieszkania",
+        "nazwa": "Organizator kompleksowej opieki w miejscu zamieszkania",
+        "kategoria_id": "dla-seniorow",
+        "etykieta": "MIWS",
+        "sprawdzona_przez_rops": true,
+        "opis_krotki": "Program pilnej, wielokierunkowej pomocy w domu dla osób niesamodzielnych po wyjściu ze szpitala i ich rodzin: organizacja opieki, sprzętu i wsparcia dostosowanych do możliwości bliskich.",
+        "dla_kogo": [
+          "osoby niesamodzielne po pobycie w szpitalu",
+          "seniorzy po nagłym pogorszeniu zdrowia",
+          "rodziny i opiekunowie nieformalni"
+        ],
+        "slowa_kluczowe": [
+          "opieka domowa",
+          "wypis ze szpitala",
+          "osoba leżąca",
+          "opiekun rodzinny",
+          "niesamodzielność",
+          "opieka długoterminowa",
+          "sprzęt rehabilitacyjny",
+          "pielęgniarka",
+          "usługi opiekuńcze",
+          "senior",
+          "po szpitalu"
+        ],
+        "spoza_biblioteki": false,
+        "opis_niepelny": false,
+        "ma_film": false,
+        "ma_pdf": true,
+        "kto_moze_wdrozyc": [
+          "podmioty organizujące pielęgniarstwo opieki długoterminowej",
+          "JST",
+          "OPS"
+        ]
       }
     ]
   }
