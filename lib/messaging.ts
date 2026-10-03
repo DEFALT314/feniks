@@ -272,7 +272,14 @@ export type MessagingDeps = {
   sendEmail: (m: EmailMessage) => Promise<EmailResult>;
   ropsInbox?: string;
   siteUrl: string;
+  /** Used only while public.notify_thread is missing (database not migrated yet). */
+  addNotification?: (n: NewNotification) => Promise<unknown>;
 };
+
+// PostgREST "function not found" (PGRST202) or Postgres "undefined function" (42883)
+function missingFunction(error: { code?: string; message?: string }): boolean {
+  return error.code === "PGRST202" || error.code === "42883";
+}
 
 /**
  * After a message: notify everyone else in the thread live, plus all of ROPS when the writer is
@@ -293,8 +300,27 @@ export async function announceMessage(
   const jobs: Promise<unknown>[] = [
     Promise.resolve(
       deps.supabase.rpc("notify_thread", { p_thread_id: threadId, p_tytul: tytul.slice(0, 200) }),
-    ).then(({ error }) => {
-      if (error) throw new Error(`notify_thread: ${error.message}`);
+    ).then(async ({ error }) => {
+      if (!error) return;
+      // Before 202610040110_messages_contacts.sql is applied: the old way, which at least tells
+      // ROPS about every message from users and the thread about every ROPS answer.
+      if (missingFunction(error) && deps.addNotification) {
+        const { data: participants } = await deps.supabase
+          .from("thread_participants")
+          .select("user_id")
+          .eq("thread_id", threadId);
+        const others = (participants ?? []).map((p) => p.user_id).filter((id) => id !== deps.me.id);
+        if (!others.length && fromRops) return;
+        await deps.addNotification({
+          typ: "wiadomosc",
+          tytul: tytul.slice(0, 200),
+          link,
+          ...(others.length ? { userIds: others } : {}),
+          ...(!fromRops ? { role: ["rops_redaktor", "rops_admin"] } : {}),
+        });
+        return;
+      }
+      throw new Error(`notify_thread: ${error.message}`);
     }),
   ];
 
