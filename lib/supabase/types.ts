@@ -868,7 +868,8 @@ export type Database = {
         Row: {
           created_at: string;
           id: string;
-          idea_id: string;
+          idea_id: string | null;
+          innowacja_id: string | null;
           liczba_miejsc: number | null;
           miejsce: string | null;
           opis: string | null;
@@ -878,7 +879,8 @@ export type Database = {
         Insert: {
           created_at?: string;
           id?: string;
-          idea_id: string;
+          idea_id?: string | null;
+          innowacja_id?: string | null;
           liczba_miejsc?: number | null;
           miejsce?: string | null;
           opis?: string | null;
@@ -888,7 +890,8 @@ export type Database = {
         Update: {
           created_at?: string;
           id?: string;
-          idea_id?: string;
+          idea_id?: string | null;
+          innowacja_id?: string | null;
           liczba_miejsc?: number | null;
           miejsce?: string | null;
           opis?: string | null;
@@ -901,6 +904,13 @@ export type Database = {
             columns: ["idea_id"];
             isOneToOne: false;
             referencedRelation: "ideas";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tests_innowacja_id_fkey";
+            columns: ["innowacja_id"];
+            isOneToOne: false;
+            referencedRelation: "innovations";
             referencedColumns: ["id"];
           },
         ];
@@ -1041,6 +1051,14 @@ export type Database = {
       };
       can_review_idea: { Args: { p_idea_id: string }; Returns: boolean };
       can_see_thread: { Args: { p_thread_id: string }; Returns: boolean };
+      contact_directory: {
+        Args: never;
+        Returns: {
+          id: string;
+          nazwa: string;
+          rola: string;
+        }[];
+      };
       dodaj_powiadomienie: {
         Args: {
           p_link?: string;
@@ -1053,17 +1071,15 @@ export type Database = {
       };
       idea_author_email: { Args: { p_idea_id: string }; Returns: string };
       idea_editable: { Args: { p_idea_id: string }; Returns: boolean };
+      invite_to_thread: {
+        Args: { p_thread_id: string; p_user_id: string };
+        Returns: undefined;
+      };
       is_idea_author: { Args: { p_idea_id: string }; Returns: boolean };
       is_rops: { Args: never; Returns: boolean };
       is_signed_up: { Args: { p_test_id: string }; Returns: boolean };
       is_test_author: { Args: { p_test_id: string }; Returns: boolean };
       mark_thread_read: { Args: { p_thread_id: string }; Returns: undefined };
-      notify_thread: { Args: { p_thread_id: string; p_tytul: string }; Returns: number };
-      invite_to_thread: { Args: { p_thread_id: string; p_user_id: string }; Returns: undefined };
-      contact_directory: {
-        Args: never;
-        Returns: { id: string; nazwa: string; rola: string }[];
-      };
       match_embeddings: {
         Args: { match_count?: number; match_kind: string; query: string };
         Returns: {
@@ -1072,6 +1088,10 @@ export type Database = {
         }[];
       };
       moja_rola: { Args: never; Returns: string };
+      notify_thread: {
+        Args: { p_thread_id: string; p_tytul: string };
+        Returns: number;
+      };
       post_message: {
         Args: { p_thread_id: string; p_tresc: string };
         Returns: string;
@@ -1085,6 +1105,13 @@ export type Database = {
           p_uczestnicy?: string[];
         };
         Returns: string;
+      };
+      test_seats_taken: {
+        Args: { p_test_ids: string[] };
+        Returns: {
+          test_id: string;
+          zajete: number;
+        }[];
       };
       thread_add_participant: {
         Args: { p_thread_id: string; p_user_id: string };
