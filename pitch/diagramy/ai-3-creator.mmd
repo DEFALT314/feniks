@@ -1,13 +1,17 @@
 %%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
 flowchart LR
-    I(["Idea card"]):::data --> X("AI assistant"):::ai
-    K(["Canvas answers"]):::data --> X
+    I(["Idea card +<br/>canvas answers"]):::data --> R1("Rules<br/>from canvas"):::data
+    I --> X("AI points<br/>with evidence"):::ai
     L(["Similar Library<br/>innovations"]):::data --> X
-    X --> C("Check my card<br/>points with evidence"):::ai
-    X --> G("Grant draft<br/>budget with [amount]"):::ai
+    I --> B("Budget computed<br/>from canvas"):::data
+    I --> G("AI grant draft"):::ai
+    B --> G
+    R1 --> C("Check my card"):::data
+    X --> C
     C --> H("Author clicks<br/>to add"):::human
     G --> H
-    H --> R(["Sent to ROPS<br/>ROPS reviews"]):::human
+    H --> S("Send to ROPS"):::human
+    S --> RV(["ROPS reviews"]):::human
     classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
     classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
     classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold

@@ -5,17 +5,25 @@ Nothing the AI writes is published or sent without a human click, and every AI t
 
 ## 1. Overview
 
-Personal data (phone, e-mail, PESEL) is removed before anything reaches the model. The model answers in JSON, which is validated; it may only pick from the identifiers it was given.
+Three modules share one AI core. Personal data (phone, e-mail, PESEL) is removed before anything reaches the AI model (the provider is configurable). The answer is validated: only the identifiers it was given, quotes copied word for word, no invented numbers. Search by words and meaning feeds Matchmaking and the Idea creator.
 
 ```mermaid
 %%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
 flowchart LR
-    U(["Resident or<br/>institution"]):::data --> P("Remove<br/>personal data"):::data
-    P --> S("Search<br/>BM25 + vectors"):::data
-    S --> M("AI model<br/>DeepSeek"):::ai
-    M --> V("Validate<br/>answer"):::data
-    V --> H("Human decides"):::human
+    M(["Matchmaking"]):::data --> P
+    C(["Idea creator"]):::data --> P
+    W(["Middleman"]):::data --> P
+    S("Search<br/>words + meaning"):::data -.-> M
+    S -.-> C
+    subgraph core["Shared AI core"]
+        direction LR
+        P("Remove<br/>personal data"):::data --> A("AI model"):::ai
+        A --> V("Validate answer<br/>given IDs, exact quotes,<br/>no invented numbers"):::data
+    end
+    V --> L("AI proposal<br/>label"):::ai
+    L --> H("Human decides"):::human
     H --> R(["ROPS"]):::human
+    style core fill:#F6F7F9,stroke:#D9DDE4,color:#4B5565
     classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
     classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
     classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold
@@ -30,10 +38,10 @@ The ranking comes first, without AI (keywords + meaning, 0.8 vectors / 0.2 keywo
 flowchart LR
     D(["Problem<br/>description"]):::data --> S("Hybrid search<br/>words + meaning"):::data
     S --> C("15 candidates"):::data
-    C --> A("AI picks ≤ 3<br/>+ challenge"):::ai
-    A --> Q("Quotes<br/>checked"):::data
+    C --> A("AI picks ≤ 3<br/>+ 1 challenge"):::ai
+    A --> Q("IDs and quotes<br/>checked"):::data
     Q --> H("Shown as<br/>AI proposal"):::human
-    A -.-> T("Anonymous<br/>stats"):::data
+    A -.-> T("Stats: area<br/>+ challenge only"):::data
     T -.-> R(["ROPS trends"]):::human
     classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
     classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
@@ -42,19 +50,23 @@ flowchart LR
 
 ## 3. Idea creator
 
-„Check my card” points out what to change, each point with its evidence: the author's canvas answer or a quote from a similar Library innovation. The grant draft uses the canvas; the budget lists the costs the author ticked, each with [amount].
+„Check my card” combines rules computed from the canvas with AI points, each with its evidence (the author's canvas answer or a quote from a similar Library innovation). The grant draft is written by AI from the card and canvas; its budget is computed by code from the costs the author ticked, each with [amount]. Nothing is added without the author's click, and sending to ROPS is a separate step.
 
 ```mermaid
 %%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
 flowchart LR
-    I(["Idea card"]):::data --> X("AI assistant"):::ai
-    K(["Canvas answers"]):::data --> X
+    I(["Idea card +<br/>canvas answers"]):::data --> R1("Rules<br/>from canvas"):::data
+    I --> X("AI points<br/>with evidence"):::ai
     L(["Similar Library<br/>innovations"]):::data --> X
-    X --> C("Check my card<br/>points with evidence"):::ai
-    X --> G("Grant draft<br/>budget with [amount]"):::ai
+    I --> B("Budget computed<br/>from canvas"):::data
+    I --> G("AI grant draft"):::ai
+    B --> G
+    R1 --> C("Check my card"):::data
+    X --> C
     C --> H("Author clicks<br/>to add"):::human
     G --> H
-    H --> R(["Sent to ROPS<br/>ROPS reviews"]):::human
+    H --> S("Send to ROPS"):::human
+    S --> RV(["ROPS reviews"]):::human
     classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
     classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
     classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold

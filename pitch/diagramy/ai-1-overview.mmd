@@ -1,11 +1,19 @@
 %%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
 flowchart LR
-    U(["Resident or<br/>institution"]):::data --> P("Remove<br/>personal data"):::data
-    P --> S("Search<br/>BM25 + vectors"):::data
-    S --> M("AI model<br/>DeepSeek"):::ai
-    M --> V("Validate<br/>answer"):::data
-    V --> H("Human decides"):::human
+    M(["Matchmaking"]):::data --> P
+    C(["Idea creator"]):::data --> P
+    W(["Middleman"]):::data --> P
+    S("Search<br/>words + meaning"):::data -.-> M
+    S -.-> C
+    subgraph core["Shared AI core"]
+        direction LR
+        P("Remove<br/>personal data"):::data --> A("AI model"):::ai
+        A --> V("Validate answer<br/>given IDs, exact quotes,<br/>no invented numbers"):::data
+    end
+    V --> L("AI proposal<br/>label"):::ai
+    L --> H("Human decides"):::human
     H --> R(["ROPS"]):::human
+    style core fill:#F6F7F9,stroke:#D9DDE4,color:#4B5565
     classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
     classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
     classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold
