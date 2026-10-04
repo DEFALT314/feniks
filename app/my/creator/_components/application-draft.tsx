@@ -13,7 +13,13 @@ type Section = ApplicationResponse["sections"][number];
 type State =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "done"; sections: Section[]; callId: string }
+  | {
+      status: "done";
+      sections: Section[];
+      callId: string;
+      fit?: ApplicationResponse["fit"];
+      missing?: string[];
+    }
   | { status: "error"; message: string };
 
 const date = new Intl.DateTimeFormat("pl-PL", { dateStyle: "long", timeZone: "Europe/Warsaw" });
@@ -22,7 +28,24 @@ const date = new Intl.DateTimeFormat("pl-PL", { dateStyle: "long", timeZone: "Eu
 // The draft is editable text the author copies; AI leaves numbers and costs as [placeholders].
 // Accessibility: the draft is announced as one short sentence, not read out whole (WCAG 4.1.3);
 // changing the call keeps the edited draft until the author asks for a new one.
-export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft: IdeaDraft }) {
+const FIT: Record<
+  NonNullable<ApplicationResponse["fit"]>["level"],
+  { variant: "success" | "warning" | "danger"; text: string }
+> = {
+  dobra: { variant: "success", text: "Pasuje do naboru" },
+  czesciowa: { variant: "warning", text: "Pasuje częściowo" },
+  slaba: { variant: "danger", text: "Słabo pasuje do naboru" },
+};
+
+export function ApplicationDraft({
+  calls,
+  draft,
+  ideaId,
+}: {
+  calls: CallSummary[];
+  draft: IdeaDraft;
+  ideaId?: string; // the saved idea: the draft then uses its canvas answers (P3)
+}) {
   const selectId = useId();
   const reasonId = useId();
   const [callId, setCallId] = useState(calls[0]?.id ?? "");
@@ -37,7 +60,7 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
     announce("Asystent AI pisze szkic wniosku.");
     const result = await postJson(
       "/api/ai/application",
-      { idea: draft, call_id: callId },
+      { idea: draft, call_id: callId, ...(ideaId ? { idea_id: ideaId } : {}) },
       ApplicationResponse,
     );
     if (!result.ok) {
@@ -45,7 +68,13 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
       return setState({ status: "error", message: result.error });
     }
     setTexts(Object.fromEntries(result.data.sections.map((s) => [s.key, s.text])));
-    setState({ status: "done", sections: result.data.sections, callId });
+    setState({
+      status: "done",
+      sections: result.data.sections,
+      callId,
+      fit: result.data.fit,
+      missing: result.data.missing,
+    });
     announce(applicationAnnouncement(result.data.sections.length));
   };
 
@@ -162,6 +191,15 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
                 w szkicu wtedy znikną.
               </p>
             ) : null}
+            {state.fit ? (
+              <div className="border-navy-soft flex flex-col gap-1.5 rounded-[10px] border-2 bg-white px-4 py-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant={FIT[state.fit.level].variant}>{FIT[state.fit.level].text}</Badge>
+                  <Badge variant="ai">Propozycja AI</Badge>
+                </div>
+                <p className="text-base">{state.fit.note}</p>
+              </div>
+            ) : null}
             <p className="text-muted-foreground text-base">
               To szkic do poprawienia. AI nie wpisuje liczb ani kwot. Uzupełnij je w miejscach w
               nawiasach [ ].
@@ -192,6 +230,11 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
                     />
                   )}
                 </Field>
+                {section.sources?.length ? (
+                  <p className="text-muted-foreground text-base">
+                    Na podstawie: {section.sources.join(", ")}
+                  </p>
+                ) : null}
                 <Button
                   variant="tertiary"
                   size="sm"
@@ -202,6 +245,16 @@ export function ApplicationDraft({ calls, draft }: { calls: CallSummary[]; draft
                 </Button>
               </div>
             ))}
+            {state.missing?.length ? (
+              <div className="bg-warning-soft flex flex-col gap-1 rounded-[10px] px-4 py-3 text-base">
+                <p className="font-bold">Zanim złożysz wniosek, dopisz:</p>
+                <ul className="list-disc pl-6">
+                  {state.missing.map((m) => (
+                    <li key={m}>{m}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             <Button
               variant="secondary"
               className="self-start"
