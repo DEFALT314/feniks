@@ -17,6 +17,10 @@ insert into wyniki select 'trigger creates a mieszkaniec profile with display na
           and role = 'mieszkaniec' and nazwa_wyswietlana = 'Test Mieszkaniec');
 
 update public.profiles set role = 'rops_admin' where id = '00000000-0000-4000-8000-0000000000a3';
+-- ROPS accounts in this database (test admin plus any demo or real ones), counted before RLS applies.
+create temp table rops_accounts as
+  select count(*) as n from public.profiles where role in ('rops_redaktor', 'rops_admin');
+grant select on rops_accounts to authenticated, anon;
 
 -- ---------- as mieszkaniec ----------
 set local role authenticated;
@@ -40,8 +44,10 @@ update public.profiles set nazwa_wyswietlana = 'X' where id = '00000000-0000-400
 insert into wyniki select 'mieszkaniec cannot update another profile (0 rows)',
   not exists (select 1 from public.profiles where nazwa_wyswietlana = 'X');
 
-insert into wyniki select 'mieszkaniec notifies ROPS (1 admin)',
-  public.dodaj_powiadomienie('pomysl_wyslany', 'Nowy pomysł', '/admin', null, array['rops_redaktor','rops_admin']) = 1;
+-- One notification per ROPS account (the test admin plus any demo or real ROPS accounts).
+insert into wyniki select 'mieszkaniec notifies every ROPS account',
+  public.dodaj_powiadomienie('pomysl_wyslany', 'Nowy pomysł', '/admin', null, array['rops_redaktor','rops_admin'])
+    = (select n from rops_accounts);
 insert into wyniki select 'mieszkaniec cannot notify another mieszkaniec',
   public.dodaj_powiadomienie('spam', 'Spam', null, array['00000000-0000-4000-8000-0000000000a2']::uuid[], null) = 0;
 insert into wyniki select 'mieszkaniec notifies themselves',
