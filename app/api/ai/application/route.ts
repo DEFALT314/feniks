@@ -1,10 +1,13 @@
 // POST /api/ai/application – draft of a grant application for an open call (#18). Contract: lib/contracts/ai.ts.
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
+import { canvasAnswers } from "@/lib/ai/creator/canvas-store";
 import { applicationDraft } from "@/lib/ai/creator/creator";
 import { openCalls } from "@/lib/ai/creator/open-calls";
 import { aiFailure, jsonError, readAiRequest } from "@/lib/ai/http";
 import { ApplicationRequest } from "@/lib/contracts/ai";
+import { createClient } from "@/lib/supabase/server";
 
 // The creator lives under /my, so only signed-in users call this; a guest must not spend AI budget.
 export async function POST(request: Request) {
@@ -14,7 +17,15 @@ export async function POST(request: Request) {
   const read = await readAiRequest(request, ApplicationRequest);
   if ("response" in read) return read.response;
   try {
-    const draft = await applicationDraft(read.data, {}, await openCalls());
+    // The author's canvas answers (costs, partners, audience, impact) ground the draft.
+    const ideaId = read.data.idea_id;
+    const [calls, answers] = await Promise.all([
+      openCalls(),
+      ideaId
+        ? createClient().then((db) => canvasAnswers(db as unknown as SupabaseClient, ideaId))
+        : {},
+    ]);
+    const draft = await applicationDraft(read.data, {}, calls, answers);
     return draft
       ? NextResponse.json(draft)
       : jsonError(

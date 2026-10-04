@@ -41,3 +41,36 @@ Database: a Supabase cloud project (Frankfurt). One-time setup: `pnpm exec supab
 - `proxy.ts` – refreshes the Supabase session (replaces `middleware.ts` in Next.js 16), not a security boundary
 - `supabase/migrations/` – migrations `<YYYYMMDDHHMM>_<module>_<description>.sql`
 - `data/rops/` – ROPS data (read-only)
+
+## Before a demo (P4)
+
+Needs the Supabase CLI linked (`pnpm exec supabase login`, `pnpm exec supabase link --project-ref …`)
+and `.env.local` with the Supabase keys.
+
+```bash
+pnpm demo:reset          # demo data back to the mockups, rehearsal leftovers removed
+pnpm demo:reset --full   # the same, after reloading the catalog (supabase/seed.sql)
+pnpm db:test             # SQL permission tests (supabase/tests/*.sql), each rolled back
+pnpm db:roles            # signs in as every demo account and a guest: who sees which rows
+```
+
+`demo:reset` removes everything the demo accounts created while clicking through the app (ideas,
+service cards, test sign-ups and ratings, conversations, notifications, the daily AI counter) and
+inserts the mockup data again: 3 ideas in the ROPS queue, a conversation, a service card, 3 tests,
+3 grant calls and the search statistics for "Potrzeby w regionie". Real accounts are not touched.
+
+## Open data: grant calls API (P4)
+
+Published calls for proposals ("nabory") for municipal websites and grant databases. Public, no key,
+CORS enabled, cached for 5 minutes.
+
+```bash
+curl https://feniks-hub.vercel.app/api/calls                         # open calls, JSON
+curl "https://feniks-hub.vercel.app/api/calls?area=seniorzy"         # one Challenge map area
+curl "https://feniks-hub.vercel.app/api/calls?status=all&format=csv" # also past ones, CSV for Excel
+```
+
+Import from an external grant database (ROPS session only): `POST /api/admin/calls/import` with
+`{ "calls": [{ "id": "nabor-x-2027", "nazwa": "…", "termin_do": "2027-03-31", "obszary": ["seniorzy"] }] }`.
+New calls arrive switched off and are published by ROPS in Panel ROPS → Nabory; existing ids are
+updated. Schemas: `CallsQuery`, `CallsResponse`, `CallImportRequest` in `lib/contracts/admin.ts`.

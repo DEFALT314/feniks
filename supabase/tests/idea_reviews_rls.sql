@@ -22,7 +22,8 @@ select set_config('request.jwt.claims', '{"sub":"00000000-0000-4000-8000-0000000
 insert into public.idea_reviews (idea_id, status, komentarz, ekspert_id) values
   ('00000000-0000-4000-8000-0000000000c1', 'do_poprawy', 'Dopisz koszty', '00000000-0000-4000-8000-0000000000b4');
 insert into results select 'ROPS adds a review as themselves',
-  (select reviewer_id = '00000000-0000-4000-8000-0000000000b3' from public.idea_reviews limit 1);
+  (select reviewer_id = '00000000-0000-4000-8000-0000000000b3' from public.idea_reviews
+   where idea_id = '00000000-0000-4000-8000-0000000000c1' limit 1);
 insert into results select 'ROPS reads the author e-mail',
   public.idea_author_email('00000000-0000-4000-8000-0000000000c1') = 'test-author@example.org';
 do $$ begin
@@ -31,8 +32,9 @@ do $$ begin
   insert into results values ('ROPS cannot spoof the reviewer', false);
 exception when others then insert into results values ('ROPS cannot spoof the reviewer', true);
 end $$;
-update public.idea_reviews set status = 'zatwierdzony';
-insert into results select 'reviews cannot be edited', (select bool_and(status = 'do_poprawy') from public.idea_reviews);
+update public.idea_reviews set status = 'zatwierdzony' where idea_id = '00000000-0000-4000-8000-0000000000c1';
+insert into results select 'reviews cannot be edited',
+  (select bool_and(status = 'do_poprawy') from public.idea_reviews where idea_id = '00000000-0000-4000-8000-0000000000c1');
 
 -- ---------- as the author ----------
 reset role; set local role authenticated;
