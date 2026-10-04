@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>HubMI – logowanie, stany</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+*{box-sizing:border-box}
+a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.625}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-p{background:#1F3A8A;color:#fff}.btn-p:hover{background:#172C6B;color:#fff}
+.btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}.btn-s:hover{background:#E8EDFA;color:#172C6B}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:14px}
+.muted{color:#4B5565}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+label{font-weight:700}
+input{font:inherit;font-size:18px;line-height:28px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+.acc{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;background:#fff;text-decoration:none;color:#151A23;min-height:64px;width:100%;font:inherit;text-align:left;cursor:pointer}
+.pw{position:absolute;right:4px;top:4px;bottom:4px;min-width:44px;padding:0 14px;border:1px solid transparent;border-radius:10px;background:#E8EDFA;color:#1F3A8A;font:inherit;font-size:16px;line-height:24px;font-weight:700;cursor:pointer}
+.bad{border-color:#B42318!important;box-shadow:0 0 0 1px #B42318}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.acc:hover{border-color:#1F3A8A;background:#F3F6FD;color:#151A23}
+.av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 40px;color:#FFFFFF}
+</style>
+</helmet>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.625; min-height: 100vh">
+<div class="wrap" style="max-width: 1080px; padding-top: 56px; padding-bottom: 72px; display: flex; flex-direction: column; gap: 32px">
+  <h1 class="h" style="font-size: 28px; line-height: 1.25">Logowanie</h1>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 40px; align-items: start">
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <p class="lbl">Puste pola</p>
+    <div class="card" style="width: 100%; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+      <p class="h" style="font-size: 34px">Zaloguj się</p>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+      <form novalidate style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label>Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label><p style="color: #B42318; font-size: 16px; line-height: 1.5; font-weight: 700">Wpisz poprawny adres e-mail, np. jan@example.org</p><input type="email" class="bad"></div>
+        <div style="position: relative">
+          <a href="#reset-hasla" style="position: absolute; top: -10px; right: 0; display: inline-flex; align-items: center; min-height: 44px; font-size: 16px">Nie pamiętasz hasła?</a>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label>Hasło<span class="muted" style="font-weight: 400"> (wymagane)</span></label><p style="color: #B42318; font-size: 16px; line-height: 1.5; font-weight: 700">Wpisz hasło.</p><div style="position: relative"><input type="password" class="bad" style="padding-right: 112px"><button type="button" class="pw">Pokaż<span class="sr-only"> hasło</span></button></div></div>
+        </div>
+        <button type="submit" class="btn btn-p" style="width: 100%">Zaloguj</button>
+      </form>
+      </div>
+      <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Nie masz konta? <a href="Rejestracja.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Załóż konto</a></p>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <p class="lbl">Błędne hasło</p>
+    <div class="card" style="width: 100%; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+      <p class="h" style="font-size: 34px">Zaloguj się</p>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+      <form novalidate style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label>Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label><input type="email" value="demo.mieszkaniec@example.org"></div>
+        <div style="position: relative">
+          <a href="#reset-hasla" style="position: absolute; top: -10px; right: 0; display: inline-flex; align-items: center; min-height: 44px; font-size: 16px">Nie pamiętasz hasła?</a>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label>Hasło<span class="muted" style="font-weight: 400"> (wymagane)</span></label><div style="position: relative"><input type="password" value="haslo-stanislawa" style="padding-right: 112px"><button type="button" class="pw">Pokaż<span class="sr-only"> hasło</span></button></div></div>
+        </div>
+        <p style="font-size: 16px; line-height: 1.5"><strong style="color: #B42318">Nieprawidłowy e-mail lub hasło.</strong></p>
+        <button type="submit" class="btn btn-p" style="width: 100%">Zaloguj</button>
+      </form>
+      </div>
+      <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Nie masz konta? <a href="Rejestracja.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Załóż konto</a></p>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <p class="lbl">Adres niepotwierdzony</p>
+    <div class="card" style="width: 100%; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+      <p class="h" style="font-size: 34px">Zaloguj się</p>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+      <form novalidate style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label>Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label><input type="email" value="demo.mieszkaniec@example.org"></div>
+        <div style="position: relative">
+          <a href="#reset-hasla" style="position: absolute; top: -10px; right: 0; display: inline-flex; align-items: center; min-height: 44px; font-size: 16px">Nie pamiętasz hasła?</a>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label>Hasło<span class="muted" style="font-weight: 400"> (wymagane)</span></label><div style="position: relative"><input type="password" value="haslo-stanislawa" style="padding-right: 112px"><button type="button" class="pw">Pokaż<span class="sr-only"> hasło</span></button></div></div>
+        </div>
+        <p style="font-size: 16px; line-height: 1.5"><strong style="color: #B42318">Ten adres e-mail nie jest jeszcze potwierdzony. Kliknij link z maila, który wysłaliśmy przy rejestracji.</strong></p>
+        <button type="submit" class="btn btn-p" style="width: 100%">Zaloguj</button>
+      </form>
+      <form style="display: flex; flex-direction: column; gap: 8px">
+        <p style="font-size: 16px; line-height: 1.5">Mail nie przyszedł albo link wygasł?</p>
+        <button type="button" class="btn btn-s" style="align-self: flex-start">Wyślij link ponownie</button>
+      </form>
+      </div>
+      <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Nie masz konta? <a href="Rejestracja.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Załóż konto</a></p>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <p class="lbl">Nieważny link z maila</p>
+    <div class="card" style="width: 100%; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+      <p class="h" style="font-size: 34px">Zaloguj się</p>
+      <p role="alert" style="color: #B42318; font-weight: 700">Link z maila wygasł albo był już użyty. Zaloguj się poniżej albo kliknij „Nie pamiętasz hasła?”.</p>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+      <form novalidate style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label>Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label><input type="email"></div>
+        <div style="position: relative">
+          <a href="#reset-hasla" style="position: absolute; top: -10px; right: 0; display: inline-flex; align-items: center; min-height: 44px; font-size: 16px">Nie pamiętasz hasła?</a>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label>Hasło<span class="muted" style="font-weight: 400"> (wymagane)</span></label><div style="position: relative"><input type="password" style="padding-right: 112px"><button type="button" class="pw">Pokaż<span class="sr-only"> hasło</span></button></div></div>
+        </div>
+        <button type="submit" class="btn btn-p" style="width: 100%">Zaloguj</button>
+      </form>
+      </div>
+      <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Nie masz konta? <a href="Rejestracja.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Załóż konto</a></p>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <p class="lbl">Konto pokazowe niedostępne</p>
+    <div class="card" style="width: 100%; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+      <p class="h" style="font-size: 34px">Zaloguj się</p>
+      <p role="alert" style="color: #B42318; font-weight: 700">Nie udało się wejść na konto pokazowe. Spróbuj ponownie.</p>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+      <form novalidate style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label>Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label><input type="email"></div>
+        <div style="position: relative">
+          <a href="#reset-hasla" style="position: absolute; top: -10px; right: 0; display: inline-flex; align-items: center; min-height: 44px; font-size: 16px">Nie pamiętasz hasła?</a>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label>Hasło<span class="muted" style="font-weight: 400"> (wymagane)</span></label><div style="position: relative"><input type="password" style="padding-right: 112px"><button type="button" class="pw">Pokaż<span class="sr-only"> hasło</span></button></div></div>
+        </div>
+        <button type="submit" class="btn btn-p" style="width: 100%">Zaloguj</button>
+      </form>
+      </div>
+      <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Nie masz konta? <a href="Rejestracja.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Załóż konto</a></p>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <p class="lbl">Już zalogowany</p>
+    <div class="card" style="width: 100%; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+      <p class="h" style="font-size: 34px">Jesteś zalogowany</p>
+      <p class="muted">Konto: <strong style="color: #151A23">Stanisław</strong> (demo.mieszkaniec@example.org)</p>
+      <form><button type="button" class="btn btn-s">Wyloguj się</button></form>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2260}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
