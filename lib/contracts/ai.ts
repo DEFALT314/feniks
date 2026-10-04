@@ -3,12 +3,14 @@
 //   POST /api/ai/application  draft of a grant application for an open call
 //   GET  /api/ai/calls        open calls to choose from
 //   POST /api/ai/alternatives unusual ways to solve the same problem (#103)
+//   POST /api/ai/review       "Sprawdź fiszkę": what to change, each point with its evidence
 // Sample data: lib/contracts/fixtures/ai.json. After 17:00, changes only by adding fields.
 //
 // Rules (CLAUDE.md, rule 5): every AI text is shown with the „Propozycja AI” label and is used only
 // after a human click ("Użyj"); AI never invents numbers or costs, those stay as [placeholders].
 import { z } from "zod";
 import fixture from "./fixtures/ai.json";
+import { InnovationSummary } from "./knowledge-base";
 
 export const IdeaStage = z.enum(["pomysl", "prototyp", "przetestowane", "gotowe"]);
 export type IdeaStage = z.infer<typeof IdeaStage>;
@@ -68,6 +70,9 @@ export type CallList = z.infer<typeof CallList>;
 export const ApplicationRequest = z.object({
   idea: IdeaDraft,
   call_id: z.string(), // the open call ("nabór") chosen from the ROPS list
+  // Added after 17:00: the saved idea, so the draft uses the author's canvas answers (costs,
+  // partners, audience, impact). Read with the author's session (RLS); ignored if not theirs.
+  idea_id: z.uuid().optional(),
 });
 export type ApplicationRequest = z.infer<typeof ApplicationRequest>;
 
@@ -87,8 +92,18 @@ export const ApplicationResponse = z.object({
       title: z.string(), // "Cel projektu", "Działania", "Rezultaty"…
       text: z.string(), // may contain [placeholders] the user must fill in
       needs_user_input: z.boolean(), // true when text has placeholders (numbers, costs)
+      // Added after 17:00: where the text comes from, e.g. ["Kanwa: Koszty stałe", "Fiszka: Opis"]
+      sources: z.array(z.string()).optional(),
     }),
   ),
+  // Added after 17:00 (optional): computed from data, shown next to the AI draft.
+  fit: z
+    .object({
+      level: z.enum(["dobra", "czesciowa", "slaba"]),
+      note: z.string(), // plain Polish: why the idea fits the call or not
+    })
+    .optional(),
+  missing: z.array(z.string()).optional(), // what the author must still add before applying
 });
 export type ApplicationResponse = z.infer<typeof ApplicationResponse>;
 
@@ -111,6 +126,61 @@ export const AlternativesResponse = z.object({
     .max(3),
 });
 export type AlternativesResponse = z.infer<typeof AlternativesResponse>;
+// --- POST /api/ai/review: "Sprawdź fiszkę" (added after 17:00) ---
+// Instead of rewording the card, points out what to change, each point with its evidence: an answer
+// from the author's canvas or a similar innovation from the ROPS Library (with a verbatim quote).
+// Points with ai: false are computed from the data; ai: true are „Propozycja AI”.
+
+export const ReviewRequest = z.object({
+  idea: IdeaDraft,
+  idea_id: z.uuid().optional(), // the saved idea: its canvas answers are read with the author's session
+});
+export type ReviewRequest = z.infer<typeof ReviewRequest>;
+
+export const ReviewSource = z.discriminatedUnion("kind", [
+  // canvas question (step id of /my/creator/[id]?step=…) and the author's answer
+  z.object({
+    kind: z.literal("kanwa"),
+    step: z.string(),
+    label: z.string(),
+    answer: z.string(),
+  }),
+  // a similar innovation from the ROPS Library; quote is copied verbatim from its card
+  z.object({
+    kind: z.literal("biblioteka"),
+    innovation_id: z.string(),
+    name: z.string(),
+    quote: z.string().nullable(),
+  }),
+  // a field of the card itself
+  z.object({ kind: z.literal("fiszka"), field: IdeaField }),
+]);
+export type ReviewSource = z.infer<typeof ReviewSource>;
+
+export const ReviewCheck = z.object({
+  id: z.string(),
+  kind: z.enum(["brakuje", "do_przemyslenia", "mocna_strona"]),
+  title: z.string(), // short, plain Polish: what to change
+  detail: z.string(), // 1–2 sentences: why it matters
+  field: IdeaField.nullable(), // card field to change ("Przejdź do pola"), if any
+  step: z.string().nullable(), // canvas question to revisit ("Popraw w kanwie"), if any
+  suggestion: z.string().nullable(), // a sentence to add to `field`, only from the author's own facts
+  source: ReviewSource,
+  ai: z.boolean(),
+});
+export type ReviewCheck = z.infer<typeof ReviewCheck>;
+
+export const ReviewResponse = z.object({
+  progress: z.object({
+    card_filled: z.number().int().min(0), // of 4 text fields
+    card_total: z.number().int().min(1),
+    canvas_answered: z.number().int().min(0),
+    canvas_total: z.number().int().min(1),
+  }),
+  checks: z.array(ReviewCheck), // most important first: brakuje, do_przemyslenia, mocna_strona
+  similar: z.array(InnovationSummary).max(3), // the evidence used, for "Coś podobnego już działa"
+});
+export type ReviewResponse = z.infer<typeof ReviewResponse>;
 
 // Sample data checked against the schemas: a mistake in fixtures shows up immediately.
 export const aiFixtures = {
@@ -121,4 +191,5 @@ export const aiFixtures = {
   applicationResponse: ApplicationResponse.parse(fixture.application_response),
   alternativesRequest: AlternativesRequest.parse(fixture.alternatives_request),
   alternativesResponse: AlternativesResponse.parse(fixture.alternatives_response),
+  reviewResponse: ReviewResponse.parse(fixture.review_response),
 };
