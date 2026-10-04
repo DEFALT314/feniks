@@ -27,8 +27,8 @@ from `app/layout.tsx`.
 
 Colors: navy `#1F3A8A`, brick `#C2452B` (accents only; focus rings are navy), green `#1D6B48`, background `#F6F7F9`,
 text `#151A23`, secondary text `#4B5565`, lines `#D9DDE4`. Fonts: Bricolage Grotesque (headings), Atkinson Hyperlegible
-Next (body text). Screens that change after an action (errors, confirmations, empty lists, other roles) are shown as dashed „Stan: …”
-panels under the main view. `/resources` („Wiedza”) has no mockup yet. The data in the mockups is sample data: the app uses real data from the database, and demo data is
+Next (body text). Each screen artboard shows one view exactly as the app shows it; states that appear after an action (errors,
+confirmations, empty lists, another role's view) are on a separate `<Screen>-stany.dc.html` artboard next to it. `/resources` („Wiedza”) has no mockup yet. The data in the mockups is sample data: the app uses real data from the database, and demo data is
 labeled "Dane demonstracyjne" (demo data). Mockup changes: P2 edits the Claude Design artifact "HubMI.pl – makiety",
 then exports it here.
 

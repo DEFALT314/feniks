@@ -196,68 +196,16 @@ textarea.todo{border-color:#8A4B00}
         <section class="card" aria-labelledby="test-heading" style="padding: 22px; display: flex; flex-direction: column; gap: 12px">
           <h2 id="test-heading" class="h" style="font-size: 22px">Test z mieszkańcami</h2>
           <p style="font-size: 16px">Sprawdź pomysł w praktyce: zaplanuj test, a mieszkańcy zapiszą się i ocenią go od 1 do 5.</p>
-          <button type="button" class="btn btn-s" aria-expanded="true" aria-controls="plan-test">Zwiń formularz</button>
-          <form id="plan-test" style="display: flex; flex-direction: column; gap: 14px">
-            <div class="f"><label for="t-tyt">Nazwa testu <span class="req">(wymagane)</span></label><input id="t-tyt" value="Sąsiedzki dyżur po wypisie – test z mieszkańcami" required></div>
-            <div class="f"><label for="t-opis">Na czym polega?</label><span class="hint" id="h-topis">Co uczestnicy zrobią i ile to potrwa. Mieszkańcy zobaczą ten opis przy zapisie.</span><textarea id="t-opis" rows="3" aria-describedby="h-topis">Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu.</textarea></div>
-            <div class="f"><label for="t-gdzie">Gdzie</label><span class="hint" id="h-gdzie">Adres albo „online”.</span><input id="t-gdzie" aria-describedby="h-gdzie" value=""></div>
-            <div class="f"><label for="t-kiedy">Kiedy</label><span class="hint" id="h-kiedy">Możesz zostawić puste, jeśli termin nie jest jeszcze znany.</span><input id="t-kiedy" type="datetime-local" aria-describedby="h-kiedy"></div>
-            <div class="f"><label for="t-miejsca">Liczba miejsc</label><span class="hint" id="h-miejsca">Puste: bez limitu.</span><input id="t-miejsca" type="number" min="1" max="500" inputmode="numeric" aria-describedby="h-miejsca"></div>
-            <button type="submit" class="btn btn-p">Zapisz test</button>
-          </form>
-          <p class="muted" style="font-size: 15px">Nazwa i opis są wstępnie wypełnione z fiszki (tytuł i istota).</p>
+          <button type="button" class="btn btn-s" aria-expanded="false">Zaplanuj test</button>
         </section>
       </aside>
     </div>
 
-    <section aria-labelledby="stan-wyslany" class="wrap" style="padding-bottom: 40px; display: flex; flex-direction: column; gap: 12px">
-      <h2 id="stan-wyslany" class="lbl">Stan: po wysłaniu do ROPS (panel po prawej)</h2>
-      <div style="display: flex; flex-wrap: wrap; gap: 24px">
-        <div class="card" style="padding: 22px; flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 8px">
-          <span class="tag tag-warn" style="align-self: flex-start">ROPS sprawdza pomysł</span>
-          <p class="muted" style="font-size: 16px">Wysłano 4 paź 2026, 00:47.</p>
-          <a href="Wiadomosci.dc.html" style="font-size: 16px; align-self: flex-start">Napisz do ROPS o tym pomyśle</a>
-          <p class="ok" tabindex="-1">Wysłano do ROPS. Dostaniesz powiadomienie, gdy zespół oceni pomysł.</p>
-          <p class="note"><strong>Pomysł jest już w ROPS.</strong> Możesz go czytać, ale nie zmieniać. Jeśli ROPS poprosi o poprawki, znów będzie można go zmieniać.</p>
-        </div>
-        <div class="card" style="padding: 22px; flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 8px">
-          <span class="tag" style="align-self: flex-start; background: #FDECEA; color: #B42318">Do poprawy</span>
-          <p class="muted" style="font-size: 16px">Wysłano 4 paź 2026, 00:47.</p>
-          <p style="background: #EEF0F4; border-radius: 10px; padding: 12px 16px; font-size: 16px"><strong>Uwagi ROPS:</strong> Dopiszcie, kto koordynuje wolontariuszy i jak OPS dowie się o wypisie.</p>
-          <a href="Wiadomosci.dc.html" style="font-size: 16px; align-self: flex-start">Odpowiedz ROPS w Wiadomościach</a>
-          <button type="submit" class="btn btn-p" style="margin-top: 6px">Wyślij poprawioną wersję</button>
-          <p class="muted" style="font-size: 16px">ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach, wyślemy ją też mailem.</p>
-        </div>
-        <div class="card" style="padding: 22px; flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 8px">
-          <p style="font-size: 16px" id="brakuje">Żeby wysłać, uzupełnij: <strong>Istota, Dla kogo</strong>.</p>
-          <button type="submit" class="btn btn-p" disabled aria-describedby="brakuje" style="opacity: .5; cursor: not-allowed">Wyślij do ROPS</button>
-          <p class="muted" style="font-size: 16px">ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach, wyślemy ją też mailem.</p>
-        </div>
-      </div>
-    </section>
-
-    <section aria-labelledby="stan-ai" class="wrap" style="padding-bottom: 64px; display: flex; flex-direction: column; gap: 12px">
-      <h2 id="stan-ai" class="lbl">Stan: przed użyciem asystenta i bez otwartego naboru</h2>
-      <div class="card" style="padding: 24px; max-width: 700px; display: flex; flex-direction: column; gap: 20px">
-        <div class="sub">
-          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><h3 style="font-size: 20px">Podpowiedzi do fiszki</h3><button type="button" class="btn btn-s btn-sm">Podpowiedz</button></div>
-          <p class="muted" style="font-size: 16px">Asystent AI zaproponuje lepsze brzmienie pól. Nic nie zmieni się bez Twojej zgody.</p>
-        </div>
-        <div class="sub">
-          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><h3 style="font-size: 20px">Inne podejścia</h3><button type="button" class="btn btn-s btn-sm">Pokaż inne podejścia</button></div>
-          <p class="muted" style="font-size: 16px">Asystent AI podsunie nietuzinkowe sposoby rozwiązania tego samego problemu: z innym partnerem, w innej formie albo z pomocą innych osób. Możesz z nich skorzystać albo nie.</p>
-        </div>
-        <div style="border-top: 1px solid #D9DDE4; padding-top: 20px; display: flex; flex-direction: column; gap: 8px">
-          <h3 class="h" style="font-size: 26px">Szkic wniosku o dofinansowanie</h3>
-          <p style="font-size: 16px">Teraz nie ma otwartych naborów. Gdy ROPS ogłosi nabór, tutaj przygotujesz szkic wniosku dopasowany do jego celu.</p>
-        </div>
-      </div>
-    </section>
   </main>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2900}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4150}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

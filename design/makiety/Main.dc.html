@@ -17,6 +17,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
+h1,h2,h3{text-wrap:balance}
 :focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.1}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
@@ -61,7 +62,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
     <section style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
       <div class="wrap" style="padding-top: 72px; padding-bottom: 72px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
         <div data-ruch="wejscie" style="flex: 1 1 520px; display: flex; flex-direction: column; gap: 22px">
-          <span class="lbl">Małopolski Hub Innowacji Społecznych</span>
+          <p class="lbl" style="font-size: 16px">Małopolski Hub Innowacji Społecznych</p>
           <h1 class="h" style="font-size: 58px">Ktoś już to rozwiązał. Połączymy Was.</h1>
           <p style="font-size: 21px; max-width: 600px">Opisz problem swojej gminy, organizacji albo sąsiedztwa. Pokażemy sprawdzone innowacje społeczne z Małopolski i pomożemy je u Was wdrożyć.</p>
           <div style="display: flex; flex-wrap: wrap; gap: 12px">
@@ -85,10 +86,9 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
       </div>
     </section>
 
-    <!-- Tylko po zalogowaniu: strony osobiste, główne zadanie roli pierwsze (obramowane). Gość nie widzi tej sekcji. -->
     <section aria-labelledby="twoje" class="wrap" style="padding-top: 40px; display: flex; flex-direction: column; gap: 20px">
       <h2 id="twoje" class="h" style="font-size: 34px">Twoje sprawy, Stanisław</h2>
-      <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+      <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
         <li style="display: flex"><a href="Kreator.dc.html" class="card" style="width: 100%; padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23; border: 2px solid #1F3A8A">
           <strong class="h" style="font-size: 20px">Moje pomysły<span class="arr" aria-hidden="true">→</span></strong>
           <span class="muted" style="font-size: 16px">Zapisz pomysł jako krótką fiszkę i wyślij go do ROPS. Tu zobaczysz odpowiedź.</span>
@@ -184,21 +184,21 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
     <section aria-labelledby="sprawdzone" class="wrap" style="padding-top: 64px; padding-bottom: 72px; display: flex; flex-direction: column; gap: 24px">
       <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px">
         <h2 id="sprawdzone" class="h" style="font-size: 34px">Sprawdzone przez ROPS</h2>
-        <a href="Biblioteka.dc.html" style="font-weight: 700">Cała Biblioteka<span class="arr" aria-hidden="true">→</span></a>
+        <a href="Biblioteka.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Cała Biblioteka<span class="arr" aria-hidden="true">→</span></a>
       </div>
       <div data-ruch="pokaz" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
         <a href="Karta.dc.html" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23">
-          <span class="muted" style="font-size: 15px">Dla seniorów</span>
+          <span class="muted" style="font-size: 16px">Dla seniorów</span>
           <strong style="font-size: 20px; line-height: 1.35">Organizator kompleksowej opieki w miejscu zamieszkania</strong>
           <span class="muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Program pilnej, wielokierunkowej pomocy w domu dla osób niesamodzielnych po wyjściu ze szpitala i ich rodzin: organizacja opieki, sprzętu i wsparcia dostosowanych do możliwości bliskich.</span>
         </a>
         <a href="Karta.dc.html" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23">
-          <span class="muted" style="font-size: 15px">Dla seniorów</span>
+          <span class="muted" style="font-size: 16px">Dla seniorów</span>
           <strong style="font-size: 20px; line-height: 1.35">Merkury</strong>
           <span class="muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Platforma internetowa z symulatorem bankomatu, parkomatu, paczkomatu i kasy samoobsługowej, na której senior może bezpiecznie przećwiczyć obsługę urządzeń w domu.</span>
         </a>
         <a href="Karta.dc.html" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23">
-          <span class="muted" style="font-size: 15px">Dla osób z niepełnosprawnością sensoryczną</span>
+          <span class="muted" style="font-size: 16px">Dla osób z niepełnosprawnością sensoryczną</span>
           <strong style="font-size: 20px; line-height: 1.35">Teleasystent</strong>
           <span class="muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Aplikacja na smartfon do zdalnej asysty przez wideorozmowę z nawigacją na żywo: pomoc w mieście, w kontaktach z urzędami, w domu (kuchnia, łazienka) oraz wsparcie dopasowane do potrzeb osoby.</span>
         </a>
@@ -208,7 +208,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2700}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3000}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};
