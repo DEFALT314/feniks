@@ -40,6 +40,43 @@ describe("ideaAreas", () => {
     expect(found[0]).toEqual({ id: "seniorzy", name: "Seniorzy" });
   });
 
+  it("on a weak match trusts the area only when the two best results agree", async () => {
+    const homeless = [
+      ...areas,
+      {
+        id: "bezdomnosc",
+        nazwa: "Bezdomność",
+        kategorie_biblioteki: ["dla-osob-w-kryzysie-bezdomnosci"],
+        wyzwania: [],
+      },
+    ];
+    const pipeline = await import("../matching/pipeline");
+    const summary = (kategoria_id: string) => ({ innovation: { kategoria_id } });
+    const spy = vi.spyOn(pipeline, "runMatch");
+    spy.mockResolvedValueOnce({
+      response: {
+        match_quality: "weak",
+        innovations: [
+          summary("dla-osob-w-kryzysie-bezdomnosci"),
+          summary("dla-osob-w-kryzysie-bezdomnosci"),
+        ],
+      },
+    } as never);
+    expect(
+      await ideaAreas("Darmowe jedzenie dla bezdomnych", { ...deps, areas: homeless }),
+    ).toEqual([{ id: "bezdomnosc", name: "Bezdomność" }]);
+    spy.mockResolvedValueOnce({
+      response: {
+        match_quality: "weak",
+        innovations: [summary("dla-seniorow"), summary("dla-osob-w-kryzysie-bezdomnosci")],
+      },
+    } as never);
+    expect(
+      await ideaAreas("Coś zupełnie innego niż wszystko", { ...deps, areas: homeless }),
+    ).toEqual([]);
+    spy.mockRestore();
+  });
+
   it("puts the area the idea already has first and ignores a too short card", async () => {
     expect(await ideaAreas("krótko", deps, "niepelnosprawnosc")).toEqual([
       { id: "niepelnosprawnosc", name: "Niepełnosprawność" },

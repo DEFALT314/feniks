@@ -24,11 +24,18 @@ export async function ideaAreas(
   if (knownAreaId) add(knownAreaId);
   if (text.trim().length >= 10) {
     const { response } = await runMatch({ description: text, ai: false }, deps);
-    if (response.match_quality !== "weak") {
-      for (const m of response.innovations.slice(0, 2)) {
-        for (const a of deps.areas) {
-          if (a.kategorie_biblioteki.includes(m.innovation.kategoria_id)) add(a.id);
-        }
+    const top = response.innovations.slice(0, 2).map((m) => m.innovation.kategoria_id);
+    // A weak match means no innovation solves it yet (e.g. free meals for homeless people), but the
+    // area can still be clear: trust it when the two best results agree on the category.
+    const categories =
+      response.match_quality !== "weak"
+        ? top
+        : top.length === 2 && top[0] === top[1]
+          ? [top[0]]
+          : [];
+    for (const category of categories) {
+      for (const a of deps.areas) {
+        if (a.kategorie_biblioteki.includes(category)) add(a.id);
       }
     }
   }
