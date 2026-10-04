@@ -17,7 +17,8 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+h1,h2,h3{text-wrap:balance}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.1}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
@@ -57,11 +58,11 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
 </helmet>
 <div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
   <dc-import name="Naglowek" active="start" rola="mieszkaniec" kto="Stanisław" hint-size="100%,112px"></dc-import>
-  <main id="tresc">
+  <main id="main-content">
     <section style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
       <div class="wrap" style="padding-top: 72px; padding-bottom: 72px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
         <div data-ruch="wejscie" style="flex: 1 1 520px; display: flex; flex-direction: column; gap: 22px">
-          <span class="lbl">Małopolski Hub Innowacji Społecznych</span>
+          <p class="lbl" style="font-size: 16px">Małopolski Hub Innowacji Społecznych</p>
           <h1 class="h" style="font-size: 58px">Ktoś już to rozwiązał. Połączymy Was.</h1>
           <p style="font-size: 21px; max-width: 600px">Opisz problem swojej gminy, organizacji albo sąsiedztwa. Pokażemy sprawdzone innowacje społeczne z Małopolski i pomożemy je u Was wdrożyć.</p>
           <div style="display: flex; flex-wrap: wrap; gap: 12px">
@@ -69,26 +70,47 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
             <a class="btn btn-s" href="Kreator.dc.html">Mam własny pomysł</a>
           </div>
         </div>
-        <div class="card" data-ruch="wejscie zakresl" style="flex: 1 1 420px; padding: 28px; display: flex; flex-direction: column; gap: 16px; border-color: #B8C0CD">
-          <span class="lbl">Tak to wygląda</span>
-          <p style="font-size: 19px">„Tata wraca <mark>ze szpitala</mark> po udarze. Nie wiemy, jak zorganizować <mark>opiekę w domu</mark>.”</p>
+        <figure class="card" data-ruch="wejscie zakresl" aria-labelledby="przyklad" style="margin: 0; flex: 1 1 420px; padding: 28px; display: flex; flex-direction: column; gap: 16px; border-color: #B8C0CD">
+          <p id="przyklad" class="lbl" style="font-size: 16px">Przykład</p>
+          <blockquote style="margin: 0; font-size: 19px">„Tata wraca <mark>ze szpitala</mark> po udarze. Nie wiemy, jak zorganizować <mark>opiekę w domu</mark>.”</blockquote>
+          <p class="muted" style="font-size: 16px">Podkreślone słowa zdecydowały o dopasowaniu.</p>
           <div style="border-top: 1px solid #D9DDE4; padding-top: 16px; display: flex; flex-direction: column; gap: 6px">
-            <strong style="font-size: 19px">Organizator kompleksowej opieki w miejscu zamieszkania</strong>
-            <span class="muted" style="font-size: 16px">Dla seniorów · <span style="font-weight: 700">z inkubatora MIWS</span></span>
+            <a href="Karta.dc.html" style="display: flex; align-items: center; min-height: 44px; font-size: 19px; font-weight: 700; line-height: 1.35; color: #151A23; text-decoration: none">Organizator kompleksowej opieki w miejscu zamieszkania</a>
+            <span class="muted" style="font-size: 16px">Dla seniorów · <span style="font-weight: 700; color: #1D6B48">sprawdzona przez ROPS</span></span>
           </div>
           <div style="border-top: 1px solid #D9DDE4; padding-top: 16px; display: flex; flex-direction: column; gap: 6px">
-            <strong style="font-size: 19px">Terapeuta przestrzeni</strong>
-            <span class="muted" style="font-size: 16px">Dla seniorów · dostosowanie mieszkania</span>
+            <a href="Karta.dc.html" style="display: flex; align-items: center; min-height: 44px; font-size: 19px; font-weight: 700; line-height: 1.35; color: #151A23; text-decoration: none">Terapeuta przestrzeni</a>
+            <span class="muted" style="font-size: 16px">Dla seniorów</span>
           </div>
-        </div>
+        </figure>
       </div>
     </section>
 
-    <section aria-label="Dane na start" class="wrap" data-ruch="pokaz" style="padding-top: 40px; padding-bottom: 40px; display: flex; flex-wrap: wrap; gap: 24px 56px">
-      <div><div class="h" data-ruch="licznik" style="font-size: 40px">115</div><p class="muted">innowacji w Bibliotece ROPS</p></div>
-      <div><div class="h" data-ruch="licznik" style="font-size: 40px">8</div><p class="muted">obszarów Mapy Wyzwań</p></div>
-      <div><div class="h" data-ruch="licznik" style="font-size: 40px">48</div><p class="muted">wyzwań na Mapie Wyzwań</p></div>
-      <div><div class="h" data-ruch="licznik" style="font-size: 40px">9</div><p class="muted">kategorii, od seniorów po rynek pracy</p></div>
+    <section aria-labelledby="twoje" class="wrap" style="padding-top: 40px; display: flex; flex-direction: column; gap: 20px">
+      <h2 id="twoje" class="h" style="font-size: 34px">Twoje sprawy, Stanisław</h2>
+      <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+        <li style="display: flex"><a href="Kreator.dc.html" class="card" style="width: 100%; padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23; border: 2px solid #1F3A8A">
+          <strong class="h" style="font-size: 20px">Moje pomysły<span class="arr" aria-hidden="true">→</span></strong>
+          <span class="muted" style="font-size: 16px">Zapisz pomysł jako krótką fiszkę i wyślij go do ROPS. Tu zobaczysz odpowiedź.</span>
+        </a></li>
+        <li style="display: flex"><a href="Tester.dc.html" class="card" style="width: 100%; padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23">
+          <strong class="h" style="font-size: 20px">Testy<span class="arr" aria-hidden="true">→</span></strong>
+          <span class="muted" style="font-size: 16px">Zapisz się do testu rozwiązania, oceń je i zaproponuj poprawki.</span>
+        </a></li>
+        <li style="display: flex"><a href="Wiadomosci.dc.html" class="card" style="width: 100%; padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23">
+          <strong class="h" style="font-size: 20px">Wiadomości<span class="arr" aria-hidden="true">→</span></strong>
+          <span class="muted" style="font-size: 16px">Zadaj pytanie pracownikowi ROPS albo ekspertowi i czytaj odpowiedzi.</span>
+        </a></li>
+      </ul>
+    </section>
+
+    <section aria-label="HubMI w liczbach" class="wrap" style="padding-top: 40px; padding-bottom: 40px">
+      <dl data-ruch="pokaz" style="margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px 40px">
+      <div style="display: flex; flex-direction: column-reverse; justify-content: flex-end; min-width: 0"><dt class="muted">innowacji w Bibliotece ROPS</dt><dd class="h" data-ruch="licznik" style="margin: 0; font-size: 40px">115</dd></div>
+      <div style="display: flex; flex-direction: column-reverse; justify-content: flex-end; min-width: 0"><dt class="muted">sprawdzonych przez ROPS</dt><dd class="h" data-ruch="licznik" style="margin: 0; font-size: 40px">27</dd></div>
+      <div style="display: flex; flex-direction: column-reverse; justify-content: flex-end; min-width: 0"><dt class="muted">wyzwań na Mapie Wyzwań</dt><dd class="h" data-ruch="licznik" style="margin: 0; font-size: 40px">48</dd></div>
+      <div style="display: flex; flex-direction: column-reverse; justify-content: flex-end; min-width: 0"><dt class="muted">kategorii, od seniorów po rynek pracy</dt><dd class="h" data-ruch="licznik" style="margin: 0; font-size: 40px">9</dd></div>
+      </dl>
     </section>
 
     <section aria-labelledby="wejscia" class="wrap" style="padding-top: 24px; padding-bottom: 64px; display: flex; flex-direction: column; gap: 24px">
@@ -101,14 +123,46 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
         </a>
         <a href="Kreator.dc.html" class="card" style="padding: 28px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #151A23; border-top: 4px solid #C2452B">
           <strong class="h" style="font-size: 24px">Mam pomysł</strong>
-          <span class="muted">Kreator przeprowadzi mnie krok po kroku przez kanwę innowacji i przygotuje fiszkę dla ROPS.</span>
+          <span class="muted">Odpowiem na proste pytania o mój pomysł. Z odpowiedzi powstanie fiszka, czyli krótki opis pomysłu dla ROPS.</span>
           <span style="color: #1F3A8A; font-weight: 700; margin-top: 6px">Otwórz kreator<span class="arr" aria-hidden="true">→</span></span>
         </a>
         <a href="Biblioteka.dc.html" class="card" style="padding: 28px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #151A23; border-top: 4px solid #1D6B48">
           <strong class="h" style="font-size: 24px">Chcę poznać, co działa</strong>
-          <span class="muted">Biblioteka innowacji, Mapa Wyzwań Społecznych, raporty i materiały do pobrania.</span>
+          <span class="muted">Przejrzę Bibliotekę innowacji, Mapę Wyzwań i raporty ROPS.</span>
           <span style="color: #1F3A8A; font-weight: 700; margin-top: 6px">Przejdź do Biblioteki<span class="arr" aria-hidden="true">→</span></span>
         </a>
+      </div>
+    </section>
+
+    <section aria-labelledby="jak" style="background: #FFFFFF; border-top: 1px solid #D9DDE4">
+      <div class="wrap" style="padding-top: 56px; padding-bottom: 56px; display: grid; grid-template-columns: 3fr 2fr; gap: 40px 64px">
+        <div style="display: flex; flex-direction: column; gap: 24px">
+          <h2 id="jak" class="h" style="font-size: 34px">Jak to działa</h2>
+          <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 20px">
+          <li style="display: flex; gap: 16px">
+            <span class="h" aria-hidden="true" style="flex: none; width: 44px; height: 44px; border-radius: 999px; background: #1F3A8A; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px">1</span>
+            <span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 20px; line-height: 1.35">Opisz sprawę swoimi słowami</strong><span class="muted">Tak, jak opowiadasz sąsiadowi. Nie trzeba znać fachowych słów ani wypełniać wniosków.</span></span>
+          </li>
+          <li style="display: flex; gap: 16px">
+            <span class="h" aria-hidden="true" style="flex: none; width: 44px; height: 44px; border-radius: 999px; background: #1F3A8A; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px">2</span>
+            <span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 20px; line-height: 1.35">Zobacz, co już działa</strong><span class="muted">HubMI pokaże sprawdzone innowacje z Biblioteki ROPS i wyjaśni, dlaczego pasują.</span></span>
+          </li>
+          <li style="display: flex; gap: 16px">
+            <span class="h" aria-hidden="true" style="flex: none; width: 44px; height: 44px; border-radius: 999px; background: #1F3A8A; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px">3</span>
+            <span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 20px; line-height: 1.35">Wyślij pomysł albo pytanie do ROPS</strong><span class="muted">Pracownik ROPS od razu dostaje powiadomienie. Odpowiedź zobaczysz pod dzwonkiem i w poczcie e-mail.</span></span>
+          </li>
+          </ol>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <h2 id="dla-kogo" class="h" style="font-size: 24px">Dla kogo jest HubMI</h2>
+          <ul aria-labelledby="dla-kogo" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+          <li style="border-bottom: 1px solid #D9DDE4"><a href="Dopasuj.dc.html" style="display: flex; flex-direction: column; gap: 2px; min-height: 44px; padding: 12px 0; color: #151A23; text-decoration: none"><span>Mieszkańcy i opiekunowie</span><span style="color: #1F3A8A; font-weight: 700">Opisz problem<span class="arr" aria-hidden="true">→</span></span></a></li>
+          <li style="border-bottom: 1px solid #D9DDE4"><a href="Middleman.dc.html" style="display: flex; flex-direction: column; gap: 2px; min-height: 44px; padding: 12px 0; color: #151A23; text-decoration: none"><span>Gminy i ośrodki pomocy społecznej</span><span style="color: #1F3A8A; font-weight: 700">Przygotuj kartę usługi<span class="arr" aria-hidden="true">→</span></span></a></li>
+          <li style="border-bottom: 1px solid #D9DDE4"><a href="Kreator.dc.html" style="display: flex; flex-direction: column; gap: 2px; min-height: 44px; padding: 12px 0; color: #151A23; text-decoration: none"><span>Organizacje pozarządowe</span><span style="color: #1F3A8A; font-weight: 700">Zgłoś pomysł<span class="arr" aria-hidden="true">→</span></span></a></li>
+          <li style="border-bottom: 1px solid #D9DDE4"><a href="Tester.dc.html" style="display: flex; flex-direction: column; gap: 2px; min-height: 44px; padding: 12px 0; color: #151A23; text-decoration: none"><span>Eksperci i testerzy</span><span style="color: #1F3A8A; font-weight: 700">Oceń rozwiązania<span class="arr" aria-hidden="true">→</span></span></a></li>
+          <li><a href="Admin.dc.html" style="display: flex; flex-direction: column; gap: 2px; min-height: 44px; padding: 12px 0; color: #151A23; text-decoration: none"><span>Pracownicy ROPS</span><span style="color: #1F3A8A; font-weight: 700">Otwórz Panel ROPS<span class="arr" aria-hidden="true">→</span></span></a></li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -116,7 +170,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
       <div class="wrap" style="padding-top: 56px; padding-bottom: 56px; display: flex; flex-wrap: wrap; gap: 32px 64px">
         <div style="flex: 1 1 360px; display: flex; flex-direction: column; gap: 12px">
           <h2 id="ai" class="h" style="font-size: 34px">AI proponuje. Człowiek decyduje.</h2>
-          <p class="muted">Model językowy pomaga zrozumieć opis i uzasadnić wybór. Nie podejmuje decyzji za nikogo.</p>
+          <p class="muted">AI podpowiada, które innowacje pasują do Twojego opisu, i wyjaśnia dlaczego.</p>
         </div>
         <ul data-ruch="pokaz" style="flex: 2 1 520px; margin: 0; padding-left: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px">
           <li>Wybiera tylko spośród innowacji z Biblioteki ROPS.</li>
@@ -129,24 +183,24 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
 
     <section aria-labelledby="sprawdzone" class="wrap" style="padding-top: 64px; padding-bottom: 72px; display: flex; flex-direction: column; gap: 24px">
       <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px">
-        <h2 id="sprawdzone" class="h" style="font-size: 34px">Z Biblioteki ROPS</h2>
-        <a href="Biblioteka.dc.html" style="font-weight: 700">Cała Biblioteka<span class="arr" aria-hidden="true">→</span></a>
+        <h2 id="sprawdzone" class="h" style="font-size: 34px">Sprawdzone przez ROPS</h2>
+        <a href="Biblioteka.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Cała Biblioteka<span class="arr" aria-hidden="true">→</span></a>
       </div>
       <div data-ruch="pokaz" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
         <a href="Karta.dc.html" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23">
-          <span class="muted" style="font-size: 15px">Dla seniorów</span>
+          <span class="muted" style="font-size: 16px">Dla seniorów</span>
           <strong style="font-size: 20px; line-height: 1.35">Organizator kompleksowej opieki w miejscu zamieszkania</strong>
-          <span class="muted">Pilna pomoc w domu dla osób niesamodzielnych po wyjściu ze szpitala i ich rodzin.</span>
+          <span class="muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Program pilnej, wielokierunkowej pomocy w domu dla osób niesamodzielnych po wyjściu ze szpitala i ich rodzin: organizacja opieki, sprzętu i wsparcia dostosowanych do możliwości bliskich.</span>
         </a>
         <a href="Karta.dc.html" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23">
-          <span class="muted" style="font-size: 15px">Dla seniorów</span>
+          <span class="muted" style="font-size: 16px">Dla seniorów</span>
           <strong style="font-size: 20px; line-height: 1.35">Merkury</strong>
-          <span class="muted">Symulator bankomatu, paczkomatu i kasy samoobsługowej do bezpiecznych ćwiczeń w domu.</span>
+          <span class="muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Platforma internetowa z symulatorem bankomatu, parkomatu, paczkomatu i kasy samoobsługowej, na której senior może bezpiecznie przećwiczyć obsługę urządzeń w domu.</span>
         </a>
         <a href="Karta.dc.html" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #151A23">
-          <span class="muted" style="font-size: 15px">Niepełnosprawność sensoryczna</span>
+          <span class="muted" style="font-size: 16px">Dla osób z niepełnosprawnością sensoryczną</span>
           <strong style="font-size: 20px; line-height: 1.35">Teleasystent</strong>
-          <span class="muted">Zdalna asysta przez wideorozmowę dla osób niewidomych i słabowidzących.</span>
+          <span class="muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Aplikacja na smartfon do zdalnej asysty przez wideorozmowę z nawigacją na żywo: pomoc w mieście, w kontaktach z urzędami, w domu (kuchnia, łazienka) oraz wsparcie dopasowane do potrzeb osoby.</span>
         </a>
       </div>
     </section>
@@ -154,7 +208,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1900}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3000}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};
