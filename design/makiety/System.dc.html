@@ -17,7 +17,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
@@ -74,8 +74,8 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
     <section data-ruch="pokaz">
       <h2 class="h" style="font-size: 28px">Kolory</h2>
       <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px">
-        <div class="sw"><div style="background: #1F3A8A"></div><div><strong>Granat</strong><br>#1F3A8A · działanie, linki<br><span class="muted">biały tekst 10,3:1</span></div></div>
-        <div class="sw"><div style="background: #C2452B"></div><div><strong>Cegła</strong><br>#C2452B · akcent, fokus<br><span class="muted">na bieli 5,0:1</span></div></div>
+        <div class="sw"><div style="background: #1F3A8A"></div><div><strong>Granat</strong><br>#1F3A8A · działanie, linki, fokus<br><span class="muted">biały tekst 10,3:1</span></div></div>
+        <div class="sw"><div style="background: #C2452B"></div><div><strong>Cegła</strong><br>#C2452B · akcent<br><span class="muted">na bieli 5,0:1</span></div></div>
         <div class="sw"><div style="background: #1D6B48"></div><div><strong>Zieleń</strong><br>#1D6B48 · potwierdzenia<br><span class="muted">na #E3F2EA 5,6:1</span></div></div>
         <div class="sw"><div style="background: #151A23"></div><div><strong>Atrament</strong><br>#151A23 · tekst<br><span class="muted">na bieli 17,4:1</span></div></div>
         <div class="sw"><div style="background: #4B5565"></div><div><strong>Łupek</strong><br>#4B5565 · tekst pomocniczy<br><span class="muted">na tle 7,0:1</span></div></div>
@@ -99,13 +99,13 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
         <button type="button" class="btn btn-p">Dopasuj</button>
         <button type="button" class="btn btn-s">Zobacz kartę</button>
         <button type="button" class="btn btn-t">Pomiń</button>
-        <button type="button" class="btn btn-s" style="outline: 3px solid #C2452B; outline-offset: 2px">Fokus z klawiatury</button>
+        <button type="button" class="btn btn-s" style="outline: 3px solid #1F3A8A; outline-offset: 2px">Fokus z klawiatury</button>
         <button type="button" class="btn btn-s" disabled style="opacity: 0.6; cursor: not-allowed">Niedostępny</button>
       </div>
       <div style="display: flex; flex-wrap: wrap; gap: 8px">
         <span class="tag tag-ai">Propozycja AI</span>
-        <span class="tag">Z inkubatora IWS</span>
-        <span class="tag">Z inkubatora MIIS</span>
+        <span class="tag tag-ok">Sprawdzona przez ROPS</span>
+        <span class="tag">Z inkubatora ROPS, spoza Biblioteki online</span>
         <span class="tag tag-warn">Opis niepełny</span>
         <span class="tag tag-warn">W weryfikacji</span>
         <span class="tag tag-ok">Zatwierdzony</span>
@@ -125,8 +125,8 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
       <ul style="margin: 0; padding-left: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 32px">
         <li>Tekst 18 px, kontrast co najmniej 4,5:1.</li>
         <li>Przyciski 50 px wysokości, cele dotykowe min. 44 px.</li>
-        <li>Fokus: ceglasta obwódka 3 px.</li>
-        <li>Mało etykiet: tylko „Propozycja AI”, „Z inkubatora …” (program ROPS) i statusy.</li>
+        <li>Fokus: granatowa obwódka 3 px (w trybie A+ 4 px). Cegła wyglądała jak błąd.</li>
+        <li>Mało etykiet: tylko „Propozycja AI”, „Sprawdzona przez ROPS” (Biblioteka), „Z inkubatora …” (spoza Biblioteki) i statusy.</li>
         <li>Wykresy zawsze z tabelą z tymi samymi danymi.</li>
         <li>Wyniki AI ogłaszane czytnikom ekranu (aria-live).</li>
         <li>Układ działa przy 200% i na ekranie 320 px.</li>

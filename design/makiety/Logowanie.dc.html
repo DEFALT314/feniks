@@ -14,7 +14,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
@@ -30,26 +30,61 @@ input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;bor
 .av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 40px;color:#FFFFFF}
 </style>
 </helmet>
-<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6; min-height: 820px; display: flex; flex-direction: column; align-items: center; padding: 72px 24px">
-  <a href="Main.dc.html" aria-label="HubMI – strona główna" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #151A23; margin-bottom: 32px">
-    <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14.5" cy="9" r="5.5" fill="#1F3A8A"></circle><circle cx="33.5" cy="9" r="5.5" fill="#C2452B"></circle><path d="M23.4 44 C 12 36.5, 3.5 29, 5.5 21.5 C 7 16.5, 13.5 15.5, 17.5 18.5 C 20.3 20.6, 22.3 23, 23.4 25.5 Z" fill="#1F3A8A"></path><path d="M24.6 44 C 36 36.5, 44.5 29, 42.5 21.5 C 41 16.5, 34.5 15.5, 30.5 18.5 C 27.7 20.6, 25.7 23, 24.6 25.5 Z" fill="#C2452B"></path></svg>
-    <span style="display: flex; flex-direction: column; line-height: 1.05"><span class="h" style="font-size: 28px">HubMI</span><span style="font-size: 14px; color: #4B5565">innowacje społeczne Małopolski</span></span>
-  </a>
-  <main class="card" aria-labelledby="zaloguj" style="width: 100%; max-width: 460px; padding: 40px; display: flex; flex-direction: column; gap: 22px">
-    <h1 id="zaloguj" class="h" style="font-size: 34px">Zaloguj się</h1>
-    <form style="display: flex; flex-direction: column; gap: 20px">
-      <div style="display: flex; flex-direction: column; gap: 6px"><label for="l-mail">Adres e-mail</label><input id="l-mail" type="email" autocomplete="email" value="stanislaw@example.org"></div>
-      <div style="display: flex; flex-direction: column; gap: 6px">
-        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><label for="l-haslo">Hasło</label><a href="#reset-hasla" style="font-size: 16px">Nie pamiętasz hasła?</a></div>
-        <div style="position: relative"><input id="l-haslo" type="password" autocomplete="current-password" value="••••••••••" style="padding-right: 96px"><button type="button" aria-pressed="false" aria-controls="l-haslo" style="position: absolute; right: 6px; top: 6px; bottom: 6px; padding: 0 14px; border: 0; border-radius: 8px; background: #E8EDFA; color: #1F3A8A; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Pokaż</button></div>
-      </div>
-      <button type="submit" class="btn btn-p" style="width: 100%">Zaloguj</button>
-    </form>
-    <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Nie masz konta? <a href="Rejestracja.dc.html" style="font-weight: 700">Załóż konto</a></p>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+  <dc-import name="Naglowek" rola="gosc" active="" hint-size="100%,112px"></dc-import>
+  <main id="main-content" class="wrap" style="padding-top: 56px; padding-bottom: 72px; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 32px">
+    <section class="card" role="region" aria-labelledby="zaloguj" style="width: 100%; max-width: 480px; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+      <h1 id="zaloguj" class="h" style="font-size: 34px">Zaloguj się</h1>
+      <form novalidate style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="l-mail">Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label><input id="l-mail" type="email" autocomplete="email" required value="stanislaw@example.org"></div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><label for="l-haslo">Hasło<span class="muted" style="font-weight: 400"> (wymagane)</span></label><a href="#reset-hasla" style="display: inline-flex; align-items: center; min-height: 44px; font-size: 16px">Nie pamiętasz hasła?</a></div>
+          <div style="position: relative"><input id="l-haslo" type="password" autocomplete="current-password" required value="••••••••••" style="padding-right: 112px"><button type="button" aria-controls="l-haslo" style="position: absolute; right: 4px; top: 4px; bottom: 4px; min-width: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: #E8EDFA; color: #1F3A8A; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Pokaż<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap"> hasło</span></button></div>
+        </div>
+        <button type="submit" class="btn btn-p" style="width: 100%">Zaloguj</button>
+      </form>
+      <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Nie masz konta? <a href="Rejestracja.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Załóż konto</a></p>
+    </section>
+    <section aria-labelledby="demo-a" style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="demo-a" class="h" style="font-size: 28px">Wersja pokazowa: wejdź jako…</h2>
+      <p class="muted">Fikcyjne osoby i instytucje. Kliknij jedną z nich, żeby wejść bez hasła.</p>
+      <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px">
+        <li><button type="button" class="acc" style="width: 100%; font: inherit; text-align: left; cursor: pointer"><span class="av" aria-hidden="true" style="background: #1F3A8A">S</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>Stanisław</strong><span class="muted" style="font-size: 16px">mieszkaniec, opiekuje się chorą mamą</span></span></button></li>
+        <li><button type="button" class="acc" style="width: 100%; font: inherit; text-align: left; cursor: pointer"><span class="av" aria-hidden="true" style="background: #1D6B48">G</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>GOPS w Przykładowej Woli</strong><span class="muted" style="font-size: 16px">ośrodek pomocy społecznej w gminie wiejskiej</span></span></button></li>
+        <li><button type="button" class="acc" style="width: 100%; font: inherit; text-align: left; cursor: pointer"><span class="av" aria-hidden="true" style="background: #C2452B">F</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>Fundacja Dobry Start</strong><span class="muted" style="font-size: 16px">organizacja pozarządowa, autorka pomysłu</span></span></button></li>
+        <li><button type="button" class="acc" style="width: 100%; font: inherit; text-align: left; cursor: pointer"><span class="av" aria-hidden="true" style="background: #4B5565">E</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>Ewa</strong><span class="muted" style="font-size: 16px">ekspertka, mentorka innowacji</span></span></button></li>
+        <li><button type="button" class="acc" style="width: 100%; font: inherit; text-align: left; cursor: pointer"><span class="av" aria-hidden="true" style="background: #151A23">R</span><span style="display: flex; flex-direction: column; line-height: 1.35"><strong>Redakcja ROPS</strong><span class="muted" style="font-size: 16px">administracja ROPS, pełny dostęp do Panelu ROPS</span></span></button></li>
+      </ul>
+    </section>
   </main>
+
+  <section aria-labelledby="stany" class="wrap" style="padding-bottom: 72px; display: flex; flex-direction: column; gap: 20px">
+    <h2 id="stany" class="h" style="font-size: 28px">Stany po działaniu</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+      <div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
+        <span class="lbl">Stan: błędne logowanie (komunikat pod polami, fokus na nim)</span>
+        <div class="card" style="padding: 28px 32px; display: flex; flex-direction: column; gap: 12px">
+          <p role="alert" style="color: #B42318; font-weight: 700">Nieprawidłowy e-mail lub hasło.</p>
+          <p class="muted" style="font-size: 16px">Inne komunikaty: „Zbyt wiele prób. Odczekaj kilka minut i spróbuj ponownie.” · „Ten adres e-mail nie jest jeszcze potwierdzony. Kliknij link z maila, który wysłaliśmy przy rejestracji.” (wtedy pod formularzem: „Mail nie przyszedł albo link wygasł?” i przycisk „Wyślij link ponownie”).</p>
+          <p role="alert" style="color: #B42318; font-weight: 700">Link z maila wygasł albo był już użyty. Zaloguj się poniżej albo kliknij „Nie pamiętasz hasła?”.</p>
+          <p class="muted" style="font-size: 16px">Komunikat nad formularzem, gdy ktoś wrócił z nieważnego linku z maila. Gdy nie udało się wejść na konto pokazowe: „Nie udało się wejść na konto pokazowe. Spróbuj ponownie.”</p>
+        </div>
+      </div>
+      <div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
+        <span class="lbl">Stan: ktoś już jest zalogowany i otwiera /login</span>
+        <section class="card" role="region" aria-labelledby="zalogowany" style="padding: 40px; display: flex; flex-direction: column; gap: 22px">
+          <h3 id="zalogowany" class="h" style="font-size: 34px">Jesteś zalogowany</h3>
+          <p class="muted">Konto: <strong style="color: #151A23">Stanisław</strong> (stanislaw@example.org)</p>
+          <button type="button" class="btn btn-s" style="align-self: flex-start">Wyloguj się</button>
+        </section>
+        <p class="muted" style="font-size: 16px">Obok karty nadal jest lista „Wersja pokazowa: wejdź jako…”, żeby przełączyć konto.</p>
+      </div>
+    </div>
+  </section>
+  <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":820}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

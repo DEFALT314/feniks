@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>HubMI – fiszka pomysłu i wniosek</title>
+<title>HubMI – fiszka pomysłu i szkic wniosku</title>
 <script src="./support.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
@@ -17,7 +17,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
@@ -32,9 +32,6 @@ h1,h2,h3,p{margin:0}
 label{font-weight:700}
 input,textarea,select{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
 .f{display:flex;flex-direction:column;gap:6px}
-.seg{display:flex;flex-wrap:wrap;gap:8px}
-.seg button{min-height:46px;padding:0 16px;border-radius:10px;border:1px solid #6B7487;background:#fff;font:inherit;font-size:17px;cursor:pointer;color:#151A23}
-.ai{border-left:3px solid #1F3A8A;padding:4px 0 4px 16px;display:flex;flex-direction:column;gap:6px}
 /* Ruch i stany – wspólne dla wszystkich ekranów (w aplikacji: tokeny w globals.css) */
 :root{--ruch-szybko:120ms;--ruch:200ms;--ruch-wolno:420ms;--ease:cubic-bezier(.16,1,.3,1)}
 html{scrollbar-color:#B8C0CD #F6F7F9;caret-color:#1F3A8A}
@@ -58,9 +55,24 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
   *,*::before,*::after{animation-duration:1ms!important;animation-delay:0ms!important;transition-property:color,background-color,border-color,box-shadow,text-decoration-color!important}
   .btn:active{transform:none}
 }
-.seg button{transition:background-color var(--ruch) var(--ease),border-color var(--ruch) var(--ease),color var(--ruch) var(--ease),transform var(--ruch-szybko) var(--ease)}
-.seg button:not([aria-pressed=true]):hover{border-color:#1F3A8A;background:#F3F6FD;color:#1F3A8A}
-.seg button:active{transform:scale(.985)}
+.tile{display:flex;gap:12px;align-items:center;padding:12px 16px;border-radius:12px;border:1px solid #D9DDE4;background:#fff;cursor:pointer;min-height:56px;font-weight:700}
+.tile input{width:22px;height:22px;accent-color:#1F3A8A;flex:0 0 22px;margin:0}
+.tile:has(input:checked){border:2px solid #1F3A8A}
+.tile:hover{border-color:#1F3A8A}
+.tile:has(input:focus-visible){outline:3px solid #1F3A8A;outline-offset:2px}
+fieldset{border:none;margin:0;padding:0;min-width:0}
+.hint{font-size:16px;color:#4B5565;font-weight:400}
+.req{color:#4B5565;font-weight:400}
+.from{background:#E8EDFA;border-radius:10px;padding:12px 16px;font-size:16px}
+.from ul,.ul{margin:0;padding-left:24px}
+.prop{border:2px solid #E8EDFA;border-radius:10px;background:#fff;padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.btn-t{background:transparent;color:#1F3A8A;text-decoration:underline}
+.btn-sm{min-height:44px;padding:0 16px;font-size:16px}
+.tag-warn{background:#FFF1DB;color:#8A4B00}
+.note{background:#FFF1DB;border-radius:10px;padding:12px 16px;font-size:16px}
+.ok{color:#1D6B48;font-weight:700}
+.sub{display:flex;flex-direction:column;gap:12px}
+textarea.todo{border-color:#8A4B00}
 </style>
 </helmet>
 <div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
@@ -68,53 +80,184 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
   <main>
     <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
       <div data-ruch="wejscie" class="wrap" style="padding-top: 32px; padding-bottom: 28px; display: flex; flex-direction: column; gap: 10px">
-        <a href="Kreator.dc.html" style="font-size: 16px">← Wróć do kreatora</a>
+        <a href="Kreator.dc.html" style="font-size: 16px; min-height: 44px; display: inline-flex; align-items: center; align-self: flex-start"><span aria-hidden="true">←&nbsp;</span>Wróć do pytań</a>
         <h1 class="h" style="font-size: 40px">Sąsiedzki dyżur po wypisie</h1>
-        <span class="muted" style="font-size: 16px">Szkic · obszar: Seniorzy, usługi opiekuńcze w gminie</span>
+        <p class="muted" style="font-size: 16px">Szkic · Zapisano</p>
       </div>
     </div>
     <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 48px; padding-top: 32px; padding-bottom: 64px">
-      <section data-ruch="pokaz" aria-label="Fiszka" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 18px; max-width: 700px">
-        <h2 class="h" style="font-size: 26px">Fiszka</h2>
-        <div class="f"><label for="f-tyt">Tytuł</label><input id="f-tyt" value="Sąsiedzki dyżur po wypisie"></div>
-        <div class="f"><label for="f-opis">Opis</label><textarea id="f-opis" rows="3">Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala: zakupy, leki, rozmowa i kontakt z ośrodkiem pomocy społecznej.</textarea></div>
-        <div class="f"><label for="f-ist">Istota</label><textarea id="f-ist" rows="2">Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu.</textarea></div>
-        <div class="f"><label for="f-dk">Dla kogo</label><input id="f-dk" value="Seniorzy mieszkający samotnie w gminach wiejskich i ich rodziny"></div>
-        <div class="f"><span style="font-weight: 700" id="etap">Etap</span><div class="seg" role="group" aria-labelledby="etap"><button type="button" aria-pressed="true" style="background: #1F3A8A; color: #FFFFFF; border-color: #1F3A8A">Pomysł</button><button type="button" aria-pressed="false">Prototyp</button><button type="button" aria-pressed="false">Przetestowane</button><button type="button" aria-pressed="false">Gotowe do wdrożenia</button></div></div>
+      <section data-ruch="pokaz" aria-labelledby="card-heading" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px; max-width: 700px">
+        <h2 id="card-heading" class="h" style="font-size: 26px">Fiszka</h2>
+        <p class="muted" style="font-size: 16px">Pola oznaczone „(wymagane)” trzeba wypełnić, zanim wyślesz fiszkę do ROPS.</p>
+        <fieldset style="display: flex; flex-direction: column; gap: 20px">
+          <legend style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Pola fiszki</legend>
+          <div class="f"><label for="f-tyt">Tytuł <span class="req">(wymagane)</span></label><input id="f-tyt" value="Sąsiedzki dyżur po wypisie" required></div>
+          <div class="f">
+            <label for="f-opis">Opis <span class="req">(wymagane)</span></label>
+            <span class="hint" id="h-opis">Jaki problem rozwiązuje Twój pomysł i w jaki sposób?</span>
+            <textarea id="f-opis" rows="4" aria-describedby="h-opis" required>Po wypisie ze szpitala senior często zostaje sam. Sąsiedzi-wolontariusze robią zakupy, przypominają o lekach i dają znać OPS, gdy dzieje się coś niepokojącego.</textarea>
+            <div class="from"><p style="font-weight: 700">Twoje odpowiedzi z kanwy, które pomogą wypełnić pole „Opis”:</p><ul><li>Intensywność: Mocno przeszkadza</li><li>Częstotliwość: Często (co tydzień)</li></ul></div>
+          </div>
+          <div class="f"><label for="f-ist">Istota <span class="req">(wymagane)</span></label><span class="hint" id="h-ist">Jedno zdanie: co zmienia się dla ludzi.</span><textarea id="f-ist" rows="2" aria-describedby="h-ist" required>Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu.</textarea></div>
+          <div class="f"><label for="f-dk">Dla kogo <span class="req">(wymagane)</span></label><textarea id="f-dk" rows="2" required>Seniorzy mieszkający samotnie w gminach wiejskich i ich rodziny</textarea></div>
+          <fieldset style="display: flex; flex-direction: column; gap: 8px">
+            <legend style="font-weight: 700; margin-bottom: 6px">Etap</legend>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(max(220px, 40%), 1fr)); gap: 8px">
+              <label class="tile"><input type="radio" name="etap" value="pomysl" checked>Pomysł</label>
+              <label class="tile"><input type="radio" name="etap" value="prototyp">Prototyp</label>
+              <label class="tile"><input type="radio" name="etap" value="przetestowane">Przetestowane</label>
+              <label class="tile"><input type="radio" name="etap" value="gotowe">Gotowe do wdrożenia</label>
+            </div>
+          </fieldset>
+        </fieldset>
 
-        <div style="border-top: 1px solid #D9DDE4; margin-top: 12px; padding-top: 24px; display: flex; flex-direction: column; gap: 16px">
-          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h2 class="h" style="font-size: 26px">Wniosek pod nabór</h2><span class="tag tag-ai">Propozycja AI</span></div>
-          <div class="f"><label for="f-nab">Nabór</label><select id="f-nab"><option>[Nabór z listy ROPS]</option></select></div>
-          <div class="ai"><span class="lbl">Cel projektu</span><p>Zapewnienie seniorom mieszkającym samotnie wsparcia sąsiedzkiego w pierwszych dwóch tygodniach po wypisie ze szpitala, w porozumieniu z ośrodkiem pomocy społecznej.</p><div style="display: flex; gap: 14px"><button type="button" class="btn btn-s" style="min-height: 44px">Użyj</button><button type="button" class="btn btn-s" style="min-height: 44px">Popraw</button></div></div>
-          <div class="ai"><span class="lbl">Działania</span><p>Rekrutacja i szkolenie wolontariuszy, grafik dyżurów, karta kontaktu z OPS, spotkanie podsumowujące z rodzinami.</p><div style="display: flex; gap: 14px"><button type="button" class="btn btn-s" style="min-height: 44px">Użyj</button><button type="button" class="btn btn-s" style="min-height: 44px">Popraw</button></div></div>
-          <div class="ai" style="border-left-color: #8A4B00"><span class="lbl">Rezultaty</span><p>[Liczba seniorów objętych wsparciem] · [liczba przeszkolonych wolontariuszy]. Uzupełnij sam, AI nie podaje liczb.</p></div>
-        </div>
+        <section aria-labelledby="hints-heading" class="sub" aria-live="polite">
+          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><h3 id="hints-heading" style="font-size: 20px">Podpowiedzi do fiszki</h3><button type="button" class="btn btn-s btn-sm">Podpowiedz jeszcze raz</button></div>
+          <article class="prop" aria-label="Propozycja AI: Istota">
+            <div style="display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center"><strong>Istota</strong><span class="tag tag-ai">Propozycja AI</span></div>
+            <p>Przez dwa tygodnie po szpitalu senior ma obok sąsiada, który pomoże w codziennych sprawach.</p>
+            <p class="muted" style="font-size: 16px">Krócej i prościej: od razu widać, co zyskuje senior.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap"><button type="button" class="btn btn-s btn-sm">Użyj</button><button type="button" class="btn btn-t btn-sm">Pomiń</button></div>
+          </article>
+          <article class="prop" aria-label="Propozycja AI: Dla kogo">
+            <div style="display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center"><strong>Dla kogo</strong><span class="tag tag-ai">Propozycja AI</span></div>
+            <p>Seniorzy, którzy mieszkają sami i wracają do domu ze szpitala, oraz ich rodziny, które mieszkają daleko.</p>
+            <p class="ok">Wstawiono do pola „Dla kogo”.</p>
+          </article>
+        </section>
+
+        <section aria-labelledby="alternatives-heading" class="sub" aria-live="polite">
+          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><h3 id="alternatives-heading" style="font-size: 20px">Inne podejścia</h3><button type="button" class="btn btn-s btn-sm">Pokaż inne podejścia jeszcze raz</button></div>
+          <article class="prop" aria-label="Propozycja AI: Dyżur z apteką">
+            <div style="display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center"><strong>Dyżur z apteką</strong><span class="tag tag-ai">Propozycja AI</span></div>
+            <p>Farmaceuta z najbliższej apteki dzwoni do seniora po wypisie i umawia dostawę leków przez wolontariusza.</p>
+            <p class="muted" style="font-size: 16px">Apteka i tak zna seniora, a leki to najczęstsza sprawa po szpitalu.</p>
+            <button type="button" class="btn btn-s btn-sm" style="align-self: flex-start">Dodaj do opisu</button>
+          </article>
+          <article class="prop" aria-label="Propozycja AI: Uczniowie jako dyżurni">
+            <div style="display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center"><strong>Uczniowie jako dyżurni</strong><span class="tag tag-ai">Propozycja AI</span></div>
+            <p>Szkolny wolontariat: starsi uczniowie odwiedzają seniora po lekcjach, a nauczyciel koordynuje grafik.</p>
+            <p class="ok">Dodano do pola „Opis”.</p>
+          </article>
+        </section>
+
+        <section aria-labelledby="application-heading" style="border-top: 1px solid #D9DDE4; padding-top: 24px; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h2 id="application-heading" class="h" style="font-size: 26px">Szkic wniosku o dofinansowanie</h2><span class="tag tag-ai">Propozycja AI</span></div>
+          <p style="font-size: 16px">Asystent AI ułoży szkic wniosku z Twojej fiszki, dopasowany do celu wybranego naboru.</p>
+          <div class="f">
+            <label for="f-nab">Nabór</label>
+            <select id="f-nab"><option>Wsparcie seniorów w miejscu zamieszkania</option><option>Inkubator innowacji społecznych – testowanie pomysłów</option><option>Dostępność usług publicznych dla osób z niepełnosprawnościami</option></select>
+            <p class="muted" style="font-size: 16px">Regionalny Ośrodek Polityki Społecznej w Krakowie · termin: 30 listopada 2026 · Dane demonstracyjne<br>Usługi i rozwiązania, które pomagają osobom starszym dłużej mieszkać samodzielnie we własnym domu i zmniejszają ich samotność.</p>
+          </div>
+          <button type="button" class="btn btn-s" style="align-self: flex-start">Przygotuj szkic od nowa</button>
+          <div aria-live="polite" style="display: flex; flex-direction: column; gap: 16px">
+            <p class="muted" style="font-size: 16px">To szkic do poprawienia. AI nie wpisuje liczb ani kwot. Uzupełnij je w miejscach w nawiasach [ ].</p>
+            <div class="f">
+              <label for="w-cel">Cel projektu</label>
+              <span class="hint" id="h-cel"><span class="tag tag-ai" style="margin-right: 8px">Propozycja AI</span>Sprawdź i popraw przed wysłaniem.</span>
+              <textarea id="w-cel" rows="4" aria-describedby="h-cel">Zapewnienie seniorom mieszkającym samotnie wsparcia sąsiedzkiego w pierwszych dwóch tygodniach po wypisie ze szpitala, w porozumieniu z ośrodkiem pomocy społecznej.</textarea>
+              <button type="button" class="btn btn-t btn-sm" style="align-self: flex-start; padding: 0">Kopiuj: Cel projektu</button>
+            </div>
+            <div class="f">
+              <label for="w-dz">Działania</label>
+              <span class="hint" id="h-dz"><span class="tag tag-ai" style="margin-right: 8px">Propozycja AI</span>Sprawdź i popraw przed wysłaniem.</span>
+              <textarea id="w-dz" rows="4" aria-describedby="h-dz">Rekrutacja i szkolenie wolontariuszy, grafik dyżurów, karta kontaktu z OPS, spotkanie podsumowujące z rodzinami.</textarea>
+              <button type="button" class="btn btn-t btn-sm" style="align-self: flex-start; padding: 0">Skopiowano</button>
+            </div>
+            <div class="f">
+              <label for="w-rez">Rezultaty</label>
+              <span class="hint" id="h-rez"><span class="tag tag-ai" style="margin-right: 8px">Propozycja AI</span>Uzupełnij fragmenty w nawiasach [ ].</span>
+              <textarea id="w-rez" class="todo" rows="4" aria-describedby="h-rez">Wsparcie dla [liczba] seniorów po wypisie, [liczba] przeszkolonych wolontariuszy w [liczba] sołectwach.</textarea>
+              <button type="button" class="btn btn-t btn-sm" style="align-self: flex-start; padding: 0">Kopiuj: Rezultaty</button>
+            </div>
+            <div class="f">
+              <label for="w-bud">Budżet</label>
+              <span class="hint" id="h-bud"><span class="tag tag-ai" style="margin-right: 8px">Propozycja AI</span>Uzupełnij fragmenty w nawiasach [ ].</span>
+              <textarea id="w-bud" class="todo" rows="4" aria-describedby="h-bud">Szkolenie wolontariuszy: [kwota] zł. Koordynacja dyżurów: [kwota] zł. Dojazdy: [kwota] zł.</textarea>
+              <button type="button" class="btn btn-t btn-sm" style="align-self: flex-start; padding: 0">Kopiuj: Budżet</button>
+            </div>
+            <button type="button" class="btn btn-s" style="align-self: flex-start">Kopiuj cały wniosek</button>
+          </div>
+        </section>
       </section>
-      <aside data-ruch="pokaz" style="flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 20px">
-        <div class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
-          <span class="lbl">Coś podobnego już działa</span>
-          <strong style="font-size: 19px">Organizator kompleksowej opieki w miejscu zamieszkania</strong>
-          <span class="tag" style="align-self: flex-start">Z inkubatora MIWS</span>
-          <p class="muted" style="font-size: 16px">Twój pomysł może ją uzupełnić. Warto porozmawiać z autorami, zanim wyślesz fiszkę.</p>
-          <a href="Karta.dc.html" style="font-weight: 700">Zobacz kartę<span class="arr" aria-hidden="true">→</span></a>
-        </div>
-        <div class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
-          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px"><span class="lbl">Wizualizacja</span><span class="tag tag-ai">Propozycja AI</span></div>
-          <div role="img" aria-label="Miejsce na obraz wygenerowany przez model" class="muted" style="height: 180px; border-radius: 10px; border: 1px dashed #8A93A3; background: #F6F7F9; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 16px">[Obraz z modelu na Hugging Face]</div>
-          <div class="f"><label for="f-alt" style="font-size: 16px">Opis obrazu dla czytnika ekranu</label><input id="f-alt" value="Wolontariuszka z torbą zakupów rozmawia z seniorem przy drzwiach domu"></div>
-          <button type="button" class="btn btn-s">Wygeneruj ponownie</button>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 8px">
-          <button type="button" class="btn btn-p">Wyślij do ROPS</button>
-          <p class="muted" style="font-size: 16px">Zespół ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach.</p>
-        </div>
+      <aside data-ruch="pokaz" aria-label="Sprawdzenie i wysyłka" style="flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 20px">
+        <section class="card" aria-labelledby="similar-heading" style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
+          <h2 id="similar-heading" class="lbl" style="font-size: 16px">Coś podobnego już działa</h2>
+          <strong style="font-size: 19px; line-height: 1.35">Organizator kompleksowej opieki w miejscu zamieszkania</strong>
+          <span class="tag tag-ok" style="align-self: flex-start">Sprawdzona przez ROPS</span>
+          <p class="muted" style="font-size: 16px">Zobacz ją, zanim wyślesz fiszkę. Może wystarczy zrobić to samo u siebie. A może Twój pomysł coś do niej doda.</p>
+          <a href="Karta.dc.html" style="font-weight: 700">Zobacz kartę</a>
+        </section>
+        <section aria-labelledby="submit-heading" style="display: flex; flex-direction: column; gap: 8px">
+          <h2 id="submit-heading" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Wysyłka do ROPS</h2>
+          <button type="submit" class="btn btn-p">Wyślij do ROPS</button>
+          <p class="muted" style="font-size: 16px">ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach, wyślemy ją też mailem.</p>
+        </section>
+        <section class="card" aria-labelledby="test-heading" style="padding: 22px; display: flex; flex-direction: column; gap: 12px">
+          <h2 id="test-heading" class="h" style="font-size: 22px">Test z mieszkańcami</h2>
+          <p style="font-size: 16px">Sprawdź pomysł w praktyce: zaplanuj test, a mieszkańcy zapiszą się i ocenią go od 1 do 5.</p>
+          <button type="button" class="btn btn-s" aria-expanded="true" aria-controls="plan-test">Zwiń formularz</button>
+          <form id="plan-test" style="display: flex; flex-direction: column; gap: 14px">
+            <div class="f"><label for="t-tyt">Nazwa testu <span class="req">(wymagane)</span></label><input id="t-tyt" value="Sąsiedzki dyżur po wypisie – test z mieszkańcami" required></div>
+            <div class="f"><label for="t-opis">Na czym polega?</label><span class="hint" id="h-topis">Co uczestnicy zrobią i ile to potrwa. Mieszkańcy zobaczą ten opis przy zapisie.</span><textarea id="t-opis" rows="3" aria-describedby="h-topis">Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu.</textarea></div>
+            <div class="f"><label for="t-gdzie">Gdzie</label><span class="hint" id="h-gdzie">Adres albo „online”.</span><input id="t-gdzie" aria-describedby="h-gdzie" value=""></div>
+            <div class="f"><label for="t-kiedy">Kiedy</label><span class="hint" id="h-kiedy">Możesz zostawić puste, jeśli termin nie jest jeszcze znany.</span><input id="t-kiedy" type="datetime-local" aria-describedby="h-kiedy"></div>
+            <div class="f"><label for="t-miejsca">Liczba miejsc</label><span class="hint" id="h-miejsca">Puste: bez limitu.</span><input id="t-miejsca" type="number" min="1" max="500" inputmode="numeric" aria-describedby="h-miejsca"></div>
+            <button type="submit" class="btn btn-p">Zapisz test</button>
+          </form>
+          <p class="muted" style="font-size: 15px">Nazwa i opis są wstępnie wypełnione z fiszki (tytuł i istota).</p>
+        </section>
       </aside>
     </div>
+
+    <section aria-labelledby="stan-wyslany" class="wrap" style="padding-bottom: 40px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="stan-wyslany" class="lbl">Stan: po wysłaniu do ROPS (panel po prawej)</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px">
+        <div class="card" style="padding: 22px; flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 8px">
+          <span class="tag tag-warn" style="align-self: flex-start">ROPS sprawdza pomysł</span>
+          <p class="muted" style="font-size: 16px">Wysłano 4 paź 2026, 00:47.</p>
+          <a href="Wiadomosci.dc.html" style="font-size: 16px; align-self: flex-start">Napisz do ROPS o tym pomyśle</a>
+          <p class="ok" tabindex="-1">Wysłano do ROPS. Dostaniesz powiadomienie, gdy zespół oceni pomysł.</p>
+          <p class="note"><strong>Pomysł jest już w ROPS.</strong> Możesz go czytać, ale nie zmieniać. Jeśli ROPS poprosi o poprawki, znów będzie można go zmieniać.</p>
+        </div>
+        <div class="card" style="padding: 22px; flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 8px">
+          <span class="tag" style="align-self: flex-start; background: #FDECEA; color: #B42318">Do poprawy</span>
+          <p class="muted" style="font-size: 16px">Wysłano 4 paź 2026, 00:47.</p>
+          <p style="background: #EEF0F4; border-radius: 10px; padding: 12px 16px; font-size: 16px"><strong>Uwagi ROPS:</strong> Dopiszcie, kto koordynuje wolontariuszy i jak OPS dowie się o wypisie.</p>
+          <a href="Wiadomosci.dc.html" style="font-size: 16px; align-self: flex-start">Odpowiedz ROPS w Wiadomościach</a>
+          <button type="submit" class="btn btn-p" style="margin-top: 6px">Wyślij poprawioną wersję</button>
+          <p class="muted" style="font-size: 16px">ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach, wyślemy ją też mailem.</p>
+        </div>
+        <div class="card" style="padding: 22px; flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 8px">
+          <p style="font-size: 16px" id="brakuje">Żeby wysłać, uzupełnij: <strong>Istota, Dla kogo</strong>.</p>
+          <button type="submit" class="btn btn-p" disabled aria-describedby="brakuje" style="opacity: .5; cursor: not-allowed">Wyślij do ROPS</button>
+          <p class="muted" style="font-size: 16px">ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach, wyślemy ją też mailem.</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="stan-ai" class="wrap" style="padding-bottom: 64px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="stan-ai" class="lbl">Stan: przed użyciem asystenta i bez otwartego naboru</h2>
+      <div class="card" style="padding: 24px; max-width: 700px; display: flex; flex-direction: column; gap: 20px">
+        <div class="sub">
+          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><h3 style="font-size: 20px">Podpowiedzi do fiszki</h3><button type="button" class="btn btn-s btn-sm">Podpowiedz</button></div>
+          <p class="muted" style="font-size: 16px">Asystent AI zaproponuje lepsze brzmienie pól. Nic nie zmieni się bez Twojej zgody.</p>
+        </div>
+        <div class="sub">
+          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><h3 style="font-size: 20px">Inne podejścia</h3><button type="button" class="btn btn-s btn-sm">Pokaż inne podejścia</button></div>
+          <p class="muted" style="font-size: 16px">Asystent AI podsunie nietuzinkowe sposoby rozwiązania tego samego problemu: z innym partnerem, w innej formie albo z pomocą innych osób. Możesz z nich skorzystać albo nie.</p>
+        </div>
+        <div style="border-top: 1px solid #D9DDE4; padding-top: 20px; display: flex; flex-direction: column; gap: 8px">
+          <h3 class="h" style="font-size: 26px">Szkic wniosku o dofinansowanie</h3>
+          <p style="font-size: 16px">Teraz nie ma otwartych naborów. Gdy ROPS ogłosi nabór, tutaj przygotujesz szkic wniosku dopasowany do jego celu.</p>
+        </div>
+      </div>
+    </section>
   </main>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1650}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2900}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

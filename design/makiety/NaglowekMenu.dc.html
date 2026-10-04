@@ -14,7 +14,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
 .btn-p{background:#1F3A8A;color:#fff}
@@ -36,46 +36,82 @@ input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;bor
 .opt input{width:22px;height:22px;accent-color:#1F3A8A;flex:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .row{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid #EEF0F4;flex-wrap:wrap}
+.ai{display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:16px;text-align:left}
+.ai:hover{background:#E8EDFA;color:#151A23}
+.mi{display:flex;align-items:center;min-height:48px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px;text-align:left}
+.mi:hover{background:#E8EDFA;color:#151A23}
+.mi-b{font-weight:700}
 </style>
 </helmet>
-<div style="font-family: 'Atkinson Hyperlegible Next', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.5; padding: 48px 64px; display: flex; gap: 64px; align-items: flex-start">
+<div style="font-family: 'Atkinson Hyperlegible Next', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.5; padding: 48px 64px; display: flex; gap: 48px; align-items: flex-start">
   <section style="flex: 1; display: flex; flex-direction: column; gap: 16px">
     <h1 class="h" style="font-size: 28px">Menu konta (od 1024 px)</h1>
     <p class="muted" style="font-size: 16px">Kliknięcie imienia w nagłówku. Escape albo kliknięcie obok zamyka. Między 1024 a 1279 px zamiast imienia jest kółko z inicjałem.</p>
-    <div style="align-self: flex-end; width: 280px; background: #fff; border: 1px solid #D9DDE4; border-radius: 14px; box-shadow: 0 12px 28px -12px rgba(21,26,35,.25); padding: 8px">
-      <p style="margin: 0 0 8px; padding: 6px 12px 10px; border-bottom: 1px solid #D9DDE4; line-height: 1.25"><strong style="display:block">GOPS w Przykładowej Woli</strong><span class="muted" style="font-size: 14px">gmina (JST)</span></p>
-      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Kreator.dc.html">Moje pomysły</a>
-      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Tester.dc.html">Testy</a>
-      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px;background:#E8EDFA;color:#1F3A8A;font-weight:700" href="Wiadomosci.dc.html" aria-current="page">Wiadomości</a>
-      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Middleman.dc.html">Karta usługi</a>
-      <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Profil.dc.html">Twój profil</a>
-      <div style="border-top: 1px solid #D9DDE4; margin-top: 8px; padding-top: 8px"><button type="button" style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px;width:100%;border:0;background:none;font:inherit;font-weight:700;cursor:pointer">Wyloguj się</button></div>
+    <p class="muted" style="font-size: 16px">Z włączonym A+ menu główne i menu konta mieszczą się w jednym wierszu dopiero od 1536 px. Na węższym ekranie zamiast nich jest przycisk „Menu”, jak na telefonie.</p>
+    <div style="align-self: flex-end; width: 256px; background: #fff; border: 1px solid #D9DDE4; border-radius: 18px; box-shadow: 0 16px 40px -16px rgba(21,26,35,.35); padding: 8px">
+      <p style="margin: 0 0 8px; padding: 4px 12px 10px; border-bottom: 1px solid #D9DDE4; line-height: 1.25"><strong style="display:block">GOPS w Przykładowej Woli</strong><span class="muted" style="font-size: 14px">gmina (JST)</span></p>
+      <a class="ai" href="Kreator.dc.html">Moje pomysły</a>
+      <a class="ai" href="Tester.dc.html">Testy</a>
+      <a class="ai" href="Wiadomosci.dc.html" aria-current="page" style="color:#1F3A8A;font-weight:700">Wiadomości</a>
+      <a class="ai" href="Middleman.dc.html">Karta usługi</a>
+      <a class="ai" href="Profil.dc.html">Twój profil</a>
+      <div style="border-top: 1px solid #D9DDE4; margin-top: 8px; padding-top: 8px"><button type="button" class="ai" style="width:100%;border:0;background:none;font:inherit;font-size:16px;font-weight:700;cursor:pointer">Wyloguj się</button></div>
     </div>
   </section>
   <section style="width: 375px; display: flex; flex-direction: column; gap: 16px">
     <h1 class="h" style="font-size: 28px">Telefon i powiększenie 200%</h1>
+    <p class="muted" style="font-size: 16px">Gość: logo, A+ i „Menu”. Na dole menu logowanie i rejestracja.</p>
     <div style="background: #fff; border: 1px solid #D9DDE4; border-radius: 16px; overflow: hidden">
       <div style="display: flex; align-items: center; gap: 8px; padding: 14px 16px; border-bottom: 1px solid #D9DDE4">
         <span style="display:flex;align-items:center;gap:8px"><svg width="36" height="36" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14.5" cy="9" r="5.5" fill="#1F3A8A"></circle><circle cx="33.5" cy="9" r="5.5" fill="#C2452B"></circle><path d="M23.4 44 C 12 36.5, 3.5 29, 5.5 21.5 C 7 16.5, 13.5 15.5, 17.5 18.5 C 20.3 20.6, 22.3 23, 23.4 25.5 Z" fill="#1F3A8A"></path><path d="M24.6 44 C 36 36.5, 44.5 29, 42.5 21.5 C 41 16.5, 34.5 15.5, 30.5 18.5 C 27.7 20.6, 25.7 23, 24.6 25.5 Z" fill="#C2452B"></path></svg><span class="h" style="font-size: 22px">HubMI</span></span>
         <span style="margin-left:auto;display:flex;gap:8px">
-          <span style="display:flex;align-items:center;justify-content:center;height:44px;min-width:44px;border:1px solid #6B7487;border-radius:10px;font-weight:700;font-size:16px">A+</span>
+          <span style="display:flex;align-items:center;justify-content:center;height:44px;min-width:44px;border:1px solid #6B7487;border-radius:10px;font-weight:700;font-size:16px">A+<span class="sr-only"> większy tekst i wysoki kontrast</span></span>
           <span style="display:flex;align-items:center;gap:6px;height:44px;padding:0 10px;border-radius:10px;background:#1F3A8A;color:#fff;font-weight:700;font-size:16px" aria-expanded="true">✕ Menu</span>
         </span>
       </div>
       <nav aria-label="Menu główne" style="padding: 8px">
-        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Dopasuj.dc.html">Dopasuj rozwiązanie</a>
-        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Biblioteka.dc.html">Biblioteka</a>
-        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="MapaWyzwan.dc.html">Mapa wyzwań</a>
+        <a class="mi" href="Dopasuj.dc.html">Dopasuj rozwiązanie</a>
+        <a class="mi" href="Biblioteka.dc.html">Biblioteka</a>
+        <a class="mi" href="MapaWyzwan.dc.html">Mapa wyzwań</a>
+        <a class="mi" href="#wiedza">Wiedza</a>
       </nav>
       <div style="border-top: 1px solid #D9DDE4; padding: 8px">
-        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px;font-weight:700" href="Logowanie.dc.html">Zaloguj się</a>
-        <a style="display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:8px;color:#151A23;text-decoration:none;font-size:17px" href="Rejestracja.dc.html">Załóż konto</a>
+        <a class="mi mi-b" href="Logowanie.dc.html">Zaloguj się</a>
+        <a class="mi" href="Rejestracja.dc.html">Załóż konto</a>
+      </div>
+    </div>
+  </section>
+  <section style="width: 375px; display: flex; flex-direction: column; gap: 16px">
+    <h1 class="h" style="font-size: 28px">Telefon: zalogowany</h1>
+    <p class="muted" style="font-size: 16px">Główne zadanie roli („Moje pomysły”) jest w menu głównym; pod imieniem tylko strony, których tam nie ma.</p>
+    <div style="background: #fff; border: 1px solid #D9DDE4; border-radius: 16px; overflow: hidden">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 14px 16px; border-bottom: 1px solid #D9DDE4">
+        <span style="display:flex;align-items:center;gap:8px"><svg width="36" height="36" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14.5" cy="9" r="5.5" fill="#1F3A8A"></circle><circle cx="33.5" cy="9" r="5.5" fill="#C2452B"></circle><path d="M23.4 44 C 12 36.5, 3.5 29, 5.5 21.5 C 7 16.5, 13.5 15.5, 17.5 18.5 C 20.3 20.6, 22.3 23, 23.4 25.5 Z" fill="#1F3A8A"></path><path d="M24.6 44 C 36 36.5, 44.5 29, 42.5 21.5 C 41 16.5, 34.5 15.5, 30.5 18.5 C 27.7 20.6, 25.7 23, 24.6 25.5 Z" fill="#C2452B"></path></svg><span class="h" style="font-size: 22px">HubMI</span></span>
+        <span style="margin-left:auto;display:flex;gap:8px">
+          <span style="display:flex;align-items:center;justify-content:center;height:44px;min-width:44px;border:1px solid #6B7487;border-radius:10px;font-weight:700;font-size:16px">A+<span class="sr-only"> większy tekst i wysoki kontrast</span></span>
+          <span aria-label="Powiadomienia: 2 nowe" style="position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #6B7487;border-radius:10px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#151A23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span aria-hidden="true" style="position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;border-radius:999px;background:#C2452B;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px">2</span></span>
+          <span style="display:flex;align-items:center;gap:6px;height:44px;padding:0 10px;border-radius:10px;background:#1F3A8A;color:#fff;font-weight:700;font-size:16px" aria-expanded="true">✕ Menu</span>
+        </span>
+      </div>
+      <nav aria-label="Menu główne" style="padding: 8px">
+        <a class="mi" href="Dopasuj.dc.html">Dopasuj rozwiązanie</a>
+        <a class="mi" href="Biblioteka.dc.html">Biblioteka</a>
+        <a class="mi" href="MapaWyzwan.dc.html">Mapa wyzwań</a>
+        <a class="mi" href="#wiedza">Wiedza</a>
+        <a class="mi" href="Kreator.dc.html">Moje pomysły</a>
+      </nav>
+      <div style="border-top: 1px solid #D9DDE4; padding: 8px">
+        <p style="padding: 4px 12px 6px; line-height: 1.25"><strong>Stanisław</strong> <span class="muted" style="font-size: 14px">(mieszkaniec)</span></p>
+        <a class="mi" href="Tester.dc.html">Testy</a>
+        <a class="mi" href="Wiadomosci.dc.html">Wiadomości</a>
+        <a class="mi" href="Profil.dc.html">Twój profil</a>
+        <button type="button" class="mi mi-b" style="width:100%;border:0;background:none;font:inherit;font-size:17px;font-weight:700;cursor:pointer">Wyloguj się</button>
       </div>
     </div>
   </section>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":760}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

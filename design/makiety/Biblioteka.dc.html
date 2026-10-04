@@ -17,7 +17,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
@@ -32,8 +32,8 @@ h1,h2,h3,p{margin:0}
 input[type=search]{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
 fieldset{border:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 legend{font-size:15px;font-weight:700;color:#4B5565;margin-bottom:8px}
-.opt{display:flex;gap:10px;align-items:center;min-height:40px;font-size:17px}
-.opt input{width:20px;height:20px;accent-color:#1F3A8A}
+.opt{display:flex;gap:10px;align-items:center;min-height:44px;font-size:17px}
+.opt input{width:20px;height:20px;flex-shrink:0;accent-color:#1F3A8A}
 .cnt{margin-left:auto;font-size:15px;color:#4B5565}
 .row{display:flex;flex-direction:column;gap:6px;padding:20px 0;border-bottom:1px solid #D9DDE4}
 .row a.t{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;font-size:22px;letter-spacing:-.01em;color:#151A23;text-decoration:none}
@@ -73,58 +73,76 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
     <section style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
       <div data-ruch="wejscie" class="wrap" style="padding-top: 44px; padding-bottom: 36px; display: flex; flex-direction: column; gap: 16px">
         <h1 class="h" style="font-size: 44px">Biblioteka innowacji</h1>
-        <p class="muted" style="max-width: 760px">Rozwiązania przetestowane w inkubatorach ROPS. Każda karta mówi, dla kogo jest rozwiązanie, kto może je wdrożyć i jakie są materiały.</p>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; max-width: 900px">
+        <p class="muted" style="max-width: 760px">Rozwiązania przetestowane w inkubatorach ROPS. Przy każdym piszemy, dla kogo jest, kto może je u siebie uruchomić i jakie ma materiały do obejrzenia lub pobrania.</p>
+        <form role="search" aria-label="Szukaj w Bibliotece" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; max-width: 900px">
           <label for="szukaj" style="position: absolute; left: -9999px">Szukaj w Bibliotece</label>
-          <input id="szukaj" type="search" value="samotność seniorów" style="flex: 1 1 420px">
-          <button type="button" class="btn btn-p">Szukaj</button>
-        </div>
+          <input id="szukaj" type="search" value="samotność seniorów" placeholder="np. samotność seniorów" style="flex: 1 1 320px">
+          <button type="submit" class="btn btn-p">Szukaj</button>
+        </form>
         <p style="font-size: 16px">Nie wiesz, czego szukać? <a href="Dopasuj.dc.html">Opisz problem, a dopasujemy rozwiązanie</a>.</p>
       </div>
     </section>
     <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 40px; padding-top: 32px; padding-bottom: 64px">
       <aside data-ruch="odswiez" data-ruch-lista="article.row" aria-label="Filtry" style="flex: 1 1 260px; max-width: 300px; display: flex; flex-direction: column; gap: 28px">
+        <p class="muted" style="font-size: 16px">Zaznacz filtry i naciśnij „Pokaż wyniki”.</p>
         <fieldset>
           <legend>Kategoria</legend>
-          <label class="opt"><input type="checkbox" checked> Dla seniorów <span class="cnt">20</span></label>
-          <label class="opt"><input type="checkbox"> Dzieci, młodzież i rodzina <span class="cnt">21</span></label>
-          <label class="opt"><input type="checkbox"> Niepełnosprawność sensoryczna <span class="cnt">20</span></label>
-          <label class="opt"><input type="checkbox"> Ograniczona mobilność <span class="cnt">18</span></label>
-          <label class="opt"><input type="checkbox"> Niepełnosprawność intelektualna <span class="cnt">14</span></label>
-          <label class="opt"><input type="checkbox"> Zdrowie i medycyna <span class="cnt">9</span></label>
-          <label class="opt"><input type="checkbox"> Cudzoziemcy <span class="cnt">6</span></label>
-          <label class="opt"><input type="checkbox"> Rynek pracy <span class="cnt">5</span></label>
-          <label class="opt"><input type="checkbox"> Kryzys bezdomności <span class="cnt">2</span></label>
+          <label class="opt"><input type="checkbox" checked> Dla seniorów <span class="cnt">29</span></label>
+          <label class="opt"><input type="checkbox"> Dla dzieci, młodzieży i rodziny <span class="cnt">0</span></label>
+          <label class="opt"><input type="checkbox"> Dla osób o ograniczonej mobilności <span class="cnt">5</span></label>
+          <label class="opt"><input type="checkbox"> Dla osób z niepełnosprawnością sensoryczną <span class="cnt">1</span></label>
+          <label class="opt"><input type="checkbox"> Dla zdrowia i medycyny <span class="cnt">4</span></label>
+          <label class="opt"><input type="checkbox"> Dla rynku pracy <span class="cnt">0</span></label>
+          <label class="opt"><input type="checkbox"> Dla cudzoziemców <span class="cnt">0</span></label>
+          <label class="opt"><input type="checkbox"> Dla osób w kryzysie bezdomności <span class="cnt">0</span></label>
+          <label class="opt"><input type="checkbox"> Dla osób z niepełnosprawnością intelektualną <span class="cnt">0</span></label>
+          <label class="opt"><input type="checkbox"> Inne <span class="cnt">2</span></label>
         </fieldset>
         <fieldset>
-          <legend>Sprawdzenie</legend>
-          <label class="opt"><input type="checkbox"> Z inkubatora ROPS (IWS, MIIS, Inkubator Dostępności) <span class="cnt">27</span></label>
+          <legend>Polecane</legend>
+          <label class="opt"><input type="checkbox"> Sprawdzone przez ROPS <span class="cnt">5</span></label>
         </fieldset>
         <fieldset>
           <legend>Materiały</legend>
-          <label class="opt"><input type="checkbox"> Jest film <span class="cnt">26</span></label>
-          <label class="opt"><input type="checkbox"> Jest opis modelu (PDF) <span class="cnt">27</span></label>
+          <label class="opt"><input type="checkbox"> Jest film <span class="cnt">4</span></label>
+          <label class="opt"><input type="checkbox"> Jest opis do pobrania (PDF) <span class="cnt">6</span></label>
         </fieldset>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center">
+          <button type="submit" class="btn btn-s">Pokaż wyniki</button>
+          <a href="Biblioteka.dc.html" style="min-height: 50px; display: inline-flex; align-items: center">Wyczyść filtry</a>
+        </div>
       </aside>
       <section data-ruch="pokaz" aria-labelledby="wyniki" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
         <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: baseline; padding-bottom: 8px; border-bottom: 2px solid #151A23">
-          <h2 id="wyniki" style="font-size: 18px">Dla seniorów: 20 w Bibliotece i kolejne z inkubatorów ROPS</h2>
+          <h2 id="wyniki" style="font-size: 18px">Dla seniorów · „samotność seniorów”: 29 innowacji</h2>
           <span class="muted" style="font-size: 16px">Sortowanie: najlepiej pasujące</span>
         </div>
-        <article class="row"><a class="t" href="Karta.dc.html">Senior CUDER</a><p>Gra karciana, która przez rozmowę o zdrowiu, emocjach i relacjach wzmacnia motywację seniorów i ich więzi z bliskimi.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag">Z inkubatora MIIS</span><span class="muted" style="font-size: 15px">kluby seniora, domy opieki · film</span></div></article>
-        <article class="row"><a class="t" href="Karta.dc.html">Centrum antydepresyjne</a><p>Wsparcie seniorów z depresją w ich domach z udziałem psów i kotów; obejmuje też bliskich.</p><span class="muted" style="font-size: 15px">autor: Gmina Miechów · gminy, NGO, podmioty ekonomii społecznej</span></article>
-        <article class="row"><a class="t" href="Karta.dc.html">Merkury</a><p>Symulator bankomatu, paczkomatu, parkomatu i kasy samoobsługowej do ćwiczeń w domu.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag">Z inkubatora IWS</span><span class="muted" style="font-size: 15px">NGO, kluby seniora · film</span></div></article>
-        <article class="row"><a class="t" href="Karta.dc.html">Terapeuta przestrzeni</a><p>Tanie dostosowanie mieszkania seniora i trening poruszania się w nowej przestrzeni.</p><span class="muted" style="font-size: 15px">OPS, dzienne domy pomocy, DPS</span></article>
-        <article class="row"><a class="t" href="Karta.dc.html">BaWita</a><p>Drewniana tablica do ćwiczenia pamięci i sprawności rąk dla osób z zaburzeniami otępiennymi.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag">Z inkubatora IWS</span><span class="muted" style="font-size: 15px">placówki wsparcia dziennego, DPS · film</span></div></article>
-        <article class="row"><a class="t" href="Karta.dc.html">Agrotreningi – metody pracy z osobami starszymi na obszarach wiejskich</a><p class="muted">Znamy nazwę, program i autora. Pełny opis uzupełni ROPS.</p><span class="tag tag-warn" style="align-self: flex-start">Opis niepełny</span></article>
+        <p class="muted" style="font-size: 16px; padding-top: 8px">W tym 19 z Biblioteki innowacji ROPS i 10 z innych programów ROPS (zwykle z krótszym opisem).</p>
+        <article class="row"><a class="t" href="Karta.dc.html">Senior CUDER</a><p>Gra karciana dla seniorów, która poprzez rozmowę o ciele, umyśle, duchowości, emocjach i relacjach wzmacnia motywację, dbanie o zdrowie i więzi z rodziną oraz sąsiadami.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag tag-ok">Sprawdzona przez ROPS</span><span class="muted" style="font-size: 15px">kluby seniora, centra aktywności seniora · film · PDF</span></div></article>
+        <article class="row"><a class="t" href="Karta.dc.html">Centrum antydepresyjne</a><p>Wsparcie seniorów z depresją w ich domach z użyciem dogoterapii i felinoterapii, obejmujące też bliskich, by zmniejszyć ryzyko epizodów depresyjnych i zachowań samobójczych.</p><span class="muted" style="font-size: 15px">JST, gminy organizujące usługi opiekuńcze</span></article>
+        <article class="row"><a class="t" href="Karta.dc.html">Mobilne centrum pomocy dla osób starszych</a><p>Mobilna usługa dojeżdżająca do domów seniorów na wsi: coaching senioralny oraz porady prawnika, dietetyka, rehabilitanta i specjalisty od budżetu domowego, dobrane do lokalnych potrzeb.</p><span class="muted" style="font-size: 15px">samorządy lokalne, GOPS</span></article>
+        <article class="row"><a class="t" href="Karta.dc.html">Asystent osoby starszej – nowa forma usług opiekuńczych</a><p>Model nowego zawodu: asystent wspiera seniora w organizowaniu codziennego życia, współpracuje ze specjalistami i rodziną, pomaga m.in. w kontaktach rodzinnych, w czasie hospitalizacji i w ochronie przed oszustwami.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag">Z inkubatora ROPS, spoza listy na stronie ROPS</span><span class="muted" style="font-size: 15px">samorządy lokalne, gminne ośrodki pomocy społecznej</span></div></article>
+        <article class="row"><a class="t" href="Karta.dc.html">DEM-GAME – gry do diagnostyki domowej funkcji poznawczych seniora</a><p class="muted">Znamy nazwę, program i autora. Pełny opis uzupełni ROPS.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag tag-warn">Opis niepełny</span><span class="tag">Z inkubatora ROPS, spoza listy na stronie ROPS</span></div></article>
+        <article class="row"><a class="t" href="Karta.dc.html">BaWita</a><p>Drewniana tablica manipulacyjna z siedmioma ruchomymi elementami, służąca do ćwiczenia pamięci, sprawności rąk i planowania dnia u osób z zaburzeniami otępiennymi.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag tag-ok">Sprawdzona przez ROPS</span><span class="muted" style="font-size: 15px">placówki wsparcia dziennego seniorów, DPS · film · PDF</span></div></article>
+        <article class="row"><a class="t" href="Karta.dc.html">Merkury</a><p>Platforma internetowa z symulatorem bankomatu, parkomatu, paczkomatu i kasy samoobsługowej, na której senior może bezpiecznie przećwiczyć obsługę urządzeń w domu.</p><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag tag-ok">Sprawdzona przez ROPS</span><span class="muted" style="font-size: 15px">NGO, dzienne domy pomocy społecznej · film · PDF</span></div></article>
         <nav aria-label="Strony wyników" style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; padding-top: 24px">
-          <a href="#s1" aria-current="page" style="min-width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; background: #1F3A8A; color: #FFFFFF; text-decoration: none; font-weight: 700">1</a>
-          <a href="#s2" style="min-width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid #D9DDE4; background: #FFFFFF; text-decoration: none">2</a>
-          <a href="#s3" style="min-width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid #D9DDE4; background: #FFFFFF; text-decoration: none">3</a>
-          <a href="#s4" style="padding: 0 10px; font-weight: 700">Następna strona<span class="arr" aria-hidden="true">→</span></a>
+          <a href="#s1" aria-current="page" aria-label="Strona 1" style="min-width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; border: 2px solid #1F3A8A; background: #1F3A8A; color: #FFFFFF; text-decoration: none; font-weight: 700">1</a>
+          <a href="#s2" aria-label="Strona 2" style="min-width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid #D9DDE4; background: #FFFFFF; text-decoration: none">2</a>
+          <a href="#s2" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 10px; font-weight: 700">Następna strona<span class="arr" aria-hidden="true">→</span></a>
         </nav>
       </section>
     </div>
+    <section aria-labelledby="stan-pusto" class="wrap" style="padding-bottom: 64px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="stan-pusto" class="lbl">Stan: brak wyników (po naciśnięciu „Pokaż wyniki”)</h2>
+      <div class="card" style="padding: 24px; max-width: 760px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: baseline; padding-bottom: 8px; border-bottom: 2px solid #151A23">
+          <h3 style="font-size: 18px">Dla rynku pracy · „samotność seniorów”: 0 innowacji</h3>
+          <span class="muted" style="font-size: 16px">Sortowanie: najlepiej pasujące</span>
+        </div>
+        <p>Nic nie znaleźliśmy. Odznacz część filtrów albo wpisz inne słowa.</p>
+        <p>Możesz też <a href="Dopasuj.dc.html">opisać swój problem własnymi słowami</a>.</p>
+      </div>
+    </section>
   </main>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
