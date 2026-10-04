@@ -21,9 +21,11 @@ const MIN_LENGTH = 10;
 // Checks while typing wait for a longer pause: /api/match allows 120 searches per hour per IP
 const RECHECK_AFTER_MS = 2500;
 
-async function findSimilar(text: string): Promise<State> {
+export async function findSimilar(text: string): Promise<State> {
   const result = await postJson("/api/match", { description: text, ai: false }, MatchResponse);
   if (!result.ok) return { status: "error", message: result.error };
+  // A weak match is not "something similar": saying so would send the author the wrong way
+  if (result.data.match_quality === "weak") return { status: "none" };
   const best = result.data.innovations[0]?.innovation ?? result.data.more[0];
   return best ? { status: "found", innovation: best } : { status: "none" };
 }
