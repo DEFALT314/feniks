@@ -83,6 +83,11 @@ const TABLES = {
   },
   match_queries: { cols: "id", allowed: (_r, role) => ROPS.has(role) },
   ai_usage: { cols: "user_id", allowed: (r, role, me) => r.user_id === me || role === "rops_admin" },
+  innovation_reviews: {
+    cols: "user_id",
+    allowed: (r, role, me) => r.user_id === me || ROPS.has(role),
+    everyRowForRops: true,
+  },
 };
 
 const totals = {};
