@@ -29,16 +29,21 @@ function Steps({ label, steps, currentId, className }: StepsProps) {
                 href={step.href}
                 aria-current={current ? "step" : undefined}
                 className={cn(
-                  "text-ink flex justify-between gap-2 rounded-lg px-3 py-2.5 text-[1.0625rem] no-underline transition-colors duration-200",
+                  "text-ink flex justify-between gap-2 rounded-lg px-3 py-2.5 text-[1.0625rem] no-underline transition-colors",
                   current
                     ? "bg-navy-soft text-navy hover:text-navy font-bold"
                     : "hover:bg-neutral-soft hover:text-ink",
                 )}
               >
                 <span>{step.label}</span>
-                <span className={cn("text-[0.9375rem]", !current && "text-muted-foreground")}>
+                <span className={cn("text-base tabular-nums", !current && "text-muted-foreground")}>
                   <span className="sr-only">wypełniono </span>
-                  {step.done}/{step.total}
+                  <span aria-hidden="true">
+                    {step.done}/{step.total}
+                  </span>
+                  <span className="sr-only">
+                    {step.done} z {step.total}
+                  </span>
                 </span>
               </Link>
             </li>

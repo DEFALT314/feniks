@@ -72,7 +72,8 @@ export async function reviewIdea(
     komentarz: review.komentarz ?? null,
     ekspert_id: review.ekspert_id ?? null,
   });
-  if (error) return { status: "error", message: "Nie udało się zapisać oceny. Spróbuj ponownie." };
+  if (error)
+    return { status: "error", message: "Nie udało się zapisać decyzji. Spróbuj ponownie." };
 
   const statusLabel = STATUS_LABELS[review.status];
   const headline = AUTHOR_MESSAGES[review.status](idea.tytul);
@@ -81,7 +82,7 @@ export async function reviewIdea(
   // answer. Falls back to the idea card if the thread cannot be written.
   const threadText =
     review.komentarz ??
-    (review.ekspert_id ? "Przekazujemy pomysł ekspertowi do konsultacji." : null);
+    (review.ekspert_id ? "Przekazujemy pomysł ekspertowi. Dołączy do tej rozmowy." : null);
   let threadId: string | null = null;
   if (threadText) {
     const { data } = await deps.supabase.rpc("start_thread", {
@@ -92,7 +93,7 @@ export async function reviewIdea(
     });
     threadId = typeof data === "string" ? data : null;
   }
-  const authorLink = threadId ? `/my/messages?thread=${threadId}` : `/my/creator/${idea.id}`;
+  const authorLink = threadId ? `/my/messages?thread=${threadId}` : `/my/creator/${idea.id}/card`;
 
   // Side effects must not undo a saved decision: log failures and carry on.
   const results = await Promise.allSettled([
@@ -115,7 +116,7 @@ export async function reviewIdea(
       ? deps.addNotification({
           userIds: [review.ekspert_id],
           typ: "pomysl_przekazany",
-          tytul: `ROPS przekazał Ci pomysł „${idea.tytul}” do konsultacji.`,
+          tytul: `ROPS prosi Cię o opinię o pomyśle „${idea.tytul}”.`,
           link: threadId ? `/my/messages?thread=${threadId}` : "/my/messages",
         })
       : Promise.resolve(),
@@ -142,5 +143,11 @@ export async function reviewIdea(
     emailSent = sent.sent;
   }
 
-  return { status: "saved", message: `Zapisano: ${statusLabel.toLowerCase()}.`, emailSent };
+  // Names the idea: after a decision the panel moves on to the next idea, so "Zapisano" alone
+  // would sit under a different title
+  return {
+    status: "saved",
+    message: `„${idea.tytul}”: ${statusLabel.toLowerCase()}.`,
+    emailSent,
+  };
 }

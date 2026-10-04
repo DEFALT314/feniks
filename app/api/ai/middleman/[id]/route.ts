@@ -10,7 +10,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const parsed = ServiceCardEdit.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Sprawdź pola karty: żadne nie może być puste." },
+      { error: "Uzupełnij wszystkie pola karty. Każde musi mieć co najmniej 3 znaki." },
       { status: 400 },
     );
   }

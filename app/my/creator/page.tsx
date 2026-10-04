@@ -8,7 +8,7 @@ import { listMyIdeas } from "./_lib/ideas";
 
 export const metadata: Metadata = {
   title: "Moje pomysły – HubMI.pl",
-  description: "Kreator pomysłów: kanwa innowacji krok po kroku i fiszka pomysłu dla ROPS.",
+  description: "Opisz swój pomysł krok po kroku i wyślij go do ROPS.",
 };
 
 export default async function CreatorPage() {

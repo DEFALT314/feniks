@@ -87,6 +87,34 @@
       }
     ]
   },
+  "alternatives_request": {
+    "idea": {
+      "title": "Sąsiedzki dyżur po wypisie",
+      "description": "Wolontariusze z sąsiedztwa odwiedzają seniorów przez pierwsze dwa tygodnie po powrocie ze szpitala: zakupy, leki, rozmowa i kontakt z ośrodkiem pomocy społecznej.",
+      "essence": "Nikt nie zostaje sam w najtrudniejszych dniach po szpitalu.",
+      "stage": "pomysl",
+      "area_id": "seniorzy"
+    }
+  },
+  "alternatives_response": {
+    "alternatives": [
+      {
+        "title": "Uczniowie zamiast dorosłych wolontariuszy",
+        "text": "Dyżury pełnią uczniowie szkoły średniej w ramach wolontariatu szkolnego, w parze z opiekunem z OPS.",
+        "why": "Szkoły szukają miejsc na wolontariat, a seniorzy chętnie rozmawiają z młodzieżą."
+      },
+      {
+        "title": "Telefon zamiast wizyty",
+        "text": "Codzienny krótki telefon od sąsiada przez dwa tygodnie, a wizyta tylko wtedy, gdy senior o nią poprosi.",
+        "why": "Mniej czasu dla wolontariusza, więc łatwiej znaleźć chętnych."
+      },
+      {
+        "title": "Apteka jako partner",
+        "text": "Farmaceuta z lokalnej apteki przekazuje ulotkę o dyżurze przy realizacji recepty po szpitalu.",
+        "why": "Apteka spotyka seniora zaraz po wypisie, zanim zostanie sam."
+      }
+    ]
+  },
   "review_response": {
     "progress": {
       "card_filled": 3,

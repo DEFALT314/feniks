@@ -4,6 +4,9 @@ import type { Database } from "@/lib/supabase/types";
 import {
   announceMessage,
   currentStatus,
+  ideaThreadId,
+  inviteToThread,
+  markThreadSeen,
   sendReply,
   startConversation,
   statusHistory,
@@ -13,13 +16,22 @@ import {
 type Role = MessagingDeps["me"]["role"];
 
 function deps(
-  opts: { role?: Role; participants?: string[]; emails?: string[]; rpcError?: boolean } = {},
+  opts: {
+    role?: Role;
+    participants?: string[];
+    emails?: string[];
+    rpcError?: boolean;
+    notifyError?: string;
+  } = {},
 ) {
   const rpc = vi.fn(async (fn: string) => {
     if (opts.rpcError) return { data: null, error: { message: "denied" } };
+    if (fn === "notify_thread" && opts.notifyError)
+      return { data: null, error: { message: "notify failed", code: opts.notifyError } };
     if (fn === "thread_reply_emails")
       return { data: (opts.emails ?? []).map((email) => ({ email })), error: null };
     if (fn === "start_thread") return { data: "t-new", error: null };
+    if (fn === "notify_thread") return { data: 1, error: null };
     return { data: "m1", error: null };
   });
   const from = vi.fn((table: string) => {
@@ -38,7 +50,6 @@ function deps(
   const d: MessagingDeps = {
     supabase: { rpc, from } as unknown as SupabaseClient<Database>,
     me: { id: "me", role: opts.role ?? "rops_redaktor", name: "Redakcja ROPS" },
-    addNotification: vi.fn(async () => 1),
     sendEmail: vi.fn(async () => ({ sent: true as const, id: "e" })),
     ropsInbox: "rops@hubmi.pl",
     siteUrl: "https://hubmi.pl",
@@ -47,16 +58,46 @@ function deps(
 }
 
 describe("announceMessage", () => {
-  it("ROPS reply: notifies the others and e-mails the author", async () => {
-    const { d } = deps({ emails: ["anna@gmail.com"] });
+  it("before the migration, falls back to notifying ROPS and the thread the old way", async () => {
+    const { d } = deps({ role: "ngo", participants: ["me", "author"], notifyError: "PGRST202" });
+    d.addNotification = vi.fn(async () => 1);
 
-    await announceMessage(d, "t1", "Kawiarenka", "Prosimy o poprawki");
+    await announceMessage(d, "t1", "Kawiarenka", "Dziękujemy");
 
     expect(d.addNotification).toHaveBeenCalledWith({
       typ: "wiadomosc",
       tytul: "Redakcja ROPS: nowa wiadomość w rozmowie „Kawiarenka”",
       link: "/my/messages?thread=t1",
       userIds: ["author"],
+      role: ["rops_redaktor", "rops_admin"],
+    });
+  });
+
+  it("does not fall back on other database errors", async () => {
+    const { d, rpc } = deps({ role: "ngo" });
+    rpc.mockImplementation(async () => ({
+      data: null,
+      error: { code: "42501", message: "denied" },
+    }));
+    d.addNotification = vi.fn(async () => 1);
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    await announceMessage(d, "t1", "Kawiarenka", "Dziękujemy");
+
+    expect(d.addNotification).not.toHaveBeenCalled();
+    expect(log).toHaveBeenCalled();
+    log.mockRestore();
+  });
+
+  it("ROPS reply: notifies the others and e-mails the author", async () => {
+    const { d, rpc } = deps({ emails: ["anna@gmail.com"] });
+
+    await announceMessage(d, "t1", "Kawiarenka", "Prosimy o poprawki");
+
+    // The database picks the recipients: everyone else in the thread (+ ROPS for non-ROPS writers)
+    expect(rpc).toHaveBeenCalledWith("notify_thread", {
+      p_thread_id: "t1",
+      p_tytul: "Redakcja ROPS: nowa wiadomość w rozmowie „Kawiarenka”",
     });
     expect(d.sendEmail).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -66,14 +107,15 @@ describe("announceMessage", () => {
     );
   });
 
-  it("author message: notifies all of ROPS and e-mails the ROPS inbox, not people", async () => {
+  it("author message: notifies the thread and e-mails the ROPS inbox, not people", async () => {
     const { d, rpc } = deps({ role: "mieszkaniec", participants: ["me"] });
     d.me.name = "Stanisław";
 
     await announceMessage(d, "t1", "Pytanie", "Kiedy nabór?");
 
-    expect(d.addNotification).toHaveBeenCalledWith(
-      expect.objectContaining({ role: ["rops_redaktor", "rops_admin"] }),
+    expect(rpc).toHaveBeenCalledWith(
+      "notify_thread",
+      expect.objectContaining({ p_thread_id: "t1" }),
     );
     expect(rpc).not.toHaveBeenCalledWith("thread_reply_emails", expect.anything());
     expect(d.sendEmail).toHaveBeenCalledWith(expect.objectContaining({ to: "rops@hubmi.pl" }));
@@ -84,6 +126,14 @@ describe("announceMessage", () => {
     await announceMessage(d, "t1", "T", "x".repeat(600));
     const mail = (d.sendEmail as ReturnType<typeof vi.fn>).mock.calls[0][0];
     expect(mail.paragraphs[0]).toHaveLength(401);
+  });
+
+  it("keeps the message when the notification fails", async () => {
+    const { d, rpc } = deps({ emails: ["a@gmail.com"] });
+    rpc.mockImplementationOnce(async () => ({ data: null, error: { message: "denied" } }));
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    await expect(announceMessage(d, "t1", "T", "x")).resolves.toBeUndefined();
+    expect(d.sendEmail).toHaveBeenCalled();
   });
 });
 
@@ -99,7 +149,7 @@ describe("sendReply / startConversation", () => {
     const { d, rpc } = deps();
     expect(await sendReply(d, "t1", " Dziękujemy ")).toEqual({ ok: true, threadId: "t1" });
     expect(rpc).toHaveBeenCalledWith("post_message", { p_thread_id: "t1", p_tresc: "Dziękujemy" });
-    expect(d.addNotification).toHaveBeenCalled();
+    expect(rpc).toHaveBeenCalledWith("notify_thread", expect.anything());
   });
 
   it("starts a thread about an idea and returns its id", async () => {
@@ -113,9 +163,9 @@ describe("sendReply / startConversation", () => {
   });
 
   it("reports database refusals without announcing", async () => {
-    const { d } = deps({ rpcError: true });
+    const { d, rpc } = deps({ rpcError: true });
     expect(await sendReply(d, "t1", "hej")).toMatchObject({ ok: false });
-    expect(d.addNotification).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalledWith("notify_thread", expect.anything());
   });
 });
 
@@ -151,5 +201,96 @@ describe("idea status after a resubmission", () => {
       "do_poprawy",
       "wyslany_ponownie",
     ]);
+  });
+});
+
+describe("ideaThreadId", () => {
+  const IDEA = "d1000000-0000-4000-8000-000000000001";
+  function client(row: { id: string } | null) {
+    const q: Record<string, unknown> = {};
+    q.select = vi.fn(() => q);
+    q.eq = vi.fn(() => q);
+    q.maybeSingle = vi.fn(async () => ({ data: row }));
+    return { client: { from: vi.fn(() => q) } as unknown as SupabaseClient<Database>, q };
+  }
+
+  it("finds the conversation about an idea", async () => {
+    const { client: c, q } = client({ id: "t1" });
+    expect(await ideaThreadId(c, IDEA)).toBe("t1");
+    expect(q.eq).toHaveBeenCalledWith("idea_id", IDEA);
+  });
+
+  it("returns null when there is none or the id is not a uuid", async () => {
+    expect(await ideaThreadId(client(null).client, IDEA)).toBeNull();
+    const { client: c, q } = client({ id: "t1" });
+    expect(await ideaThreadId(c, "not-an-id")).toBeNull();
+    expect(q.eq).not.toHaveBeenCalled();
+  });
+});
+
+describe("inviteToThread", () => {
+  function client(opts: { thread?: boolean; error?: boolean } = {}) {
+    const q: Record<string, unknown> = {};
+    q.select = vi.fn(() => q);
+    q.eq = vi.fn(() => q);
+    q.maybeSingle = vi.fn(async () => ({
+      data: opts.thread === false ? null : { temat: "Kawiarenka" },
+    }));
+    const rpc = vi.fn(async () => ({ error: opts.error ? { message: "denied" } : null }));
+    return { supabase: { from: vi.fn(() => q), rpc } as unknown as SupabaseClient<Database>, rpc };
+  }
+
+  it("adds the expert and notifies them with a link to the conversation", async () => {
+    const { supabase, rpc } = client();
+    const addNotification = vi.fn(async () => 1);
+    const r = await inviteToThread(
+      { supabase, me: { role: "rops_admin" }, addNotification },
+      "t1",
+      "e1",
+    );
+    expect(r).toEqual({ ok: true });
+    expect(rpc).toHaveBeenCalledWith("invite_to_thread", { p_thread_id: "t1", p_user_id: "e1" });
+    expect(addNotification).toHaveBeenCalledWith(
+      expect.objectContaining({ userIds: ["e1"], link: "/my/messages?thread=t1" }),
+    );
+  });
+
+  it("refuses non-ROPS users, an empty choice and database errors", async () => {
+    const addNotification = vi.fn(async () => 1);
+    const resident = await inviteToThread(
+      { supabase: client().supabase, me: { role: "mieszkaniec" }, addNotification },
+      "t1",
+      "e1",
+    );
+    expect(resident.ok).toBe(false);
+    const empty = await inviteToThread(
+      { supabase: client().supabase, me: { role: "rops_admin" }, addNotification },
+      "t1",
+      "",
+    );
+    expect(empty).toEqual({ ok: false, message: "Wybierz osobę." });
+    const denied = await inviteToThread(
+      { supabase: client({ error: true }).supabase, me: { role: "rops_admin" }, addNotification },
+      "t1",
+      "e1",
+    );
+    expect(denied.ok).toBe(false);
+    expect(addNotification).not.toHaveBeenCalled();
+  });
+});
+
+describe("markThreadSeen", () => {
+  it("marks the thread read and clears the bell notifications that link to it", async () => {
+    const q: Record<string, unknown> = {};
+    q.update = vi.fn(() => q);
+    q.eq = vi.fn(() => q);
+    q.then = (resolve: (v: unknown) => void) => resolve({ error: null });
+    const rpc = vi.fn(async () => ({ error: null }));
+    const from = vi.fn(() => q);
+    await markThreadSeen({ rpc, from } as unknown as SupabaseClient<Database>, "t1");
+    expect(rpc).toHaveBeenCalledWith("mark_thread_read", { p_thread_id: "t1" });
+    expect(from).toHaveBeenCalledWith("notifications");
+    expect(q.update).toHaveBeenCalledWith({ przeczytane: true });
+    expect(q.eq).toHaveBeenCalledWith("link", "/my/messages?thread=t1");
   });
 });

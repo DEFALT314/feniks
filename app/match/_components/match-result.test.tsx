@@ -40,11 +40,10 @@ describe("MatchResult", () => {
     expect(html).toContain("(Propozycja AI)");
   });
 
-  it("shows no AI label and no reasons for the ranking-only phase, with a status message", () => {
+  it("shows no AI label and no reasons for the ranking-only phase, with the progress note", () => {
     const html = render({ ...ai, picked_by: "search" }, true);
     expect(html).not.toContain("Propozycja AI");
     expect(html).not.toContain("Dlaczego pasuje");
-    expect(html).toContain('role="status"');
     expect(html).toContain("AI wybiera najlepiej pasujące innowacje");
     expect(html).toContain("Wstępne wyniki wyszukiwania");
   });
@@ -61,6 +60,16 @@ describe("MatchResult", () => {
     expect(html).toContain('href="/my/messages/new?topic=Potrzeba');
   });
 
+  it("leaves out the service card for users who can't prepare one", () => {
+    const html = renderToStaticMarkup(
+      <MatchResult result={ai} choosing={false} serviceCard={false} />,
+    );
+    expect(html).not.toContain("/my/middleman");
+    expect(html).toContain(
+      'href="/library/organizator-kompleksowej-opieki-w-miejscu-zamieszkania"',
+    );
+  });
+
   it("without a match explains why and stresses reporting the need", () => {
     const html = render(fixture.response_no_match as MatchResponse);
     expect(html).toContain("nie ma jeszcze innowacji o opiece nad małymi dziećmi");
@@ -69,10 +78,26 @@ describe("MatchResult", () => {
     expect(link).toContain("bg-primary");
   });
 
+  it("calls a weak result with picks a partial fit, not 'no solution yet'", () => {
+    const html = render({ ...ai, match_quality: "weak" });
+    expect(html).toContain("Te innowacje pasują tylko częściowo.");
+    expect(html).not.toContain("takiego rozwiązania jeszcze nie ma");
+  });
+
+  it("puts the emergency numbers above the result when the description is an emergency", () => {
+    const segments = (text: string) => [{ text, highlight: false }];
+    const violence = render({ ...ai, description_segments: segments("sasiad bije zone") });
+    expect(violence.indexOf('href="tel:112"')).toBeLessThan(violence.indexOf("Wynik"));
+    expect(violence).toContain('href="tel:800120002"');
+    const suicide = render({ ...ai, description_segments: segments("syn nie chce żyć") });
+    expect(suicide).toContain('href="tel:800702222"');
+    expect(render(ai)).not.toContain("tel:112");
+  });
+
   it("numbers the steps without a gap when there is no challenge", () => {
     const html = render({ ...ai, challenge: null });
     expect(html).not.toContain("Wyzwanie z Mapy Wyzwań ROPS");
-    expect(html).toMatch(/>2<\/span><h3[^>]*>Pasujące innowacje/);
+    expect(html).toMatch(/>2<\/span><p[^>]*>Pasujące innowacje/);
   });
 
   it("explains the further results and says what each one is", () => {
@@ -99,6 +124,46 @@ describe("MatchResult", () => {
   it("in the ranking phase does not mention the AI in the further results", () => {
     const html = render({ ...ai, picked_by: "search" });
     expect(html).toContain("Mniej podobne do Twojego opisu niż te powyżej.");
+  });
+});
+
+describe("MatchResult accessibility", () => {
+  it("is not a live region, so the whole result is never read out at once", () => {
+    const html = render(ai);
+    expect(html).not.toMatch(/aria-live|role="status"|role="alert"/);
+  });
+
+  it("marks preliminary cards with a label and a dashed border instead of dimming them", () => {
+    const html = render({ ...ai, picked_by: "search" }, true);
+    expect(html).not.toMatch(/<(article|div) class="[^"]*opacity-60/);
+    expect(html.split("Wstępny wynik<").length - 1).toBe(ai.innovations.length);
+    expect(html).toContain("border-dashed");
+    expect(render(ai)).not.toContain("Wstępny wynik");
+  });
+
+  it("names the decisive words in text, not by colour alone", () => {
+    const html = render(ai);
+    expect(html).toContain("Podkreślone słowa zdecydowały o dopasowaniu.");
+    expect(html).toMatch(/<mark class="[^"]*bg-transparent[^"]*underline/);
+    expect(html).toMatch(
+      /<span class="sr-only"> \(Słowa, które zdecydowały o dopasowaniu: [^)]*ze szpitala[^)]*\.\)<\/span>/,
+    );
+  });
+
+  it("uses h3 for innovation names, with no h4 below the h2", () => {
+    const html = render(ai);
+    expect(html).not.toContain("<h4");
+    expect(html).toContain(`>${ai.innovations[0].innovation.nazwa}</h3>`);
+  });
+
+  it("says which card or area each repeated link opens", () => {
+    const html = render(ai);
+    for (const m of ai.innovations) {
+      expect(html).toContain(`Zobacz kartę<span class="sr-only">: ${m.innovation.nazwa}</span>`);
+    }
+    expect(html).toContain(
+      `Zobacz obszar<span class="sr-only">: ${ai.challenge!.area_name}</span>`,
+    );
   });
 });
 

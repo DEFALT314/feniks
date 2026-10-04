@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getInnovations } from "@/app/library/_lib/data";
 import { buttonVariants } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth";
-import { CALLS } from "@/lib/ai/creator/creator";
+import { openCalls } from "@/lib/ai/creator/open-calls";
 import { listMyCards, toServiceCard } from "@/lib/ai/middleman/store";
 import type { ServiceCard } from "@/lib/contracts/middleman";
 import { createClient } from "@/lib/supabase/server";
@@ -14,7 +14,7 @@ import { defaultInstitution } from "./_lib/institution";
 // Module VII, Middleman (P3). Mockup: design/makiety/Middleman.dc.html.
 // API: POST /api/ai/middleman, PATCH /api/ai/middleman/[id], POST /api/ai/middleman/[id]/send.
 
-export const metadata: Metadata = { title: "Karta usługi dla gminy – HubMI" };
+export const metadata: Metadata = { title: "Karta usługi dla gminy – HubMI.pl" };
 
 type Props = { searchParams: Promise<{ innovation?: string; card?: string }> };
 
@@ -77,7 +77,7 @@ export default async function Page({ searchParams }: Props) {
 
   return (
     <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed print:bg-white">
-      {/* The printed page (Pobierz PDF) shows only the card and its sources. */}
+      {/* The printed page ("Drukuj albo zapisz jako PDF") shows only the card and its sources. */}
       <style>{`@media print { body > header, header, footer, nav[aria-label="Twoje karty usług"] { display: none !important; } }`}</style>
       <MiddlemanWorkbench
         innovations={options}
@@ -85,7 +85,7 @@ export default async function Page({ searchParams }: Props) {
         initialInstitution={opened?.institution ?? defaultInstitution(institutionRow)}
         cards={cards}
         initialCardId={opened?.id ?? null}
-        calls={CALLS}
+        calls={await openCalls()}
       />
     </main>
   );

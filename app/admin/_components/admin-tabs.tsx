@@ -9,6 +9,7 @@ export const ADMIN_TABS: Tab[] = [
   { label: "Nowe pomysły", href: "/admin" },
   { label: "Prośby o rolę", href: "/admin/roles" },
   { label: "Biblioteka", href: "/admin/library" },
+  { label: "Karty usług", href: "/admin/cards" },
   { label: "Nabory", href: "/admin/calls" },
   { label: "Potrzeby w regionie", href: "/admin/trends" },
 ];
@@ -27,7 +28,7 @@ export function AdminTabs({ current, tabs }: { current: string; tabs: Tab[] }) {
               "inline-flex min-h-[46px] items-center border-b-[3px] text-[1.0625rem] no-underline transition-colors duration-200",
               active
                 ? "border-navy text-navy font-bold"
-                : "text-ink hover:text-navy border-transparent hover:border-[#B8C0CD]",
+                : "text-ink hover:text-navy hover:border-input border-transparent",
             )}
           >
             {tab.label}

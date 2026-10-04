@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { useFocusFirstError } from "@/components/ui/focus";
 import { Input, Textarea } from "@/components/ui/input";
 import type { Call } from "@/lib/contracts/admin";
 import type { CallFormState } from "@/lib/calls";
@@ -17,18 +18,29 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
     { status: "idle" },
   );
   const e = state.fieldErrors ?? {};
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusFirstError(formRef, state.status === "error" ? state : undefined);
 
   return (
-    <form action={action} className="flex flex-col gap-4" key={call?.id ?? "new"}>
-      <Field label="Nazwa naboru" error={e.nazwa}>
+    <form
+      ref={formRef}
+      action={action}
+      className="flex flex-col gap-4"
+      key={call?.id ?? "new"}
+      noValidate
+    >
+      <Field label="Nazwa naboru" error={e.nazwa} required>
         {(p) => <Input {...p} name="nazwa" required defaultValue={call?.nazwa} />}
       </Field>
       <Field
         label="Identyfikator"
         hint={
-          call ? "Nie zmienia się po dodaniu." : "Małe litery i myślniki, np. nabor-seniorzy-2027."
+          call
+            ? "Tego nie można zmienić."
+            : "Małe litery, cyfry i myślniki, np. nabor-seniorzy-2027. Później nie można go zmienić."
         }
         error={e.id}
+        required={!call}
       >
         {(p) => (
           <Input {...p} name="id" required defaultValue={call?.id} readOnly={Boolean(call)} />
@@ -57,12 +69,7 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
             <Input {...p} name="termin_od" type="date" defaultValue={call?.termin_od ?? ""} />
           )}
         </Field>
-        <Field
-          label="Koniec (termin)"
-          hint={call ? "Zmiana powiadomi autorów pasujących pomysłów." : undefined}
-          className="min-w-[180px] flex-1"
-          error={e.termin_do}
-        >
+        <Field label="Koniec naboru" className="min-w-[180px] flex-1" error={e.termin_do}>
           {(p) => (
             <Input {...p} name="termin_do" type="date" defaultValue={call?.termin_do ?? ""} />
           )}
@@ -92,14 +99,18 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
           defaultChecked={call?.opublikowany ?? false}
           className="accent-navy size-5 shrink-0"
         />
-        Nabór włączony (widoczny w generatorze wniosków)
+        Nabór włączony (widzą go autorzy pomysłów)
       </label>
+      <p className="text-muted-foreground -mt-2 text-base">
+        Gdy włączysz nabór albo zmienisz jego termin, autorzy pomysłów z wybranych obszarów dostaną
+        powiadomienie i maila.
+      </p>
       <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" disabled={pending}>
           {pending ? "Zapisujemy…" : call ? "Zapisz zmiany" : "Dodaj nabór"}
         </Button>
         {call ? (
-          <Link href="/admin/calls" className="text-base">
+          <Link href="/admin/calls" className="inline-flex min-h-11 items-center text-base">
             Anuluj
           </Link>
         ) : null}
@@ -114,7 +125,9 @@ export function CallForm({ call, areas }: { call: Call | null; areas: Area[] }) 
           </strong>
         ) : null}
         {state.status === "error" && state.message ? (
-          <strong className="text-danger">{state.message}</strong>
+          <strong data-form-error className="text-danger">
+            {state.message}
+          </strong>
         ) : null}
       </p>
     </form>

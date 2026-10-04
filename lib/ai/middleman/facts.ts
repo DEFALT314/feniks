@@ -42,7 +42,7 @@ export function institutionFit(innovation: Innovation, type: InstitutionType): I
   if (direct.length) {
     return {
       level: "dobra",
-      note: `Innowację wdrażają m.in.: ${direct.join(", ")}, więc pasuje do: ${label}.`,
+      note: `Innowację wdrażają m.in.: ${direct.join(", ")}. Pasuje do Twojej instytucji (${label}).`,
     };
   }
   const related = RELATED[type] ? implementers.filter((i) => RELATED[type]!.test(i)) : [];
@@ -54,7 +54,7 @@ export function institutionFit(innovation: Innovation, type: InstitutionType): I
   }
   return {
     level: "do_sprawdzenia",
-    note: `W opisie innowacji jako wdrażający są: ${listed}. Zapytaj ROPS, czy ${label} może ją prowadzić.`,
+    note: `Innowację wdrażają: ${listed}. Zapytaj ROPS, czy ${label} też może ją prowadzić.`,
   };
 }
 

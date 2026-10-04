@@ -117,8 +117,9 @@ export const formatDate = (iso: string | null) =>
   iso ? DATE.format(new Date(`${iso}T00:00:00Z`)) : "bez terminu";
 
 /**
- * Adds or updates a call. When the deadline of a published call changes, the authors of sent ideas
- * in its challenge areas get a notification and an e-mail (#10). Side effects are best effort.
+ * Adds or updates a call. When a call is published or the deadline of a published call changes,
+ * the authors of sent ideas in its challenge areas get a notification and an e-mail (#10).
+ * Side effects are best effort.
  */
 export async function saveCall(
   deps: CallDeps,
@@ -136,7 +137,8 @@ export async function saveCall(
   }
   const c = parsed.data;
   const before = editingId ? await getCall(deps.supabase, editingId) : null;
-  if (editingId && !before) return { status: "error", message: "Nie znaleziono tego naboru." };
+  if (editingId && !before)
+    return { status: "error", message: "Nie znaleźliśmy tego naboru. Wróć do listy naborów." };
 
   const row = {
     nazwa: c.nazwa,
@@ -157,13 +159,14 @@ export async function saveCall(
       status: "error",
       message: duplicate
         ? "Nabór o tym identyfikatorze już istnieje."
-        : "Nie udało się zapisać naboru.",
+        : "Nie udało się zapisać naboru. Spróbuj ponownie za chwilę.",
     };
   }
 
   const id = editingId ?? c.id;
   const deadlineMoved = Boolean(before && before.termin_do !== row.termin_do);
-  let notified = 0;
+  // Switched on now: a new published call, or a hidden one published in this edit
+  const justPublished = c.opublikowany && !before?.opublikowany;
   const effects: Promise<unknown>[] = [
     deps.writeAudit({
       akcja: editingId ? "nabor.edycja" : "nabor.dodanie",
@@ -177,38 +180,14 @@ export async function saveCall(
     }),
   ];
 
-  if (deadlineMoved && c.opublikowany && c.obszary.length > 0) {
-    const { data: authors } = await deps.supabase.rpc("call_matching_authors", {
-      p_obszary: c.obszary,
-    });
-    const list = authors ?? [];
-    notified = list.length;
-    const tytul = `Zmiana terminu naboru „${c.nazwa}”: ${formatDate(row.termin_do)}`;
-    if (list.length) {
-      effects.push(
-        deps.addNotification({
-          userIds: list.map((a) => a.user_id),
-          typ: "nabor_termin",
-          tytul,
-          link: "/my/creator",
-        }),
-      );
-    }
-    for (const a of list) {
-      if (!a.email) continue;
-      effects.push(
-        deps.sendEmail({
-          to: a.email,
-          subject: tytul,
-          heading: "Zmienił się termin naboru",
-          paragraphs: [
-            `Nabór „${c.nazwa}” pasuje do Twojego pomysłu „${a.tytul}”.`,
-            `Nowy termin: ${formatDate(row.termin_do)} (wcześniej: ${formatDate(before!.termin_do)}).`,
-          ],
-          action: { label: "Przygotuj wniosek", url: `${deps.siteUrl}/my/creator` },
-        }),
-      );
-    }
+  let notified: number | undefined;
+  if (c.opublikowany && (justPublished || deadlineMoved)) {
+    notified = await notifyCallAuthors(
+      deps,
+      { ...row, id },
+      justPublished ? { kind: "published" } : { kind: "deadline", before: before!.termin_do },
+      effects,
+    );
   }
 
   for (const r of await Promise.allSettled(effects)) {
@@ -217,20 +196,82 @@ export async function saveCall(
   return {
     status: "saved",
     message: editingId ? "Zapisano zmiany." : "Dodano nabór.",
-    notified: deadlineMoved ? notified : undefined,
+    notified,
   };
 }
 
-/** Publishes or hides a call ("włączanie naborów"). */
-export async function setPublished(
-  deps: Pick<CallDeps, "supabase" | "writeAudit">,
-  id: string,
-  on: boolean,
-) {
+type CallChange = { kind: "published" } | { kind: "deadline"; before: string | null };
+
+const clip = (s: string, max: number) => (s.length > max ? `${s.slice(0, max - 1)}…` : s);
+
+/**
+ * Tells the authors of sent ideas in the call's challenge areas about a new call or a moved
+ * deadline (#10): a notification in the app and an e-mail. Queues the side effects in `effects`
+ * and returns how many authors were found.
+ */
+async function notifyCallAuthors(
+  deps: CallDeps,
+  call: { id: string; nazwa: string; termin_do: string | null; obszary: string[] },
+  change: CallChange,
+  effects: Promise<unknown>[],
+): Promise<number> {
+  if (call.obszary.length === 0) return 0;
+  const { data: authors } = await deps.supabase.rpc("call_matching_authors", {
+    p_obszary: call.obszary,
+  });
+  const list = authors ?? [];
+  if (list.length === 0) return 0;
+
+  const deadline = formatDate(call.termin_do);
+  const tytul =
+    change.kind === "published"
+      ? clip(`Nowy nabór „${call.nazwa}”, termin: ${deadline}`, 200)
+      : clip(`Zmiana terminu naboru „${call.nazwa}”: ${deadline}`, 200);
+  effects.push(
+    deps.addNotification({
+      userIds: list.map((a) => a.user_id),
+      typ: change.kind === "published" ? "nabor_nowy" : "nabor_termin",
+      tytul,
+      link: "/my/creator",
+    }),
+  );
+  for (const a of list) {
+    if (!a.email) continue;
+    effects.push(
+      deps.sendEmail({
+        to: a.email,
+        subject: tytul,
+        heading: change.kind === "published" ? "Ruszył nowy nabór" : "Zmienił się termin naboru",
+        paragraphs: [
+          `Nabór „${call.nazwa}” pasuje do Twojego pomysłu „${a.tytul}”.`,
+          change.kind === "published"
+            ? `Termin: ${deadline}. W kreatorze przygotujesz szkic wniosku pod ten nabór.`
+            : `Nowy termin: ${deadline} (wcześniej: ${formatDate(change.before)}).`,
+        ],
+        action: { label: "Przygotuj wniosek", url: `${deps.siteUrl}/my/creator` },
+      }),
+    );
+  }
+  return list.length;
+}
+
+/** Publishes or hides a call ("włączanie naborów"). Switching one on tells matching authors. */
+export async function setPublished(deps: CallDeps, id: string, on: boolean) {
+  const before = on ? await getCall(deps.supabase, id) : null;
   const { error } = await deps.supabase.from("calls").update({ opublikowany: on }).eq("id", id);
   if (error) return false;
-  await deps
-    .writeAudit({ akcja: on ? "nabor.wlaczenie" : "nabor.wylaczenie", obiekt: `calls:${id}` })
-    .catch(() => {});
+  const effects: Promise<unknown>[] = [
+    deps.writeAudit({
+      akcja: on ? "nabor.wlaczenie" : "nabor.wylaczenie",
+      obiekt: `calls:${id}`,
+      ...(before ? { szczegoly: { nazwa: before.nazwa } } : {}),
+    }),
+  ];
+  if (on && before && !before.opublikowany) {
+    await notifyCallAuthors(deps, before, { kind: "published" }, effects);
+  }
+  for (const r of await Promise.allSettled(effects)) {
+    if (r.status === "rejected") console.error("call side effect failed", r.reason);
+  }
   return true;
 }

@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
+import { Check } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { isDemoMode } from "@/lib/auth/demo-accounts";
 import { createClient } from "@/lib/supabase/server";
 import { ADMIN_TABS, AdminTabs } from "./_components/admin-tabs";
+import { AnnounceOnChange, FocusHeading } from "@/components/ui/param-focus";
 import { ReviewForm } from "./_components/review-form";
-import { describeAudit, formatSentAt, formatTime } from "./_lib/format";
+import { describeAudit, filterSummary, formatSentAt } from "./_lib/format";
 import { loadExperts, loadIdeaDetail, loadIdeaQueue, loadRecentAudit } from "./_lib/queue";
 import { STATUS_BADGE, STATUS_LABELS, parseStatusFilter } from "./_lib/status";
+import { requireRops } from "@/lib/auth/require-rops";
 
-export const metadata: Metadata = { title: "Panel ROPS – HubMI.pl" };
+export const metadata: Metadata = { title: "Nowe pomysły – Panel ROPS – HubMI.pl" };
 
 const FILTERS = [
   { value: "open", label: "Do decyzji" },
@@ -29,7 +33,11 @@ const STAGE_LABELS: Record<string, string> = {
 
 // Module VI, idea queue (#5). Layout per design/makiety/Admin.dc.html. Role checked in layout.tsx.
 export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
+  await requireRops();
   const params = await searchParams;
+  // Middleman notifications link to /admin?karta=<id> (app/api/ai/middleman/deps.ts).
+  if (typeof params.karta === "string")
+    redirect(`/admin/cards?card=${encodeURIComponent(params.karta)}`);
   const filter = parseStatusFilter(params.status);
   const selectedId = typeof params.idea === "string" ? params.idea : null;
 
@@ -68,27 +76,41 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
           className="flex min-w-0 flex-[999_1_560px] flex-col gap-3"
         >
           <h2 id="queue-heading" className="font-heading text-2xl font-bold">
-            Nowe pomysły
+            Pomysły wysłane do ROPS
           </h2>
           <nav aria-label="Filtr statusu" className="flex flex-wrap gap-2">
-            {FILTERS.map((f) => (
-              <Link
-                key={f.value}
-                href={f.value === "open" ? "/admin" : `/admin?status=${f.value}`}
-                aria-current={filter === f.value ? "page" : undefined}
-                className="border-border aria-[current=page]:border-navy aria-[current=page]:bg-navy-soft aria-[current=page]:text-navy text-ink inline-flex min-h-11 items-center rounded-full border bg-white px-4 text-base font-bold no-underline"
-              >
-                {f.label}
-              </Link>
-            ))}
+            {FILTERS.map((f) => {
+              const current = filter === f.value;
+              return (
+                <Link
+                  key={f.value}
+                  href={f.value === "open" ? "/admin" : `/admin?status=${f.value}`}
+                  aria-current={current ? "page" : undefined}
+                  className="border-border aria-[current=page]:border-navy aria-[current=page]:bg-navy-soft aria-[current=page]:text-navy text-ink inline-flex min-h-11 items-center gap-1.5 rounded-full border bg-white px-4 text-base font-bold no-underline aria-[current=page]:underline aria-[current=page]:underline-offset-[3px]"
+                >
+                  {/* Not colour only (WCAG 1.4.1): the chosen filter has a tick and an underline */}
+                  {current ? <Check aria-hidden="true" className="size-4" /> : null}
+                  {f.label}
+                </Link>
+              );
+            })}
           </nav>
+          <AnnounceOnChange
+            changeKey={filter}
+            message={filterSummary(
+              FILTERS.find((f) => f.value === filter)?.label ??
+                STATUS_LABELS[filter as keyof typeof STATUS_LABELS] ??
+                "Pomysły",
+              queue.length,
+            )}
+          />
           {queue.length === 0 ? (
             <Card>
               <p>Nie ma tu pomysłów. Nowe pojawią się, gdy autor kliknie „Wyślij do ROPS”.</p>
             </Card>
           ) : (
             <div className="border-border overflow-x-auto rounded-xl border bg-white">
-              <table className="w-full border-collapse text-base">
+              <table className="w-full min-w-[600px] border-collapse text-base">
                 <caption className="sr-only">Pomysły wysłane do ROPS, najnowsze na górze</caption>
                 <thead>
                   <tr className="text-muted-foreground text-[0.9375rem]">
@@ -108,7 +130,10 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                     const selected = row.idea_id === detail?.idea_id;
                     return (
                       <tr key={row.idea_id} className={selected ? "bg-navy-soft/50" : undefined}>
-                        <td className="border-border border-b px-3.5 py-3">
+                        <th
+                          scope="row"
+                          className="border-border border-b px-3.5 py-3 text-left font-normal"
+                        >
                           <Link
                             href={href({ idea: row.idea_id })}
                             aria-current={selected ? "true" : undefined}
@@ -116,7 +141,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                           >
                             {selected ? <strong>{row.tytul}</strong> : row.tytul}
                           </Link>
-                        </td>
+                        </th>
                         <td className="border-border border-b px-3.5 py-3">
                           {row.autor_nazwa ?? "—"}
                         </td>
@@ -127,7 +152,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                           {formatSentAt(row.wyslany_at)}
                         </td>
                         <td className="border-border border-b px-3.5 py-3">
-                          <Badge variant={STATUS_BADGE[row.status]}>
+                          <Badge variant={STATUS_BADGE[row.status]} className="whitespace-nowrap">
                             {STATUS_LABELS[row.status]}
                           </Badge>
                         </td>
@@ -149,7 +174,13 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
               <span className="text-muted-foreground text-[0.9375rem] font-bold">
                 {detail.autor_nazwa ?? "Autor"}
               </span>
-              <h2 className="font-heading text-[1.375rem] font-bold">{detail.tytul}</h2>
+              {/* Picking a row (?idea=) moves focus here, to the details it opened */}
+              <FocusHeading
+                focusKey={selectedId}
+                className="font-heading text-[1.375rem] font-bold"
+              >
+                {detail.tytul}
+              </FocusHeading>
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant={STATUS_BADGE[detail.status]}>{STATUS_LABELS[detail.status]}</Badge>
                 {detail.etap ? (
@@ -178,10 +209,10 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                 currentExpertId={detail.ekspert_id}
               />
               <Link
-                href={`/my/messages/new?idea=${detail.idea_id}&topic=${encodeURIComponent(detail.tytul)}`}
+                href={`/my/messages?idea=${detail.idea_id}&topic=${encodeURIComponent(detail.tytul)}`}
                 className="self-start text-base"
               >
-                Napisz do autora
+                Rozmowa z autorem
               </Link>
             </Card>
           ) : null}
@@ -199,7 +230,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
               <ul className="flex flex-col gap-1.5">
                 {audit.map((a) => (
                   <li key={a.id}>
-                    <span className="text-muted-foreground">{formatTime(a.created_at)}</span>{" "}
+                    <span className="text-muted-foreground">{formatSentAt(a.created_at)}</span>{" "}
                     {describeAudit(a.akcja, a.szczegoly)}
                   </li>
                 ))}

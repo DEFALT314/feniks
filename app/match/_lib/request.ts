@@ -1,13 +1,7 @@
 // Client-side logic of the /match page: request building and the two-phase fetch.
 // Phase 1 asks for the ranking only (ai: false, well under a second); phase 2 asks again with AI
 // for the picks and reasons (8–25 s on the free LLM tier, instant when cached).
-import { MatchResponse, type MatchRequest, type MatchRole } from "@/lib/contracts/match";
-
-export const ROLE_OPTIONS: { value: MatchRole; label: string }[] = [
-  { value: "mieszkaniec", label: "Mieszkaniec" },
-  { value: "jst", label: "Gmina lub ośrodek pomocy" },
-  { value: "ngo", label: "Organizacja pozarządowa" },
-];
+import { MatchResponse, type MatchRequest } from "@/lib/contracts/match";
 
 export const EXAMPLES = [
   "Samotni seniorzy na wsi z objawami depresji",
@@ -18,13 +12,12 @@ export const EXAMPLES = [
 export const MIN_LENGTH = 10;
 export const MAX_LENGTH = 2000;
 
-export type FormValues = { description: string; role: MatchRole; municipality: string };
+export type FormValues = { description: string; municipality: string };
 
 export function buildRequest(values: FormValues, ai: boolean): MatchRequest {
   const municipality = values.municipality.trim();
   return {
     description: values.description.trim(),
-    role: values.role,
     ...(municipality ? { municipality } : {}),
     ai,
   };
@@ -54,7 +47,7 @@ export async function fetchMatch(
     if (!response.ok) {
       return {
         ok: false,
-        error: body?.error ?? "Nie udało się dopasować. Spróbuj ponownie za chwilę.",
+        error: body?.error ?? "Wyszukiwanie nie zadziałało. Spróbuj ponownie za chwilę.",
       };
     }
     const parsed = MatchResponse.safeParse(body);
@@ -94,8 +87,40 @@ export function reportNeedHref(result: MatchResponse): string {
   const c = result.challenge;
   const topic = c
     ? `Potrzeba: ${c.area_name}${c.challenge_text ? ` – ${c.challenge_text}` : ""}`
-    : "Potrzeba, na którą nie znalazłem rozwiązania";
+    : "Potrzeba bez gotowego rozwiązania";
   const text = result.description_segments.map((s) => s.text).join("");
   const params = new URLSearchParams({ topic: topic.slice(0, 200), text: text.slice(0, 5000) });
   return `/my/messages/new?${params}`;
+}
+
+// Polish plural forms: 1 propozycja, 2–4 propozycje, 5+ propozycji (12–14 take the last form).
+export function plural(n: number, one: string, few: string, many: string): string {
+  if (n === 1) return one;
+  const tens = n % 100;
+  const units = n % 10;
+  return units >= 2 && units <= 4 && (tens < 12 || tens > 14) ? few : many;
+}
+
+// The one short sentence a screen reader hears when the result changes (WCAG 4.1.3). The result
+// itself is not a live region, so 1,500 characters of cards are never read out at once.
+export function resultAnnouncement(
+  phase: Phase,
+  data: MatchResponse | null,
+  error: string | null,
+): string | null {
+  if (phase === "error") return error;
+  if (phase === "searching") return "Szukam w Bibliotece ROPS…";
+  if (!data) return null;
+  const n = data.innovations.length;
+  if (phase === "choosing") {
+    const found = n
+      ? `Znaleźliśmy ${n} ${plural(n, "wstępny wynik", "wstępne wyniki", "wstępnych wyników")}.`
+      : "Wyszukiwanie zakończone.";
+    return `${found} AI wybiera najlepiej pasujące, to potrwa kilka sekund.`;
+  }
+  if (phase !== "done") return null;
+  if (!n) return "Gotowe. W Bibliotece ROPS nie ma innowacji, która pasuje do opisu.";
+  return data.picked_by === "ai"
+    ? `Gotowe. Znaleźliśmy ${n} ${plural(n, "propozycję", "propozycje", "propozycji")} AI.`
+    : `Gotowe. Znaleźliśmy ${n} ${plural(n, "innowację", "innowacje", "innowacji")}.`;
 }
