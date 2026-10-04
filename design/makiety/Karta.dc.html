@@ -48,7 +48,7 @@ a.card{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) va
 a.card:hover{border-color:#8A99C7;box-shadow:0 8px 20px -10px rgba(21,26,35,.22)}
 input:not([type=radio]):not([type=checkbox]),textarea,select{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) var(--ease)}
 input:not([type=radio]):not([type=checkbox]):hover,textarea:hover,select:hover{border-color:#4B5565}
-input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A}
+input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{outline:none;border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A,0 0 0 5px rgba(31,58,138,.18)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:1ms!important;animation-delay:0ms!important;transition-property:color,background-color,border-color,box-shadow,text-decoration-color!important}
   .btn:active{transform:none}
@@ -65,7 +65,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
       <div data-ruch="wejscie" class="wrap" style="padding-top: 20px; padding-bottom: 36px; display: flex; flex-direction: column; gap: 14px">
         <nav aria-label="Ścieżka" style="font-size: 16px"><a href="Biblioteka.dc.html">Biblioteka</a> › <a href="Biblioteka.dc.html">Dla seniorów</a> › <span aria-current="page" class="muted">Organizator kompleksowej opieki</span></nav>
         <h1 class="h" style="font-size: 44px; max-width: 900px">Organizator kompleksowej opieki w miejscu zamieszkania</h1>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag tag-ok">Wybrana do upowszechniania</span><span class="muted" style="font-size: 16px">Małopolski Inkubator Włączenia Społecznego</span></div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag">Z inkubatora MIWS</span><span class="muted" style="font-size: 16px">Małopolski Inkubator Włączenia Społecznego</span></div>
       </div>
     </div>
     <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 48px; padding-top: 16px; padding-bottom: 64px">

@@ -52,7 +52,7 @@ export function authErrorMessage(error: { message?: string; code?: string; statu
     t.includes("sending confirmation") ||
     t.includes("sending recovery")
   ) {
-    return "Nie udało się wysłać maila na ten adres. Spróbuj za chwilę albo skorzystaj z wersji pokazowej.";
+    return "Nie udało się wysłać maila na ten adres. Sprawdź adres i spróbuj ponownie za kilka minut.";
   }
   if (t.includes("email_not_confirmed") || t.includes("not confirmed")) {
     return "Ten adres e-mail nie jest jeszcze potwierdzony. Kliknij link z maila, który wysłaliśmy przy rejestracji.";
@@ -83,7 +83,7 @@ export async function signInWithPassword(
       state: {
         status: "error",
         email: parsed.data.email,
-        message: error ? authErrorMessage(error) : "Nie udało się zalogować.",
+        message: error ? authErrorMessage(error) : "Nie udało się zalogować. Spróbuj ponownie.",
         unconfirmed: error ? isUnconfirmed(error) || undefined : undefined,
       },
     };

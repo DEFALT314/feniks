@@ -130,9 +130,12 @@ describe("Middleman API", () => {
   });
 
   it("validates input and unknown cards", async () => {
-    expect(
-      (await create(json({ innovation_id: "bawita", institution: { type: "szkola" } }))).status,
-    ).toBe(400);
+    const invalid = await create(
+      json({ innovation_id: "bawita", institution: { type: "szkola" } }),
+    );
+    expect(invalid.status).toBe(400);
+    // worded for this form, not the idea creator's "tytuł i opis pomysłu"
+    expect((await invalid.json()).error).toContain("nazwę instytucji");
     expect((await create(json({ innovation_id: "nie-ma", institution }))).status).toBe(404);
     const badEdit = await edit(
       new Request("http://app", { method: "PATCH", body: JSON.stringify({ title: "" }) }),

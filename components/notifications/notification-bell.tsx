@@ -3,13 +3,16 @@
 import { Bell } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useId, useReducer, useRef, useState } from "react";
+import { announce } from "@/components/ui/announcer";
 import { buttonVariants } from "@/components/ui/button";
 import { notificationsLabel } from "@/components/ui/navigation";
 import { Notification } from "@/lib/contracts/notifications";
 import { createClient } from "@/lib/supabase/client";
 import { authorizeRealtime } from "@/lib/supabase/realtime";
 import { cn } from "@/lib/utils";
-import { bellReducer, shortTime } from "./bell-state";
+import { bellReducer, loadedSummary, shortTime } from "./bell-state";
+
+const POLL_MS = 15_000;
 
 // Header bell (#7): unread count, live updates through Supabase Realtime (RLS: own rows only),
 // a list of the latest notifications and "mark all as read".
@@ -24,19 +27,45 @@ export function NotificationBell({
     unread: initialUnread,
     items: null,
     announcement: "",
+    announcementId: 0,
   });
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  // New live notifications go to the one global live region; the id makes a repeat readable
+  useEffect(() => {
+    if (state.announcementId > 0) announce(state.announcement);
+  }, [state.announcementId, state.announcement]);
+
+  // Background refresh of the list and the counter (no announcement of the summary).
+  const poll = useCallback(async () => {
+    const res = await fetch("/api/notifications", { cache: "no-store" }).catch(() => null);
+    if (!res?.ok) return;
+    const body = await res.json().catch(() => null);
+    if (!body) return;
+    dispatch({ type: "polled", items: body.powiadomienia ?? [], unread: body.nieprzeczytane ?? 0 });
+  }, []);
 
   // Live updates: a new notification bumps the counter and is announced to screen readers.
+  // If Realtime is unavailable (e.g. a network that blocks WebSockets), the bell asks every
+  // POLL_MS instead, and always when the user comes back to the tab.
   useEffect(() => {
     const supabase = createClient();
     const filter = `user_id=eq.${userId}`;
     let cancelled = false;
+    let live = false;
     let channel: ReturnType<typeof supabase.channel> | null = null;
     let stopAuth = () => {};
+    const timer = window.setInterval(() => {
+      if (!live && document.visibilityState === "visible") void poll();
+    }, POLL_MS);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void poll();
+    };
+    document.addEventListener("visibilitychange", onVisible);
     // The token must reach Realtime first, otherwise RLS hides every row (see authorizeRealtime).
     void authorizeRealtime(supabase).then((stop) => {
       stopAuth = stop;
@@ -59,20 +88,25 @@ export function NotificationBell({
             if (item.success) dispatch({ type: "updated", item: item.data });
           },
         )
-        .subscribe();
+        .subscribe((status) => {
+          live = status === "SUBSCRIBED";
+        });
     });
     return () => {
       cancelled = true;
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisible);
       stopAuth();
       if (channel) void supabase.removeChannel(channel);
     };
-  }, [userId]);
+  }, [userId, poll]);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/notifications", { cache: "no-store" });
     if (!res.ok) return;
     const body = await res.json();
     dispatch({ type: "loaded", items: body.powiadomienia, unread: body.nieprzeczytane });
+    announce(loadedSummary(body.powiadomienia?.length ?? 0, body.nieprzeczytane ?? 0));
   }, []);
 
   const markRead = useCallback(async (ids?: string[]) => {
@@ -131,9 +165,6 @@ export function NotificationBell({
           </span>
         ) : null}
       </button>
-      <p aria-live="polite" className="sr-only">
-        {state.announcement}
-      </p>
 
       {open ? (
         <div
@@ -142,12 +173,19 @@ export function NotificationBell({
           aria-label="Powiadomienia"
           className="border-border absolute right-0 z-40 mt-2 flex w-[min(360px,calc(100vw-2rem))] flex-col rounded-xl border bg-white shadow-[0_12px_32px_-12px_rgba(21,26,35,0.3)]"
         >
-          <div className="border-border flex items-center justify-between gap-2 border-b px-4 py-3">
-            <h2 className="font-bold">Powiadomienia</h2>
+          <div className="border-border flex flex-wrap items-center justify-between gap-x-3 gap-y-0 border-b px-4 py-3">
+            <h2 ref={headingRef} tabIndex={-1} className="shrink-0 font-bold">
+              Powiadomienia
+            </h2>
             {state.unread > 0 ? (
               <button
                 type="button"
-                onClick={() => void markRead()}
+                onClick={() => {
+                  // The button disappears once nothing is unread: keep focus in the panel
+                  headingRef.current?.focus();
+                  announce("Wszystkie powiadomienia oznaczone jako przeczytane.");
+                  void markRead();
+                }}
                 className="text-navy min-h-11 cursor-pointer text-base underline underline-offset-[3px]"
               >
                 Oznacz wszystkie jako przeczytane
@@ -196,6 +234,13 @@ export function NotificationBell({
               ))}
             </ul>
           )}
+          <Link
+            href="/my/messages"
+            onClick={() => setOpen(false)}
+            className="border-border text-navy flex min-h-11 items-center border-t px-4 text-base font-bold"
+          >
+            Wszystkie rozmowy
+          </Link>
         </div>
       ) : null}
     </div>

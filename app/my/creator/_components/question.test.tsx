@@ -10,20 +10,27 @@ const render = (id: string, answer?: Parameters<typeof Question>[0]["answer"]) =
 describe("Question", () => {
   it("asks a single-choice question as a group of radios with a legend", () => {
     const html = render("intensywnosc", { choice: "Mocno przeszkadza" });
-    expect(html).toContain("<legend");
-    expect(html).toContain("Jak bardzo źle jest bez waszego rozwiązania?");
+    expect(html).toMatch(
+      /<legend[^>]*><h2[^>]*tabindex="-1"[^>]*>Jak bardzo źle jest bez waszego rozwiązania\?<\/h2><\/legend>/,
+    );
+    const describedBy = html.match(/<fieldset[^>]*aria-describedby="([^"]+)"/)?.[1];
+    expect(html).toContain(`id="${describedBy}"`);
     expect(html.match(/type="radio"/g)).toHaveLength(4);
     const chosen = html.match(/<input[^>]*value="Mocno przeszkadza"[^>]*>/)?.[0];
     expect(chosen).toContain('checked=""');
     expect(html.match(/checked=""/g)).toHaveLength(1);
   });
 
-  it("disables more options once three are picked", () => {
+  it("keeps extra options focusable once three are picked and explains why", () => {
     const options = field("wartosc-emocjonalna").opcje!;
     const html = render("wartosc-emocjonalna", { choices: options.slice(0, 3) });
     expect(html.match(/type="checkbox"/g)).toHaveLength(options.length);
-    expect(html.match(/disabled=""/g)).toHaveLength(options.length - 3);
-    expect(html).toContain("Zaznaczono 3 z 3.");
+    expect(html).not.toContain('disabled=""');
+    expect(html.match(/aria-disabled="true"/g)).toHaveLength(options.length - 3);
+    const blocked = html.match(/<input[^>]*aria-disabled="true"[^>]*>/)![0];
+    const hintId = blocked.match(/aria-describedby="([^"]+)"/)![1];
+    expect(html).toMatch(new RegExp(`<p id="${hintId}"[^>]*>Zaznaczono 3 z 3`));
+    expect(html).toContain("Zaznaczono 3 z 3. Żeby wybrać inną odpowiedź, najpierw odznacz jedną.");
   });
 
   it("asks for the other option's text only when 'inne' is checked", () => {

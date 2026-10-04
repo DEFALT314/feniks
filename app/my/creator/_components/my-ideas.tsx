@@ -21,8 +21,9 @@ export function MyIdeas({ ideas }: { ideas: MyIdea[] }) {
         <div className="mx-auto flex max-w-[1200px] flex-col gap-3 px-4 pt-10 pb-8 sm:px-10">
           <h1 className="text-[2.75rem] leading-tight font-bold">Moje pomysły</h1>
           <p className="text-muted-foreground max-w-[760px]">
-            Kreator prowadzi przez kanwę innowacji: jedno pytanie na ekranie. Na końcu powstaje
-            fiszka, którą możesz wysłać do ROPS.
+            Odpowiesz na pytania z kanwy innowacji, czyli planu pomysłu od ROPS. Pokażemy je po
+            jednym na ekranie. Z odpowiedzi powstanie fiszka, czyli krótki opis pomysłu. Możesz ją
+            wysłać do ROPS.
           </p>
           <NewIdeaForm />
         </div>
@@ -36,7 +37,7 @@ export function MyIdeas({ ideas }: { ideas: MyIdea[] }) {
         </h2>
         {ideas.length === 0 ? (
           <p className="text-muted-foreground">
-            Nie masz jeszcze pomysłów. Nazwij pierwszy powyżej.
+            Nie masz jeszcze pomysłów. Wpisz tytuł pierwszego w polu powyżej.
           </p>
         ) : (
           <ul className="grid gap-4 md:grid-cols-2">
@@ -61,7 +62,7 @@ function IdeaSummary({ idea }: { idea: MyIdea }) {
         <h3 className="text-[1.375rem] leading-snug font-bold">{idea.tytul}</h3>
         <Badge variant={status.badge}>{status.label}</Badge>
       </div>
-      <p className="text-muted-foreground text-base">
+      <p className="text-muted-foreground text-base tabular-nums">
         Kanwa: {done} z {fields.length} pytań
         {idea.etap ? ` · etap: ${STAGE_LABELS[idea.etap]}` : ""} · zmieniono{" "}
         {dateTime.format(new Date(idea.updated_at))}
@@ -77,12 +78,13 @@ function IdeaSummary({ idea }: { idea: MyIdea }) {
           className={buttonVariants({ variant: "primary", size: "sm" })}
         >
           {done === fields.length ? "Przejrzyj kanwę" : "Dokończ kanwę"}
+          <span className="sr-only">: {idea.tytul}</span>
         </Link>
         <Link
           href={`/my/creator/${idea.id}/card`}
           className={buttonVariants({ variant: "secondary", size: "sm" })}
         >
-          Fiszka
+          Fiszka<span className="sr-only">: {idea.tytul}</span>
         </Link>
       </div>
     </Card>

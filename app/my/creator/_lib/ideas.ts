@@ -103,7 +103,8 @@ export async function createIdea(
   title: string,
 ): Promise<{ ok: true; id: string } | { ok: false; error: string }> {
   const parsed = Idea.shape.tytul.safeParse(title);
-  if (!parsed.success) return { ok: false, error: "Wpisz roboczy tytuł pomysłu." };
+  if (!parsed.success)
+    return { ok: false, error: "Wpisz tytuł pomysłu. Możesz go później zmienić." };
   const { data, error } = await db
     .from("ideas")
     .insert({ tytul: parsed.data })
@@ -116,7 +117,7 @@ export async function createIdea(
 
 const LOCKED: SaveResult = {
   ok: false,
-  error: "Pomysł jest w ROPS. Edycja wróci, jeśli ROPS poprosi o poprawki.",
+  error: "Pomysł jest już w ROPS. Jeśli ROPS poprosi o poprawki, znów będzie można go zmieniać.",
 };
 
 // Database errors raised by migration *_creator_submit.sql
@@ -141,7 +142,7 @@ export async function saveAnswer(
   answer: CanvasAnswer | null,
 ): Promise<SaveResult> {
   const field = fields.find((f) => f.id === fieldId);
-  if (!field) return { ok: false, error: "Nieznane pytanie." };
+  if (!field) return { ok: false, error: "Nie udało się odczytać pytania. Odśwież stronę." };
   if (answer !== null && !answerSchema(field).safeParse(answer).success) {
     return { ok: false, error: "Ta odpowiedź nie pasuje do pytania." };
   }
@@ -173,7 +174,11 @@ export async function saveCard(
   input: IdeaCardInput,
 ): Promise<SaveResult> {
   const parsed = IdeaCardInput.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Sprawdź pola fiszki." };
+  if (!parsed.success)
+    return {
+      ok: false,
+      error: "Nie zapisano fiszki. Sprawdź, czy jest tytuł i czy żadne pole nie jest za długie.",
+    };
   const { idea, editable } = await editableIdea(db, authorId, ideaId);
   if (!idea) return NOT_FOUND;
   if (!editable) return LOCKED;

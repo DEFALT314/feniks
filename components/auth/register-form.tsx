@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { useFocusFirstError } from "@/components/ui/focus";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { signUp } from "@/lib/auth/actions";
@@ -10,6 +11,7 @@ import type { AuthFormState } from "@/lib/auth/login";
 import { PASSWORD_MIN_LENGTH } from "@/lib/auth/validation";
 import { CheckInbox } from "./check-inbox";
 import { FormMessage } from "./form-message";
+import { submitKeepingValues } from "@/components/ui/submit-keeping-values";
 
 const initialState: AuthFormState = { status: "idle" };
 
@@ -18,14 +20,23 @@ const initialState: AuthFormState = { status: "idle" };
 export function RegisterForm({ next }: { next?: string }) {
   const [state, action, pending] = useActionState(signUp, initialState);
   const consentError = state.fieldErrors?.consent;
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusFirstError(formRef, state.status === "error" ? state : undefined);
 
   // Supabase "Confirm email" is on: the account works after the link in the e-mail is clicked.
   if (state.status === "sent" && state.email) return <CheckInbox email={state.email} next={next} />;
 
   return (
-    <form action={action} className="flex flex-col gap-5" noValidate>
+    // submitKeepingValues: a failed sign-up keeps the password and the consent tick (WCAG 3.3.7)
+    <form
+      ref={formRef}
+      action={action}
+      onSubmit={submitKeepingValues(action)}
+      className="flex flex-col gap-5"
+      noValidate
+    >
       <input type="hidden" name="next" value={next ?? ""} />
-      <Field label="Adres e-mail" error={state.fieldErrors?.email}>
+      <Field label="Adres e-mail" error={state.fieldErrors?.email} required>
         {(p) => (
           <Input
             {...p}
@@ -41,6 +52,7 @@ export function RegisterForm({ next }: { next?: string }) {
         label="Hasło"
         hint={`Co najmniej ${PASSWORD_MIN_LENGTH} znaków.`}
         error={state.fieldErrors?.password}
+        required
       >
         {(p) => (
           <PasswordInput
@@ -53,7 +65,7 @@ export function RegisterForm({ next }: { next?: string }) {
         )}
       </Field>
       <div className="flex flex-col gap-1.5">
-        <label className="flex items-start gap-3 font-normal">
+        <label className="flex min-h-11 items-start gap-3 font-normal">
           <input
             type="checkbox"
             name="consent"
@@ -64,7 +76,7 @@ export function RegisterForm({ next }: { next?: string }) {
           />
           <span>
             Zgadzam się na przetwarzanie mojego adresu e-mail przez ROPS w Krakowie w celu
-            korzystania z HubMI.
+            korzystania z HubMI. <span className="text-muted-foreground">(wymagane)</span>
           </span>
         </label>
         {consentError ? (

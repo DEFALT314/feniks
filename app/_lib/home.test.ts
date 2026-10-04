@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { InnovationSummary } from "@/lib/contracts/knowledge-base";
-import { homeStats, pickFeatured, plural } from "./home";
+import { accountItemsFor, navItemsFor } from "@/components/ui/navigation";
+import { homeStats, personalTiles, pickFeatured, plural } from "./home";
 
 const innovation = (over: Partial<InnovationSummary> & { id: string }): InnovationSummary => ({
   nazwa: over.id,
@@ -75,5 +76,28 @@ describe("plural", () => {
     [115, "innowacji"],
   ])("%i → %s", (n, expected) => {
     expect(plural(n, ...forms)).toBe(expected);
+  });
+});
+
+describe("personalTiles", () => {
+  const tiles = (role: Parameters<typeof navItemsFor>[0]) =>
+    personalTiles(navItemsFor(role), accountItemsFor(role)).map((t) => t.href);
+
+  it("is empty for visitors", () => {
+    expect(tiles(null)).toEqual([]);
+  });
+
+  it("puts the role's main task first and lists every own page once, without the profile", () => {
+    expect(tiles("jst")).toEqual(["/my/middleman", "/my/creator", "/my/tester", "/my/messages"]);
+    expect(tiles("ekspert")).toEqual(["/my/tester", "/my/creator", "/my/messages"]);
+  });
+
+  it("starts with the ROPS panel for ROPS staff", () => {
+    expect(tiles("rops_admin")[0]).toBe("/admin");
+  });
+
+  it("gives every tile a plain-language explanation", () => {
+    for (const t of personalTiles(navItemsFor("ngo"), accountItemsFor("ngo")))
+      expect(t.text.length).toBeGreaterThan(20);
   });
 });

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { useFocusFirstError } from "@/components/ui/focus";
 import { Input, Textarea } from "@/components/ui/input";
 import type { Category, Innovation } from "@/lib/contracts/knowledge-base";
 import { editFromForm, formFromInnovation, type InnovationForm } from "../_lib/edit-diff";
@@ -17,7 +18,7 @@ type TextKey = {
 const CHECKBOXES = [
   ["opublikowana", "Opublikowana w Bibliotece"],
   ["sprawdzona_przez_rops", "Sprawdzona przez ROPS (wybrana do upowszechniania)"],
-  ["do_matchmakingu", "Pokazuj w wynikach „Mam problem” (dopasowanie)"],
+  ["do_matchmakingu", "Pokazuj w wynikach „Dopasuj rozwiązanie”"],
 ] as const;
 
 // Edits a card through PATCH /api/innovations/[id]; only changed fields are sent
@@ -31,6 +32,9 @@ export function EditForm({
   const [saved, setSaved] = useState(innovation);
   const [form, setForm] = useState<InnovationForm>(() => formFromInnovation(innovation));
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const formRef = useRef<HTMLFormElement>(null);
+  // A repeated error ("Nie ma zmian do zapisania.") is not read again by a live region: focus it instead
+  useFocusFirstError(formRef, status.kind === "error" ? status : undefined);
 
   const update = (changes: Partial<InnovationForm>) => {
     setForm((f) => ({ ...f, ...changes }));
@@ -45,7 +49,7 @@ export function EditForm({
     e.preventDefault();
     const changes = editFromForm(saved, form);
     if (Object.keys(changes).length === 0) {
-      setStatus({ kind: "error", message: "Nic nie zmieniono." });
+      setStatus({ kind: "error", message: "Nie ma zmian do zapisania." });
       return;
     }
     setStatus({ kind: "saving" });
@@ -69,8 +73,10 @@ export function EditForm({
   }
 
   return (
-    <form onSubmit={save} className="flex flex-col gap-6" noValidate>
-      <Field label="Nazwa">{(p) => <Input {...p} required {...text("nazwa")} />}</Field>
+    <form ref={formRef} onSubmit={save} className="flex flex-col gap-6" noValidate>
+      <Field label="Nazwa" required>
+        {(p) => <Input {...p} required {...text("nazwa")} />}
+      </Field>
       <Field label="Kategoria">
         {(p) => (
           <select
@@ -150,11 +156,13 @@ export function EditForm({
         </Button>
         <p role="status" aria-live="polite" className="m-0 text-base font-bold">
           {status.kind === "saved" ? (
-            <span className="text-success">
-              Zapisano. Karta w Bibliotece jest już zaktualizowana.
+            <span className="text-success">Zapisano. Zmiany już widać w Bibliotece.</span>
+          ) : null}
+          {status.kind === "error" ? (
+            <span data-form-error className="text-danger">
+              {status.message}
             </span>
           ) : null}
-          {status.kind === "error" ? <span className="text-danger">{status.message}</span> : null}
         </p>
       </div>
     </form>

@@ -55,6 +55,9 @@ describe("service card view", () => {
     expect(html).toContain("Karta innowacji w ROPS");
     expect(html).toContain("(otwiera się w nowej karcie)");
     expect(html).toContain("Dane demonstracyjne");
+    // the side panel labels are headings under the card's h2
+    expect(html).toMatch(/<h3[^>]*>Aktualne nabory<\/h3>/);
+    expect(html).toMatch(/<h3[^>]*>Na podstawie<\/h3>/);
     expect(html).toContain('id="nabory"');
     expect(html).toContain(
       'href="/library/organizator-kompleksowej-opieki-w-miejscu-zamieszkania"',
