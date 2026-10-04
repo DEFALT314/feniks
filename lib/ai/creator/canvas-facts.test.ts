@@ -44,4 +44,14 @@ describe("canvas facts and rule checks", () => {
     );
     expect(checks.map((c) => c.id)).toEqual(["tanie-i-skuteczne"]);
   });
+
+  it("quotes the clarity answer as chosen, in a grammatical sentence", () => {
+    const [check] = ruleChecks(
+      { ...idea, essence: "Nikt nie zostaje sam.", audience: "Seniorzy." },
+      { prostota: { choice: "Niejasne" } },
+    );
+    expect(check.id).toBe("niejasne");
+    expect(check.detail).toContain("odpowiadasz w kanwie: „Niejasne”.");
+    expect(check.detail).not.toContain("jest dla nowej osoby niejasne");
+  });
 });

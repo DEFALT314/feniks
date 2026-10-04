@@ -152,7 +152,8 @@ export function ruleChecks(idea: IdeaDraft, answers: Answers): ReviewCheck[] {
         id: "niejasne",
         kind: "do_przemyslenia",
         title: "Uprość opis",
-        detail: `W kanwie piszesz, że pomysł jest dla nowej osoby ${lower(clarity)}. Spróbuj opisu w trzech zdaniach: problem, co robicie, co się zmienia.`,
+        // The canvas option is quoted as chosen ("Niejasne"): inflecting it to agree with "pomysł" read wrong
+        detail: `Na pytanie, czy nowa osoba szybko zrozumie pomysł, odpowiadasz w kanwie: „${clarity}”. Spróbuj opisu w trzech zdaniach: problem, co robicie, co się zmienia.`,
         field: "description",
       }),
     );
