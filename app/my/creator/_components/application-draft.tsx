@@ -1,13 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { announce } from "@/components/ui/announcer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/input";
-import { ApplicationResponse, type CallSummary, type IdeaDraft } from "@/lib/contracts/ai";
+import {
+  ApplicationResponse,
+  RankedCallList,
+  type CallSummary,
+  type IdeaDraft,
+} from "@/lib/contracts/ai";
 import type { CallFit, IdeaArea } from "@/lib/ai/creator/call-fit";
 import { postJson } from "../_lib/api";
 
@@ -46,11 +51,16 @@ const CALL_FIT_NOTE: Record<CallFit, { variant: "success" | "neutral" | "warning
     inny: { variant: "warning", text: "Ten nabór dotyczy innego obszaru" },
   };
 
+// The ranking follows the card: once the author stops typing, the calls are ranked again for the
+// new text (POST /api/ai/calls, search only), so a call for seniors is not offered first to an idea
+// about homeless people just because the description was empty when the page opened.
+const RERANK_AFTER_MS = 2500;
+
 export function ApplicationDraft({
-  calls,
+  calls: initialCalls,
   draft,
   ideaId,
-  areas = [],
+  areas: initialAreas = [],
 }: {
   // ranked by lib/ai/creator/call-fit.ts on the card page: fitting calls first (P3)
   calls: (CallSummary & { fit?: CallFit })[];
@@ -60,7 +70,33 @@ export function ApplicationDraft({
 }) {
   const selectId = useId();
   const reasonId = useId();
-  const [callId, setCallId] = useState(calls[0]?.id ?? "");
+  const [calls, setCalls] = useState(initialCalls);
+  const [areas, setAreas] = useState(initialAreas);
+  const [callId, setCallId] = useState(initialCalls[0]?.id ?? "");
+  const chosenByAuthor = useRef(false);
+  const rankedFor = useRef<string | null>(null);
+  const cardText = [draft.title, draft.description, draft.essence, draft.audience].join("|");
+
+  useEffect(() => {
+    if (rankedFor.current === null) {
+      rankedFor.current = cardText; // the page already ranked the saved card
+      return;
+    }
+    if (cardText === rankedFor.current || draft.description.trim().length < 10) return;
+    let current = true;
+    const timer = setTimeout(async () => {
+      const result = await postJson("/api/ai/calls", { idea: draft }, RankedCallList);
+      if (!current || !result.ok) return;
+      rankedFor.current = cardText;
+      setCalls(result.data.calls);
+      setAreas(result.data.idea_areas);
+      if (!chosenByAuthor.current && result.data.calls[0]) setCallId(result.data.calls[0].id);
+    }, RERANK_AFTER_MS);
+    return () => {
+      current = false;
+      clearTimeout(timer);
+    };
+  }, [cardText, draft]);
   const [state, setState] = useState<State>({ status: "idle" });
   const [texts, setTexts] = useState<Record<string, string>>({});
   const [copied, setCopied] = useState<string | null>(null);
@@ -157,7 +193,10 @@ export function ApplicationDraft({
         <select
           id={selectId}
           value={callId}
-          onChange={(e) => setCallId(e.target.value)}
+          onChange={(e) => {
+            chosenByAuthor.current = true;
+            setCallId(e.target.value);
+          }}
           className="border-input min-h-[50px] w-full rounded-[10px] border bg-white px-3 text-lg"
         >
           {calls.map((c) => (

@@ -67,6 +67,16 @@ export type CallSummary = z.infer<typeof CallSummary>;
 export const CallList = z.object({ calls: z.array(CallSummary) });
 export type CallList = z.infer<typeof CallList>;
 
+// POST /api/ai/calls (added after 17:00): the open calls ranked for the card as it is now.
+// Computed, no AI: the idea's Challenges Map areas come from the same search as /match.
+export const CallFit = z.enum(["pasuje", "dowolny", "inny"]);
+export const RankCallsRequest = z.object({ idea: IdeaDraft });
+export const RankedCallList = z.object({
+  calls: z.array(CallSummary.extend({ fit: CallFit })), // fitting first, then any area, then others
+  idea_areas: z.array(z.object({ id: z.string(), name: z.string() })),
+});
+export type RankedCallList = z.infer<typeof RankedCallList>;
+
 // --- /api/ai/application ---
 
 export const ApplicationRequest = z.object({
