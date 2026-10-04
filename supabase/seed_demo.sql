@@ -31,6 +31,29 @@ delete from public.notifications n
 using auth.users u
 where n.user_id = u.id and u.email like 'demo.%@example.org';
 
+-- Leftovers from rehearsals (#11): everything the demo accounts created by clicking through the app
+-- (new ideas with their canvas, reviews and threads; service cards; test sign-ups and ratings; the
+-- daily AI counter). The mockup data below is inserted again. Lock triggers let postgres through.
+delete from public.ideas i
+using auth.users u
+where i.autor_id = u.id and u.email like 'demo.%@example.org';
+
+delete from public.middleman_cards c
+using auth.users u
+where c.owner_id = u.id and u.email like 'demo.%@example.org';
+
+delete from public.test_ratings r
+using auth.users u
+where r.user_id = u.id and u.email like 'demo.%@example.org';
+
+delete from public.test_signups s
+using auth.users u
+where s.user_id = u.id and u.email like 'demo.%@example.org';
+
+delete from public.ai_usage a
+using auth.users u
+where a.user_id = u.id and u.email like 'demo.%@example.org';
+
 -- Three sent ideas from design/makiety/Admin.dc.html, so the ROPS queue is not empty in the demo
 -- (#5). Reset to the mockup state: one passed to the expert, one new, one sent back for changes.
 delete from public.ideas where id in (
@@ -248,5 +271,17 @@ from (values
 ) as d (area_id, challenge_id, quality, how_many, offset_days)
 cross join lateral generate_series(1, d.how_many) as n
 where (select count(*) from public.match_queries where area_id is not null) < 20;
+
+-- A service card sent by the demo GOPS (#11), so "Karty usług" in the ROPS panel is not empty.
+-- Same content as P3's fixture lib/contracts/fixtures/middleman.json. Rehearsal cards were removed above.
+insert into public.middleman_cards (id, owner_id, innovation_id, institution, card, version, status, created_at, updated_at)
+select 'd4000000-0000-4000-8000-000000000001', u.id, 'organizator-kompleksowej-opieki-w-miejscu-zamieszkania',
+  $json${"type":"gops","name":"GOPS w Przykładowej Woli","municipality_kind":"wiejska","staff":"Dwie pracownice socjalne, jedna może koordynować usługę.","constraints":"Brak własnego transportu, szpital powiatowy 30 km."}$json$::jsonb,
+  $json${"title":"Koordynacja opieki domowej po wypisie ze szpitala","for_whom":"Mieszkańcy niesamodzielni po pobycie w szpitalu, zwłaszcza seniorzy mieszkający samotnie, oraz ich rodziny.","how_it_works":["Szpital lub rodzina zgłasza wypis do GOPS.","Koordynator odwiedza dom i ustala potrzeby razem z rodziną.","GOPS organizuje usługi opiekuńcze, sprzęt i kontakt z pielęgniarką.","Po dwóch tygodniach wspólny przegląd planu opieki."],"who_delivers":"Pracownik GOPS jako koordynator, we współpracy z podmiotem opieki długoterminowej.","cost":{"estimate":null,"funding_hint":"Sprawdź aktualne nabory w HubMI."},"risks":"Szybki obieg informacji ze szpitala, zgoda pacjenta na przekazanie danych, dostępność sprzętu w małej gminie.","first_steps":["Rozmowa z autorami innowacji przez ROPS.","Porozumienie ze szpitalem powiatowym.","Wskazanie koordynatora w GOPS."]}$json$::jsonb,
+  1, 'wyslana_do_rops', now() - interval '40 minutes', now() - interval '40 minutes'
+from auth.users u
+where u.email = 'demo.gops@example.org'
+  and exists (select 1 from public.innovations where id = 'organizator-kompleksowej-opieki-w-miejscu-zamieszkania')
+on conflict (id) do nothing;
 
 commit;

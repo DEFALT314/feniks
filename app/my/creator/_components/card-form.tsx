@@ -19,8 +19,9 @@ import {
 } from "../_lib/submission";
 import { useAutosave } from "../_lib/use-autosave";
 import { AiAlternatives } from "./ai-alternatives";
-import { AiHints, type CardField } from "./ai-hints";
+import type { CardField } from "./ai-hints";
 import { ApplicationDraft } from "./application-draft";
+import { cardFieldId, IdeaReview } from "./idea-review";
 import { SaveStatusText, useSavedNavigation } from "./save-status";
 import { SimilarInnovation } from "./similar-innovation";
 import { LockedNotice } from "./states";
@@ -31,7 +32,7 @@ const MAX: Record<CardField, number> = { tytul: 200, opis: 3000, istota: 500, dl
 
 type Draft = Record<CardField, string>;
 
-// The idea card ("fiszka", design/makiety/Fiszka.dc.html): fields saved as you type, AI hints,
+// The idea card ("fiszka", design/makiety/Fiszka.dc.html): fields saved as you type, "Sprawdź fiszkę",
 // a grant application draft, a similar innovation from the ROPS Library and sending to ROPS.
 export function IdeaCard({
   idea,
@@ -105,7 +106,7 @@ export function IdeaCard({
           {editable ? null : <LockedNotice />}
           <fieldset disabled={!editable} className="flex min-w-0 flex-col gap-5">
             <legend className="sr-only">Pola fiszki</legend>
-            <Field label="Tytuł" error={titleError} required>
+            <Field label="Tytuł" error={titleError} required id={cardFieldId("title")}>
               {(control) => (
                 <Input
                   {...control}
@@ -117,6 +118,7 @@ export function IdeaCard({
               )}
             </Field>
             <TextField
+              id={cardFieldId("description")}
               label="Opis"
               hint="Jaki problem rozwiązuje Twój pomysł i w jaki sposób?"
               rows={4}
@@ -127,6 +129,7 @@ export function IdeaCard({
               required
             />
             <TextField
+              id={cardFieldId("essence")}
               label="Istota"
               hint="Jedno zdanie: co zmienia się dla ludzi."
               rows={2}
@@ -137,6 +140,7 @@ export function IdeaCard({
               required
             />
             <TextField
+              id={cardFieldId("audience")}
               label="Dla kogo"
               rows={2}
               max={MAX.dla_kogo}
@@ -168,7 +172,18 @@ export function IdeaCard({
 
           {editable ? (
             <>
-              <AiHints draft={toIdeaDraft(card)} onUse={(field, text) => change(field, text, 0)} />
+              <IdeaReview
+                ideaId={idea.id}
+                draft={toIdeaDraft(card)}
+                editable={editable}
+                onAdd={(field, sentence) =>
+                  change(
+                    field,
+                    draft[field].trim() ? `${draft[field].trimEnd()} ${sentence}` : sentence,
+                    0,
+                  )
+                }
+              />
               <AiAlternatives
                 draft={toIdeaDraft(card)}
                 onAdd={(text) =>
@@ -177,7 +192,7 @@ export function IdeaCard({
               />
             </>
           ) : null}
-          <ApplicationDraft calls={calls} draft={toIdeaDraft(card)} />
+          <ApplicationDraft calls={calls} draft={toIdeaDraft(card)} ideaId={idea.id} />
         </section>
 
         <aside
@@ -205,6 +220,7 @@ export function IdeaCard({
 }
 
 type TextFieldProps = {
+  id: string;
   label: string;
   hint?: ReactNode;
   rows: number;
@@ -216,6 +232,7 @@ type TextFieldProps = {
 };
 
 function TextField({
+  id,
   label,
   hint,
   rows,
@@ -227,7 +244,7 @@ function TextField({
 }: TextFieldProps) {
   return (
     <div className="flex flex-col gap-2">
-      <Field label={label} hint={hint} required={required}>
+      <Field id={id} label={label} hint={hint} required={required}>
         {(control) => (
           <Textarea
             {...control}

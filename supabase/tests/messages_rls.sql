@@ -28,7 +28,8 @@ grant all on t_ids to authenticated, anon;
 insert into results select 'ROPS thread has author, expert and ROPS as participants',
   (select count(*) from public.thread_participants where thread_id = (select thread_id from t_ids)) = 3;
 insert into results select 'message keeps the author name snapshot',
-  (select autor_nazwa = 'Redakcja' and autor_rola = 'rops_redaktor' from public.messages limit 1);
+  (select autor_nazwa = 'Redakcja' and autor_rola = 'rops_redaktor' from public.messages
+   where thread_id = (select thread_id from t_ids) order by created_at limit 1);
 insert into results select 'second start_thread for the same idea reuses the thread',
   public.start_thread('x', 'Druga wiadomość', '00000000-0000-4000-8000-0000000000f1') = (select thread_id from t_ids);
 
@@ -81,7 +82,10 @@ insert into results select 'other expert sees nothing', (select count(*) from pu
 -- ---------- ROPS sees every thread ----------
 reset role; set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"00000000-0000-4000-8000-0000000000e3","role":"authenticated"}', true);
-insert into results select 'ROPS sees all threads', (select count(*) from public.threads) = 2;
+-- Demo data may hold more threads; ROPS must see both test threads (the idea one and the plain one).
+insert into results select 'ROPS sees all threads',
+  (select count(*) from public.threads where created_by in (
+     '00000000-0000-4000-8000-0000000000e1', '00000000-0000-4000-8000-0000000000e3')) = 2;
 select public.mark_thread_read((select thread_id from t_ids));
 insert into results select 'mark_thread_read updates last_read_at',
   (select last_read_at > now() - interval '1 minute' from public.thread_participants

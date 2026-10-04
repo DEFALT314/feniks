@@ -135,3 +135,40 @@ export const AdminFixtures = z.object({
 });
 
 export const adminFixtures = AdminFixtures.parse(fixture);
+
+// Open data API of calls (GET /api/calls) and import from an external grant database
+// (POST /api/admin/calls/import, ROPS only). Field names as in the table (Polish).
+export const CallsQuery = z.object({
+  area: z.string().max(80).optional(), // challenge area id, e.g. "seniorzy"
+  status: z.enum(["open", "all"]).default("open"), // open = deadline not passed
+  format: z.enum(["json", "csv"]).default("json"),
+});
+export type CallsQuery = z.infer<typeof CallsQuery>;
+
+export const CallsResponse = z.object({
+  calls: z.array(Call),
+  count: z.number().int().nonnegative(),
+  generated_at: z.iso.datetime(),
+  source: z.string(),
+});
+export type CallsResponse = z.infer<typeof CallsResponse>;
+
+export const CallImportItem = z.object({
+  id: z.string(),
+  nazwa: z.string(),
+  organizator: z.string().optional(),
+  cel: z.string().optional(),
+  url: z.string().optional(),
+  termin_od: z.string().optional(),
+  termin_do: z.string().optional(),
+  obszary: z.array(z.string()).optional(),
+});
+export const CallImportRequest = z.object({ calls: z.array(CallImportItem).min(1).max(200) });
+export type CallImportRequest = z.infer<typeof CallImportRequest>;
+
+export const CallImportResult = z.object({
+  created: z.number().int(),
+  updated: z.number().int(),
+  errors: z.array(z.object({ index: z.number().int(), id: z.string(), message: z.string() })),
+});
+export type CallImportResult = z.infer<typeof CallImportResult>;

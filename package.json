@@ -11,8 +11,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "db:push": "supabase db push",
-    "db:types": "supabase gen types typescript --linked --schema public > lib/supabase/types.ts",
-    "test": "vitest run"
+    "db:types": "supabase gen types typescript --linked --schema public > lib/supabase/types.ts && prettier --write lib/supabase/types.ts",
+    "test": "vitest run",
+    "db:test": "node scripts/db/test-rls.mjs",
+    "db:roles": "node --env-file=.env.local scripts/db/role-matrix.mjs",
+    "demo:reset": "node scripts/db/demo-reset.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
