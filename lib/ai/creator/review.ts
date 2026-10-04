@@ -62,6 +62,7 @@ Rules:
 - "detail": 1-2 short sentences in plain Polish addressed to the author ("Napisz…", "W podobnej innowacji…").
 - "suggestion": optional ONE sentence the author could add to "field", built only from facts in the card or the canvas; null if it would need new facts. Never numbers, amounts, dates or names.
 - "kind": "brakuje" (something missing), "do_przemyslenia" (a risk or a choice to think over) or "mocna_strona" (a strength to say out loud).
+- Use an innovation only if it addresses the same problem for similar people. If it is about a different group or problem (e.g. pupils, amputation, when the card is about seniors after hospital), do not draw analogies from it; use the canvas or the card instead.
 - Do not repeat points already found. Do not praise or reword the card. No generic advice ("dodaj więcej szczegółów").
 Return json: {"checks": [{"kind": "...", "title": "...", "detail": "...", "field": "title"|"description"|"essence"|"audience"|null, "source": "biblioteka"|"kanwa"|"fiszka", "innovation_id": "..."|null, "step": "..."|null, "quote": "..."|null, "suggestion": "..."|null}]}`;
 
