@@ -54,6 +54,10 @@ delete from public.ai_usage a
 using auth.users u
 where a.user_id = u.id and u.email like 'demo.%@example.org';
 
+delete from public.innovation_reviews r
+using auth.users u
+where r.user_id = u.id and u.email like 'demo.%@example.org';
+
 -- Three sent ideas from design/makiety/Admin.dc.html, so the ROPS queue is not empty in the demo
 -- (#5). Reset to the mockup state: one passed to the expert, one new, one sent back for changes.
 delete from public.ideas where id in (
@@ -283,5 +287,28 @@ from auth.users u
 where u.email = 'demo.gops@example.org'
   and exists (select 1 from public.innovations where id = 'organizator-kompleksowej-opieki-w-miejscu-zamieszkania')
 on conflict (id) do nothing;
+
+-- Reviews of Library innovations outside tests (Tester, "ocena istniejących rozwiązań"), so the
+-- Library card shows an average and Panel ROPS → "Testy i opinie" has improvement proposals.
+-- Inserted as postgres: the trigger notifies ROPS, so the demo ROPS bell is cleared afterwards.
+insert into public.innovation_reviews (innowacja_id, user_id, ocena, co_dzialalo, co_poprawic)
+select d.innowacja_id, u.id, d.ocena, d.co_dzialalo, d.co_poprawic
+from (values
+  ('merkury', 'demo.gops@example.org', 5,
+   'Seniorzy ćwiczą w domu bez stresu, potem pewniej korzystają z bankomatu.',
+   'Wersja na tablet z większymi przyciskami.'),
+  ('merkury', 'demo.fundacja@example.org', 4,
+   'Dobre do zajęć w grupie, prowadzący łatwo to pokazuje.',
+   'Instrukcja dla prowadzącego zajęcia w formie jednej kartki.'),
+  ('merkury', 'demo.mieszkaniec@example.org', 4,
+   'Mama nauczyła się wypłacać pieniądze sama.', null)
+) as d (innowacja_id, email, ocena, co_dzialalo, co_poprawic)
+join auth.users u on u.email = d.email
+where exists (select 1 from public.innovations where id = d.innowacja_id)
+on conflict (innowacja_id, user_id) do nothing;
+
+delete from public.notifications n
+using auth.users u
+where n.user_id = u.id and u.email like 'demo.%@example.org' and n.typ = 'propozycja_usprawnienia';
 
 commit;

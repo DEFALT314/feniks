@@ -10,6 +10,7 @@ import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { getInnovations, getInnovationById, getCategories } from "../_lib/data";
 import { similarInnovations, challengesForInnovation } from "../_lib/related";
 import { askRopsUrl } from "../_lib/format";
+import { InnovationFeedback } from "@/components/tester/innovation-feedback";
 
 // Full program names for Library labels
 const PROGRAMS: Record<string, string> = {
@@ -169,6 +170,7 @@ export default async function InnovationPage({ params }: PageProps<"/library/[id
               Zapytaj ROPS<span className="sr-only"> o tę innowację</span>
             </Link>
           </div>
+          <InnovationFeedback innovationId={i.id} />
           <MaterialsPanel innovation={i} />
           {similar.length > 0 ? (
             <div className="flex flex-col gap-1.5">

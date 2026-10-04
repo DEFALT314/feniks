@@ -156,7 +156,21 @@ def test_handler_serves_health_and_embed(server):
 
 
 def test_handler_rejects_oversized_body(server):
-    assert _post(server, b"x" * 2_000_001, TOKEN)[0] == 413
+    # Only the headers are sent: the handler refuses on Content-Length before reading the body.
+    # Sending 2 MB raced with that early answer (the server closes, the client gets a broken pipe).
+    import http.client
+    from urllib.parse import urlparse
+
+    url = urlparse(server)
+    conn = http.client.HTTPConnection(url.hostname, url.port, timeout=5)
+    conn.putrequest("POST", url.path or "/")
+    for name, value in {"Content-Type": "application/json", **TOKEN}.items():
+        conn.putheader(name, value)
+    conn.putheader("Content-Length", "2000001")
+    conn.endheaders()
+    response = conn.getresponse()
+    assert response.status == 413
+    conn.close()
 
 
 # --- real model ---
