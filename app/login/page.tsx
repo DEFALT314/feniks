@@ -40,7 +40,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       footer={
         <>
           Nie masz konta?{" "}
-          <Link href={registerHref} className="font-bold">
+          <Link href={registerHref} className="inline-flex min-h-11 items-center font-bold">
             Załóż konto
           </Link>
         </>
@@ -53,7 +53,8 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       ) : null}
       {linkError ? (
         <p role="alert" className="text-danger font-bold">
-          Link z maila wygasł albo został już użyty. Poproś o nowy.
+          Link z maila wygasł albo był już użyty. Zaloguj się poniżej albo kliknij „Nie pamiętasz
+          hasła?”.
         </p>
       ) : null}
       <LoginForm next={next} />

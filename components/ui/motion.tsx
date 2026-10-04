@@ -12,6 +12,7 @@ import {
   MOTION_WAIT_ATTRIBUTE,
   parseCount,
   parseKinds,
+  REACT_FIBER_KEY,
   revealDelay,
 } from "./motion-core";
 
@@ -30,6 +31,11 @@ import {
 
 const seen = new WeakSet<Element>();
 
+// React marks every element it has hydrated or rendered with an internal "__reactFiber$…" key.
+function isHydrated(el: Element): boolean {
+  return Object.keys(el).some((key) => key.startsWith(REACT_FIBER_KEY));
+}
+
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function rise(distance: number): Keyframe[] {
@@ -45,7 +51,6 @@ function children(el: Element): HTMLElement[] {
 
 function sweep(marks: HTMLElement[], delay: number, stagger: number) {
   marks.forEach((mark, i) => {
-    mark.style.backgroundRepeat = "no-repeat";
     mark.animate([{ backgroundSize: "0% 100%" }, { backgroundSize: "100% 100%" }], {
       duration: DURATION.mark,
       delay: delay + i * stagger,
@@ -55,26 +60,42 @@ function sweep(marks: HTMLElement[], delay: number, stagger: number) {
   });
 }
 
+// While the number runs it is hidden from screen readers, which would otherwise read "0" or "17"
+// instead of the real value.
 function countUp(el: HTMLElement) {
   const target = parseCount(el.textContent);
   if (target === null) return;
+  const final = el.textContent;
   const start = performance.now();
   const frame = (now: number) => {
     const progress = (now - start) / DURATION.count;
+    if (progress >= 1) {
+      el.textContent = final;
+      el.removeAttribute("aria-hidden");
+      return;
+    }
     el.textContent = String(countAt(target, progress));
-    if (progress < 1) requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
   };
+  el.setAttribute("aria-hidden", "true");
   el.textContent = "0";
   requestAnimationFrame(frame);
 }
 
-type Waiting = { el: Element; play: () => void; cancel: () => void };
+type Waiting = { el: Element; play: () => void; cancel: () => void; ready?: () => boolean };
 
 // Waits until the element's top passes 88% of the screen height, like ScrollTrigger "top 88%":
 // also when the reader jumps past it (End key, anchor link). `cancel` shows it as it is and lets
 // the next run pick it up again.
-function whenVisible(el: Element, play: () => void, waiting: Waiting[], cancel = () => {}) {
-  waiting.push({ el, play, cancel });
+// `ready` holds it back longer, e.g. until React has hydrated an element whose text will change.
+function whenVisible(
+  el: Element,
+  play: () => void,
+  waiting: Waiting[],
+  cancel = () => {},
+  ready?: () => boolean,
+) {
+  waiting.push({ el, play, cancel, ready });
 }
 
 function playScreen(): () => void {
@@ -119,7 +140,16 @@ function playScreen(): () => void {
       );
     }
 
-    if (kinds.includes("licznik")) whenVisible(el, () => countUp(el), waiting);
+    // The counter rewrites the text. The layout hydrates before a streamed page, so changing the
+    // text of a page that React has not hydrated yet would fail hydration and re-render the page.
+    if (kinds.includes("licznik"))
+      whenVisible(
+        el,
+        () => countUp(el),
+        waiting,
+        undefined,
+        () => isHydrated(el),
+      );
 
     if (kinds.includes("slupki")) {
       whenVisible(
@@ -138,7 +168,6 @@ function playScreen(): () => void {
     }
 
     if (kinds.includes("postep") && el.firstElementChild instanceof HTMLElement) {
-      el.firstElementChild.style.transformOrigin = "left center";
       el.firstElementChild.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], {
         duration: DURATION.progress,
         delay: 300,
@@ -152,24 +181,46 @@ function playScreen(): () => void {
 
   const check = () => {
     frame = 0;
+    let pending = false;
     for (const entry of [...waiting]) {
       if (hasReached(entry.el.getBoundingClientRect().top, window.innerHeight)) {
+        if (entry.ready && !entry.ready()) {
+          pending = true;
+          continue;
+        }
         waiting.splice(waiting.indexOf(entry), 1);
         entry.play();
       }
     }
+    if (pending) schedule();
   };
   const schedule = () => {
     frame ||= requestAnimationFrame(check);
   };
+  // Keyboard focus can reach a hidden child before it scrolls far enough: show it right away, or
+  // the focused element would be invisible (WCAG 2.4.7)
+  const onFocus = (event: FocusEvent) => {
+    for (const entry of [...waiting]) {
+      if (event.target instanceof Node && entry.el.contains(event.target)) {
+        waiting.splice(waiting.indexOf(entry), 1);
+        entry.cancel();
+      }
+    }
+  };
+  // Printing and "Save as PDF" take the page as it is: show everything that is still waiting
+  const onPrint = () => waiting.splice(0).forEach((entry) => entry.cancel());
   check();
   window.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", schedule, { passive: true });
+  document.addEventListener("focusin", onFocus);
+  window.addEventListener("beforeprint", onPrint);
 
   return () => {
     cancelAnimationFrame(frame);
     window.removeEventListener("scroll", schedule);
     window.removeEventListener("resize", schedule);
+    document.removeEventListener("focusin", onFocus);
+    window.removeEventListener("beforeprint", onPrint);
     waiting.splice(0).forEach(({ el, cancel }) => {
       cancel();
       seen.delete(el);
@@ -222,7 +273,16 @@ export function Motion() {
 
   useEffect(() => {
     document.addEventListener("change", onChange);
-    return () => document.removeEventListener("change", onChange);
+    // Reduced motion switched on while the page is open: finish everything at once
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onMotionPreference = () => {
+      if (query.matches) document.getAnimations().forEach((a) => a.finish());
+    };
+    query.addEventListener("change", onMotionPreference);
+    return () => {
+      document.removeEventListener("change", onChange);
+      query.removeEventListener("change", onMotionPreference);
+    };
   }, []);
 
   return null;

@@ -21,7 +21,8 @@ const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)"
 
 /**
  * Open/close state for a button + panel (disclosure pattern). Closes on Escape (focus goes back to
- * the button), on a click outside the wrapper and after navigating to another page. `state` adds a
+ * the button), on a click outside the wrapper, when keyboard focus leaves the wrapper (an open panel
+ * would otherwise cover the focused element, WCAG 2.4.11) and after navigating to another page. `state` adds a
  * short "closing" phase so the panel can animate out before it is hidden.
  */
 export function useDisclosure<W extends HTMLElement, B extends HTMLElement>() {
@@ -60,11 +61,18 @@ export function useDisclosure<W extends HTMLElement, B extends HTMLElement>() {
     function onPointer(e: PointerEvent) {
       if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false);
     }
+    function onFocusOut(e: FocusEvent) {
+      const next = e.relatedTarget as Node | null;
+      if (next && !wrapperRef.current?.contains(next)) setOpen(false);
+    }
+    const wrapper = wrapperRef.current;
     document.addEventListener("keydown", onKey);
     document.addEventListener("pointerdown", onPointer);
+    wrapper?.addEventListener("focusout", onFocusOut);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("pointerdown", onPointer);
+      wrapper?.removeEventListener("focusout", onFocusOut);
     };
   }, [open]);
 

@@ -31,11 +31,39 @@ const STATUS_WORDS: Record<string, string> = {
   w_weryfikacji: "przekazano ekspertowi",
 };
 
+// Plain words for the other audit codes, so staff never see raw codes such as "nabor.wlaczenie"
+const AUDIT_WORDS: Record<string, string> = {
+  "pomysl.wyslanie": "nowy pomysł",
+  "pomysl.ponowne_wyslanie": "poprawiony pomysł",
+  "innowacja.edycja": "zmieniono kartę innowacji",
+  "nabor.dodanie": "dodano nabór",
+  "nabor.edycja": "zmieniono nabór",
+  "nabor.wlaczenie": "włączono nabór",
+  "nabor.wylaczenie": "wyłączono nabór",
+  "profil.rola.zatwierdzona": "zatwierdzono rolę",
+  "profil.rola.odrzucona": "odrzucono prośbę o rolę",
+};
+
 export function describeAudit(akcja: string, szczegoly: unknown): string {
   const d = (szczegoly ?? {}) as Record<string, unknown>;
   if (akcja === "pomysl.ocena") {
     const status = STATUS_WORDS[String(d.status)] ?? String(d.status);
-    return `status „${status}”: ${String(d.tytul ?? "pomysł")}`;
+    return `„${String(d.tytul ?? "pomysł")}”: ${status}`;
   }
-  return akcja;
+  const label = AUDIT_WORDS[akcja] ?? "inna zmiana";
+  const name = d.nazwa ?? d.tytul;
+  return typeof name === "string" && name ? `${label}: ${name}` : label;
+}
+
+// Polish plural: 1 pomysł, 2–4 pomysły (but 12–14 pomysłów), 5+ pomysłów
+export function plural(n: number, one: string, few: string, many: string): string {
+  if (n === 1) return one;
+  const tens = n % 100;
+  const units = n % 10;
+  return units >= 2 && units <= 4 && (tens < 12 || tens > 14) ? few : many;
+}
+
+/** Announced after a status filter change, e.g. "Do poprawy: 3 pomysły". */
+export function filterSummary(label: string, count: number): string {
+  return `${label}: ${count} ${plural(count, "pomysł", "pomysły", "pomysłów")}`;
 }

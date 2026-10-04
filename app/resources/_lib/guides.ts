@@ -17,7 +17,7 @@ export const GUIDES: Guide[] = [
     title: "Czym jest innowacja społeczna?",
     forWhom: "Dla każdego",
     intro:
-      "To nowy albo lepszy sposób na rozwiązanie problemu ludzi, sprawdzony w praktyce i możliwy do powtórzenia w innym miejscu. Może to być przedmiot, usługa, metoda pracy albo aplikacja.",
+      "To nowy albo lepszy sposób, żeby rozwiązać problem ludzi. Działa w praktyce i da się go powtórzyć w innym miejscu. Może to być przedmiot, usługa, metoda pracy albo aplikacja.",
     steps: [
       "Odpowiada na prawdziwą potrzebę konkretnej grupy, na przykład seniorów mieszkających samotnie.",
       "Została przetestowana z ludźmi, dla których powstała.",
@@ -43,8 +43,8 @@ export const GUIDES: Guide[] = [
     ],
     links: [
       { label: "Opisz problem i znajdź rozwiązanie", href: "/match" },
-      { label: "Zgłoś pomysł w Kreatorze", href: "/my/creator" },
-      { label: "Zobacz wyzwania z Mapy Wyzwań", href: "/challenge-map" },
+      { label: "Opisz swój pomysł", href: "/my/creator" },
+      { label: "Zobacz Mapę Wyzwań", href: "/challenge-map" },
     ],
   },
   {
@@ -60,7 +60,7 @@ export const GUIDES: Guide[] = [
       "Popraw rozwiązanie i opisz wyniki. To przyda się przy wniosku o dofinansowanie.",
     ],
     links: [
-      { label: "Testuj innowacje i dziel się opinią", href: "/my/tester" },
+      { label: "Zaplanuj test z mieszkańcami", href: "/my/tester" },
       { label: "Raporty z badań ROPS", href: "/resources?type=raport" },
     ],
   },
@@ -103,7 +103,30 @@ export const GLOSSARY: { term: string; meaning: string }[] = [
     meaning: "Zestaw pytań, które pomagają krok po kroku opisać pomysł i sprawdzić jego sens.",
   },
   {
+    term: "Fiszka pomysłu",
+    meaning:
+      "Krótki opis Twojego pomysłu: tytuł, na czym polega, dla kogo jest i na jakim jest etapie. Fiszkę wysyłasz do ROPS.",
+  },
+  {
     term: "Karta usługi",
     meaning: "Opis, jak dana instytucja może prowadzić innowację: kto, za ile, od czego zacząć.",
+  },
+  // Abbreviations used in the titles of ROPS reports
+  {
+    term: "JST",
+    meaning: "Jednostka samorządu terytorialnego, czyli gmina, powiat albo województwo.",
+  },
+  {
+    term: "PES",
+    meaning:
+      "Podmiot ekonomii społecznej, na przykład spółdzielnia socjalna albo fundacja, która zatrudnia osoby potrzebujące wsparcia.",
+  },
+  {
+    term: "PS",
+    meaning: "Przedsiębiorstwo społeczne: firma, która zarabia, żeby pomagać ludziom.",
+  },
+  {
+    term: "NGO",
+    meaning: "Organizacja pozarządowa, na przykład stowarzyszenie albo fundacja.",
   },
 ];

@@ -5,10 +5,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
+import { FocusHeading } from "@/components/ui/param-focus";
 import { loadSentCard, loadSentCards } from "../_lib/cards";
 import { formatSentAt } from "../_lib/format";
+import { requireRops } from "@/lib/auth/require-rops";
 
-export const metadata: Metadata = { title: "Karty usług – Panel ROPS" };
+export const metadata: Metadata = { title: "Karty usług – Panel ROPS – HubMI.pl" };
 
 const MUNICIPALITY: Record<string, string> = {
   wiejska: "gmina wiejska",
@@ -19,6 +21,7 @@ const MUNICIPALITY: Record<string, string> = {
 
 // Service cards sent from the Middleman (module VII) for ROPS consultation. Role checked in ../layout.tsx.
 export default async function CardsPage({ searchParams }: PageProps<"/admin/cards">) {
+  await requireRops();
   const params = await searchParams;
   const supabase = await createClient();
   const cards = await loadSentCards(supabase);
@@ -37,7 +40,7 @@ export default async function CardsPage({ searchParams }: PageProps<"/admin/card
             Karty usług do konsultacji
           </h1>
           <p className="text-muted-foreground text-base">
-            Gminy i organizacje przygotowują je w Middlemanie i wysyłają do ROPS.
+            Gminy i organizacje przygotowują je w „Karcie usługi” i wysyłają do ROPS.
           </p>
           {cards.length === 0 ? (
             <Card>
@@ -76,15 +79,20 @@ export default async function CardsPage({ searchParams }: PageProps<"/admin/card
             <Card className="border-t-navy flex flex-col gap-4 border-t-4 p-6">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="ai">Propozycja AI</Badge>
-                <span className="text-muted-foreground text-base">szkic {card.version}</span>
+                <span className="text-muted-foreground text-base">wersja {card.version}</span>
               </div>
-              <h2 id="card-heading" className="font-heading text-[1.75rem] font-bold">
+              {/* Picking a card (?card=) moves focus here */}
+              <FocusHeading
+                id="card-heading"
+                focusKey={typeof params.card === "string" ? params.card : null}
+                className="font-heading text-[1.75rem] font-bold"
+              >
                 {card.title}
-              </h2>
+              </FocusHeading>
               <p className="text-base">
                 <strong>{card.institution}</strong>
                 {card.profile ? ` · ${MUNICIPALITY[card.profile.municipality_kind] ?? ""}` : null}
-                {card.ownerName ? ` · konto: ${card.ownerName}` : null}
+                {card.ownerName ? ` · autor: ${card.ownerName}` : null}
               </p>
               <p className="text-base">
                 Na podstawie innowacji:{" "}
@@ -96,7 +104,7 @@ export default async function CardsPage({ searchParams }: PageProps<"/admin/card
                 <div className="bg-neutral-soft flex flex-col gap-1 rounded-[10px] p-3 text-base">
                   {card.profile.staff ? (
                     <p>
-                      <strong>Kadra:</strong> {card.profile.staff}
+                      <strong>Kto może prowadzić:</strong> {card.profile.staff}
                     </p>
                   ) : null}
                   {card.profile.constraints ? (
@@ -115,12 +123,12 @@ export default async function CardsPage({ searchParams }: PageProps<"/admin/card
                 </ol>
               </Section>
               <Section title="Kto realizuje">{card.whoDelivers}</Section>
-              <Section title="Koszty">
-                {card.costEstimate ?? "Do uzupełnienia przez instytucję."}
+              <Section title="Koszt i finansowanie">
+                {card.costEstimate ?? "Instytucja jeszcze nie podała kosztu."}
                 {card.fundingHint ? ` ${card.fundingHint}` : ""}
               </Section>
               <Section title="Na co uważać">{card.risks}</Section>
-              <Section title="Pierwsze trzy kroki">
+              <Section title="Pierwsze kroki">
                 <ol className="list-decimal pl-6">
                   {card.firstSteps.map((s) => (
                     <li key={s}>{s}</li>
@@ -137,7 +145,7 @@ export default async function CardsPage({ searchParams }: PageProps<"/admin/card
           </article>
         ) : selectedId ? (
           <p className="flex-[999_1_560px]">
-            Nie znaleziono tej karty albo nie została wysłana do ROPS.
+            Nie ma takiej karty albo instytucja jeszcze jej nie wysłała.
           </p>
         ) : null}
       </div>

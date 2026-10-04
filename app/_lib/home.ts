@@ -48,3 +48,29 @@ export function plural(n: number, one: string, few: string, many: string): strin
   if (last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14)) return few;
   return many;
 }
+
+/** A shortcut to one of the signed-in user's own pages, for "Twoje sprawy" on the home page. */
+export type PersonalTile = { href: string; title: string; text: string };
+
+const PERSONAL_TEXT: Record<string, string> = {
+  "/my/creator": "Zapisz pomysł jako krótką fiszkę i wyślij go do ROPS. Tu zobaczysz odpowiedź.",
+  "/my/tester": "Zapisz się do testu rozwiązania, oceń je i zaproponuj poprawki.",
+  "/my/messages": "Zadaj pytanie pracownikowi ROPS albo ekspertowi i czytaj odpowiedzi.",
+  "/my/middleman": "Wybierz innowację i dopasuj ją do swojej gminy jako gotową usługę.",
+  "/admin": "Nowe pomysły, karty usług, wiadomości i trendy w jednym miejscu.",
+};
+
+/**
+ * The user's own pages for the home page, the role's main task first, so all modules are one
+ * click from the start page (the header shows only the main one). The profile is left out.
+ */
+export function personalTiles(
+  mainItems: { href: string; label: string }[],
+  accountItems: { href: string; label: string }[],
+): PersonalTile[] {
+  const own = [...mainItems.filter((i) => i.href.startsWith("/my/") || i.href === "/admin")];
+  for (const item of accountItems) if (!own.some((o) => o.href === item.href)) own.push(item);
+  return own
+    .filter((i) => PERSONAL_TEXT[i.href])
+    .map((i) => ({ href: i.href, title: i.label, text: PERSONAL_TEXT[i.href] }));
+}

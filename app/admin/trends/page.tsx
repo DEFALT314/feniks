@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
+import { AnnounceOnChange } from "@/components/ui/param-focus";
+import { plural } from "../_lib/format";
 import {
   aggregateTrends,
   chartLabel,
@@ -11,8 +14,9 @@ import {
   type IdeaRow,
   type QueryRow,
 } from "./_lib/aggregate";
+import { requireRops } from "@/lib/auth/require-rops";
 
-export const metadata: Metadata = { title: "Potrzeby w regionie – Panel ROPS" };
+export const metadata: Metadata = { title: "Potrzeby w regionie – Panel ROPS – HubMI.pl" };
 
 // Match queries (P3) and ideas sent to ROPS (P2); both are readable only by ROPS roles under RLS
 async function loadRows(days: number): Promise<{ queries: QueryRow[]; ideas: IdeaRow[] }> {
@@ -36,6 +40,7 @@ async function loadRows(days: number): Promise<{ queries: QueryRow[]; ideas: Ide
 }
 
 export default async function Page({ searchParams }: PageProps<"/admin/trends">) {
+  await requireRops();
   const days = parsePeriod((await searchParams).days);
   const [areas, rows] = await Promise.all([getChallengeAreas(), loadRows(days)]);
   const trends = aggregateTrends(areas, rows.queries, rows.ideas);
@@ -50,8 +55,9 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
             Potrzeby w regionie
           </h1>
           <p className="text-muted-foreground max-w-[760px]">
-            Problemy opisane w „Mam problem” i pomysły wysłane do ROPS, według obszarów Mapy Wyzwań.
-            Bez treści zgłoszeń i bez danych osobowych.
+            Problemy opisane w „Dopasuj rozwiązanie” i pomysły wysłane do ROPS, w podziale na
+            obszary Mapy Wyzwań. Bez treści zgłoszeń i danych osobowych. Widzą je tylko pracownicy
+            ROPS.
           </p>
           <nav aria-label="Okres" className="flex flex-wrap gap-2">
             {PERIODS.map((p) => (
@@ -67,6 +73,10 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
               </Link>
             ))}
           </nav>
+          <AnnounceOnChange
+            changeKey={String(days)}
+            message={`Ostatnie ${days} dni: ${trends.total} ${plural(trends.total, "zgłoszenie", "zgłoszenia", "zgłoszeń")}`}
+          />
         </div>
 
         <section
@@ -74,7 +84,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
           className="border-border flex flex-col gap-4 rounded-xl border bg-white p-6"
         >
           <h2 id="wykres" className="text-[1.375rem] font-bold">
-            Zgłoszenia według obszarów, ostatnie {days} dni: {trends.total}
+            Zgłoszenia według obszarów z ostatnich {days} dni (razem: {trends.total})
           </h2>
           <div role="img" aria-label={chartLabel(trends.areas)} className="flex flex-col gap-2">
             {trends.areas.map((a) => (
@@ -83,9 +93,9 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
                 className="grid grid-cols-[minmax(8rem,14rem)_1fr_3rem] items-center gap-3"
               >
                 <span className="text-base">{a.name}</span>
-                <span className="bg-neutral-soft h-6 overflow-hidden rounded-md">
+                <span className="bg-neutral-soft h-6 overflow-hidden rounded-md border border-transparent forced-colors:border-[CanvasText]">
                   <span
-                    className="bg-navy block h-full rounded-md"
+                    className="bg-navy block h-full rounded-md forced-colors:bg-[CanvasText]"
                     style={{ width: `${(a.total / max) * 100}%` }}
                   />
                 </span>
@@ -146,8 +156,42 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
           <p className="text-muted-foreground text-base">
             „Bez dobrego dopasowania” to problemy, na które Biblioteka nie ma jeszcze rozwiązania.
             Warto o nich pomyśleć przy kolejnym naborze.
-            {trends.unassigned > 0 ? ` Bez przypisanego obszaru: ${trends.unassigned}.` : ""}
+            {trends.unassigned > 0
+              ? ` Bez przypisanego obszaru: ${trends.unassigned} (obszar wskazuje asystent AI; gdy nie działał albo pomysł nie ma obszaru, zgłoszenie liczymy tylko w sumie).`
+              : ""}
           </p>
+        </section>
+
+        <section
+          aria-labelledby="co-zrobic"
+          className="border-border border-t-navy flex flex-col gap-3 rounded-xl border border-t-4 bg-white p-6"
+        >
+          <h2 id="co-zrobic" className="text-[1.375rem] font-bold">
+            Co możesz z tym zrobić
+          </h2>
+          <ul className="m-0 flex list-disc flex-col gap-2 pl-6">
+            <li>
+              Dużo problemów „bez dobrego dopasowania” w jednym obszarze to luka w Bibliotece.{" "}
+              <Link href="/admin/calls" className="text-navy underline underline-offset-[3px]">
+                Ogłoś nabór pomysłów w tym obszarze
+              </Link>
+              .
+            </li>
+            <li>
+              Problemy są, ale pasujące innowacje się nie pokazują? Dopisz słowa kluczowe w{" "}
+              <Link href="/admin/library" className="text-navy underline underline-offset-[3px]">
+                kartach innowacji
+              </Link>
+              .
+            </li>
+            <li>
+              Dużo pomysłów z jednego obszaru czeka na odpowiedź?{" "}
+              <Link href="/admin" className="text-navy underline underline-offset-[3px]">
+                Przejrzyj nowe pomysły
+              </Link>
+              .
+            </li>
+          </ul>
         </section>
 
         <section aria-labelledby="wyzwania" className="flex flex-col gap-3">
@@ -162,8 +206,15 @@ export default async function Page({ searchParams }: PageProps<"/admin/trends">)
                 <li key={c.id}>
                   <strong>{c.text}</strong>{" "}
                   <span className="text-muted-foreground text-base">
-                    ({c.areaName}, {c.count})
+                    ({c.areaName}, {c.count}{" "}
+                    {plural(c.count, "zgłoszenie", "zgłoszenia", "zgłoszeń")})
                   </span>
+                  {c.weak > 0 ? (
+                    <>
+                      {" "}
+                      <Badge variant="warning">{c.weak} bez dobrego dopasowania</Badge>
+                    </>
+                  ) : null}
                 </li>
               ))}
             </ol>

@@ -3,6 +3,8 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+/* A+ (larger text) is on: html[data-a11y-plus], see components/ui/a11y-plus.ts */
+@custom-variant a11y-plus (&:where(html[data-a11y-plus] *));
 
 @theme inline {
   --color-background: var(--background);
@@ -111,7 +113,7 @@
   --destructive: var(--danger);
   --border: var(--line);
   --input: var(--field-border);
-  --ring: var(--brick);
+  --ring: var(--navy); /* focus is navy: brick read as the error red */
   --chart-1: var(--navy);
   --chart-2: var(--brick);
   --chart-3: var(--success);
@@ -125,7 +127,7 @@
   --sidebar-accent: var(--navy-soft);
   --sidebar-accent-foreground: var(--navy-strong);
   --sidebar-border: var(--line);
-  --sidebar-ring: var(--brick);
+  --sidebar-ring: var(--navy);
 
   /* Motion tokens (transitions.dev scale). Use with duration-(--duration-fast) and friends;
      the screen motion from the mockups lives in components/ui/motion-core.ts. */
@@ -145,21 +147,42 @@
   --blur-small: 2px; /* text swap, panel reveal */
 }
 
-/* "A+" mode (header toggle) for low-vision users: larger text, black secondary text, white page
-   background, dark borders, thicker link underlines and focus outline. Works on every page that uses
-   the theme tokens (no hex colors in components). */
+/* "A+" mode (header toggle) for low-vision users: larger text, black text, white page background,
+   dark borders, solid tinted surfaces, thicker link underlines and focus outline. Works on every page
+   that uses the theme tokens (no hex colors in components). Users whose system asks for more contrast
+   get the same colors without the larger text. */
 html[data-a11y-plus] {
   font-size: 125%;
+}
+html[data-a11y-plus] {
   --ink: #000000;
-  --ink-muted: #000000;
+  --ink-muted: #262c38;
   --surface: #ffffff;
   --line: #151a23;
   --field-border: #000000;
   --navy: #142a6b;
   --navy-strong: #0b1a47;
+  --navy-soft: #dfe6f8;
+  --neutral-soft: #e4e7ee;
   --success: #12472f;
   --warning: #5c3200;
   --danger: #8a1a12;
+  --ring: #000000;
+}
+@media (prefers-contrast: more) {
+  :root {
+    --ink: #000000;
+    --ink-muted: #262c38;
+    --surface: #ffffff;
+    --line: #151a23;
+    --field-border: #000000;
+    --navy: #142a6b;
+    --navy-strong: #0b1a47;
+    --success: #12472f;
+    --warning: #5c3200;
+    --danger: #8a1a12;
+    --ring: #000000;
+  }
 }
 
 html[data-a11y-plus] a {
@@ -170,10 +193,38 @@ html[data-a11y-plus] :focus-visible {
   outline-width: 4px;
 }
 
-/* Dark enough to read (7:1 on white) but still distinguishable from typed text */
-html[data-a11y-plus] ::placeholder {
-  color: #4b5565;
+/* Placeholders: readable (7.5:1 on white) but lighter than typed text. Tailwind's default gray is
+   3.4:1, below WCAG 1.4.3. */
+::placeholder {
+  color: var(--ink-muted);
   opacity: 1;
+}
+
+/* Windows High Contrast: shapes drawn only with a background color would vanish, so pressed and
+   current states get a system highlight and the logo follows the text color. */
+@media (forced-colors: active) {
+  [aria-pressed="true"],
+  [aria-current="page"],
+  [aria-current="step"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+    border-color: Highlight;
+  }
+  [role="progressbar"] > *,
+  [data-ruch-bar] {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+  mark {
+    forced-color-adjust: none;
+    background: Mark;
+    color: MarkText;
+  }
+  /* The brand fills are fixed hex values; on a black theme the navy half would disappear */
+  [data-logo] * {
+    fill: CanvasText;
+  }
 }
 
 @layer base {
@@ -185,6 +236,19 @@ html[data-a11y-plus] ::placeholder {
   }
   body {
     @apply bg-background text-foreground text-lg leading-relaxed;
+    /* Long Polish words ("upowszechniania") must wrap instead of overflowing at 320 px or 200% */
+    overflow-wrap: break-word;
+  }
+  /* Hyphenate only where columns are narrow (phones, 200–400% zoom): on wide screens split words
+     ("fisz-ka") make plain text harder to read for seniors */
+  @media (max-width: 40rem) {
+    body {
+      hyphens: auto;
+    }
+  }
+  /* Focus targets reached by script or the skip link (tabIndex=-1) don't need a ring */
+  [tabindex="-1"]:focus:not(:focus-visible) {
+    outline: none;
   }
   h1,
   h2,
@@ -198,7 +262,8 @@ html[data-a11y-plus] ::placeholder {
   a {
     @apply text-navy hover:text-navy-strong underline underline-offset-[3px];
   }
-  /* Keyboard focus: 3px brick outline on every element (design/makiety/System.dc.html) */
+  /* Keyboard focus: 3px navy outline on every element (System.dc.html said brick, but it read as an
+     error state) */
   :focus-visible {
     @apply outline-ring outline-3 outline-offset-2;
   }
@@ -211,6 +276,15 @@ html[data-a11y-plus] ::placeholder {
    animation; MOTION_WAIT_SCRIPT sets the attribute before paint and removes it after 2.5 s anyway. */
 html[data-ruch-czeka] [data-ruch~="wejscie"] > * {
   opacity: 0;
+}
+/* Static parts of the highlighter sweep and the progress fill live here rather than in inline
+   styles: the script runs before the page hydrates, and inline styles would not match the server
+   HTML. */
+[data-ruch~="zakresl"] mark {
+  background-repeat: no-repeat;
+}
+[data-ruch~="postep"] > :first-child {
+  transform-origin: left center;
 }
 
 /* ── Text fields: focus and error (design/makiety/System.dc.html, every input, textarea, select) ──
@@ -273,7 +347,8 @@ html[data-ruch-czeka] [data-ruch~="wejscie"] > * {
   textarea,
   select
 ):focus {
-  outline: none;
+  /* Transparent, not none: forced-colours mode drops box-shadow but paints this outline */
+  outline: 2px solid transparent;
   border-color: var(--field-edge);
   box-shadow:
     0 0 0 1px var(--field-edge),

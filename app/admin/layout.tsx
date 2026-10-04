@@ -1,10 +1,8 @@
-import { redirect } from "next/navigation";
-import { adminAccess, getCurrentUser } from "@/lib/auth";
+import { requireRops } from "@/lib/auth/require-rops";
 
-// The real security boundary for /admin/*: the role is checked on the server for every request.
+// /admin/* is for ROPS staff. Every page calls requireRops() too, because a layout renders in
+// parallel with its page and cannot stop it on its own.
 export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
-  const access = adminAccess(await getCurrentUser());
-  if (access === "sign-in") redirect("/login?next=/admin");
-  if (access === "forbidden") redirect("/");
+  await requireRops();
   return children;
 }

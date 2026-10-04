@@ -4,6 +4,9 @@
 export const MOTION_ATTRIBUTE = "data-ruch";
 export const MOTION_WAIT_ATTRIBUTE = "data-ruch-czeka";
 
+/** Prefix of the property React sets on each DOM element it owns (hydrated or rendered). */
+export const REACT_FIBER_KEY = "__reactFiber$";
+
 // Hide entrance elements before the first paint so they don't blink; a fuse shows them after 2.5 s
 // even if the script never runs. Skipped when the user prefers reduced motion.
 export const MOTION_WAIT_SCRIPT = `try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var d=document.documentElement;d.setAttribute("${MOTION_WAIT_ATTRIBUTE}","");setTimeout(function(){d.removeAttribute("${MOTION_WAIT_ATTRIBUTE}")},2500)}}catch(e){}`;

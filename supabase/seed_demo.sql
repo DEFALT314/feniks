@@ -111,4 +111,82 @@ on conflict (id) do update set nazwa = excluded.nazwa, organizator = excluded.or
   termin_od = excluded.termin_od, termin_do = excluded.termin_do, obszary = excluded.obszary,
   opublikowany = excluded.opublikowany, demo = true;
 
+-- Tests from design/makiety/Tester.dc.html (P2, #36): two Library innovations run by ROPS and one
+-- test of the resident's idea "Kawiarenka cyfrowa w bibliotece", with a few sign-ups and ratings.
+-- Needs the innovations from seed.sql (run after it) and the ideas above.
+delete from public.tests where id in (
+  'd3000000-0000-4000-8000-000000000001', 'd3000000-0000-4000-8000-000000000002',
+  'd3000000-0000-4000-8000-000000000003');
+
+insert into public.tests (id, idea_id, innowacja_id, tytul, opis, miejsce, termin, liczba_miejsc)
+select d.id::uuid, d.idea_id::uuid, d.innowacja_id, d.tytul, d.opis, d.miejsce, d.termin, d.miejsca
+from (values
+  ('d3000000-0000-4000-8000-000000000001', null, 'merkury', 'Merkury – symulator bankomatu i paczkomatu',
+   'Sprawdź, czy ćwiczenia w domu pomagają potem pewniej obsłużyć urządzenia w mieście.',
+   'online, z domu', null::timestamptz, 20),
+  ('d3000000-0000-4000-8000-000000000002', null, 'senior-cuder', 'Senior CUDER – gra karciana',
+   'Spotkanie przy grze w małej grupie, potem krótka rozmowa o wrażeniach.',
+   'klub seniora', now() + interval '6 days', 8),
+  ('d3000000-0000-4000-8000-000000000003', 'd1000000-0000-4000-8000-000000000002', null,
+   'Kawiarenka cyfrowa – pierwsze spotkanie',
+   'Godzina przy kawie: e-recepta i rozmowa wideo z rodziną. Potem krótka rozmowa o wrażeniach.',
+   'Biblioteka gminna, sala na parterze', now() + interval '10 days', 12)
+) as d (id, idea_id, innowacja_id, tytul, opis, miejsce, termin, miejsca)
+where (d.innowacja_id is null or exists (select 1 from public.innovations where id = d.innowacja_id))
+  and (d.idea_id is null or exists (select 1 from public.ideas where id = d.idea_id::uuid));
+
+-- The NGO tried the resident's idea and rated it, so its author sees feedback in /my/tester.
+-- The resident is signed up for Senior CUDER and can rate it. Ratings are inserted as postgres,
+-- so the "new rating" notification trigger also fires: clear the bell afterwards (as above).
+insert into public.test_signups (test_id, user_id)
+select d.test_id::uuid, u.id
+from (values
+  ('d3000000-0000-4000-8000-000000000002', 'demo.mieszkaniec@example.org'),
+  ('d3000000-0000-4000-8000-000000000003', 'demo.fundacja@example.org'),
+  ('d3000000-0000-4000-8000-000000000003', 'demo.gops@example.org')
+) as d (test_id, email)
+join auth.users u on u.email = d.email
+where exists (select 1 from public.tests where id = d.test_id::uuid);
+
+insert into public.test_ratings (test_id, user_id, ocena, co_dzialalo, co_poprawic)
+select d.test_id::uuid, u.id, d.ocena, d.co_dzialalo, d.co_poprawic
+from (values
+  ('d3000000-0000-4000-8000-000000000003', 'demo.fundacja@example.org', 5,
+   'Młodzież tłumaczyła cierpliwie, nikt się nie śpieszył.', null),
+  ('d3000000-0000-4000-8000-000000000003', 'demo.gops@example.org', 4,
+   'Rozmowa wideo z wnukami bardzo się podobała.', 'Ściągawka na papierze do zabrania do domu.')
+) as d (test_id, email, ocena, co_dzialalo, co_poprawic)
+join auth.users u on u.email = d.email
+where exists (select 1 from public.test_signups s where s.test_id = d.test_id::uuid and s.user_id = u.id);
+
+delete from public.notifications n
+using auth.users u
+where n.user_id = u.id and u.email like 'demo.%@example.org' and n.typ = 'test_ocena';
+
+
+-- "Potrzeby w regionie" (/admin/trends): fictional statistics of past "Dopasuj rozwiązanie" searches,
+-- so the chart tells a story on a fresh database. Only area, challenge and match quality, as the app
+-- stores them; no texts. Added only while few searches have an area, so re-running does not pile up.
+insert into public.match_queries (area_id, challenge_id, match_quality, created_at)
+select d.area_id, d.challenge_id, d.quality, now() - make_interval(days => (n * 7 + d.offset_days) % 85, hours => n)
+from (values
+  ('seniorzy', 'aktywizacja', 'strong', 9, 1),
+  ('seniorzy', 'kompetencje-cyfrowe', 'strong', 6, 2),
+  ('seniorzy', 'uslugi-opiekuncze', 'strong', 4, 3),
+  ('seniorzy', 'wielolekowosc', 'weak', 5, 4),
+  ('niepelnosprawnosc', 'rynek-pracy', 'strong', 5, 5),
+  ('niepelnosprawnosc', 'mobilnosc', 'strong', 3, 6),
+  ('zdrowie-psychiczne', 'kompetencje-rodzicow', 'strong', 4, 0),
+  ('zdrowie-psychiczne', 'destygmatyzacja', 'weak', 2, 2),
+  ('rodzina-piecza', 'wiecej-rodzin-zastepczych', 'strong', 3, 3),
+  ('ubostwo', 'niedozywienie', 'weak', 3, 1),
+  ('ubostwo', 'ubostwo-energetyczne', 'strong', 2, 5),
+  ('cudzoziemcy', 'stereotypy', 'weak', 3, 4),
+  ('cudzoziemcy', 'edukacja-dzieci', 'strong', 2, 6),
+  ('bezdomnosc', 'mlodzi-bezdomni', 'weak', 2, 0),
+  ('zdrowie', 'opieka-dlugoterminowa', 'strong', 2, 3)
+) as d (area_id, challenge_id, quality, how_many, offset_days)
+cross join lateral generate_series(1, d.how_many) as n
+where (select count(*) from public.match_queries where area_id is not null) < 20;
+
 commit;

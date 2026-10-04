@@ -52,6 +52,7 @@ export async function submitIdea(deps: SubmitDeps, ideaId: string): Promise<Subm
     deps.writeAudit({
       akcja: resent ? "pomysl.ponowne_wyslanie" : "pomysl.wyslanie",
       obiekt: `ideas:${idea.id}`,
+      szczegoly: { tytul: idea.tytul },
     }),
   ]);
   for (const result of followUps) {

@@ -15,9 +15,10 @@ describe("AI progress", () => {
     expect(progressPercent(600)).toBeLessThanOrEqual(95);
   });
 
-  it("announces one static message; the rotating step and counter are hidden from screen readers", () => {
+  it("is not a live region; the rotating step and counter are hidden from screen readers", () => {
     const html = renderToStaticMarkup(<AiProgress />);
-    expect(html).toMatch(/<p role="status"[^>]*>AI wybiera najlepiej pasujące innowacje<\/p>/);
+    expect(html).not.toMatch(/role="status"|role="alert"|aria-live/);
+    expect(html).toMatch(/<p class="[^"]*">AI wybiera najlepiej pasujące innowacje<\/p>/);
     expect(html).toMatch(/<p aria-hidden="true"[^>]*>Czytam Twój opis…<\/p>/);
     expect(html).toContain("motion-reduce:animate-none");
   });

@@ -5,10 +5,12 @@ import { roleLabel } from "@/components/ui/navigation";
 import { Role } from "@/lib/contracts/shared";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
+import { FlashMessage } from "@/components/ui/param-focus";
 import { REQUESTABLE_LABELS, RequestableRole } from "@/app/my/profile/_lib/role-request";
 import { decideRole } from "./actions";
+import { requireRops } from "@/lib/auth/require-rops";
 
-export const metadata: Metadata = { title: "Prośby o rolę – Panel ROPS" };
+export const metadata: Metadata = { title: "Prośby o rolę – Panel ROPS – HubMI.pl" };
 
 type Row = {
   id: string;
@@ -24,6 +26,7 @@ const time = new Intl.DateTimeFormat("pl-PL", { dateStyle: "short", timeStyle: "
 // Role requests from /my/profile (#6). Profiles are readable by ROPS under RLS;
 // only rops_admin can change a role (database guard profiles_guard_update).
 export default async function Page({ searchParams }: PageProps<"/admin/roles">) {
+  await requireRops();
   const { msg, ok } = await searchParams;
   const supabase = await createClient();
   const { data } = await supabase
@@ -41,14 +44,10 @@ export default async function Page({ searchParams }: PageProps<"/admin/roles">) 
       <div className="mx-auto flex max-w-[1200px] flex-col gap-5 px-4 py-8 sm:px-10">
         <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold tracking-tight">Prośby o rolę</h1>
         <p className="text-muted-foreground max-w-[760px]">
-          Organizacje, gminy i eksperci proszą o rolę w swoim profilu. Po zatwierdzeniu dostają
-          dodatkowe narzędzia, a o decyzji informuje ich powiadomienie.
+          Organizacje, gminy i eksperci proszą o rolę w swoim profilu. Zatwierdź albo odrzuć prośbę.
+          Osoba dostanie powiadomienie o decyzji. Rolę może zatwierdzić tylko administrator ROPS.
         </p>
-        <p role="status" aria-live="polite" className="m-0 font-bold empty:hidden">
-          {typeof msg === "string" ? (
-            <span className={ok === "1" ? "text-success" : "text-danger"}>{msg}</span>
-          ) : null}
-        </p>
+        <FlashMessage message={typeof msg === "string" ? msg : null} ok={ok === "1"} />
 
         {requests.length === 0 ? (
           <p className="border-border rounded-xl border bg-white p-6">
@@ -70,7 +69,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/roles">) 
                     <strong>„{REQUESTABLE_LABELS[r.wnioskowana_rola as RequestableRole]}”</strong>
                   </p>
                   <p className="text-muted-foreground m-0 flex flex-wrap items-center gap-2 text-base">
-                    Teraz: <Badge>{current ? roleLabel(current) : r.role}</Badge>
+                    Obecna rola: <Badge>{current ? roleLabel(current) : r.role}</Badge>
                     {r.instytucje ? <span>· {r.instytucje.nazwa}</span> : null}
                     <span>· {time.format(new Date(r.updated_at))}</span>
                   </p>

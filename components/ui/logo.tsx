@@ -12,7 +12,14 @@ type Variant = keyof typeof COLORS;
 export function LogoMark({ variant = "light", size = 40 }: { variant?: Variant; size?: number }) {
   const { left, right } = COLORS[variant];
   return (
-    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true" className="shrink-0">
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 48 48"
+      aria-hidden="true"
+      data-logo=""
+      className="shrink-0"
+    >
       <circle cx="14.5" cy="9" r="5.5" fill={left} />
       <circle cx="33.5" cy="9" r="5.5" fill={right} />
       <path

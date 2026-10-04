@@ -2,18 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getChallengeAreas } from "@/app/challenge-map/_lib/data";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { formatDate, getCall, listAllCalls } from "@/lib/calls";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
+import { FocusHeading } from "@/components/ui/param-focus";
 import { CallForm } from "./_components/call-form";
-import { togglePublishedAction } from "./actions";
+import { TogglePublishedForm } from "./_components/toggle-published-form";
+import { requireRops } from "@/lib/auth/require-rops";
 
-export const metadata: Metadata = { title: "Nabory – Panel ROPS" };
+export const metadata: Metadata = { title: "Nabory – Panel ROPS – HubMI.pl" };
 
 // Module VI, calls for proposals (#10): list, add, edit, switch on/off. Role checked in ../layout.tsx.
 export default async function CallsPage({ searchParams }: PageProps<"/admin/calls">) {
+  await requireRops();
   const params = await searchParams;
   const supabase = await createClient();
   const editId = typeof params.edit === "string" ? params.edit : null;
@@ -36,8 +38,8 @@ export default async function CallsPage({ searchParams }: PageProps<"/admin/call
             Nabory
           </h1>
           <p className="text-muted-foreground">
-            Włączone nabory widzą autorzy pomysłów w generatorze wniosków. Wyłączone są widoczne
-            tylko dla ROPS.
+            Włączony nabór widzą autorzy pomysłów, gdy przygotowują szkic wniosku o dofinansowanie.
+            Wyłączony widzi tylko ROPS.
           </p>
           {calls.length === 0 ? (
             <Card>
@@ -67,17 +69,17 @@ export default async function CallsPage({ searchParams }: PageProps<"/admin/call
                       </p>
                     ) : null}
                     <div className="flex flex-wrap items-center gap-3 pt-1">
-                      <Link href={`/admin/calls?edit=${c.id}`} className="text-base font-bold">
+                      <Link
+                        href={`/admin/calls?edit=${c.id}`}
+                        className="inline-flex min-h-11 items-center text-base font-bold"
+                      >
                         Edytuj<span className="sr-only">: {c.nazwa}</span>
                       </Link>
-                      <form action={togglePublishedAction}>
-                        <input type="hidden" name="id" value={c.id} />
-                        <input type="hidden" name="on" value={c.opublikowany ? "false" : "true"} />
-                        <Button type="submit" variant="secondary" size="sm">
-                          {c.opublikowany ? "Wyłącz" : "Włącz"}
-                          <span className="sr-only">: {c.nazwa}</span>
-                        </Button>
-                      </form>
+                      <TogglePublishedForm
+                        id={c.id}
+                        name={c.nazwa}
+                        published={Boolean(c.opublikowany)}
+                      />
                       {c.url ? (
                         <a
                           href={c.url}
@@ -101,9 +103,14 @@ export default async function CallsPage({ searchParams }: PageProps<"/admin/call
           className="flex max-w-[440px] flex-[1_1_360px] flex-col gap-3"
         >
           <Card className="border-t-navy flex flex-col gap-4 border-t-4 p-[22px]">
-            <h2 id="call-form-heading" className="font-heading text-[1.375rem] font-bold">
+            {/* "Edytuj" (?edit=) moves focus to the form it opened */}
+            <FocusHeading
+              id="call-form-heading"
+              focusKey={editId}
+              className="font-heading text-[1.375rem] font-bold"
+            >
               {editing ? `Edycja: ${editing.nazwa}` : "Nowy nabór"}
-            </h2>
+            </FocusHeading>
             <CallForm call={editing} areas={areas.map((a) => ({ id: a.id, nazwa: a.nazwa }))} />
           </Card>
         </aside>

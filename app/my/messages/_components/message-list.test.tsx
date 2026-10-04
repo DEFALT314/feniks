@@ -36,4 +36,19 @@ describe("MessageList", () => {
     expect(html.match(/sr-only">Redakcja ROPS/g)).toHaveLength(1);
     expect(html).toContain('sr-only">Ty</span>');
   });
+
+  it("is a named log that does not read the whole history again", () => {
+    const html = renderToStaticMarkup(<MessageList messages={[msg("1", true, "A", 15)]} />);
+    expect(html).toMatch(/<ol[^>]*role="log"/);
+    expect(html).toContain('aria-label="Historia rozmowy"');
+    expect(html).toContain('aria-live="off"');
+  });
+
+  it("shows the day with the time and keeps the machine-readable date", () => {
+    const html = renderToStaticMarkup(
+      <MessageList messages={[msg("1", false, "A", 15)]} now={new Date("2026-10-05T09:00:00Z")} />,
+    );
+    expect(html).toContain('dateTime="2026-10-03T20:15:00Z"');
+    expect(html).toContain("3 października, 22:15");
+  });
 });
