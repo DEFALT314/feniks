@@ -14,46 +14,46 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
-.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.625}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
 .btn-p{background:#1F3A8A;color:#fff}.btn-p:hover{background:#172C6B;color:#fff}
 .btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}.btn-s:hover{background:#E8EDFA;color:#172C6B}
-.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:14px}
 .muted{color:#4B5565}
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
 label{font-weight:700}
-input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
-.acc{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;background:#fff;text-decoration:none;color:#151A23;min-height:64px}
+input{font:inherit;font-size:18px;line-height:28px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+.acc{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;background:#fff;text-decoration:none;color:#151A23;min-height:64px;width:100%;font:inherit;text-align:left;cursor:pointer}
+.pw{position:absolute;right:4px;top:4px;bottom:4px;min-width:44px;padding:0 14px;border:1px solid transparent;border-radius:10px;background:#E8EDFA;color:#1F3A8A;font:inherit;font-size:16px;line-height:24px;font-weight:700;cursor:pointer}
+.bad{border-color:#B42318!important;box-shadow:0 0 0 1px #B42318}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .acc:hover{border-color:#1F3A8A;background:#F3F6FD;color:#151A23}
 .av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 40px;color:#FFFFFF}
-.opt{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;font-weight:400;cursor:pointer}
-.opt input{accent-color:#1F3A8A;width:22px;height:22px;margin-top:3px;flex:none}
 </style>
 </helmet>
-<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6; min-height: 900px; display: flex; flex-direction: column; align-items: center; padding: 72px 24px">
-  <a href="Main.dc.html" aria-label="HubMI – strona główna" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #151A23; margin-bottom: 32px">
-    <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14.5" cy="9" r="5.5" fill="#1F3A8A"></circle><circle cx="33.5" cy="9" r="5.5" fill="#C2452B"></circle><path d="M23.4 44 C 12 36.5, 3.5 29, 5.5 21.5 C 7 16.5, 13.5 15.5, 17.5 18.5 C 20.3 20.6, 22.3 23, 23.4 25.5 Z" fill="#1F3A8A"></path><path d="M24.6 44 C 36 36.5, 44.5 29, 42.5 21.5 C 41 16.5, 34.5 15.5, 30.5 18.5 C 27.7 20.6, 25.7 23, 24.6 25.5 Z" fill="#C2452B"></path></svg>
-    <span style="display: flex; flex-direction: column; line-height: 1.05"><span class="h" style="font-size: 28px">HubMI</span><span style="font-size: 14px; color: #4B5565">innowacje społeczne Małopolski</span></span>
-  </a>
-  <main class="card" aria-labelledby="rej" style="width: 100%; max-width: 520px; padding: 40px; display: flex; flex-direction: column; gap: 22px">
-    <h1 id="rej" class="h" style="font-size: 34px">Załóż konto</h1>
-    <form style="display: flex; flex-direction: column; gap: 20px">
-      <div style="display: flex; flex-direction: column; gap: 6px"><label for="r-mail">Adres e-mail</label><input id="r-mail" type="email" autocomplete="email"></div>
-      <div style="display: flex; flex-direction: column; gap: 6px">
-        <label for="r-haslo">Hasło</label>
-        <div style="position: relative"><input id="r-haslo" type="password" autocomplete="new-password" aria-describedby="r-haslo-op" style="padding-right: 96px"><button type="button" aria-pressed="false" aria-controls="r-haslo" style="position: absolute; right: 6px; top: 6px; bottom: 6px; padding: 0 14px; border: 0; border-radius: 8px; background: #E8EDFA; color: #1F3A8A; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Pokaż</button></div>
-        <span id="r-haslo-op" class="muted" style="font-size: 16px">Co najmniej 10 znaków.</span>
-      </div>
-      <label style="display: flex; gap: 10px; align-items: flex-start; font-weight: 400"><input type="checkbox" style="accent-color: #1F3A8A; width: 22px; height: 22px; margin-top: 3px; flex: none"> <span>Akceptuję <a href="#regulamin">regulamin</a> i <a href="#rodo">informację o danych osobowych</a>.</span></label>
-      <button type="submit" class="btn btn-p" style="width: 100%">Załóż konto</button>
-    </form>
-    <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Masz już konto? <a href="Logowanie.dc.html" style="font-weight: 700">Zaloguj się</a></p>
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.625">
+  <dc-import name="Naglowek" rola="gosc" active="" hint-size="100%,112px"></dc-import>
+  <main id="main-content" class="wrap" style="padding-top: 56px; padding-bottom: 72px; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 32px">
+    <section class="card" role="region" aria-labelledby="rej" style="width: 100%; max-width: 480px; padding: 40px; display: flex; flex-direction: column; gap: 22px">
+      <h1 id="rej" class="h" style="font-size: 34px">Załóż konto</h1>
+      <form novalidate style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label>Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label><input type="email" autocomplete="email" required></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label>Hasło<span class="muted" style="font-weight: 400"> (wymagane)</span></label><p class="muted" style="font-size: 16px; line-height: 1.5">Co najmniej 10 znaków.</p><div style="position: relative"><input type="password" autocomplete="new-password" minlength="10" required style="padding-right: 112px"><button type="button" class="pw">Pokaż<span class="sr-only"> hasło</span></button></div></div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label style="display: flex; gap: 12px; align-items: flex-start; min-height: 44px; font-weight: 400"><input type="checkbox" required style="accent-color: #1F3A8A; width: 20px; height: 20px; margin: 4px 0 0; flex: none"><span>Zgadzam się na przetwarzanie mojego adresu e-mail przez ROPS w Krakowie w celu korzystania z HubMI. <span class="muted">(wymagane)</span></span></label>
+          
+        </div>
+        <button type="submit" class="btn btn-p" style="width: 100%">Załóż konto</button>
+      </form>
+      <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Masz już konto? <a href="Logowanie.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Zaloguj się</a></p>
+    </section>
   </main>
+  <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1120}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

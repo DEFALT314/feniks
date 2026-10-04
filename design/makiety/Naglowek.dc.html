@@ -20,47 +20,70 @@ body{margin:0}
   <div style="max-width: 1200px; margin: 0 auto; padding: 0 40px; display: flex; flex-wrap: nowrap; align-items: center; gap: 24px; min-height: 76px">
     <a href="Main.dc.html" aria-label="HubMI – strona główna" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #151A23; padding: 10px 0">
       <svg width="40" height="40" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14.5" cy="9" r="5.5" fill="#1F3A8A"></circle><circle cx="33.5" cy="9" r="5.5" fill="#C2452B"></circle><path d="M23.4 44 C 12 36.5, 3.5 29, 5.5 21.5 C 7 16.5, 13.5 15.5, 17.5 18.5 C 20.3 20.6, 22.3 23, 23.4 25.5 Z" fill="#1F3A8A"></path><path d="M24.6 44 C 36 36.5, 44.5 29, 42.5 21.5 C 41 16.5, 34.5 15.5, 30.5 18.5 C 27.7 20.6, 25.7 23, 24.6 25.5 Z" fill="#C2452B"></path></svg>
-      <span style="display: flex; flex-direction: column; line-height: 1.05"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 23px; letter-spacing: -0.02em">HubMI</span><span style="font-size: 13px; color: #4B5565">innowacje społeczne Małopolski</span></span>
+      <span style="display: flex; flex-direction: column; line-height: 1.05"><span style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 23px; letter-spacing: -0.02em">HubMI</span><sc-for list="{{tagline}}" as="t" hint-placeholder-count="0"><span style="font-size: 13px; color: #4B5565">{{t}}</span></sc-for></span>
     </a>
     <nav aria-label="Menu główne" style="display: flex; flex-wrap: nowrap; align-items: stretch; gap: 16px; align-self: stretch; white-space: nowrap">
-      <sc-for list="{{nav}}" as="n" hint-placeholder-count="3">
+      <sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
         <a href="{{n.href}}" aria-current="{{n.current}}" style="{{n.style}}">{{n.label}}</a>
       </sc-for>
     </nav>
     <div style="display: flex; align-items: center; gap: 10px; margin-left: auto">
-      <button type="button" aria-label="Większy tekst i wysoki kontrast" style="height: 44px; min-width: 44px; padding: 0 12px; border-radius: 10px; border: 1px solid #6B7487; background: #FFFFFF; font: inherit; font-weight: 700; font-size: 16px; color: #151A23; cursor: pointer">A+</button>
-      <button type="button" aria-label="Powiadomienia: 2 nowe" style="position: relative; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #6B7487; background: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#151A23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
-        <span style="position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; border-radius: 999px; background: #C2452B; color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 5px">2</span>
-      </button>
-      <button type="button" aria-expanded="false" aria-label="{{kto}}, {{rolaLabel}}: menu konta" style="display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 10px; border: 0; border-radius: 10px; background: transparent; font: inherit; color: #151A23; cursor: pointer; text-align: left">
-        <span style="display: flex; flex-direction: column; line-height: 1.25">
-          <strong style="font-size: 16px">{{kto}}</strong>
-          <span style="font-size: 14px; color: #4B5565">{{rolaLabel}}</span>
-        </span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151A23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
-      </button>
+      <button type="button" aria-pressed="false" title="Większy tekst i wysoki kontrast" style="position: relative; height: 44px; min-width: 44px; padding: 0 12px; border-radius: 10px; border: 1px solid #6B7487; background: #FFFFFF; font: inherit; font-weight: 700; font-size: 16px; color: #151A23; cursor: pointer">A+<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap"> większy tekst i wysoki kontrast</span></button>
+      <sc-for list="{{konto}}" as="k" hint-placeholder-count="1">
+        <button type="button" aria-expanded="false" aria-label="Powiadomienia: 2 nowe" style="position: relative; width: 44px; height: 44px; border-radius: 10px; border: 1px solid #6B7487; background: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#151A23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+          <span aria-hidden="true" style="position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; border-radius: 999px; background: #C2452B; color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 5px">2</span>
+        </button>
+        <button type="button" aria-expanded="false" style="position: relative; display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 10px; border: 0; border-radius: 10px; background: transparent; font: inherit; color: #151A23; cursor: pointer; text-align: left">
+          <span style="display: flex; flex-direction: column; line-height: 1.25">
+            <strong style="font-size: 16px; max-width: 14ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{k.kto}}</strong>
+            <span style="font-size: 14px; color: #4B5565; white-space: nowrap">{{k.rolaLabel}}</span>
+          </span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#151A23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">: menu konta</span>
+        </button>
+      </sc-for>
+      <sc-for list="{{gosc}}" as="g" hint-placeholder-count="0">
+        <a href="Logowanie.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #1F3A8A; background: #FFFFFF; color: #1F3A8A; font-weight: 700; font-size: 16px; text-decoration: none">{{g}}</a>
+      </sc-for>
     </div>
   </div>
 </header>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["start","dopasuj","biblioteka","mapa","kreator","tester","wiadomosci","admin","middleman"],"default":"start"},"rola":{"editor":"enum","options":["mieszkaniec","jst","ngo","ekspert","rops"],"default":"mieszkaniec"},"kto":{"editor":"text","default":"Stanisław"},"$preview":{"width":1440,"height":112}}'>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["start","dopasuj","biblioteka","mapa","wiedza","kreator","tester","wiadomosci","admin","middleman","profil"],"default":"start"},"rola":{"editor":"enum","options":["mieszkaniec","jst","ngo","ekspert","rops","gosc"],"default":"mieszkaniec"},"kto":{"editor":"text","default":"Stanisław"},"$preview":{"width":1440,"height":110}}'>
 class Component extends DCLogic {
   renderVals() {
     const active = this.props.active ?? 'start';
     const rola = this.props.rola ?? 'mieszkaniec';
-    // Menu główne ma jeden wiersz (#75): strony osobiste są w menu konta (imię ▾)
+    const gosc = rola === 'gosc';
+    // Menu główne ma jeden wiersz (#75): strony publiczne i jedno główne zadanie roli.
+    // Pozostałe strony osobiste są w menu konta (imię ▾).
     const base = [
       { id: 'dopasuj', label: 'Dopasuj rozwiązanie', href: 'Dopasuj.dc.html' },
       { id: 'biblioteka', label: 'Biblioteka', href: 'Biblioteka.dc.html' },
-      { id: 'mapa', label: 'Mapa wyzwań', href: 'MapaWyzwan.dc.html' }
+      { id: 'mapa', label: 'Mapa wyzwań', href: 'MapaWyzwan.dc.html' },
+      { id: 'wiedza', label: 'Wiedza', href: '#wiedza' }
     ];
-    if (rola === 'rops') base.push({ id: 'admin', label: 'Panel ROPS', href: 'Admin.dc.html' });
+    const zadanie = {
+      mieszkaniec: { id: 'kreator', label: 'Moje pomysły', href: 'Kreator.dc.html' },
+      ngo: { id: 'kreator', label: 'Moje pomysły', href: 'Kreator.dc.html' },
+      jst: { id: 'middleman', label: 'Karta usługi', href: 'Middleman.dc.html' },
+      ekspert: { id: 'tester', label: 'Testy', href: 'Tester.dc.html' },
+      rops: { id: 'admin', label: 'Panel ROPS', href: 'Admin.dc.html' }
+    };
+    if (!gosc) base.push(zadanie[rola] || zadanie.mieszkaniec);
     const off = 'display: flex; align-items: center; min-height: 48px; text-decoration: none; color: #151A23; font-size: 17px; border-bottom: 3px solid transparent;';
     const on = 'display: flex; align-items: center; min-height: 48px; text-decoration: none; color: #1F3A8A; font-size: 17px; font-weight: 700; border-bottom: 3px solid #1F3A8A;';
     const nav = base.map((n) => ({ ...n, style: n.id === active ? on : off, current: n.id === active ? 'page' : 'false' }));
-    const labels = { mieszkaniec: 'mieszkaniec', jst: 'gmina (JST)', ngo: 'organizacja', ekspert: 'ekspertka', rops: 'redakcja ROPS' };
-    return { nav, rolaLabel: labels[rola] || 'mieszkaniec', kto: this.props.kto ?? 'Stanisław' };
+    const labels = { mieszkaniec: 'mieszkaniec', jst: 'gmina (JST)', ngo: 'organizacja', ekspert: 'ekspert', rops: 'administracja ROPS' };
+    const kto = this.props.kto ?? 'Stanisław';
+    return {
+      nav,
+      // Hasło pod logo widzi tylko gość (od 1280 px); zalogowany ma w tym miejscu swoje główne zadanie (do 1535 px)
+      tagline: gosc ? ['innowacje społeczne Małopolski'] : [],
+      konto: gosc ? [] : [{ kto, rolaLabel: labels[rola] || 'mieszkaniec' }],
+      gosc: gosc ? ['Zaloguj się'] : []
+    };
   }
 }
 </script>
