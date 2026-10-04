@@ -1,7 +1,12 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AuditEntry } from "@/lib/audit";
 import type { CallSummary } from "@/lib/contracts/ai";
-import { CallInput, type Call } from "@/lib/contracts/admin";
+import {
+  CallInput,
+  type Call,
+  type CallImportRequest,
+  type CallImportResult,
+} from "@/lib/contracts/admin";
 import type { NewNotification } from "@/lib/contracts/notifications";
 import type { EmailMessage, EmailResult } from "@/lib/email";
 import type { Database } from "@/lib/supabase/types";
@@ -274,4 +279,116 @@ export async function setPublished(deps: CallDeps, id: string, on: boolean) {
     if (r.status === "rejected") console.error("call side effect failed", r.reason);
   }
   return true;
+}
+
+/**
+ * Published calls for the open data API (GET /api/calls): optionally only one challenge area and
+ * only those whose deadline has not passed. Drafts are never returned, even to ROPS.
+ */
+export async function listPublishedCalls(
+  supabase: Client,
+  filter: { area?: string; status: "open" | "all" },
+  now = new Date(),
+): Promise<Call[]> {
+  let query = supabase.from("calls").select(COLUMNS).eq("opublikowany", true);
+  if (filter.status === "open") query = query.or(`termin_do.is.null,termin_do.gte.${today(now)}`);
+  if (filter.area) query = query.contains("obszary", [filter.area]);
+  const { data, error } = await query.order("termin_do", { ascending: true, nullsFirst: false });
+  if (error) throw new Error(`Failed to load calls: ${error.message}`);
+  return (data ?? []).map(toCall);
+}
+
+const CSV_COLUMNS = [
+  "id",
+  "nazwa",
+  "organizator",
+  "cel",
+  "url",
+  "termin_od",
+  "termin_do",
+  "obszary",
+  "demo",
+] as const;
+
+function csvCell(value: unknown): string {
+  const text = Array.isArray(value) ? value.join(",") : value == null ? "" : String(value);
+  return /[";\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+/** CSV with ";" (opens directly in Polish Excel) and a BOM so Polish letters display correctly. */
+export function callsToCsv(calls: Call[]): string {
+  const lines = [CSV_COLUMNS.join(";")];
+  for (const c of calls) lines.push(CSV_COLUMNS.map((k) => csvCell(c[k as keyof Call])).join(";"));
+  return `\uFEFF${lines.join("\r\n")}\r\n`;
+}
+
+/**
+ * Import from an external grant database (ROPS only, POST /api/admin/calls/import). Existing ids are
+ * updated (their published switch stays as ROPS set it); new calls are added switched off, so ROPS
+ * reviews them before they become public. Invalid items are reported and skipped.
+ */
+export async function importCalls(
+  deps: Pick<CallDeps, "supabase" | "writeAudit">,
+  request: CallImportRequest,
+): Promise<CallImportResult> {
+  const result: CallImportResult = { created: 0, updated: 0, errors: [] };
+  const ids = request.calls.map((c) => c.id);
+  const { data: existing } = await deps.supabase.from("calls").select("id").in("id", ids);
+  const known = new Set((existing ?? []).map((r) => r.id));
+
+  for (const [index, item] of request.calls.entries()) {
+    const parsed = CallInput.safeParse({
+      ...item,
+      organizator: item.organizator || "Regionalny Ośrodek Polityki Społecznej w Krakowie",
+      cel: item.cel || undefined,
+      url: item.url || undefined,
+      termin_od: item.termin_od || undefined,
+      termin_do: item.termin_do || undefined,
+      obszary: item.obszary ?? [],
+      opublikowany: false,
+    });
+    if (!parsed.success) {
+      result.errors.push({
+        index,
+        id: String(item.id),
+        message: parsed.error.issues[0]?.message ?? "Błędne dane.",
+      });
+      continue;
+    }
+    const c = parsed.data;
+    const row = {
+      nazwa: c.nazwa,
+      organizator: c.organizator,
+      cel: c.cel ?? null,
+      url: c.url ?? null,
+      termin_od: c.termin_od ?? null,
+      termin_do: c.termin_do ?? null,
+      obszary: c.obszary,
+    };
+    const { error } = known.has(c.id)
+      ? await deps.supabase.from("calls").update(row).eq("id", c.id)
+      : await deps.supabase.from("calls").insert({ id: c.id, ...row, opublikowany: false });
+    if (error) {
+      result.errors.push({ index, id: c.id, message: "Nie udało się zapisać." });
+      continue;
+    }
+    if (known.has(c.id)) result.updated += 1;
+    else {
+      result.created += 1;
+      known.add(c.id);
+    }
+  }
+
+  await deps
+    .writeAudit({
+      akcja: "nabor.import",
+      obiekt: "calls",
+      szczegoly: {
+        dodane: result.created,
+        zaktualizowane: result.updated,
+        bledy: result.errors.length,
+      },
+    })
+    .catch(() => {});
+  return result;
 }
