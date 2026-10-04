@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { announce } from "@/components/ui/announcer";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/input";
 import { ApplicationResponse, type CallSummary, type IdeaDraft } from "@/lib/contracts/ai";
+import type { CallFit, IdeaArea } from "@/lib/ai/creator/call-fit";
 import { postJson } from "../_lib/api";
 
 type Section = ApplicationResponse["sections"][number];
@@ -37,14 +39,24 @@ const FIT: Record<
   slaba: { variant: "danger", text: "Słabo pasuje do naboru" },
 };
 
+const CALL_FIT_NOTE: Record<CallFit, { variant: "success" | "neutral" | "warning"; text: string }> =
+  {
+    pasuje: { variant: "success", text: "Pasuje do obszaru Twojego pomysłu" },
+    dowolny: { variant: "neutral", text: "Nabór dla każdego obszaru" },
+    inny: { variant: "warning", text: "Ten nabór dotyczy innego obszaru" },
+  };
+
 export function ApplicationDraft({
   calls,
   draft,
   ideaId,
+  areas = [],
 }: {
-  calls: CallSummary[];
+  // ranked by lib/ai/creator/call-fit.ts on the card page: fitting calls first (P3)
+  calls: (CallSummary & { fit?: CallFit })[];
   draft: IdeaDraft;
   ideaId?: string; // the saved idea: the draft then uses its canvas answers (P3)
+  areas?: IdeaArea[]; // Challenges Map areas of the idea, if the search found them
 }) {
   const selectId = useId();
   const reasonId = useId();
@@ -101,13 +113,10 @@ export function ApplicationDraft({
 
   if (calls.length === 0) {
     return (
-      <section
-        aria-labelledby="application-heading"
-        className="border-border flex flex-col gap-2 border-t pt-6"
-      >
-        <h2 id="application-heading" className="text-[1.625rem] font-bold">
+      <section aria-labelledby="application-heading" className="flex flex-col gap-2">
+        <h3 id="application-heading" className="text-xl font-bold">
           Wniosek pod nabór
-        </h2>
+        </h3>
         <p className="text-base">
           Teraz nie ma otwartych naborów. Gdy ROPS ogłosi nabór, tutaj przygotujesz szkic wniosku
           dopasowany do jego celu.
@@ -116,19 +125,31 @@ export function ApplicationDraft({
     );
   }
   return (
-    <section
-      aria-labelledby="application-heading"
-      className="border-border flex flex-col gap-4 border-t pt-6"
-    >
+    <section aria-labelledby="application-heading" className="flex flex-col gap-4">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h2 id="application-heading" className="text-[1.625rem] font-bold">
+        <h3 id="application-heading" className="text-xl font-bold">
           Szkic wniosku o dofinansowanie
-        </h2>
+        </h3>
         <Badge variant="ai">Propozycja AI</Badge>
       </div>
-      <p className="text-base">
-        Asystent AI ułoży szkic wniosku z Twojej fiszki, dopasowany do celu wybranego naboru.
-      </p>
+      {areas.length ? (
+        <p className="text-base">
+          Twój pomysł dotyczy obszaru: <strong>{areas.map((a) => a.name).join(", ")}</strong>.
+          Nabory dla tego obszaru są na górze listy.
+        </p>
+      ) : null}
+      {areas.length && !calls.some((c) => c.fit === "pasuje") ? (
+        <p className="bg-warning-soft rounded-[10px] px-4 py-3 text-base">
+          Teraz nie ma naboru dla obszaru Twojego pomysłu. Możesz przygotować szkic pod nabór ogólny
+          albo{" "}
+          <Link
+            href={`/my/messages/new?${new URLSearchParams({ topic: `Nabór dla pomysłu: ${draft.title}`.slice(0, 200) })}`}
+          >
+            zapytać ROPS o pieniądze na ten pomysł
+          </Link>
+          .
+        </p>
+      ) : null}
       <div className="flex flex-col gap-1.5">
         <label htmlFor={selectId} className="font-bold">
           Nabór
@@ -142,9 +163,15 @@ export function ApplicationDraft({
           {calls.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
+              {c.fit === "pasuje" ? " (pasuje do Twojego pomysłu)" : ""}
             </option>
           ))}
         </select>
+        {call?.fit && areas.length ? (
+          <Badge variant={CALL_FIT_NOTE[call.fit].variant} className="self-start">
+            {CALL_FIT_NOTE[call.fit].text}
+          </Badge>
+        ) : null}
         {call ? (
           <p className="text-muted-foreground text-base">
             {call.organizer}
