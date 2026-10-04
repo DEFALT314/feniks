@@ -57,7 +57,7 @@ export function MyIdeas({ ideas }: { ideas: MyIdea[] }) {
 function IdeaSummary({ idea }: { idea: MyIdea }) {
   const done = answeredCount(fields, idea.answers);
   const status = authorStatus(idea.wyslany_at, idea.status);
-  const published = publicationView(idea).kind === "published";
+  const published = publicationView(idea, idea.status === "zatwierdzony").kind === "published";
   return (
     <Card className="flex h-full flex-col gap-3">
       <div className="flex flex-wrap items-start justify-between gap-2">

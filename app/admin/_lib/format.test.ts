@@ -44,10 +44,10 @@ describe("describeAudit", () => {
       "przestano pokazywać jako dobrą praktykę: Herbatka sąsiedzka",
     );
     expect(describeAudit("pomysl.zgoda_publikacji", d)).toBe(
-      "autor zgodził się pokazać pomysł: Herbatka sąsiedzka",
+      "zgoda na pokazanie pomysłu: Herbatka sąsiedzka",
     );
     expect(describeAudit("pomysl.zgoda_wycofana", d)).toBe(
-      "autor wycofał zgodę na pokazanie: Herbatka sąsiedzka",
+      "wycofano zgodę na pokazanie: Herbatka sąsiedzka",
     );
   });
 });

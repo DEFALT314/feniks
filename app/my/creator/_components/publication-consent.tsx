@@ -20,16 +20,17 @@ type Props = {
   ideaId: string;
   consent: boolean;
   publishedAt: string | null;
+  approved?: boolean; // the current ROPS decision is an approval
 };
 
 // "Pokazywanie innym" (#104): after sending, the author sees whether the idea is shown as a good
 // practice and can give or withdraw consent at any time. One button that changes its label, so
 // focus stays on it after the change; the result is announced once (WCAG 4.1.3).
-export function PublicationConsent({ ideaId, consent, publishedAt }: Props) {
+export function PublicationConsent({ ideaId, consent, publishedAt, approved = true }: Props) {
   // Shown only with consent: the database clears the publication when consent is withdrawn
   const view: PublicationView = !consent
     ? { kind: "no-consent" }
-    : publishedAt
+    : publishedAt && approved
       ? { kind: "published", since: publishedAt }
       : { kind: "consent" };
   const [state, change, pending] = useActionState<ConsentState>(

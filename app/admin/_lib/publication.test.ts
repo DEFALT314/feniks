@@ -69,7 +69,7 @@ describe("setGoodPractice", () => {
   });
 
   it.each([
-    ["no-consent", "Autor nie zgodził się na pokazanie tego pomysłu innym."],
+    ["no-consent", "Osoba, która zgłosiła ten pomysł, nie zgodziła się na pokazanie go innym."],
     ["not-approved", "Najpierw zatwierdź pomysł. Pokazać można tylko zatwierdzony pomysł."],
     ["not-rops", "Tylko pracownicy ROPS mogą pokazywać dobre praktyki."],
     ["not-found", "Nie znaleziono tego pomysłu."],
@@ -96,5 +96,19 @@ describe("setGoodPractice", () => {
     d.addNotification.mockRejectedValue(new Error("down"));
     vi.spyOn(console, "error").mockImplementation(() => {});
     expect((await setGoodPractice(d, ID, true)).status).toBe("saved");
+  });
+
+  it("keeps the notification within its length limit for a long title", async () => {
+    const d = deps(
+      { ok: true, result: "opublikowany" },
+      {
+        id: ID,
+        tytul: "a".repeat(200),
+        autor_id: AUTHOR,
+      },
+    );
+    await setGoodPractice(d, ID, true);
+    const sent = (d.addNotification.mock.calls as unknown as [{ tytul: string }][])[0][0];
+    expect(sent.tytul.length).toBeLessThanOrEqual(200);
   });
 });

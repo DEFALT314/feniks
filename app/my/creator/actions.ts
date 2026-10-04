@@ -17,7 +17,12 @@ import {
   setPublicationConsent,
   type SaveResult,
 } from "./_lib/ideas";
-import { changeConsent, type ConsentDeps, type ConsentState } from "./_lib/publication";
+import {
+  changeConsent,
+  shortTitle as short,
+  type ConsentDeps,
+  type ConsentState,
+} from "./_lib/publication";
 import { submitIdea, type SubmitState } from "./_lib/submit";
 
 // Server actions are public endpoints: each one checks the session itself. RLS limits every query
@@ -61,7 +66,7 @@ function consentDeps(db: Awaited<ReturnType<typeof createClient>>): ConsentDeps 
         {
           role: ["rops_redaktor", "rops_admin"],
           typ: "pomysl_zgoda_wycofana",
-          tytul: `Autor wycofał zgodę: „${tytul}” zniknął z Biblioteki.`,
+          tytul: `Wycofano zgodę na pokazanie: „${short(tytul)}” zniknął z Biblioteki.`,
           link: `/admin?status=zatwierdzony&idea=${id}`,
         },
         db,

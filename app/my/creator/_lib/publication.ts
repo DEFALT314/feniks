@@ -12,9 +12,13 @@ export type PublicationView =
   | { kind: "consent" } // the author agreed; ROPS has not shown it (yet)
   | { kind: "no-consent" }; // only ROPS and experts see it
 
-export function publicationView(idea: PublicationFields): PublicationView {
+/**
+ * `approved`: the current ROPS decision is an approval. The public list needs it too, so a stale
+ * publication date (e.g. while a "do poprawy" decision is being saved) never reads as "shown".
+ */
+export function publicationView(idea: PublicationFields, approved = true): PublicationView {
   if (!idea.zgoda_publikacji_at) return { kind: "no-consent" };
-  if (idea.opublikowany_at) return { kind: "published", since: idea.opublikowany_at };
+  if (idea.opublikowany_at && approved) return { kind: "published", since: idea.opublikowany_at };
   return { kind: "consent" };
 }
 
@@ -72,4 +76,9 @@ export async function changeConsent(
       console.error("Consent saved, follow-up failed:", result.reason);
   }
   return { status: "saved", consent: agree, message: SAVED[saved.result] };
+}
+
+/** An idea title short enough for a notification line (notifications allow 200 characters). */
+export function shortTitle(title: string, max = 100): string {
+  return title.length <= max ? title : `${title.slice(0, max - 1).trimEnd()}…`;
 }

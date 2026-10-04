@@ -37,7 +37,7 @@ afterEach(() => {
 describe("GoodPracticeBox", () => {
   it("tells ROPS when the author did not agree, with no button", () => {
     const html = renderToStaticMarkup(<GoodPracticeBox {...base} consent={false} />);
-    expect(html).toContain("Autor nie zgodził się na pokazanie pomysłu innym.");
+    expect(html).toContain("Osoba, która zgłosiła pomysł, nie zgodziła się na pokazanie go innym.");
     expect(html).not.toContain("<button");
   });
 
@@ -90,12 +90,19 @@ describe("GoodPracticeBox", () => {
   it("focuses a refusal so it is read", async () => {
     actions.setIdeaGoodPractice.mockResolvedValue({
       status: "error",
-      message: "Autor nie zgodził się na pokazanie tego pomysłu innym.",
+      message: "Osoba, która zgłosiła ten pomysł, nie zgodziła się na pokazanie go innym.",
     });
     act(() => root.render(<GoodPracticeBox {...base} />));
     await act(async () => container.querySelector("button")!.click());
     expect(document.activeElement?.textContent).toBe(
-      "Autor nie zgodził się na pokazanie tego pomysłu innym.",
+      "Osoba, która zgłosiła ten pomysł, nie zgodziła się na pokazanie go innym.",
     );
+  });
+
+  it("does not claim it is shown while the current decision is not an approval", () => {
+    const html = renderToStaticMarkup(
+      <GoodPracticeBox {...base} approved={false} publishedAt="2026-10-04T10:00:00+02:00" />,
+    );
+    expect(html).not.toContain("W Bibliotece od");
   });
 });
