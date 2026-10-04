@@ -1,0 +1,12 @@
+%%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
+flowchart LR
+    D(["Problem<br/>description"]):::data --> S("Hybrid search<br/>words + meaning"):::data
+    S --> C("15 candidates"):::data
+    C --> A("AI picks ≤ 3<br/>+ challenge"):::ai
+    A --> Q("Quotes<br/>checked"):::data
+    Q --> H("Shown as<br/>AI proposal"):::human
+    A -.-> T("Anonymous<br/>stats"):::data
+    T -.-> R(["ROPS trends"]):::human
+    classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
+    classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
+    classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold

@@ -1,152 +1,90 @@
-# Jak działa AI w HubMI
+# How AI works in HubMI
 
-Materiał do prezentacji i decku (#28). Każdy diagram pokazuje, **gdzie decyduje człowiek**.
-Zasada w całej aplikacji: AI tylko proponuje. Nic z AI nie jest publikowane, zapisywane w fiszce
-ani wysyłane do ROPS bez kliknięcia człowieka, a każdy tekst z AI ma etykietę „Propozycja AI”.
+Four pictures for the jury. Blue = AI step, white = data and checks computed by code, green = a person decides.
+Nothing the AI writes is published or sent without a human click, and every AI text in the app carries the label „Propozycja AI”.
 
-## 1. Całość: gdzie aplikacja używa AI
+## 1. Overview
 
-Cztery miejsca korzystają z jednego, wspólnego „rdzenia”. Rdzeń pilnuje bezpieczeństwa i jakości,
-zanim cokolwiek trafi do modelu i zanim odpowiedź trafi do człowieka.
+Personal data (phone, e-mail, PESEL) is removed before anything reaches the model. The model answers in JSON, which is validated; it may only pick from the identifiers it was given.
 
 ```mermaid
-flowchart TB
-    subgraph Moduly["Moduły aplikacji"]
-        M1["Dopasuj rozwiązanie<br/>(problem → innowacje)"]
-        M3["Kreator pomysłów<br/>(Sprawdź fiszkę, wniosek,<br/>inne podejścia)"]
-        M7["Middleman<br/>(karta usługi dla gminy)"]
-    end
-
-    subgraph Rdzen["Wspólny rdzeń AI"]
-        direction TB
-        P["1. Usuwanie danych osobowych<br/>(telefon, e-mail, PESEL)"]
-        L["2. Limity<br/>na adres IP i dzienne na konto"]
-        R["3. Pamięć odpowiedzi<br/>i tryb powtórki na scenę"]
-        Q["4. Model językowy DeepSeek"]
-        V["5. Sprawdzenie odpowiedzi<br/>(format, tylko podane identyfikatory,<br/>dosłowne cytaty, bez wymyślonych liczb)<br/>jedna ponowna próba"]
-    end
-
-    E["Wyszukiwarka znaczeniowa<br/>model mmlw-e5-base + wektory<br/>w bazie (pgvector)"]
-
-    M1 --> E
-    M3 --> E
-    M1 --> P
-    M3 --> P
-    M7 --> P
-    P --> L --> R --> Q --> V
-
-    V --> H{"Człowiek decyduje:<br/>Użyj, Dopisz, Wyślij"}
-    H -->|tak| OUT["Fiszka, karta usługi<br/>albo wiadomość do ROPS"]
-    H -->|nie| X["Propozycja znika"]
-    OUT --> ROPS["Panel ROPS:<br/>ocenia człowiek"]
+%%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
+flowchart LR
+    U(["Resident or<br/>institution"]):::data --> P("Remove<br/>personal data"):::data
+    P --> S("Search<br/>BM25 + vectors"):::data
+    S --> M("AI model<br/>DeepSeek"):::ai
+    M --> V("Validate<br/>answer"):::data
+    V --> H("Human decides"):::human
+    H --> R(["ROPS"]):::human
+    classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
+    classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
+    classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold
 ```
 
-Co dzieje się w rdzeniu:
+## 2. Matchmaking
 
-- **Dane osobowe** są usuwane, zanim tekst wyjdzie z aplikacji (`lib/ai/privacy.ts`).
-- **Limity** chronią budżet: 20 zapytań AI na godzinę z jednego adresu w wyszukiwarce, 30 w Kreatorze
-  i Middlemanie, do tego 100 dziennie na konto (`ai_usage`).
-- **Pamięć odpowiedzi** (`ai_cache`) sprawia, że to samo pytanie nie kosztuje drugi raz.
-  **Tryb powtórki** (`AI_REPLAY`) odtwarza nagrane odpowiedzi na scenie, nawet gdy sieć zawiedzie.
-- **Model wybiera tylko z tego, co dostał**: z listy innowacji, wyzwań albo odpowiedzi z kanwy.
-  Odpowiedź spoza listy jest odrzucana, cytat, którego nie ma w karcie, znika.
-
-## 2. Dopasuj rozwiązanie (moduł I)
-
-Mieszkaniec, gmina albo organizacja opisuje problem własnymi słowami. Najpierw w ułamku sekundy
-pokazujemy wyniki wyszukiwarki, a AI w tym czasie wybiera najlepsze i uzasadnia wybór.
+The ranking comes first, without AI (keywords + meaning, 0.8 vectors / 0.2 keywords). The AI then picks at most 3 of 15 candidates and one challenge of the 48 on the Challenges Map. Quotes are checked word for word. Only the area and the challenge are stored for ROPS trends, never the description.
 
 ```mermaid
-sequenceDiagram
-    actor U as Użytkownik
-    participant S as Strona /match
-    participant W as Wyszukiwarka
-    participant AI as Model AI
-    participant B as Baza (statystyki)
-
-    U->>S: Opisuje problem własnymi słowami
-    S->>W: Szukaj bez AI
-    Note over W: Słowa kluczowe (BM25)<br/>+ znaczenie (wektory)<br/>wynik = 0,8 × znaczenie + 0,2 × słowa
-    W-->>S: Wstępna lista innowacji (pod 1 s)
-    S-->>U: Pokazuje wstępne wyniki
-    S->>W: Szukaj z AI
-    W->>AI: 15 kandydatów z Biblioteki<br/>+ 48 wyzwań z Mapy Wyzwań
-    Note over AI: Wybiera najwyżej 3 innowacje<br/>tylko z listy albo „brak”<br/>+ 1 wyzwanie z listy
-    AI-->>W: Wybór, uzasadnienie, cytat
-    Note over W: Cytat musi być dosłownie w karcie<br/>identyfikatory spoza listy odrzucone
-    W->>B: Tylko obszar i wyzwanie<br/>(bez treści opisu)
-    W-->>S: Wynik z etykietą „Propozycja AI”
-    S-->>U: Wyzwanie, 3 innowacje, podświetlone słowa
-    Note over U: Sam decyduje: karta innowacji,<br/>karta usługi albo „Zgłoś potrzebę”
-    Note over B: Panel ROPS: trendy potrzeb<br/>w regionie
+%%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
+flowchart LR
+    D(["Problem<br/>description"]):::data --> S("Hybrid search<br/>words + meaning"):::data
+    S --> C("15 candidates"):::data
+    C --> A("AI picks ≤ 3<br/>+ challenge"):::ai
+    A --> Q("Quotes<br/>checked"):::data
+    Q --> H("Shown as<br/>AI proposal"):::human
+    A -.-> T("Anonymous<br/>stats"):::data
+    T -.-> R(["ROPS trends"]):::human
+    classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
+    classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
+    classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold
 ```
 
-Gdy w Bibliotece nie ma rozwiązania, strona mówi to wprost („takiego rozwiązania jeszcze nie ma”)
-i proponuje zgłoszenie potrzeby do ROPS, zamiast udawać dopasowanie.
+## 3. Idea creator
 
-## 3. Kreator pomysłów (moduł III)
-
-AI nie przepisuje fiszki za autora. Wskazuje, co zmienić i skąd to wie.
+„Check my card” points out what to change, each point with its evidence: the author's canvas answer or a quote from a similar Library innovation. The grant draft uses the canvas; the budget lists the costs the author ticked, each with [amount].
 
 ```mermaid
-flowchart TD
-    A["Autor: kanwa (22 pytania) i fiszka"] --> C1["Sprawdź fiszkę"]
-    A --> C2["Wniosek pod nabór"]
-    A --> C3["Inne podejścia"]
-    A --> C4["Coś podobnego już działa"]
-
-    C1 --> R1["Reguły z odpowiedzi z kanwy<br/>np. „Nie wiadomo, kto zapłaci”"]
-    C1 --> R2["AI porównuje z podobnymi<br/>innowacjami z Biblioteki"]
-    R1 --> D1["Uwagi z dowodem:<br/>odpowiedź z kanwy<br/>albo dosłowny cytat z karty"]
-    R2 --> D1
-
-    C2 --> N1["Nabory opublikowane<br/>w Panelu ROPS"]
-    N1 --> D2["Szkic wniosku z kanwy<br/>budżet z zaznaczonych kosztów: [kwota]<br/>ocena dopasowania i lista braków"]
-
-    C3 --> D3["2–3 nietypowe sposoby<br/>na ten sam problem"]
-    C4 --> D4["Najbliższa innowacja<br/>z Biblioteki (bez AI)"]
-
-    D1 --> H{"Autor klika:<br/>Dopisz zdanie, Przejdź do pola,<br/>Popraw w kanwie albo Pomiń"}
-    D2 --> H2{"Autor poprawia<br/>i kopiuje wniosek"}
-    D3 --> H3{"Autor klika<br/>Dodaj do opisu"}
-
-    H --> F["Fiszka"]
-    H3 --> F
-    F --> S["Wyślij do ROPS<br/>(tylko kliknięciem autora)"]
-    S --> P["Panel ROPS: człowiek ocenia<br/>i odpisuje autorowi"]
+%%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
+flowchart LR
+    I(["Idea card"]):::data --> X("AI assistant"):::ai
+    K(["Canvas answers"]):::data --> X
+    L(["Similar Library<br/>innovations"]):::data --> X
+    X --> C("Check my card<br/>points with evidence"):::ai
+    X --> G("Grant draft<br/>budget with [amount]"):::ai
+    C --> H("Author clicks<br/>to add"):::human
+    G --> H
+    H --> R(["Sent to ROPS<br/>ROPS reviews"]):::human
+    classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
+    classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
+    classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold
 ```
 
-- **Sprawdź fiszkę** łączy reguły policzone z kanwy (zawsze prawdziwe) z najwyżej trzema uwagami AI.
-  Każda uwaga ma źródło: pytanie z kanwy albo cytat z podobnej innowacji z linkiem do karty.
-- **Wniosek pod nabór**: AI nie wpisuje liczb ani kwot. Budżet to lista kosztów zaznaczonych przez
-  autora w kanwie, każdy z miejscem `[kwota]` do uzupełnienia.
+## 4. Middleman
 
-## 4. Middleman (moduł VII)
-
-Gmina, ośrodek pomocy albo organizacja zamienia innowację z Biblioteki w kartę usługi, którą może
-zamówić i sfinansować.
+Fit and materials are computed from ROPS data, not by AI. The AI drafts the service card without costs; the institution edits it and sends it to ROPS.
 
 ```mermaid
-flowchart TB
-    U["Gmina, GOPS albo NGO<br/>wybiera innowację"] --> F["Fakty z danych, bez AI:<br/>czy pasuje do tej instytucji,<br/>materiały od autorów, nabory"]
-    U --> AI["AI pisze szkic karty:<br/>dla kogo, jak działa,<br/>kto realizuje, na co uważać,<br/>pierwsze kroki"]
-    AI --> G["Sprawdzenie: bez kosztów i liczb,<br/>bez pustych haseł"]
-    F --> K["Karta usługi<br/>„Propozycja AI”"]
-    G --> K
-    K --> E{"Instytucja poprawia<br/>i uzupełnia koszt"}
-    E --> W["Wyślij do ROPS<br/>(kliknięciem)"]
-    W --> R["ROPS konsultuje kartę"]
+%%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
+flowchart LR
+    N(["Innovation +<br/>institution"]):::data --> F("Facts from data<br/>fit, materials"):::data
+    N --> A("AI draft<br/>no costs"):::ai
+    F --> S("Service card"):::data
+    A --> S
+    S --> E("Institution<br/>edits"):::human
+    E --> R(["Sent to ROPS"]):::human
+    classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
+    classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
+    classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold
 ```
 
-## 5. Wyniki pomiarów
+## Measured results
 
-Zmierzone na zestawach testowych (`evals/results.md`):
-
-| Co mierzymy | Wynik |
+| What | Result |
 |---|---|
-| Właściwa innowacja w pierwszej trójce, 230 pytań od ROPS | **100%** |
-| To samo dla pytań potocznych (40) i nietypowych: literówki, bez polskich znaków, po ukraińsku (41) | **100%** i **98%** |
-| Właściwe wyzwanie z Mapy Wyzwań, gdy wybiera AI (48 pytań) | **96%** |
-| Problemy spoza Biblioteki rozpoznane jako „brak rozwiązania” (80 pytań) | **94%** |
+| ROPS test set, 230 queries: right innovation in top 3 | **100%** |
+| Everyday descriptions (40) / unusual queries (41): top 3 | **100% / 98%** |
+| Right challenge from the Challenges Map, with AI (48) | **96%** |
+| Problems outside the Library flagged as „no match” (80) | **94%** |
 
-Wymaganie ROPS: co najmniej 80% w pierwszej trójce.
+Source: `evals/results.md`. Images for slides: `pitch/diagramy/ai-*.png` (rendered with mermaid-cli from the `.mmd` files next to them, style in `render.css`).
