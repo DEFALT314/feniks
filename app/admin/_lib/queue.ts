@@ -14,6 +14,8 @@ export type IdeaDetail = QueueRow & {
   autor_id: string;
   komentarz: string | null;
   ekspert_id: string | null;
+  zgoda_publikacji_at: string | null; // the author agreed to show it as a good practice (#104)
+  opublikowany_at: string | null; // ROPS shows it in the Library
 };
 
 export type Expert = { id: string; nazwa: string };
@@ -26,7 +28,7 @@ export type AuditRow = {
 };
 
 const IDEA_COLUMNS =
-  "id, tytul, istota, opis, dla_kogo, etap, obszar_id, wyslany_at, autor_id, challenge_areas(nazwa)";
+  "id, tytul, istota, opis, dla_kogo, etap, obszar_id, wyslany_at, zgoda_publikacji_at, opublikowany_at, autor_id, challenge_areas(nazwa)";
 
 type IdeaRow = {
   id: string;
@@ -37,6 +39,8 @@ type IdeaRow = {
   etap: string | null;
   obszar_id: string | null;
   wyslany_at: string | null;
+  zgoda_publikacji_at: string | null;
+  opublikowany_at: string | null;
   autor_id: string;
   challenge_areas: { nazwa: string } | null;
 };
@@ -149,6 +153,8 @@ export async function loadIdeaDetail(supabase: Client, ideaId: string): Promise<
     // The comment belonged to the earlier version; the assigned expert still applies
     komentarz: isStale(idea.wyslany_at!, status) ? null : (status?.komentarz ?? null),
     ekspert_id: status?.ekspert_id ?? null,
+    zgoda_publikacji_at: idea.zgoda_publikacji_at,
+    opublikowany_at: idea.opublikowany_at,
   };
 }
 

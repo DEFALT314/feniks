@@ -4,6 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { answeredCount, fields, STAGE_LABELS } from "../_lib/canvas";
 import type { MyIdea } from "../_lib/ideas";
+import { publicationView } from "../_lib/publication";
 import { authorStatus } from "../_lib/submission";
 import { NewIdeaForm } from "./new-idea-form";
 
@@ -56,11 +57,16 @@ export function MyIdeas({ ideas }: { ideas: MyIdea[] }) {
 function IdeaSummary({ idea }: { idea: MyIdea }) {
   const done = answeredCount(fields, idea.answers);
   const status = authorStatus(idea.wyslany_at, idea.status);
+  const published = publicationView(idea).kind === "published";
   return (
     <Card className="flex h-full flex-col gap-3">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <h3 className="text-[1.375rem] leading-snug font-bold">{idea.tytul}</h3>
-        <Badge variant={status.badge}>{status.label}</Badge>
+        <div className="flex flex-wrap gap-2">
+          <Badge variant={status.badge}>{status.label}</Badge>
+          {/* Shown to everyone as a good practice (#104) */}
+          {published ? <Badge variant="success">W Bibliotece</Badge> : null}
+        </div>
       </div>
       <p className="text-muted-foreground text-base tabular-nums">
         Kanwa: {done} z {fields.length} pytań
