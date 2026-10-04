@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { changeConsent, publicationView, type ConsentDeps } from "./publication";
+import { changeConsent, publicationView, shortTitle, type ConsentDeps } from "./publication";
 
 const ID = "3f6d2c1e-8b7a-4e5f-9c1d-2a3b4c5d6e7f";
 
@@ -102,5 +102,22 @@ describe("changeConsent", () => {
       status: "error",
       message: "Nie udało się zapisać zgody. Spróbuj ponownie.",
     });
+  });
+});
+
+describe("review fixes (#104)", () => {
+  it("does not read a publication as shown without a current approval", () => {
+    const idea = {
+      zgoda_publikacji_at: "2026-10-04T09:00:00+02:00",
+      opublikowany_at: "2026-10-04T10:00:00+02:00",
+    };
+    expect(publicationView(idea, false)).toEqual({ kind: "consent" });
+  });
+
+  it("shortens a long title so the notification still fits", () => {
+    expect(shortTitle("Krótki")).toBe("Krótki");
+    const long = shortTitle("a".repeat(200));
+    expect(long.length).toBe(100);
+    expect(long.endsWith("…")).toBe(true);
   });
 });

@@ -132,6 +132,10 @@ set search_path = ''
 as $$
 begin
   if new.status <> 'zatwierdzony' then
+    -- Lock the idea even when it is not published yet: a review only takes a key-share lock
+    -- through the foreign key, so without this a parallel opublikuj_pomysl() would still see the
+    -- old approval and publish an idea that is being sent back.
+    perform 1 from public.ideas where id = new.idea_id for no key update;
     update public.ideas set opublikowany_at = null
     where id = new.idea_id and opublikowany_at is not null;
   end if;
@@ -145,7 +149,7 @@ create trigger idea_reviews_unpublish after insert on public.idea_reviews
 -- ---------------------------------------------------------------------------
 -- Public read: published practices, newest first, or one by id. Card fields, the area name and
 -- results of tests with residents (module IV): the number of ratings, and their average only from
--- three ratings up, so no single resident's score can be read off.
+-- three ratings up. Ratings are anonymous; the average is a summary, not a way to name anyone.
 -- The conditions repeat what the functions above maintain, as a second line of defence.
 -- ---------------------------------------------------------------------------
 create function public.dobre_praktyki(p_id uuid default null)

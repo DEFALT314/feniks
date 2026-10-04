@@ -137,7 +137,12 @@ export function SubmitPanel({
         </form>
       ) : null}
       {sentAt && !allowed ? (
-        <PublicationConsent ideaId={ideaId} consent={consent} publishedAt={publishedAt} />
+        <PublicationConsent
+          ideaId={ideaId}
+          consent={consent}
+          publishedAt={publishedAt}
+          approved={status === "zatwierdzony"}
+        />
       ) : null}
       <div ref={formRef}>
         {justSent && sentAt ? (

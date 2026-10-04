@@ -29,8 +29,8 @@ export default async function GoodPracticesPage() {
           </h1>
           <p className="text-ink-muted max-w-[760px]">
             Pomysły zgłoszone w Kreatorze pomysłów przez mieszkańców, organizacje i gminy. Każdy
-            sprawdził i zatwierdził zespół ROPS, a autor zgodził się go pokazać. Nie podajemy, kto
-            go zgłosił.
+            sprawdził i zatwierdził zespół ROPS, a osoba, która go zgłosiła, zgodziła się go
+            pokazać. Nie podajemy, kto go zgłosił.
           </p>
         </div>
       </section>

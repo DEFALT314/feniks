@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "app/library/good-practices/page.tsx"
+        ],
+        "createdAt": "2026-10-04T07:55:42.933Z",
+        "reason": "assistant decided: copies the incumbent Library aside box (border-t-4 border-t-navy rounded-xl) from app/library/[id]/page.tsx, kept for consistency with design/makiety"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "app/library/good-practices/[id]/page.tsx"
+        ],
+        "createdAt": "2026-10-04T07:55:42.960Z",
+        "reason": "assistant decided: copies the incumbent Library aside box (border-t-4 border-t-navy rounded-xl) from app/library/[id]/page.tsx, kept for consistency with design/makiety"
+      }
+    ]
+  }
+}

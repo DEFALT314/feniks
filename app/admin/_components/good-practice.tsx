@@ -27,7 +27,8 @@ type Props = {
 // after approval shows or hides the idea in the Library. One button that changes its label keeps
 // focus in place; the result is announced, a refusal gets focus.
 export function GoodPracticeBox({ ideaId, approved, consent, publishedAt }: Props) {
-  const shown = consent && publishedAt !== null;
+  // A stale date without a current approval is not shown publicly (dobre_praktyki() checks both)
+  const shown = consent && approved && publishedAt !== null;
   const [state, toggle, pending] = useActionState<PublishState>(
     () => setIdeaGoodPractice(ideaId, !shown),
     { status: "idle" },
@@ -49,7 +50,7 @@ export function GoodPracticeBox({ ideaId, approved, consent, publishedAt }: Prop
       </h3>
       {!consent ? (
         <p className="text-muted-foreground text-base">
-          Autor nie zgodził się na pokazanie pomysłu innym.
+          Osoba, która zgłosiła pomysł, nie zgodziła się na pokazanie go innym.
         </p>
       ) : shown ? (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -60,7 +61,8 @@ export function GoodPracticeBox({ ideaId, approved, consent, publishedAt }: Prop
         </div>
       ) : (
         <p className="text-base">
-          Autor zgodził się na pokazanie fiszki innym, bez imienia i nazwiska.
+          Osoba, która zgłosiła pomysł, zgodziła się na pokazanie fiszki innym, bez imienia i
+          nazwiska.
           {approved ? null : " Po zatwierdzeniu możesz pokazać go w Bibliotece."}
         </p>
       )}

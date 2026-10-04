@@ -1,5 +1,6 @@
 import type { AuditEntry } from "@/lib/audit";
 import type { NewNotification } from "@/lib/contracts/notifications";
+import { shortTitle } from "@/app/my/creator/_lib/publication";
 
 // "Pokaż jako dobrą praktykę" (#104): ROPS shows an approved idea in the Library, when its author
 // agreed. The checks live in public.opublikuj_pomysl() (migration *_creator_good_practices.sql).
@@ -29,7 +30,7 @@ export const PUBLISH_ERRORS: Record<string, Extract<PublishResult, { ok: false }
 };
 
 const REFUSED: Record<Extract<PublishResult, { ok: false }>["reason"], string> = {
-  "no-consent": "Autor nie zgodził się na pokazanie tego pomysłu innym.",
+  "no-consent": "Osoba, która zgłosiła ten pomysł, nie zgodziła się na pokazanie go innym.",
   "not-approved": "Najpierw zatwierdź pomysł. Pokazać można tylko zatwierdzony pomysł.",
   "not-rops": "Tylko pracownicy ROPS mogą pokazywać dobre praktyki.",
   "not-found": "Nie znaleziono tego pomysłu.",
@@ -68,13 +69,13 @@ export async function setGoodPractice(
         ? {
             userIds: [idea.autor_id],
             typ: "pomysl_opublikowany",
-            tytul: `ROPS pokazuje Twój pomysł „${idea.tytul}” w Bibliotece jako dobrą praktykę.`,
+            tytul: `ROPS pokazuje Twój pomysł „${shortTitle(idea.tytul)}” w Bibliotece jako dobrą praktykę.`,
             link: `/library/good-practices/${idea.id}`,
           }
         : {
             userIds: [idea.autor_id],
             typ: "pomysl_ukryty",
-            tytul: `ROPS przestał pokazywać Twój pomysł „${idea.tytul}” w Bibliotece.`,
+            tytul: `ROPS przestał pokazywać Twój pomysł „${shortTitle(idea.tytul)}” w Bibliotece.`,
             link: `/my/creator/${idea.id}/card`,
           },
     ),

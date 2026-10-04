@@ -51,7 +51,7 @@ export default async function GoodPracticePage({
           </div>
           <p className="text-ink-muted max-w-[760px] text-base">
             Pomysł zgłoszony w Kreatorze pomysłów. Pokazujemy go od {publishedOn(p.opublikowany_at)}{" "}
-            za zgodą autora. Nie podajemy, kto go zgłosił.
+            za zgodą osoby, która go zgłosiła. Nie podajemy, kto go zgłosił.
           </p>
         </div>
       </div>

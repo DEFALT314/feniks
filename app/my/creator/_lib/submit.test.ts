@@ -158,5 +158,14 @@ describe("submitIdea", () => {
       });
       expect(d.send).not.toHaveBeenCalled();
     });
+
+    it("says the consent change was kept when the send itself fails", async () => {
+      const d = deps(IDEA, { ok: false, reason: "failed" });
+      expect(await submitIdea(d, IDEA.id, true)).toEqual({
+        status: "error",
+        message:
+          "Nie udało się wysłać pomysłu. Spróbuj ponownie. Twój wybór o pokazywaniu pomysłu innym zapisaliśmy.",
+      });
+    });
   });
 });

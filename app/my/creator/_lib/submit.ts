@@ -50,13 +50,17 @@ export async function submitIdea(
     return { status: "error", message: "Uzupełnij fiszkę przed wysłaniem.", missing };
   }
 
-  if (consent !== undefined && consent !== Boolean(idea.zgoda_publikacji_at)) {
+  const consentChanged = consent !== undefined && consent !== Boolean(idea.zgoda_publikacji_at);
+  if (consentChanged) {
     const saved = await deps.changeConsent({ id: idea.id, tytul: idea.tytul }, consent);
     if (saved.status === "error") return saved;
   }
 
   const sent = await deps.send(idea.id);
-  if (!sent.ok) return { status: "error", message: SEND_FAILED[sent.reason] };
+  if (!sent.ok) {
+    const kept = consentChanged ? " Twój wybór o pokazywaniu pomysłu innym zapisaliśmy." : "";
+    return { status: "error", message: SEND_FAILED[sent.reason] + kept };
+  }
   const { resent } = sent;
 
   const followUps = await Promise.allSettled([
