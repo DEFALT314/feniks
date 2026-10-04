@@ -10,7 +10,7 @@ export default function ForgotPasswordPage() {
       title="Nie pamiętasz hasła?"
       headingId="forgot-heading"
       footer={
-        <Link href="/login" className="font-bold">
+        <Link href="/login" className="inline-flex min-h-11 items-center font-bold">
           Wróć do logowania
         </Link>
       }

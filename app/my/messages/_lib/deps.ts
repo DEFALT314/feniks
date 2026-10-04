@@ -13,9 +13,9 @@ export async function messagingDeps(): Promise<MessagingDeps | null> {
   return {
     supabase,
     me: { id: user.id, role: user.role, name: headerName(user) },
-    addNotification: (n) => addNotification(n, supabase),
     sendEmail: (m) => sendEmail(m),
     ropsInbox: process.env.ROPS_NOTIFY_EMAIL || process.env.SMTP_USER,
     siteUrl: siteUrl(),
+    addNotification: (n) => addNotification(n, supabase),
   };
 }

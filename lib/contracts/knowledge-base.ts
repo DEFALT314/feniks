@@ -96,6 +96,8 @@ export const InnovationList = z.object({
     sprawdzona: z.number().int(),
     film: z.number().int(),
     pdf: z.number().int(),
+    // How many results come from the ROPS online Library (the rest: spoza_biblioteki)
+    z_biblioteki: z.number().int().optional(),
   }),
 });
 export type InnovationList = z.infer<typeof InnovationList>;

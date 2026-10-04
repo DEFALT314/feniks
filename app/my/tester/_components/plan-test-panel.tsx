@@ -7,15 +7,21 @@ import { Card } from "@/components/ui/card";
 import { Field } from "@/components/ui/field";
 import { Input, Textarea } from "@/components/ui/input";
 import { planIdeaTest } from "../actions";
-
-type Draft = { tytul: string; opis: string; miejsce: string; termin: string; miejsca: string };
-const EMPTY: Draft = { tytul: "", opis: "", miejsce: "", termin: "", miejsca: "" };
+import { EMPTY_PLAN as EMPTY, type PlanTestDraft as Draft } from "../_lib/model";
 
 // "Test z mieszkańcami" on the idea card: the author plans a test, residents sign up and rate it
 // in the Innovation tester (/my/tester), where the author reads the feedback.
-export function PlanTestPanel({ ideaId, testCount }: { ideaId: string; testCount: number }) {
+export function PlanTestPanel({
+  ideaId,
+  testCount,
+  defaults = EMPTY,
+}: {
+  ideaId: string;
+  testCount: number;
+  defaults?: Draft;
+}) {
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState<Draft>(EMPTY);
+  const [draft, setDraft] = useState<Draft>(defaults);
   const [titleError, setTitleError] = useState(false);
   const [message, setMessage] = useState<{ error: boolean; text: string } | null>(null);
   const [pending, startTransition] = useTransition();
@@ -44,9 +50,12 @@ export function PlanTestPanel({ ideaId, testCount }: { ideaId: string; testCount
         liczba_miejsc: draft.miejsca ? Number(draft.miejsca) : null,
       });
       if (result.ok) {
-        setDraft(EMPTY);
+        setDraft(defaults);
         setOpen(false);
-        setMessage({ error: false, text: "Test zaplanowany. Mieszkańcy widzą go w Testerze." });
+        setMessage({
+          error: false,
+          text: "Test zaplanowany. Mieszkańcy mogą się już zapisać w zakładce „Testy”.",
+        });
         toggle.current?.focus();
       } else {
         setMessage({ error: true, text: result.error ?? "" });
@@ -77,12 +86,13 @@ export function PlanTestPanel({ ideaId, testCount }: { ideaId: string; testCount
         {open ? "Zwiń formularz" : "Zaplanuj test"}
       </Button>
       <form id={formId} hidden={!open} onSubmit={submit} noValidate className="flex flex-col gap-4">
-        <Field label="Nazwa testu" error={titleError ? "Wpisz nazwę testu." : undefined}>
+        <Field label="Nazwa testu" error={titleError ? "Wpisz nazwę testu." : undefined} required>
           {(control) => (
             <Input
               {...control}
               ref={titleInput}
               maxLength={200}
+              required
               value={draft.tytul}
               onChange={(e) => {
                 set("tytul")(e.target.value);
@@ -91,7 +101,10 @@ export function PlanTestPanel({ ideaId, testCount }: { ideaId: string; testCount
             />
           )}
         </Field>
-        <Field label="Na czym polega?" hint="Co uczestnicy zrobią i ile to potrwa.">
+        <Field
+          label="Na czym polega?"
+          hint="Co uczestnicy zrobią i ile to potrwa. Mieszkańcy zobaczą ten opis przy zapisie."
+        >
           {(control) => (
             <Textarea
               {...control}

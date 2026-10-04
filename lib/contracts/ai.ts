@@ -2,6 +2,7 @@
 //   POST /api/ai/hints        hints for the idea card fields
 //   POST /api/ai/application  draft of a grant application for an open call
 //   GET  /api/ai/calls        open calls to choose from
+//   POST /api/ai/alternatives unusual ways to solve the same problem (#103)
 // Sample data: lib/contracts/fixtures/ai.json. After 17:00, changes only by adding fields.
 //
 // Rules (CLAUDE.md, rule 5): every AI text is shown with the „Propozycja AI” label and is used only
@@ -91,6 +92,26 @@ export const ApplicationResponse = z.object({
 });
 export type ApplicationResponse = z.infer<typeof ApplicationResponse>;
 
+// --- /api/ai/alternatives (#103) ---
+// "Pokaż inne podejścia": 2–3 unusual ways to solve the same problem (another group, partner or
+// format). The author adds one to the description with a click, or ignores them.
+
+export const AlternativesRequest = z.object({ idea: IdeaDraft });
+export type AlternativesRequest = z.infer<typeof AlternativesRequest>;
+
+export const AlternativesResponse = z.object({
+  alternatives: z
+    .array(
+      z.object({
+        title: z.string(), // a few words, plain Polish
+        text: z.string(), // 1–3 sentences: what would be done differently
+        why: z.string().nullable(), // one short sentence: why it may work
+      }),
+    )
+    .max(3),
+});
+export type AlternativesResponse = z.infer<typeof AlternativesResponse>;
+
 // Sample data checked against the schemas: a mistake in fixtures shows up immediately.
 export const aiFixtures = {
   callList: CallList.parse(fixture.call_list),
@@ -98,4 +119,6 @@ export const aiFixtures = {
   hintResponse: HintResponse.parse(fixture.hint_response),
   applicationRequest: ApplicationRequest.parse(fixture.application_request),
   applicationResponse: ApplicationResponse.parse(fixture.application_response),
+  alternativesRequest: AlternativesRequest.parse(fixture.alternatives_request),
+  alternativesResponse: AlternativesResponse.parse(fixture.alternatives_response),
 };

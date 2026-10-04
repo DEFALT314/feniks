@@ -6,199 +6,214 @@ import { LibraryFilters, type InnovationSummary } from "@/lib/contracts/knowledg
 import { getAvailableFilters, getInnovations } from "./_lib/data";
 import { search } from "./_lib/search";
 import { libraryUrl } from "./_lib/url-params";
-import { FilterForm } from "./_components/filter-form";
-
-export const metadata: Metadata = {
-  title: "Biblioteka innowacji – HubMI.pl",
-  description: "Rozwiązania społeczne przetestowane w inkubatorach ROPS w Krakowie.",
-};
+import { filterSummary, formatResultCount, libraryTitle, sourceBreakdown } from "./_lib/format";
+import { HashFocus } from "./_components/hash-focus";
 
 // Colors and layout per design/makiety/Biblioteka.dc.html (theme tokens from app/globals.css)
 
-export default async function LibraryPage({ searchParams }: PageProps<"/library">) {
+const FORM_ID = "filters";
+// The form jumps to the results; HashFocus then moves focus to their heading (WCAG 2.4.3)
+const RESULTS = "results";
+// A link that stands on its own line gets a 44px target (project rule 7)
+const TARGET = "inline-flex min-h-11 items-center";
+
+async function loadLibrary(searchParams: PageProps<"/library">["searchParams"]) {
   const params = await searchParams;
   const filters = LibraryFilters.safeParse(params).data ?? LibraryFilters.parse({});
   const [innovations, available] = await Promise.all([getInnovations(), getAvailableFilters()]);
   const list = search(innovations, filters, available);
+  return { filters, available, list, summary: filterSummary(filters, available.kategorie) };
+}
 
-  const selectedCategories = available.kategorie.filter((k) => filters.category.includes(k.id));
-  const heading = [
-    selectedCategories.length ? selectedCategories.map((k) => k.nazwa).join(", ") : null,
-    filters.q ? `„${filters.q}”` : null,
-  ]
-    .filter(Boolean)
-    .join(" · ");
+export async function generateMetadata({ searchParams }: PageProps<"/library">): Promise<Metadata> {
+  const { list, summary } = await loadLibrary(searchParams);
+  return {
+    title: libraryTitle({ summary, count: list.liczba, page: list.strona }),
+    description: "Rozwiązania społeczne przetestowane w inkubatorach ROPS w Krakowie.",
+  };
+}
+
+export default async function LibraryPage({ searchParams }: PageProps<"/library">) {
+  const { filters, available, list, summary } = await loadLibrary(searchParams);
+  const breakdown = sourceBreakdown(list.liczba, list.liczniki.z_biblioteki);
+  const pageUrl = (page: number) => `${libraryUrl(filters, { page })}#${RESULTS}`;
 
   return (
     <main id="main-content" className="bg-surface text-ink text-lg leading-relaxed">
-      <FilterForm id="filters" aria-label="Szukaj i filtruj innowacje">
-        <section className="border-line border-b bg-white">
-          <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-9 sm:px-10">
-            <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
-              Biblioteka innowacji
-            </h1>
-            <p className="text-ink-muted max-w-[760px]">
-              Rozwiązania przetestowane w inkubatorach ROPS. Każda karta mówi, dla kogo jest
-              rozwiązanie, kto może je wdrożyć i jakie są materiały.
-            </p>
-            <div className="flex max-w-[900px] flex-wrap items-center gap-3">
-              <label htmlFor="search" className="sr-only">
-                Szukaj w Bibliotece
-              </label>
-              <input
-                id="search"
-                name="q"
-                type="search"
-                defaultValue={filters.q ?? ""}
-                placeholder="np. samotność seniorów"
-                className="border-field-border focus-visible:outline-brick min-h-[50px] flex-[1_1_320px] rounded-[10px] border bg-white px-3.5 py-3 text-lg focus-visible:outline-3 focus-visible:outline-offset-2"
-              />
-              <button type="submit" className={buttonVariants()}>
-                Szukaj
-              </button>
-            </div>
-            <p className="text-base">
-              Nie wiesz, czego szukać?{" "}
-              <Link href="/match" className="text-navy underline underline-offset-[3px]">
-                Opisz problem, a dopasujemy rozwiązanie
-              </Link>
-              .
-            </p>
-          </div>
-        </section>
-
-        <div className="mx-auto flex max-w-[1200px] flex-wrap gap-10 px-4 pt-8 pb-16 sm:px-10">
-          <aside aria-label="Filtry" className="flex max-w-[300px] flex-[1_1_260px] flex-col gap-7">
-            <FilterGroup legend="Kategoria">
-              {available.kategorie.map((k) => (
-                <FilterOption
-                  key={k.id}
-                  name="category"
-                  value={k.id}
-                  checked={filters.category.includes(k.id)}
-                  count={list.liczniki.kategorie[k.id] ?? 0}
-                >
-                  {k.nazwa}
-                </FilterOption>
-              ))}
-            </FilterGroup>
-            <FilterGroup legend="Polecane">
-              <FilterOption
-                name="verified"
-                value="1"
-                checked={filters.verified}
-                count={list.liczniki.sprawdzona}
-              >
-                Sprawdzone przez ROPS
-              </FilterOption>
-            </FilterGroup>
-            <FilterGroup legend="Materiały">
-              <FilterOption
-                name="video"
-                value="1"
-                checked={filters.video}
-                count={list.liczniki.film}
-              >
-                Jest film
-              </FilterOption>
-              <FilterOption name="pdf" value="1" checked={filters.pdf} count={list.liczniki.pdf}>
-                Jest opis do pobrania (PDF)
-              </FilterOption>
-            </FilterGroup>
-            {filters.group ? <input type="hidden" name="group" value={filters.group} /> : null}
-            {filters.label ? <input type="hidden" name="label" value={filters.label} /> : null}
-            <div className="flex flex-wrap gap-3">
-              <button type="submit" className={buttonVariants({ variant: "secondary" })}>
-                Pokaż wyniki
-              </button>
-              <Link
-                href="/library"
-                className="text-navy inline-flex min-h-[50px] items-center underline"
-              >
-                Wyczyść filtry
-              </Link>
-            </div>
-          </aside>
-
-          <section aria-labelledby="results" className="flex min-w-0 flex-[999_1_560px] flex-col">
-            <div className="border-ink flex flex-wrap items-baseline justify-between gap-2 border-b-2 pb-2">
-              <h2 id="results" aria-live="polite" className="text-lg font-bold">
-                {heading ? `${heading}: ` : ""}
-                {formatResultCount(list.liczba)}
-              </h2>
-              <span className="text-ink-muted text-base">
-                Sortowanie: {filters.q ? "najlepiej pasujące" : "najpierw sprawdzone przez ROPS"}
-              </span>
-            </div>
-
-            {list.wyniki.length === 0 ? (
-              <div className="flex flex-col gap-3 py-8">
-                <p>Nic nie znaleźliśmy. Spróbuj wybrać mniej filtrów.</p>
-                <p>
-                  Spróbuj innych słów albo{" "}
-                  <Link href="/match" className="text-navy underline">
-                    opisz swój problem własnymi słowami
-                  </Link>
-                  .
-                </p>
-              </div>
-            ) : (
-              <ul className="flex flex-col">
-                {list.wyniki.map((i) => (
-                  <ResultRow key={i.id} innovation={i} />
-                ))}
-              </ul>
-            )}
-
-            {list.liczba_stron > 1 ? (
-              <nav aria-label="Strony wyników" className="flex flex-wrap items-center gap-1.5 pt-6">
-                {list.strona > 1 ? (
-                  <Link
-                    href={libraryUrl(filters, { page: list.strona - 1 })}
-                    className="text-navy px-2.5 font-bold"
-                  >
-                    ← Poprzednia strona
-                  </Link>
-                ) : null}
-                {Array.from({ length: list.liczba_stron }, (_, n) => n + 1).map((s) => (
-                  <Link
-                    key={s}
-                    href={libraryUrl(filters, { page: s })}
-                    aria-current={s === list.strona ? "page" : undefined}
-                    aria-label={`Strona ${s}`}
-                    className={
-                      s === list.strona
-                        ? "bg-navy inline-flex h-11 min-w-11 items-center justify-center rounded-[10px] font-bold text-white"
-                        : "border-line text-navy inline-flex h-11 min-w-11 items-center justify-center rounded-[10px] border bg-white"
-                    }
-                  >
-                    {s}
-                  </Link>
-                ))}
-                {list.strona < list.liczba_stron ? (
-                  <Link
-                    href={libraryUrl(filters, { page: list.strona + 1 })}
-                    className="text-navy px-2.5 font-bold"
-                  >
-                    Następna strona →
-                  </Link>
-                ) : null}
-              </nav>
-            ) : null}
-          </section>
+      <HashFocus hash={RESULTS} targetId={RESULTS} changeKey={libraryUrl(filters)} />
+      <section className="border-line border-b bg-white">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-11 pb-9 sm:px-10">
+          <h1 className="text-[clamp(2rem,5vw,2.75rem)] leading-tight font-bold tracking-tight">
+            Biblioteka innowacji
+          </h1>
+          <p className="text-ink-muted max-w-[760px]">
+            Rozwiązania przetestowane w inkubatorach ROPS. Przy każdym piszemy, dla kogo jest, kto
+            może je u siebie uruchomić i jakie ma materiały do obejrzenia lub pobrania.
+          </p>
+          {/* The form holds only the search box; the filters in the sidebar join it with form="…".
+              Nothing is sent until the user presses a button (WCAG 3.2.2). */}
+          <form
+            id={FORM_ID}
+            role="search"
+            aria-label="Szukaj w Bibliotece"
+            method="get"
+            action={`/library#${RESULTS}`}
+            className="flex max-w-[900px] flex-wrap items-center gap-3"
+          >
+            <label htmlFor="search" className="sr-only">
+              Szukaj w Bibliotece
+            </label>
+            <input
+              id="search"
+              name="q"
+              type="search"
+              defaultValue={filters.q ?? ""}
+              placeholder="np. samotność seniorów"
+              className="border-field-border min-h-[50px] min-w-0 flex-[1_1_320px] rounded-[10px] border bg-white px-3.5 py-3 text-lg"
+            />
+            <button type="submit" className={buttonVariants()}>
+              Szukaj
+            </button>
+          </form>
+          <p className="text-base">
+            Nie wiesz, czego szukać?{" "}
+            <Link href="/match" className="text-navy underline underline-offset-[3px]">
+              Opisz problem, a dopasujemy rozwiązanie
+            </Link>
+            .
+          </p>
         </div>
-      </FilterForm>
+      </section>
+
+      <div className="mx-auto flex max-w-[1200px] flex-wrap gap-10 px-4 pt-8 pb-16 sm:px-10">
+        <aside aria-label="Filtry" className="flex max-w-[300px] flex-[1_1_260px] flex-col gap-7">
+          <p className="text-ink-muted m-0 text-base">Zaznacz filtry i naciśnij „Pokaż wyniki”.</p>
+          <FilterGroup legend="Kategoria">
+            {available.kategorie.map((k) => (
+              <FilterOption
+                key={k.id}
+                name="category"
+                value={k.id}
+                checked={filters.category.includes(k.id)}
+                count={list.liczniki.kategorie[k.id] ?? 0}
+              >
+                {k.nazwa}
+              </FilterOption>
+            ))}
+          </FilterGroup>
+          <FilterGroup legend="Polecane">
+            <FilterOption
+              name="verified"
+              value="1"
+              checked={filters.verified}
+              count={list.liczniki.sprawdzona}
+            >
+              Sprawdzone przez ROPS
+            </FilterOption>
+          </FilterGroup>
+          <FilterGroup legend="Materiały">
+            <FilterOption name="video" value="1" checked={filters.video} count={list.liczniki.film}>
+              Jest film
+            </FilterOption>
+            <FilterOption name="pdf" value="1" checked={filters.pdf} count={list.liczniki.pdf}>
+              Jest opis do pobrania (PDF)
+            </FilterOption>
+          </FilterGroup>
+          {filters.group ? (
+            <input type="hidden" form={FORM_ID} name="group" value={filters.group} />
+          ) : null}
+          {filters.label ? (
+            <input type="hidden" form={FORM_ID} name="label" value={filters.label} />
+          ) : null}
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="submit"
+              form={FORM_ID}
+              className={buttonVariants({ variant: "secondary" })}
+            >
+              Pokaż wyniki
+            </button>
+            <Link
+              href="/library"
+              className="text-navy inline-flex min-h-[50px] items-center underline"
+            >
+              Wyczyść filtry
+            </Link>
+          </div>
+        </aside>
+
+        <section aria-labelledby={RESULTS} className="flex min-w-0 flex-[999_1_560px] flex-col">
+          <div className="border-ink flex flex-wrap items-baseline justify-between gap-2 border-b-2 pb-2">
+            <h2 id={RESULTS} className="scroll-mt-4 text-lg font-bold">
+              {summary ? `${summary}: ` : ""}
+              {formatResultCount(list.liczba)}
+            </h2>
+            <span className="text-ink-muted text-base">
+              Sortowanie: {filters.q ? "najlepiej pasujące" : "najpierw sprawdzone przez ROPS"}
+            </span>
+          </div>
+          {breakdown ? <p className="text-ink-muted pt-2 text-base">{breakdown}</p> : null}
+
+          {list.wyniki.length === 0 ? (
+            <div className="flex flex-col gap-3 py-8">
+              <p>Nic nie znaleźliśmy. Odznacz część filtrów albo wpisz inne słowa.</p>
+              <p>
+                Możesz też{" "}
+                <Link href="/match" className="text-navy underline">
+                  opisać swój problem własnymi słowami
+                </Link>
+                .
+              </p>
+            </div>
+          ) : (
+            <ul className="flex flex-col">
+              {list.wyniki.map((i) => (
+                <ResultRow key={i.id} innovation={i} />
+              ))}
+            </ul>
+          )}
+
+          {list.liczba_stron > 1 ? (
+            <nav aria-label="Strony wyników" className="flex flex-wrap items-center gap-1.5 pt-6">
+              {list.strona > 1 ? (
+                <Link
+                  href={pageUrl(list.strona - 1)}
+                  className={`text-navy ${TARGET} px-2.5 font-bold`}
+                >
+                  <span aria-hidden="true">←&nbsp;</span>Poprzednia strona
+                </Link>
+              ) : null}
+              {Array.from({ length: list.liczba_stron }, (_, n) => n + 1).map((s) => (
+                <Link
+                  key={s}
+                  href={pageUrl(s)}
+                  aria-current={s === list.strona ? "page" : undefined}
+                  aria-label={`Strona ${s}`}
+                  className={
+                    // The current page also has a thicker border, so it stays visible in forced
+                    // colors, where the navy fill disappears (WCAG 1.4.11)
+                    s === list.strona
+                      ? "bg-navy border-navy inline-flex h-11 min-w-11 items-center justify-center rounded-[10px] border-2 font-bold text-white no-underline"
+                      : "border-line text-navy inline-flex h-11 min-w-11 items-center justify-center rounded-[10px] border bg-white"
+                  }
+                >
+                  {s}
+                </Link>
+              ))}
+              {list.strona < list.liczba_stron ? (
+                <Link
+                  href={pageUrl(list.strona + 1)}
+                  className={`text-navy ${TARGET} px-2.5 font-bold`}
+                >
+                  Następna strona<span aria-hidden="true">&nbsp;→</span>
+                </Link>
+              ) : null}
+            </nav>
+          ) : null}
+        </section>
+      </div>
     </main>
   );
-}
-
-// Polish plural forms: 1 innowacja, 2–4 innowacje, 5+ innowacji
-function formatResultCount(n: number): string {
-  if (n === 1) return "1 innowacja";
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} innowacje`;
-  return `${n} innowacji`;
 }
 
 function FilterGroup({ legend, children }: { legend: string; children: React.ReactNode }) {
@@ -227,15 +242,16 @@ function FilterOption({
     <label className="flex min-h-11 cursor-pointer items-center gap-2.5 text-[1.0625rem]">
       <input
         type="checkbox"
+        form={FORM_ID}
         name={name}
         value={value}
         defaultChecked={checked}
-        className="accent-navy focus-visible:outline-brick size-5 focus-visible:outline-3 focus-visible:outline-offset-2"
+        className="accent-navy size-5 shrink-0"
       />
       <span>{children}</span>
       <span className="text-ink-muted ml-auto text-[0.9375rem]">
-        {count}
-        <span className="sr-only"> pozycji</span>
+        <span aria-hidden="true">{count}</span>
+        <span className="sr-only">, {formatResultCount(count)}</span>
       </span>
     </label>
   );
@@ -251,7 +267,7 @@ function ResultRow({ innovation: i }: { innovation: InnovationSummary }) {
       <h3 className="text-[1.375rem] leading-snug font-bold tracking-tight">
         <Link
           href={`/library/${i.id}`}
-          className="text-ink hover:text-navy focus-visible:outline-brick no-underline hover:underline focus-visible:outline-3 focus-visible:outline-offset-2"
+          className="text-ink hover:text-navy no-underline hover:underline"
         >
           {i.nazwa}
         </Link>
@@ -265,7 +281,7 @@ function ResultRow({ innovation: i }: { innovation: InnovationSummary }) {
         {i.sprawdzona_przez_rops ? <Badge variant="success">Sprawdzona przez ROPS</Badge> : null}
         {i.opis_niepelny ? <Badge variant="warning">Opis niepełny</Badge> : null}
         {i.spoza_biblioteki ? (
-          <Badge variant="neutral">Z inkubatora ROPS, spoza Biblioteki online</Badge>
+          <Badge variant="neutral">Z inkubatora ROPS, spoza listy na stronie ROPS</Badge>
         ) : null}
         {meta ? <span className="text-ink-muted text-[0.9375rem]">{meta}</span> : null}
       </div>

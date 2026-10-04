@@ -150,3 +150,30 @@ export function ratingsCount(n: number): string {
 export function formatAverage(average: number): string {
   return average.toLocaleString("pl-PL", { maximumFractionDigits: 1 });
 }
+
+// --- "Zaplanuj test" form on the idea card ---
+
+export type PlanTestDraft = {
+  tytul: string;
+  opis: string;
+  miejsce: string;
+  termin: string;
+  miejsca: string;
+};
+export const EMPTY_PLAN: PlanTestDraft = {
+  tytul: "",
+  opis: "",
+  miejsce: "",
+  termin: "",
+  miejsca: "",
+};
+
+// Residents can't open someone else's idea, so the test starts with the idea's title and essence:
+// the sign-up card then says what is being tested.
+export function planTestDefaults(idea: { tytul: string; istota: string | null }): PlanTestDraft {
+  return {
+    ...EMPTY_PLAN,
+    tytul: `${idea.tytul} – test z mieszkańcami`.slice(0, 200),
+    opis: idea.istota ?? "",
+  };
+}

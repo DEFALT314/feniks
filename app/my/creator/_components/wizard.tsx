@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
+import { useFocusOnChange } from "@/components/ui/focus";
 import { Steps } from "@/components/ui/steps";
 import type { CanvasAnswer, CanvasField, IdeaWithCanvas } from "@/lib/contracts/idea-creator";
 import { saveCanvasAnswer } from "../actions";
-import { answeredCount, fieldIndex, fields, sectionOf, sections } from "../_lib/canvas";
+import { answeredCount, fields, sectionOf, sections, stepIndex, stepLabel } from "../_lib/canvas";
 import { useAutosave } from "../_lib/use-autosave";
 import { LockedNotice } from "./states";
 import { SaveStatusText, useSavedNavigation } from "./save-status";
@@ -33,8 +34,12 @@ export function Wizard({
     saveCanvasAnswer(ideaId, fieldId, answer),
   );
 
-  const index = Math.max(0, stepId ? fieldIndex(stepId) : 0);
+  const index = stepIndex(stepId);
   const field = fields[index];
+  // "Dalej", "Wstecz" and the section links keep the page mounted, so focus would stay on the
+  // pressed link: move it to the new question instead (WCAG 2.4.3)
+  const questionHeading = useRef<HTMLHeadingElement>(null);
+  useFocusOnChange(questionHeading, field.id);
   const previous = fields[index - 1];
   const next = fields[index + 1];
   const cardHref = `/my/creator/${ideaId}/card`;
@@ -53,9 +58,9 @@ export function Wizard({
           className="mx-auto flex max-w-[1200px] flex-col gap-2.5 px-4 py-5 sm:px-10"
         >
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h1 className="font-sans text-lg font-bold">Pomysł: {idea.tytul}</h1>
+            <h1 className="font-sans text-2xl leading-tight font-bold">Pomysł: {idea.tytul}</h1>
             <p className="text-muted-foreground text-base">
-              Krok {index + 1} z {fields.length} · <SaveStatusText autosave={autosave} />
+              {stepLabel(index)} · <SaveStatusText autosave={autosave} />
             </p>
           </div>
           <div
@@ -65,6 +70,7 @@ export function Wizard({
             aria-valuemin={1}
             aria-valuemax={fields.length}
             aria-valuenow={index + 1}
+            aria-valuetext={stepLabel(index)}
             className="bg-neutral-soft h-2 overflow-hidden rounded-full"
           >
             {/* Filled with the `scale` property, not `width`: no layout on every step, and it
@@ -79,7 +85,7 @@ export function Wizard({
 
       <div className="mx-auto flex max-w-[1200px] flex-wrap gap-10 px-4 pt-8 pb-16 sm:px-10">
         <div className="flex max-w-[250px] flex-[1_1_220px] flex-col gap-1.5">
-          <p className="text-muted-foreground text-[0.9375rem] font-bold">Kanwa innowacji</p>
+          <p className="text-muted-foreground text-base font-bold">Kanwa innowacji</p>
           <Steps
             label="Części kanwy"
             currentId={sectionOf(field.id)?.id ?? ""}
@@ -91,7 +97,7 @@ export function Wizard({
               total: section.fields.length,
             }))}
           />
-          <Link href={cardHref} className="mt-3 font-bold">
+          <Link href={cardHref} className="mt-3 inline-flex min-h-11 items-center font-bold">
             Podgląd fiszki
           </Link>
         </div>
@@ -109,6 +115,7 @@ export function Wizard({
             answer={answers[field.id]}
             onChange={save}
             disabled={!editable}
+            headingRef={questionHeading}
           />
 
           <nav

@@ -2,7 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { sendReply, startConversation } from "@/lib/messaging";
+import { getCurrentUser } from "@/lib/auth";
+import { inviteToThread, sendReply, startConversation } from "@/lib/messaging";
+import { addNotification } from "@/lib/notifications";
+import { createClient } from "@/lib/supabase/server";
 import { messagingDeps } from "./deps";
 
 export type FormState = { error?: string; sentAt?: number };
@@ -35,4 +38,25 @@ export async function startAction(_prev: FormState, formData: FormData): Promise
   if (!result.ok) return { error: result.message };
   revalidatePath("/my/messages");
   redirect(`/my/messages?thread=${result.threadId}`);
+}
+
+export type InviteState = { error?: string; invitedAt?: number };
+
+// "Zaproś do rozmowy" (ROPS): adds an expert or a partner to the open conversation.
+export async function inviteAction(
+  threadId: string,
+  _prev: InviteState,
+  formData: FormData,
+): Promise<InviteState> {
+  const user = await getCurrentUser();
+  if (!user) return { error: "Zaloguj się." };
+  const supabase = await createClient();
+  const result = await inviteToThread(
+    { supabase, me: user, addNotification: (n) => addNotification(n, supabase) },
+    threadId,
+    formData.get("user"),
+  );
+  if (!result.ok) return { error: result.message };
+  revalidatePath("/my/messages");
+  return { invitedAt: Date.now() };
 }

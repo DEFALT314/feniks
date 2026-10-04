@@ -41,7 +41,13 @@ export async function togglePublishedAction(formData: FormData) {
   if (!supabase) return;
   const id = String(formData.get("id") ?? "");
   await setPublished(
-    { supabase, writeAudit: (e) => writeAudit(e, supabase) },
+    {
+      supabase,
+      writeAudit: (e) => writeAudit(e, supabase),
+      addNotification: (n) => addNotification(n, supabase),
+      sendEmail: (m) => sendEmail(m),
+      siteUrl: siteUrl(),
+    },
     id,
     formData.get("on") === "true",
   );

@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { flushSync } from "react-dom";
+import { announce } from "@/components/ui/announcer";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { focusElement, useFocusOnChange } from "@/components/ui/focus";
 import type { TesterTest } from "@/lib/contracts/innovation-tester";
 import { signUpForTest, withdrawFromTest } from "../actions";
 import { RatingForm } from "./rating-form";
@@ -21,6 +23,16 @@ function firstToRate(tests: TesterTest[]): string | null {
 export function TesterBoard({ tests }: { tests: TesterTest[] }) {
   const [chosen, setChosen] = useState<string | null>(null);
   const ratingHeading = useRef<HTMLHeadingElement>(null);
+  const openHeading = useRef<HTMLHeadingElement>(null);
+  // "Wypisz się" on a test with closed sign-ups removes its whole card: if focus fell to <body>
+  // with it, continue from the list heading instead of the top of the page (WCAG 2.4.3)
+  const testIds = tests.map((t) => t.id).join(" ");
+  const previousIds = useRef(testIds);
+  useEffect(() => {
+    if (previousIds.current === testIds) return;
+    previousIds.current = testIds;
+    if (focusLost()) focusElement(openHeading.current);
+  }, [testIds]);
   const rated =
     tests.find((t) => t.id === chosen && t.zapisany) ??
     tests.find((t) => t.id === firstToRate(tests));
@@ -38,13 +50,13 @@ export function TesterBoard({ tests }: { tests: TesterTest[] }) {
         aria-labelledby="open-heading"
         className="flex min-w-0 flex-[999_1_520px] flex-col gap-4"
       >
-        <h2 id="open-heading" className="text-[1.625rem] font-bold">
+        <h2 id="open-heading" ref={openHeading} className="text-[1.625rem] font-bold">
           Otwarte testy
         </h2>
         {tests.length === 0 ? (
           <p className="text-muted-foreground">
             Teraz nie ma otwartych testów. Zajrzyj tu później albo przejrzyj{" "}
-            <Link href="/library">Bibliotekę rozwiązań</Link>.
+            <Link href="/library">Bibliotekę innowacji</Link>.
           </p>
         ) : (
           <ul className="flex flex-col gap-4">
@@ -87,14 +99,19 @@ function TestCard({ test, onRate }: { test: TesterTest; onRate: () => void }) {
   const [pending, startTransition] = useTransition();
   const [message, setMessage] = useState<{ error: boolean; text: string } | null>(null);
   const headingId = `test-${test.id}-heading`;
+  // "Zapisz się" turns into "Oceń test" / "Wypisz się" (and back) after the server answers: the
+  // pressed button disappears, so focus moves to the first button of the new set (WCAG 2.4.3)
+  const firstAction = useRef<HTMLButtonElement>(null);
+  useFocusOnChange(firstAction, test.zapisany);
 
   const run = (action: () => Promise<{ ok: boolean; error?: string }>, done: string) => {
     setMessage(null);
     startTransition(async () => {
       const result = await action();
-      setMessage(
-        result.ok ? { error: false, text: done } : { error: true, text: result.error ?? "" },
-      );
+      const text = result.ok ? done : (result.error ?? "");
+      setMessage({ error: !result.ok, text });
+      // The app-wide announcer, not this card: the card can disappear after "Wypisz się"
+      announce(text);
     });
   };
 
@@ -109,7 +126,7 @@ function TestCard({ test, onRate }: { test: TesterTest; onRate: () => void }) {
         <h3 id={headingId} className="text-[1.375rem] leading-snug font-bold">
           {test.tytul}
         </h3>
-        {test.zapisany ? <Badge variant="success">Jesteś zapisany</Badge> : null}
+        {test.zapisany ? <Badge variant="success">Masz miejsce na teście</Badge> : null}
       </div>
       {test.opis ? <p>{test.opis}</p> : null}
       <TestDetails test={test} />
@@ -122,21 +139,25 @@ function TestCard({ test, onRate }: { test: TesterTest; onRate: () => void }) {
       <div className="mt-1 flex flex-wrap gap-2.5">
         {test.zapisany ? (
           <>
-            <Button type="button" onClick={onRate} aria-describedby={headingId}>
+            <Button ref={firstAction} type="button" onClick={onRate} aria-describedby={headingId}>
               {test.moja_ocena ? "Zmień ocenę" : "Oceń test"}
             </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              disabled={pending}
-              aria-describedby={headingId}
-              onClick={() => run(() => withdrawFromTest(test.id), "Wypisano Cię z testu.")}
-            >
-              {pending ? "Wypisuję…" : "Wypisz się"}
-            </Button>
+            {/* After rating, the test took place: withdrawing would orphan the rating */}
+            {test.moja_ocena ? null : (
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={pending}
+                aria-describedby={headingId}
+                onClick={() => run(() => withdrawFromTest(test.id), "Wypisano Cię z testu.")}
+              >
+                {pending ? "Wypisuję…" : "Wypisz się"}
+              </Button>
+            )}
           </>
         ) : (
           <Button
+            ref={firstAction}
             type="button"
             disabled={pending}
             aria-describedby={headingId}
@@ -155,12 +176,14 @@ function TestCard({ test, onRate }: { test: TesterTest; onRate: () => void }) {
           </Link>
         ) : null}
       </div>
-      <p
-        aria-live="polite"
-        className={message?.error ? "text-danger text-base font-bold" : "text-success text-base"}
-      >
+      <p className={message?.error ? "text-danger text-base font-bold" : "text-success text-base"}>
         {message?.text}
       </p>
     </Card>
   );
+}
+
+/** True when nothing has focus, e.g. the focused button was removed with its card. */
+export function focusLost(): boolean {
+  return !document.activeElement || document.activeElement === document.body;
 }

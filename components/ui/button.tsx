@@ -12,7 +12,7 @@ const pressClass = "active:scale-[0.98] motion-reduce:active:scale-100";
 // Each variant sets its own border color: `cn` can't merge our custom theme colors, so don't override
 // colors through className; add a variant instead.
 const buttonVariants = cva(
-  `inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[10px] border font-bold whitespace-nowrap no-underline transition-[background-color,border-color,color,box-shadow,scale] select-none ${pressClass} disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100 motion-reduce:transition-colors [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5`,
+  `inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[10px] border font-bold whitespace-nowrap no-underline transition-[background-color,border-color,color,box-shadow,scale] select-none ${pressClass} data-disabled:cursor-not-allowed data-disabled:opacity-70 data-disabled:active:scale-100 motion-reduce:transition-colors [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5`,
   {
     variants: {
       variant: {
@@ -41,10 +41,14 @@ const buttonVariants = cva(
 
 type ButtonProps = ButtonPrimitive.Props & VariantProps<typeof buttonVariants>;
 
-function Button({ className, variant, size, ...props }: ButtonProps) {
+// A disabled button stays focusable (aria-disabled instead of the native attribute): with
+// `disabled={pending}` the native attribute would throw focus to <body> right after a submit
+// (WCAG 2.4.3). Clicks and Enter are still blocked by Base UI.
+function Button({ className, variant, size, focusableWhenDisabled = true, ...props }: ButtonProps) {
   return (
     <ButtonPrimitive
       data-slot="button"
+      focusableWhenDisabled={focusableWhenDisabled}
       className={cn(buttonVariants({ variant, size }), className)}
       {...props}
     />

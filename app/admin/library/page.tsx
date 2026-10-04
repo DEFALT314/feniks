@@ -5,8 +5,11 @@ import { getCategories, getInnovations } from "@/app/library/_lib/data";
 import { queryStems, score } from "@/app/library/_lib/search";
 import { createClient } from "@/lib/supabase/server";
 import { AdminNav } from "../_components/admin-nav";
+import { plural } from "../_lib/format";
+import { NewCardForm } from "./new-card-form";
+import { requireRops } from "@/lib/auth/require-rops";
 
-export const metadata: Metadata = { title: "Biblioteka – Panel ROPS" };
+export const metadata: Metadata = { title: "Biblioteka – Panel ROPS – HubMI.pl" };
 
 type AuditRow = { id: number; akcja: string; obiekt: string; created_at: string };
 
@@ -25,6 +28,7 @@ async function recentEdits(): Promise<AuditRow[]> {
 const time = new Intl.DateTimeFormat("pl-PL", { dateStyle: "short", timeStyle: "short" });
 
 export default async function Page({ searchParams }: PageProps<"/admin/library">) {
+  await requireRops();
   const { q } = await searchParams;
   const query = typeof q === "string" ? q : "";
   const [innovations, categories, edits] = await Promise.all([
@@ -35,7 +39,11 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
   const stems = queryStems(query);
   const list = innovations
     .filter((i) => score(i, stems) !== null)
-    .sort((a, b) => a.nazwa.localeCompare(b.nazwa, "pl"));
+    // Hidden cards first: a new card waits there for its description and publishing
+    .sort(
+      (a, b) =>
+        Number(a.opublikowana) - Number(b.opublikowana) || a.nazwa.localeCompare(b.nazwa, "pl"),
+    );
   const categoryName = (id: string) => categories.find((c) => c.id === id)?.nazwa ?? id;
   const nameById = new Map(innovations.map((i) => [i.id, i.nazwa]));
 
@@ -48,8 +56,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
             Karty innowacji
           </h1>
           <p className="text-muted-foreground">
-            Popraw opis, materiały albo widoczność karty bez programisty. Zmiana jest widoczna w
-            Bibliotece od razu.
+            Popraw opis, materiały albo widoczność karty. Zmiany widać w Bibliotece od razu.
           </p>
           <form method="get" className="flex flex-wrap gap-3" role="search">
             <label htmlFor="szukaj" className="sr-only">
@@ -65,13 +72,13 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
             />
             <button
               type="submit"
-              className="bg-navy hover:bg-navy-strong min-h-[50px] rounded-[10px] px-[22px] text-[1.0625rem] font-bold text-white"
+              className="bg-navy hover:bg-navy-strong min-h-[50px] rounded-[10px] border border-transparent px-[22px] text-[1.0625rem] font-bold text-white"
             >
               Szukaj
             </button>
           </form>
           <p aria-live="polite" className="m-0 text-base font-bold">
-            {list.length} {list.length === 1 ? "karta" : "kart"}
+            {list.length} {plural(list.length, "karta", "karty", "kart")}
           </p>
           <div className="border-border overflow-x-auto rounded-xl border bg-white">
             <table className="w-full border-collapse text-left text-[1.0625rem]">
@@ -122,11 +129,23 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
           aria-labelledby="dziennik"
           className="flex max-w-[360px] flex-[1_1_280px] flex-col gap-3"
         >
+          <section
+            aria-labelledby="nowa-karta"
+            className="border-border mb-4 flex flex-col gap-3 rounded-xl border bg-white p-5"
+          >
+            <h2 id="nowa-karta" className="text-xl font-bold">
+              Nowa karta
+            </h2>
+            <p className="text-muted-foreground m-0 text-base">
+              Karta zaczyna jako ukryta. Uzupełnij opis, a potem zaznacz „Opublikowana”.
+            </p>
+            <NewCardForm categories={categories} />
+          </section>
           <h2 id="dziennik" className="text-xl font-bold">
             Dziennik zmian
           </h2>
           {edits.length === 0 ? (
-            <p className="text-muted-foreground text-base">Brak edycji kart.</p>
+            <p className="text-muted-foreground text-base">Nikt jeszcze nie zmieniał kart.</p>
           ) : (
             <ul className="m-0 flex list-none flex-col gap-2 p-0 text-base">
               {edits.map((e) => {
@@ -136,7 +155,7 @@ export default async function Page({ searchParams }: PageProps<"/admin/library">
                     <span className="text-muted-foreground">
                       {time.format(new Date(e.created_at))}
                     </span>{" "}
-                    edycja karty:{" "}
+                    {e.akcja === "innowacja.nowa" ? "dodano kartę" : "zmieniono kartę"}:{" "}
                     <Link
                       href={`/admin/library/${id}`}
                       className="text-navy underline underline-offset-[3px]"

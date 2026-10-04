@@ -101,3 +101,11 @@ describe("filters from the page URL", () => {
     expect(libraryUrl(filters())).toBe("/library");
   });
 });
+
+describe("search: source counts", () => {
+  it("counts results from the ROPS online Library apart from the ones outside it", () => {
+    const result = search(catalog, filters(), available);
+    expect(result.liczniki.z_biblioteki).toBe(115);
+    expect(result.liczba - (result.liczniki.z_biblioteki ?? 0)).toBe(43);
+  });
+});

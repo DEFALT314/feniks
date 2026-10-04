@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 
 // Shown while the AI picks innovations (8–25 s on the free model, ~2 s on paid DeepSeek).
-// Screen readers hear one static message; the rotating step line is visual only (aria-hidden),
-// so they are not flooded with updates. All motion stops with prefers-reduced-motion.
+// It is not a live region: the caller announces one short sentence through announce()
+// (components/ui/announcer.tsx), and the rotating step line and counter are visual only
+// (aria-hidden), so screen readers are not flooded with updates. All motion stops with
+// prefers-reduced-motion.
 
 export const AI_STEPS = [
   "Czytam Twój opis…",
@@ -33,7 +35,7 @@ type AiProgressProps = {
 export function AiProgress({
   title = "AI wybiera najlepiej pasujące innowacje",
   steps = AI_STEPS,
-  note = "Poniżej wstępne wyniki wyszukiwania. Za chwilę zastąpi je wybór AI z uzasadnieniem.",
+  note = "Poniżej wstępne wyniki. Za chwilę AI wybierze najlepiej pasujące i wyjaśni dlaczego.",
 }: AiProgressProps = {}) {
   const [seconds, setSeconds] = useState(0);
   useEffect(() => {
@@ -49,9 +51,7 @@ export function AiProgress({
           <span className="bg-navy absolute inline-flex size-full animate-ping rounded-full opacity-60 motion-reduce:animate-none" />
           <span className="bg-navy relative inline-flex size-3 rounded-full" />
         </span>
-        <p role="status" className="text-navy font-bold">
-          {title}
-        </p>
+        <p className="text-navy font-bold">{title}</p>
         <span aria-hidden="true" className="text-ink-muted ml-auto text-base tabular-nums">
           {seconds} s
         </span>
@@ -59,9 +59,12 @@ export function AiProgress({
       <p aria-hidden="true" className="text-ink-muted text-base">
         {stepAt(seconds, steps)}
       </p>
-      <div aria-hidden="true" className="h-1.5 overflow-hidden rounded-full bg-white">
+      <div
+        aria-hidden="true"
+        className="h-1.5 overflow-hidden rounded-full bg-white forced-colors:border forced-colors:border-[CanvasText]"
+      >
         <div
-          className="bg-navy h-full rounded-full transition-[width] duration-1000 ease-out motion-reduce:transition-none"
+          className="bg-navy h-full rounded-full transition-[width] duration-1000 ease-out forced-color-adjust-none motion-reduce:transition-none forced-colors:bg-[CanvasText]"
           style={{ width: `${progressPercent(seconds)}%` }}
         />
       </div>
