@@ -3,7 +3,7 @@ import { NUMBER_PLACEHOLDER, removeInventedNumbers } from "./guards";
 
 vi.mock("server-only", () => ({}));
 
-const { alternatives, applicationDraft, budgetFromCanvas, hints, CALLS } =
+const { alternatives, applicationDraft, budgetFromCanvas, hints, withoutFitTalk, CALLS } =
   await import("./creator");
 
 function fakeLlm(...answers: object[]) {
@@ -144,6 +144,24 @@ describe("applicationDraft", () => {
     // the model sees the canvas and is not asked for a budget it would only guess
     expect(calls[0][1].content).toContain("Partnerzy: GOPS");
     expect(calls[0][0].content).not.toContain("budget (only cost categories");
+  });
+
+  it("tells the model never to pretend the idea fits the call", async () => {
+    const { client, calls } = fakeLlm({ sections: [{ key: "goal", text: "Cel." }] });
+    await applicationDraft({ idea, call_id: CALLS[0].id }, { client });
+    expect(calls[0][0].content).toContain("Never pretend the idea fits the call");
+  });
+
+  it("keeps comments about the call's fit out of the application text", () => {
+    expect(
+      withoutFitTalk(
+        "Celem jest ciepły posiłek dla osób bezdomnych. Cel nie jest powiązany z celem naboru, bo dotyczy osób bezdomnych.",
+      ),
+    ).toBe("Celem jest ciepły posiłek dla osób bezdomnych.");
+    // a sentence that ties the idea to the call positively stays
+    expect(
+      withoutFitTalk("Projekt odpowiada na cel naboru: seniorzy mieszkają dłużej w domu."),
+    ).toBe("Projekt odpowiada na cel naboru: seniorzy mieszkają dłużej w domu.");
   });
 
   it("budgetFromCanvas is empty without cost answers", () => {
