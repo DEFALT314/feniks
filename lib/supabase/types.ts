@@ -395,6 +395,54 @@ export type Database = {
         };
         Relationships: [];
       };
+      innovation_reviews: {
+        Row: {
+          co_dzialalo: string | null;
+          co_poprawic: string | null;
+          created_at: string;
+          id: string;
+          innowacja_id: string;
+          ocena: number;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          co_dzialalo?: string | null;
+          co_poprawic?: string | null;
+          created_at?: string;
+          id?: string;
+          innowacja_id: string;
+          ocena: number;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          co_dzialalo?: string | null;
+          co_poprawic?: string | null;
+          created_at?: string;
+          id?: string;
+          innowacja_id?: string;
+          ocena?: number;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "innovation_reviews_innowacja_id_fkey";
+            columns: ["innowacja_id"];
+            isOneToOne: false;
+            referencedRelation: "innovations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "innovation_reviews_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       innovations: {
         Row: {
           autor_instytucja: string | null;
@@ -1071,6 +1119,13 @@ export type Database = {
       };
       idea_author_email: { Args: { p_idea_id: string }; Returns: string };
       idea_editable: { Args: { p_idea_id: string }; Returns: boolean };
+      innovation_feedback_summary: {
+        Args: { p_innowacja_id: string };
+        Returns: {
+          ocen: number;
+          srednia: number;
+        }[];
+      };
       invite_to_thread: {
         Args: { p_thread_id: string; p_user_id: string };
         Returns: undefined;
