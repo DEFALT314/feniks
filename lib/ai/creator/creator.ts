@@ -269,12 +269,14 @@ export async function alternatives(
 non-obvious ways to solve the SAME problem for the SAME people: e.g. a different group that helps, an unexpected
 local partner (school, pharmacy, parish, sports club, shop), a different format (phone, game, meeting, mobile
 service), or turning the receivers into helpers. Each must be realistic for a small Małopolska municipality and
-different from what the idea already does. ${RULES}
+different from what the idea already does. Serious and practical: a social worker should take it seriously. No
+one-off events or gimmicks (no matches, concerts, contests, fans, celebrities). ${RULES}
 Return json: {"alternatives": [{"title": "a few words", "text": "1-3 sentences", "why": "one short sentence"}]}`,
       },
       { role: "user", content: `Idea:\n${ideaText(request.idea)}` },
     ],
-    { temperature: 0.8, maxTokens: 1500, ...options },
+    // 0.8 gave ideas like "football fans visit seniors after hospital"; 0.5 stays varied but sensible
+    { temperature: 0.5, maxTokens: 1500, ...options },
   );
   const source = ideaText(request.idea);
   return {

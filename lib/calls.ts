@@ -59,6 +59,7 @@ export async function listOpenCalls(supabase: Client, now = new Date()): Promise
     goal: c.cel ?? "",
     deadline: c.termin_do,
     demo: c.demo,
+    areas: c.obszary ?? [], // for matching calls to an idea's area (P3, lib/ai/creator/call-fit.ts)
   }));
 }
 
