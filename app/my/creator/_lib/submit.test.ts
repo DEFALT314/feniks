@@ -24,6 +24,11 @@ function deps(idea: MyIdea | null = IDEA, sent: SendResult = { ok: true, resent:
     send: vi.fn(async () => sent),
     notifyRops: vi.fn(async () => ({ notified: 1, emailSent: true })),
     writeAudit: vi.fn(async () => 1),
+    changeConsent: vi.fn(async (_idea: { id: string; tytul: string }, consent: boolean) => ({
+      status: "saved" as const,
+      consent,
+      message: "",
+    })),
   } satisfies SubmitDeps;
 }
 
@@ -102,5 +107,65 @@ describe("submitIdea", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     expect(await submitIdea(d, IDEA.id)).toEqual({ status: "sent", resent: false });
     expect(d.writeAudit).toHaveBeenCalled();
+  });
+
+  describe("consent to show the idea as a good practice (#104)", () => {
+    it("saves the ticked consent before sending", async () => {
+      const d = deps();
+      expect(await submitIdea(d, IDEA.id, true)).toEqual({ status: "sent", resent: false });
+      expect(d.changeConsent).toHaveBeenCalledWith(
+        { id: IDEA.id, tytul: "Sąsiedzki dyżur po wypisie" },
+        true,
+      );
+      expect(d.changeConsent.mock.invocationCallOrder[0]).toBeLessThan(
+        d.send.mock.invocationCallOrder[0],
+      );
+    });
+
+    it("leaves consent alone when the choice did not change", async () => {
+      const d = deps();
+      await submitIdea(d, IDEA.id, false);
+      await submitIdea(d, IDEA.id);
+      expect(d.changeConsent).not.toHaveBeenCalled();
+      const agreed = deps({ ...IDEA, zgoda_publikacji_at: "2026-10-04T09:00:00+02:00" });
+      await submitIdea(agreed, IDEA.id, true);
+      expect(agreed.changeConsent).not.toHaveBeenCalled();
+    });
+
+    it("withdraws consent when the box is unticked on a corrected version", async () => {
+      const d = deps(
+        {
+          ...IDEA,
+          wyslany_at: "2026-10-03T19:00:00+02:00",
+          status: "do_poprawy",
+          zgoda_publikacji_at: "2026-10-03T19:00:00+02:00",
+        },
+        { ok: true, resent: true },
+      );
+      await submitIdea(d, IDEA.id, false);
+      expect(d.changeConsent).toHaveBeenCalledWith(expect.anything(), false);
+    });
+
+    it("does not send when the consent could not be saved", async () => {
+      const d = deps();
+      d.changeConsent.mockResolvedValue({
+        status: "error",
+        message: "Nie udało się zapisać zgody. Spróbuj ponownie.",
+      } as never);
+      expect(await submitIdea(d, IDEA.id, true)).toEqual({
+        status: "error",
+        message: "Nie udało się zapisać zgody. Spróbuj ponownie.",
+      });
+      expect(d.send).not.toHaveBeenCalled();
+    });
+
+    it("says the consent change was kept when the send itself fails", async () => {
+      const d = deps(IDEA, { ok: false, reason: "failed" });
+      expect(await submitIdea(d, IDEA.id, true)).toEqual({
+        status: "error",
+        message:
+          "Nie udało się wysłać pomysłu. Spróbuj ponownie. Twój wybór o pokazywaniu pomysłu innym zapisaliśmy.",
+      });
+    });
   });
 });

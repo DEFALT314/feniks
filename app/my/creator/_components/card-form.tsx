@@ -254,6 +254,8 @@ export function IdeaCard({
               missing={missing}
               beforeSend={autosave.flush}
               justSent={justSent}
+              consent={Boolean(idea.zgoda_publikacji_at)}
+              publishedAt={idea.opublikowany_at ?? null}
             />
           </CardStep>
         </section>
