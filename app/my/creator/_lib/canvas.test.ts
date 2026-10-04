@@ -10,6 +10,9 @@ import {
   sectionOf,
   sections,
   stageFromAnswers,
+  stepIndex,
+  stepLabel,
+  stepTitle,
 } from "./canvas";
 
 const field = (id: string): CanvasField => {
@@ -40,6 +43,19 @@ describe("canvas steps", () => {
     ]);
     expect(sections.map((s) => s.fields.length)).toEqual([3, 2, 3, 2, 3, 2, 2, 3, 1, 1]);
     expect(sectionOf("gotowosc")?.label).toBe("Rozwiązanie");
+  });
+
+  it("puts the step number and the question in the page title", () => {
+    expect(stepTitle("intensywnosc")).toBe(
+      `Krok ${stepIndex("intensywnosc") + 1} z 22: Jak bardzo źle jest bez waszego rozwiązania? – Kanwa innowacji – HubMI.pl`,
+    );
+    expect(stepLabel(2)).toBe("Krok 3 z 22");
+  });
+
+  it("falls back to the first question for a missing or unknown step", () => {
+    expect(stepIndex(undefined)).toBe(0);
+    expect(stepIndex("no-such-step")).toBe(0);
+    expect(stepTitle(undefined)).toMatch(/^Krok 1 z 22: /);
   });
 });
 

@@ -1,8 +1,10 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import Link from "next/link";
+import { useActionState, useEffect, useId, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { focusElement, useFocusFirstError } from "@/components/ui/focus";
 import type { IdeaStatus } from "@/lib/contracts/admin";
 import { sendToRops } from "../actions";
 import { authorStatus, canSubmit } from "../_lib/submission";
@@ -37,16 +39,28 @@ export function SubmitPanel({
   const [state, send, pending] = useActionState<SubmitState>(
     async () => {
       if (!(await beforeSend())) {
-        return { status: "error", message: "Najpierw zapisz fiszkę: sprawdź zaznaczone pola." };
+        return {
+          status: "error",
+          message:
+            "Nie wysłaliśmy pomysłu, bo nie udało się zapisać fiszki. Popraw zaznaczone pola i wyślij jeszcze raz.",
+        };
       }
       return sendToRops(ideaId);
     },
     { status: "idle" },
   );
 
-  // Show the confirmation once: drop ?sent= so a reload or Back doesn't repeat it
+  const sentRef = useRef<HTMLParagraphElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const missingId = useId();
+  // A failed send: focus the error, so it is read and the user knows the send didn't happen
+  useFocusFirstError(formRef, state.status === "error" ? state : undefined);
+
+  // Show the confirmation once: drop ?sent= so a reload or Back doesn't repeat it. The page has
+  // just reloaded, so a live region would stay silent: focus the confirmation instead (WCAG 4.1.3).
   useEffect(() => {
     if (!justSent) return;
+    focusElement(sentRef.current);
     const url = new URL(window.location.href);
     url.searchParams.delete("sent");
     window.history.replaceState(window.history.state, "", url);
@@ -74,32 +88,40 @@ export function SubmitPanel({
               <strong>Uwagi ROPS:</strong> {comment}
             </p>
           ) : null}
+          {/* Opens the idea's conversation (or a new message about it): answer ROPS or ask */}
+          <Link href={`/my/messages?idea=${ideaId}`} className="self-start text-base">
+            {comment ? "Odpowiedz ROPS w Wiadomościach" : "Napisz do ROPS o tym pomyśle"}
+          </Link>
         </div>
       ) : null}
       {allowed ? (
         <form action={send} className="flex flex-col gap-2">
           {missing.length ? (
-            <p className="text-base">
+            <p id={missingId} className="text-base">
               Żeby wysłać, uzupełnij: <strong>{missing.join(", ")}</strong>.
             </p>
           ) : null}
-          <Button type="submit" disabled={pending || missing.length > 0}>
+          <Button
+            type="submit"
+            disabled={pending || missing.length > 0}
+            aria-describedby={missing.length ? missingId : undefined}
+          >
             {pending ? "Wysyłamy…" : resend ? "Wyślij poprawioną wersję" : "Wyślij do ROPS"}
           </Button>
           <p className="text-muted-foreground text-base">
-            Zespół ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach.
+            ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach, wyślemy ją też mailem.
           </p>
         </form>
       ) : null}
-      <div aria-live="polite">
+      <div ref={formRef}>
         {justSent && sentAt ? (
-          <p role="status" className="text-success font-bold">
+          <p ref={sentRef} tabIndex={-1} className="text-success font-bold">
             {justSent === "again" ? "Wysłano poprawioną wersję do ROPS." : "Wysłano do ROPS."}{" "}
             Dostaniesz powiadomienie, gdy zespół oceni pomysł.
           </p>
         ) : null}
         {state.status === "error" ? (
-          <p role="alert" className="text-danger font-bold">
+          <p data-form-error className="text-danger font-bold">
             {state.message}
             {state.missing?.length ? ` Brakuje: ${state.missing.join(", ")}.` : ""}
           </p>

@@ -10,3 +10,17 @@ export function innovationFromRow(row: any): Innovation {
     ma_pdf: Boolean(row.materialy?.opis_pdf),
   });
 }
+
+// Rows → contract, skipping a row that does not fit it (logged): one broken card must not take
+// the whole Library down
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function innovationsFromRows(rows: any[]): Innovation[] {
+  return rows.flatMap((row) => {
+    try {
+      return [innovationFromRow(row)];
+    } catch (e) {
+      console.error(`Zasobnik: pomijam kartę ${row?.id}, niezgodna z kontraktem`, e);
+      return [];
+    }
+  });
+}

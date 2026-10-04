@@ -16,7 +16,7 @@ Każdy scenariusz kończy się zdaniem, które mówimy jury: pokazuje, które kr
 
 - [ ] Otworzyć produkcję w trybie incognito; „Wejdź jako…” działa dla wszystkich 5 kont.
 - [ ] Rozgrzać AI: jedno zapytanie na `/match` (pierwsze bywa wolniejsze).
-- [ ] Reset danych demo (#11), jeśli ktoś wcześniej zmieniał pomysły lub role.
+- [ ] Reset danych demo (#11), jeśli ktoś wcześniej zmieniał pomysły lub role: `supabase/seed_demo.sql` (testy, statystyki trendów, konta).
 - [ ] Dwie karty przeglądarki: Fundacja Dobry Start i Redakcja ROPS (pokaz powiadomienia na żywo).
 - [ ] Powiększenie przeglądarki 125%, żeby jury widziało tekst z sali.
 
@@ -74,7 +74,27 @@ To jest test „szybkości komunikacji” z kryteriów jury. Dwie karty przeglą
 3. `/challenge-map` → „Cała mapa w tabeli”.
 4. **Zdanie dla jury:** „Projektujemy pod WCAG 2.1 AA i pod seniorów: klawiatura, kontrast, tabela zamiast samej mapy, prosty język.”
 
-Tester (IV): na `main` to jeszcze zaślepka (#36). Pokazujemy dopiero, gdy P2 go skończy.
+## Scenariusz G: Mieszkaniec testuje rozwiązanie (Tester, ok. 25 s)
+
+1. Wejdź jako **Stanisław** → w menu konta „Testy” (albo kafelek „Twoje sprawy” na stronie głównej).
+2. „Merkury – symulator bankomatu” → „Zapisz się” → „Oceń test” → 4 → „Co poprawić?”: „Większe przyciski” → „Wyślij ocenę”.
+3. Na dole „Twoje testy i opinie”: test pomysłu „Kawiarenka cyfrowa” ma średnią 4,5 i „Propozycję usprawnienia” od uczestników.
+4. **Zdanie dla jury:** „Mieszkańcy nie tylko zgłaszają problemy, ale sami sprawdzają rozwiązania i mówią, co poprawić. Autor dostaje ocenę od razu.”
+
+## Scenariusz H: Mentor i partnerstwo (Komunikacja, ok. 20 s)
+
+1. **Stanisław** → Wiadomości → „Zapytaj eksperta (mentora)” → Ewa jest już wybrana → wyślij pytanie.
+2. **GOPS** → Wiadomości → „Napisz do ROPS” → w polu „Do kogo” wybierz Fundację Dobry Start → wyślij.
+3. **Redakcja ROPS** → ta sama rozmowa → „Zaproś eksperta albo partnera do tej rozmowy” → Ewa.
+4. **Zdanie dla jury:** „Gmina, organizacja i ekspert rozmawiają w jednym miejscu, a ROPS widzi każdą rozmowę i może dołączyć.”
+
+## Scenariusz I: ROPS ogłasza nabór (Panel + powiadomienia, ok. 15 s)
+
+1. **Redakcja ROPS** → Panel ROPS → Nabory → przy „Wsparcie seniorów…” „Wyłącz”, potem „Włącz” (albo zmień termin).
+2. Komunikat: „Powiadomiliśmy autorów pasujących pomysłów: N”. U Fundacji i Stanisława zapala się dzwonek.
+3. **Zdanie dla jury:** „Zmiana w naborze sama trafia do autorów pomysłów z tego obszaru. Nikt nie musi rozsyłać maili.”
+
+Uwaga do scenariusza A: opis z przemocą lub myślami samobójczymi pokazuje nad wynikiem numery alarmowe (112, Niebieska Linia, 800 70 2222, 116 111). Warto wspomnieć, jeśli jury zapyta o bezpieczeństwo.
 
 ## Film MP4 – maks. 3:00 (#29, nagrania P2 #38)
 

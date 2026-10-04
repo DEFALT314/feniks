@@ -4,7 +4,9 @@ import type { MatchResponse } from "@/lib/contracts/match";
 import {
   buildRequest,
   fetchMatch,
+  plural,
   reportNeedHref,
+  resultAnnouncement,
   runTwoPhase,
   validate,
   type Phase,
@@ -12,18 +14,17 @@ import {
 
 const values = {
   description: "  Tata wraca ze szpitala po udarze.  ",
-  role: "mieszkaniec" as const,
   municipality: " ",
 };
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
 describe("buildRequest", () => {
-  it("trims the description and leaves out an empty municipality", () => {
+  it("trims the description and leaves out an empty municipality and the role", () => {
     expect(buildRequest(values, false)).toEqual({
       description: "Tata wraca ze szpitala po udarze.",
-      role: "mieszkaniec",
       ai: false,
     });
+    expect(buildRequest(values, false)).not.toHaveProperty("role");
     expect(buildRequest({ ...values, municipality: "Przykładowa Wola" }, true).municipality).toBe(
       "Przykładowa Wola",
     );
@@ -141,11 +142,62 @@ describe("reportNeedHref", () => {
 
   it("without a challenge uses a plain topic", () => {
     const url = parse(reportNeedHref({ ...base, challenge: null }));
-    expect(url.searchParams.get("topic")).toBe("Potrzeba, na którą nie znalazłem rozwiązania");
+    expect(url.searchParams.get("topic")).toBe("Potrzeba bez gotowego rozwiązania");
   });
 
   it("sends the redacted description from the response, never more than the form accepts", () => {
     const long = { ...base, description_segments: [{ text: "x".repeat(6000), highlight: false }] };
     expect(parse(reportNeedHref(long)).searchParams.get("text")).toHaveLength(5000);
+  });
+});
+
+describe("plural", () => {
+  it("picks the Polish form for 1, 2–4 and 5+, with 12–14 in the last form", () => {
+    const form = (n: number) => plural(n, "propozycja", "propozycje", "propozycji");
+    expect([1, 2, 4, 5, 12, 14, 22, 25].map(form)).toEqual([
+      "propozycja",
+      "propozycje",
+      "propozycje",
+      "propozycji",
+      "propozycji",
+      "propozycji",
+      "propozycje",
+      "propozycji",
+    ]);
+  });
+});
+
+describe("resultAnnouncement", () => {
+  const ai = fixture.response as MatchResponse;
+  const ranking = { ...ai, picked_by: "search" } as MatchResponse;
+
+  it("gives one short sentence per phase instead of reading the whole result", () => {
+    expect(resultAnnouncement("searching", null, null)).toBe("Szukam w Bibliotece ROPS…");
+    expect(
+      resultAnnouncement(
+        "choosing",
+        { ...ranking, innovations: [...ai.innovations, ai.innovations[0]] },
+        null,
+      ),
+    ).toBe("Znaleźliśmy 3 wstępne wyniki. AI wybiera najlepiej pasujące, to potrwa kilka sekund.");
+    expect(
+      resultAnnouncement("done", { ...ai, innovations: ai.innovations.slice(0, 1) }, null),
+    ).toBe("Gotowe. Znaleźliśmy 1 propozycję AI.");
+    expect(
+      resultAnnouncement("done", { ...ranking, innovations: ai.innovations.slice(0, 2) }, null),
+    ).toBe("Gotowe. Znaleźliśmy 2 innowacje.");
+  });
+
+  it("says when nothing fits and reads the error as it is", () => {
+    expect(resultAnnouncement("done", { ...ai, innovations: [] }, null)).toMatch(
+      /nie ma innowacji, która pasuje/,
+    );
+    expect(resultAnnouncement("error", null, "Brak połączenia.")).toBe("Brak połączenia.");
+    expect(resultAnnouncement("idle", null, null)).toBeNull();
+  });
+
+  it("stays well under the length of the result", () => {
+    const text = resultAnnouncement("done", ai, null)!;
+    expect(text.length).toBeLessThan(80);
   });
 });

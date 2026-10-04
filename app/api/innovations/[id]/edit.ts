@@ -47,10 +47,16 @@ export async function editInnovation(
 
   const changes = InnovationEdit.safeParse(input);
   if (!changes.success) {
-    return { status: 400, body: { error: "Niepoprawne dane.", details: changes.error.issues } };
+    return {
+      status: 400,
+      body: {
+        error: "Nie zapisano zmian. Sprawdź wypełnione pola.",
+        details: changes.error.issues,
+      },
+    };
   }
   if (Object.keys(changes.data).length === 0)
-    return { status: 400, body: { error: "Brak zmian." } };
+    return { status: 400, body: { error: "Nie ma zmian do zapisania." } };
 
   const { data, error } = await client
     .from("innovations")

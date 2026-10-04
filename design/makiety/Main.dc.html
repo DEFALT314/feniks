@@ -48,7 +48,7 @@ a.card{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) va
 a.card:hover{border-color:#8A99C7;box-shadow:0 8px 20px -10px rgba(21,26,35,.22)}
 input:not([type=radio]):not([type=checkbox]),textarea,select{transition:border-color var(--ruch) var(--ease),box-shadow var(--ruch) var(--ease)}
 input:not([type=radio]):not([type=checkbox]):hover,textarea:hover,select:hover{border-color:#4B5565}
-input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A}
+input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{outline:none;border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A,0 0 0 5px rgba(31,58,138,.18)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:1ms!important;animation-delay:0ms!important;transition-property:color,background-color,border-color,box-shadow,text-decoration-color!important}
   .btn:active{transform:none}
@@ -74,7 +74,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
           <p style="font-size: 19px">„Tata wraca <mark>ze szpitala</mark> po udarze. Nie wiemy, jak zorganizować <mark>opiekę w domu</mark>.”</p>
           <div style="border-top: 1px solid #D9DDE4; padding-top: 16px; display: flex; flex-direction: column; gap: 6px">
             <strong style="font-size: 19px">Organizator kompleksowej opieki w miejscu zamieszkania</strong>
-            <span class="muted" style="font-size: 16px">Dla seniorów · <span style="color: #1D6B48; font-weight: 700">sprawdzona przez ROPS</span></span>
+            <span class="muted" style="font-size: 16px">Dla seniorów · <span style="font-weight: 700">z inkubatora MIWS</span></span>
           </div>
           <div style="border-top: 1px solid #D9DDE4; padding-top: 16px; display: flex; flex-direction: column; gap: 6px">
             <strong style="font-size: 19px">Terapeuta przestrzeni</strong>
@@ -86,7 +86,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
 
     <section aria-label="Dane na start" class="wrap" data-ruch="pokaz" style="padding-top: 40px; padding-bottom: 40px; display: flex; flex-wrap: wrap; gap: 24px 56px">
       <div><div class="h" data-ruch="licznik" style="font-size: 40px">115</div><p class="muted">innowacji w Bibliotece ROPS</p></div>
-      <div><div class="h" data-ruch="licznik" style="font-size: 40px">27</div><p class="muted">wybranych do upowszechniania</p></div>
+      <div><div class="h" data-ruch="licznik" style="font-size: 40px">8</div><p class="muted">obszarów Mapy Wyzwań</p></div>
       <div><div class="h" data-ruch="licznik" style="font-size: 40px">48</div><p class="muted">wyzwań na Mapie Wyzwań</p></div>
       <div><div class="h" data-ruch="licznik" style="font-size: 40px">9</div><p class="muted">kategorii, od seniorów po rynek pracy</p></div>
     </section>
@@ -129,7 +129,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{b
 
     <section aria-labelledby="sprawdzone" class="wrap" style="padding-top: 64px; padding-bottom: 72px; display: flex; flex-direction: column; gap: 24px">
       <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px">
-        <h2 id="sprawdzone" class="h" style="font-size: 34px">Wybrane do upowszechniania</h2>
+        <h2 id="sprawdzone" class="h" style="font-size: 34px">Z Biblioteki ROPS</h2>
         <a href="Biblioteka.dc.html" style="font-weight: 700">Cała Biblioteka<span class="arr" aria-hidden="true">→</span></a>
       </div>
       <div data-ruch="pokaz" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">

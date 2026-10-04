@@ -13,7 +13,7 @@ import type { Database } from "@/lib/supabase/types";
  *
  * @example
  * await addNotification({ role: ["rops_redaktor", "rops_admin"], typ: "pomysl_wyslany",
- *   tytul: "Nowy pomysł do oceny", link: `/admin/pomysly/${id}` });
+ *   tytul: "Nowy pomysł do oceny", link: `/admin?idea=${id}` });
  */
 export async function addNotification(
   input: NewNotification,

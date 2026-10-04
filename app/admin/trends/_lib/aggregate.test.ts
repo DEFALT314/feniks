@@ -47,6 +47,16 @@ describe("needs in the region", () => {
     expect(t.challenges[0]).toMatchObject({ text: second.tekst, areaName: "Seniorzy" });
   });
 
+  it("counts searches without a good match per challenge, to point at gaps in the Library", () => {
+    const [first] = seniors.wyzwania;
+    const t = aggregateTrends(
+      areas,
+      [q("seniorzy", first.id, true), q("seniorzy", first.id, true), q("seniorzy", first.id)],
+      [],
+    );
+    expect(t.challenges[0]).toMatchObject({ id: first.id, count: 3, weak: 2 });
+  });
+
   it("the chart has a text alternative with the same numbers", () => {
     const t = aggregateTrends(areas, [q("seniorzy"), q("seniorzy")], []);
     expect(chartLabel(t.areas)).toBe("Wykres słupkowy: Seniorzy 2.");

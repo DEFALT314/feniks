@@ -9,9 +9,11 @@ the app were going to be deployed at ROPS. The user interface is in Polish, in p
 ## Stack
 - Next.js (App Router, TypeScript), Tailwind + shadcn/ui, Vercel (region `fra1`).
 - Supabase: Postgres + pgvector, Auth, Realtime, Storage.
-- Hugging Face: private Space with `sdadas/mmlw-e5-small` (384-dim embeddings, prefixes `query: ` and `passage: `);
-  Inference Providers: DeepSeek V4.1 Flash through an OpenAI-compatible router, plus an image model.
-- E-mail: Resend.
+- Embeddings: `sdadas/mmlw-e5-base` (768-dim, prefixes `query: ` and `passage: `) exported to ONNX and served by a Vercel
+  function (`/api/embed`, `embedding/`); catalog vectors uploaded once with `scripts/embed.py`.
+- LLM: DeepSeek through an OpenAI-compatible API (`LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY`).
+- E-mail: SMTP (Gmail app password, `SMTP_*`) for Supabase Auth and app e-mails; Resend only as a fallback.
+- Auth: e-mail + password with address confirmation; demo accounts via "Wejdź jako…".
 
 ## Folder owners (don't edit other people's folders; need a change → message the owner)
 | Person | Folders |

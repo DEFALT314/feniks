@@ -51,6 +51,8 @@ describe("reviewIdea", () => {
     const state = await reviewIdea(d, IDEA.id, { status: "zatwierdzony" });
 
     expect(state).toMatchObject({ status: "saved", emailSent: true });
+    // The panel moves on to the next idea, so the confirmation names the decided one
+    expect(state.message).toBe(`„${IDEA.tytul}”: zatwierdzony.`);
     expect(insert).toHaveBeenCalledWith({
       idea_id: IDEA.id,
       status: "zatwierdzony",
@@ -64,7 +66,7 @@ describe("reviewIdea", () => {
       expect.objectContaining({
         userIds: ["author-1"],
         typ: "pomysl_oceniony",
-        link: `/my/creator/${IDEA.id}`,
+        link: `/my/creator/${IDEA.id}/card`, // the card shows the decision
       }),
     );
     expect(d.sendEmail).toHaveBeenCalledWith(
@@ -73,7 +75,7 @@ describe("reviewIdea", () => {
         subject: "Zatwierdzony: Kawiarenka",
         action: {
           label: "Zobacz pomysł",
-          url: `https://feniks-hub.vercel.app/my/creator/${IDEA.id}`,
+          url: `https://feniks-hub.vercel.app/my/creator/${IDEA.id}/card`,
         },
       }),
     );

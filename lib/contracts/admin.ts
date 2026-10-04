@@ -2,12 +2,12 @@ import { z } from "zod";
 import fixture from "./fixtures/admin.json";
 import { Role } from "./shared";
 
-// Module VI: ROPS admin panel (P4).
-// GET  /api/admin/ideas?status=nowy       → IdeaQueue
-// POST /api/admin/ideas/[id]/review       ReviewIdeaInput → IdeaReview
-// GET  /api/admin/roles                   → RoleRequest[]
-// POST /api/admin/roles                   RoleDecisionInput → { ok: true }
-// GET  /api/admin/calls                   → Call[] (P3 also reads it for the grant application generator)
+// Module VI: ROPS admin panel (P4). The panel uses server actions, not HTTP endpoints:
+// - idea queue and review: app/admin/page.tsx, app/admin/_lib/actions.ts (submitReview)
+// - role requests: app/admin/roles (P1)
+// - calls for proposals: app/admin/calls; the generator reads them with listOpenCalls() (lib/calls.ts)
+// - service cards from the Middleman: app/admin/cards (read only)
+// These schemas describe the data those screens exchange.
 
 // Idea status shown to the author (P2 reads it from idea_reviews; no review = "nowy").
 // "w_weryfikacji" = passed to an expert, no decision yet (design/makiety/Admin.dc.html).
@@ -98,11 +98,23 @@ export const CallInput = z
       .string()
       .trim()
       .regex(/^[a-z0-9][a-z0-9-]{2,80}$/, {
-        message: "Identyfikator: małe litery, cyfry i myślniki.",
+        message: "Identyfikator: co najmniej 3 znaki, tylko małe litery, cyfry i myślniki.",
       }),
-    nazwa: z.string().trim().min(3, { message: "Wpisz nazwę naboru." }).max(200),
-    organizator: z.string().trim().min(2).max(200),
-    cel: z.string().trim().max(1000).optional(),
+    nazwa: z
+      .string()
+      .trim()
+      .min(3, { message: "Wpisz nazwę naboru." })
+      .max(200, { message: "Nazwa może mieć najwyżej 200 znaków." }),
+    organizator: z
+      .string()
+      .trim()
+      .min(2, { message: "Wpisz organizatora naboru." })
+      .max(200, { message: "Organizator może mieć najwyżej 200 znaków." }),
+    cel: z
+      .string()
+      .trim()
+      .max(1000, { message: "Pole „Na co są pieniądze” może mieć najwyżej 1000 znaków." })
+      .optional(),
     url: z.url({ message: "Wpisz pełny adres strony, np. https://…" }).optional(),
     termin_od: z.iso.date().optional(),
     termin_do: z.iso.date().optional(),

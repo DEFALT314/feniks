@@ -3,7 +3,9 @@
 import { MailCheck } from "lucide-react";
 import Link from "next/link";
 import { useActionState, useEffect, useRef } from "react";
+import { announce } from "@/components/ui/announcer";
 import { Button } from "@/components/ui/button";
+import { useFocusFirstError } from "@/components/ui/focus";
 import { resendSignupEmail } from "@/lib/auth/actions";
 import type { AuthFormState } from "@/lib/auth/login";
 import { FormMessage } from "./form-message";
@@ -45,7 +47,7 @@ export function CheckInbox({ email, next }: { email: string; next?: string }) {
         </p>
       </div>
       <ResendConfirmation email={email} next={next} />
-      <Link href="/login" className="self-start text-base">
+      <Link href="/login" className="inline-flex min-h-11 items-center self-start text-base">
         Wróć do logowania
       </Link>
     </div>
@@ -55,15 +57,26 @@ export function CheckInbox({ email, next }: { email: string; next?: string }) {
 // Sends the confirmation link again (after sign-up, or when sign-in says "not confirmed").
 export function ResendConfirmation({ email, next }: { email: string; next?: string }) {
   const [state, action, pending] = useActionState(resendSignupEmail, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusFirstError(formRef, state.status === "error" ? state : undefined);
+  // "Wysłaliśmy link ponownie" can repeat word for word, which a status region would not re-read
+  useEffect(() => {
+    if (state.status === "sent" && state.message) announce(state.message);
+  }, [state]);
   return (
-    <form action={action} className="flex flex-col gap-2">
+    <form ref={formRef} action={action} className="flex flex-col gap-2">
       <input type="hidden" name="email" value={email} />
       <input type="hidden" name="next" value={next ?? ""} />
-      <p className="text-base">Nie dostałeś maila albo link wygasł?</p>
+      <p className="text-base">Mail nie przyszedł albo link wygasł?</p>
       <Button type="submit" variant="secondary" className="self-start" disabled={pending}>
         {pending ? "Wysyłamy…" : "Wyślij link ponownie"}
       </Button>
-      <FormMessage message={state.message} tone={state.status === "sent" ? "info" : "error"} />
+      {/* Info is announced above; the visible text stays here */}
+      {state.status === "sent" ? (
+        <p className="text-base">{state.message}</p>
+      ) : (
+        <FormMessage message={state.message} />
+      )}
     </form>
   );
 }
