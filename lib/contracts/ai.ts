@@ -59,6 +59,8 @@ export const CallSummary = z.object({
   goal: z.string(), // what the call funds, plain Polish
   deadline: z.string().nullable(), // ISO date
   demo: z.boolean(),
+  // Added after 17:00: Challenges Map areas the call is for (empty = any area)
+  areas: z.array(z.string()).optional(),
 });
 export type CallSummary = z.infer<typeof CallSummary>;
 

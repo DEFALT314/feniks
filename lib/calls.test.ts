@@ -81,6 +81,7 @@ describe("listOpenCalls", () => {
         goal: "Pomoc seniorom",
         deadline: "2026-11-30",
         demo: true,
+        areas: ROW.obszary,
       },
     ]);
     expect(query.eq).toHaveBeenCalledWith("opublikowany", true);
