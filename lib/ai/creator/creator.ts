@@ -16,6 +16,7 @@ import {
   type IdeaDraft,
 } from "@/lib/contracts/ai";
 import { generateJson, type GenerateJsonOptions } from "../llm";
+import { type Answers, canvasFacts } from "./canvas-facts";
 import { hasPlaceholder, removeInventedNumbers } from "./guards";
 
 export const CALLS = CallSummary.array().parse(demoCalls.calls);
@@ -76,17 +77,41 @@ Return json: {"hints": [{"field": one of ${JSON.stringify(fields)}, "text": "...
     { temperature: 0.4, maxTokens: 2000, ...options },
   );
   const source = ideaText(request.idea);
+  const current: Record<z.infer<typeof IdeaField>, string | undefined> = {
+    title: request.idea.title,
+    description: request.idea.description,
+    essence: request.idea.essence,
+    audience: request.idea.audience,
+  };
+  const same = (a: string, b: string | undefined) =>
+    simplify(a) === simplify(b ?? "") && simplify(a) !== "";
   return {
     hints: out.hints
       .filter(
         (h, n, all) => fields.includes(h.field) && all.findIndex((x) => x.field === h.field) === n,
       )
-      .map((h) => ({
-        field: h.field,
-        text: removeInventedNumbers(h.text.trim(), source).text,
-        why: h.why ?? null,
-      })),
+      .map((h) => {
+        const text = removeInventedNumbers(h.text.trim(), source).text;
+        // "Istota" is one sentence by definition (the card says so)
+        return {
+          field: h.field,
+          text: h.field === "essence" ? firstSentence(text) : text,
+          why: h.why ?? null,
+        };
+      })
+      // a "hint" that repeats what the field already says is noise
+      .filter((h) => !same(h.text, current[h.field])),
   };
+}
+
+const simplify = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
+
+function firstSentence(text: string): string {
+  return text.split(/(?<=[.!?])\s+(?=[A-ZĄĆĘŁŃÓŚŹŻ])/)[0];
 }
 
 // --- application draft ---
@@ -109,43 +134,119 @@ const SECTION_ORDER: z.infer<typeof ApplicationSectionKey>[] = [
 ];
 
 /** `calls`: the open calls (lib/ai/creator/open-calls.ts); an unknown or closed call gives null. */
+// Budget lines straight from the costs the author ticked in the canvas, each with [kwota]: computed,
+// so no cost is invented and none the author chose is lost.
+export function budgetFromCanvas(answers: Answers): { text: string; sources: string[] } | null {
+  const lines: string[] = [];
+  const sources: string[] = [];
+  for (const [step, label] of [
+    ["koszty-stale", "Koszty stałe"],
+    ["koszty-zmienne", "Koszty zmienne"],
+  ] as const) {
+    const a = answers[step];
+    if (!a || !("choices" in a)) continue;
+    const picked = [...a.choices.filter((c) => c !== "inne"), ...(a.other ? [a.other] : [])];
+    if (!picked.length) continue;
+    sources.push(`Kanwa: ${label}`);
+    lines.push(`${label}:`, ...picked.map((c) => `- ${c}: [kwota]`));
+  }
+  return lines.length ? { text: lines.join("\n"), sources } : null;
+}
+
 export async function applicationDraft(
   request: ApplicationRequest,
   options: GenerateJsonOptions = {},
   calls: CallSummary[] = CALLS,
+  answers: Answers = {},
 ): Promise<ApplicationResponse | null> {
   const call = calls.find((c) => c.id === request.call_id);
   if (!call) return null;
+  const facts = canvasFacts(answers);
+  const budget = budgetFromCanvas(answers);
+  const allowedSources = [
+    ...(["Tytuł", "Opis", "Istota", "Dla kogo"] as const).map((f) => `Fiszka: ${f}`),
+    ...facts.map((f) => `Kanwa: ${f.label}`),
+    "Nabór",
+  ];
   const Schema = z.object({
-    sections: z.array(z.object({ key: ApplicationSectionKey, text: z.string().min(1) })),
+    sections: z.array(
+      z.object({
+        key: ApplicationSectionKey,
+        text: z.string().min(1),
+        sources: z.array(z.string()).optional(),
+      }),
+    ),
+    fit: z
+      .object({ level: z.enum(["dobra", "czesciowa", "slaba"]), note: z.string().min(3) })
+      .optional(),
+    missing: z.array(z.string()).optional(),
   });
+  const canvas = facts.length
+    ? facts.map((f) => `- ${f.label}: ${f.answer}`).join("\n")
+    : "(the author has not answered the canvas yet)";
   const out = await generateJson(
     Schema,
     [
       {
         role: "system",
-        content: `You draft a grant application for an open call, from a resident's idea card. ${RULES}
-Sections: goal (1-2 sentences tied to the call's goal), audience, activities (concrete steps), results (what changes,
-with placeholders for any numbers), budget (only cost categories with placeholders, never amounts).
-Return json: {"sections": [{"key": "goal"|"audience"|"activities"|"results"|"budget", "text": "..."}]}`,
+        content: `You draft a grant application for an open call, from a resident's idea card and their answers to the innovation canvas. ${RULES}
+Use the canvas answers: they are the author's own facts (who the users are, who pays, partners, channels, impact). Write each section as 2-4 full, natural sentences, not a list of three-word sentences.
+Sections: goal (tied to the call's goal), audience (users, who pays, who decides), activities (concrete steps, partners and how people are reached), results (what changes for a person and a community, with placeholders for any numbers)${budget ? "" : ", budget (only cost categories with [kwota], never amounts)"}.
+For each section list "sources": which of these it is based on: ${JSON.stringify(allowedSources)}.
+"fit": does the idea fit what the call funds? level "dobra", "czesciowa" or "slaba" and one plain-Polish sentence why.
+"missing": up to 4 short items the author must still add before applying (e.g. "Ilu seniorom pomożecie"), plain Polish.
+Return json: {"sections": [{"key": "goal"|"audience"|"activities"|"results"|"budget", "text": "...", "sources": ["..."]}], "fit": {"level": "...", "note": "..."}, "missing": ["..."]}`,
       },
       {
         role: "user",
-        content: `Call: ${call.name}\nCall goal: ${call.goal}\n\nIdea:\n${ideaText(request.idea)}`,
+        content: `Call: ${call.name}\nCall goal: ${call.goal}\n\nIdea card:\n${ideaText(request.idea)}\n\nCanvas answers:\n${canvas}`,
       },
     ],
     { temperature: 0.3, maxTokens: 3000, ...options },
   );
-  const source = `${ideaText(request.idea)}\n${call.name}\n${call.goal}`;
+  const source = `${ideaText(request.idea)}\n${canvas}\n${call.name}\n${call.goal}`;
+  const allowed = new Set(allowedSources);
   const sections = SECTION_ORDER.flatMap((key) => {
+    if (key === "budget" && budget) {
+      return [
+        {
+          key,
+          title: SECTION_TITLES[key],
+          text: budget.text,
+          needs_user_input: true,
+          sources: budget.sources,
+        },
+      ];
+    }
     const s = out.sections.find((x) => x.key === key);
     if (!s) return [];
     const { text, replaced } = removeInventedNumbers(s.text.trim(), source);
     return [
-      { key, title: SECTION_TITLES[key], text, needs_user_input: replaced || hasPlaceholder(text) },
+      {
+        key,
+        title: SECTION_TITLES[key],
+        text,
+        needs_user_input: replaced || hasPlaceholder(text),
+        sources: [...new Set((s.sources ?? []).filter((x) => allowed.has(x)))],
+      },
     ];
   });
-  return { call_id: call.id, sections };
+  return {
+    call_id: call.id,
+    sections,
+    ...(out.fit
+      ? {
+          fit: {
+            level: out.fit.level,
+            note: removeInventedNumbers(out.fit.note.trim(), source).text,
+          },
+        }
+      : {}),
+    missing: (out.missing ?? [])
+      .map((m) => m.trim())
+      .filter(Boolean)
+      .slice(0, 4),
+  };
 }
 
 // --- unusual approaches (#103) ---
