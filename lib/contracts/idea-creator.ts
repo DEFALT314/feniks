@@ -1,5 +1,6 @@
-// Contract of module III Idea creator (P2): the innovation canvas, the answers and the idea card ("fiszka").
-// Tables: public.ideas and public.idea_canvas (migration *_creator_tester.sql).
+// Contract of module III Idea creator (P2): the innovation canvas, the answers, the idea card ("fiszka")
+// and good practices: approved ideas the author agreed to show to everyone (#104).
+// Tables: public.ideas and public.idea_canvas (migrations *_creator_tester.sql, *_creator_good_practices.sql).
 // P4's ROPS panel reads ideas; P3's AI maps Idea onto IdeaDraft (lib/contracts/ai.ts).
 // Sample data: lib/contracts/fixtures/idea-creator.json. After 17:00, changes only by adding fields.
 import { z } from "zod";
@@ -85,6 +86,9 @@ export const Idea = z.object({
   etap: IdeaStage.nullable(),
   obszar_id: z.string().nullable(),
   wyslany_at: z.iso.datetime({ offset: true }).nullable(), // sent to ROPS
+  // Good practices (#104), set only by database functions. Optional for readers of older data.
+  zgoda_publikacji_at: z.iso.datetime({ offset: true }).nullable().optional(), // author's consent
+  opublikowany_at: z.iso.datetime({ offset: true }).nullable().optional(), // shown by ROPS
   created_at: z.iso.datetime({ offset: true }),
   updated_at: z.iso.datetime({ offset: true }),
 });
@@ -106,5 +110,27 @@ export const IdeaWithCanvas = Idea.extend({
 });
 export type IdeaWithCanvas = z.infer<typeof IdeaWithCanvas>;
 
-export const IdeaCreatorFixtures = z.object({ idea: IdeaWithCanvas });
+// --- Good practice (public.dobre_praktyki()): what everyone sees of a published idea ---
+// Only card fields: no author, no canvas answers (rule 8). Test results from module IV come as the
+// number of ratings and their average, which the database gives only from three ratings up.
+
+export const GoodPractice = z.object({
+  id: z.uuid(),
+  tytul: z.string(),
+  opis: z.string().nullable(),
+  istota: z.string().nullable(),
+  dla_kogo: z.string().nullable(),
+  etap: IdeaStage.nullable(),
+  obszar_id: z.string().nullable(),
+  obszar_nazwa: z.string().nullable(),
+  opublikowany_at: z.iso.datetime({ offset: true }),
+  liczba_ocen: z.number().int().min(0),
+  srednia_ocena: z.number().min(1).max(5).nullable(),
+});
+export type GoodPractice = z.infer<typeof GoodPractice>;
+
+export const IdeaCreatorFixtures = z.object({
+  idea: IdeaWithCanvas,
+  good_practices: z.array(GoodPractice),
+});
 export const ideaCreatorFixtures = IdeaCreatorFixtures.parse(fixture);

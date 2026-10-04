@@ -11,20 +11,66 @@
     "created_at": "2026-10-03T18:00:00+02:00",
     "updated_at": "2026-10-03T18:20:00+02:00",
     "answers": {
-      "intensywnosc": { "choice": "Mocno przeszkadza" },
-      "gotowosc": { "choice": "Pomysł" },
-      "wspieraja-zmiane": { "items": ["rodziny seniorów", "ośrodek pomocy społecznej"] },
+      "intensywnosc": {
+        "choice": "Mocno przeszkadza"
+      },
+      "gotowosc": {
+        "choice": "Pomysł"
+      },
+      "wspieraja-zmiane": {
+        "items": ["rodziny seniorów", "ośrodek pomocy społecznej"]
+      },
       "koszty-stale": {
         "choices": ["koordynacja projektu", "inne"],
         "other": "ubezpieczenie wolontariuszy"
       },
-      "glowny-dochod": { "choice": "Mamy pomysł", "text": "Dotacja gminy na usługi sąsiedzkie" },
+      "glowny-dochod": {
+        "choice": "Mamy pomysł",
+        "text": "Dotacja gminy na usługi sąsiedzkie"
+      },
       "partnerzy": {
         "partners": [
-          { "name": "Koło Gospodyń Wiejskich", "axis": "dotarcie", "status": "w rozmowach" }
+          {
+            "name": "Koło Gospodyń Wiejskich",
+            "axis": "dotarcie",
+            "status": "w rozmowach"
+          }
         ]
       },
-      "wplyw": { "cells": { "Osoba": "Silny", "Społeczność": "Wyraźny" } }
+      "wplyw": {
+        "cells": {
+          "Osoba": "Silny",
+          "Społeczność": "Wyraźny"
+        }
+      }
     }
-  }
+  },
+  "good_practices": [
+    {
+      "id": "d1000000-0000-4000-8000-000000000004",
+      "tytul": "Herbatka sąsiedzka na klatce schodowej",
+      "opis": "Raz w miesiącu sąsiedzi z jednej klatki spotykają się przy herbacie na parterze. Na drzwiach wisi kartka z zaproszeniem i godziną. Po trzech spotkaniach w dwóch blokach seniorzy znali z imienia średnio czterech sąsiadów więcej i wiedzieli, do kogo zapukać po pomoc.",
+      "istota": "Samotny senior poznaje sąsiadów, do których może zapukać, zanim będzie potrzebował pomocy.",
+      "dla_kogo": "Seniorzy mieszkający samotnie w blokach i ich sąsiedzi",
+      "etap": "przetestowane",
+      "obszar_id": "seniorzy",
+      "obszar_nazwa": "Seniorzy",
+      "opublikowany_at": "2026-10-04T09:30:00+02:00",
+      "liczba_ocen": 9,
+      "srednia_ocena": 4.6
+    },
+    {
+      "id": "d1000000-0000-4000-8000-000000000005",
+      "tytul": "Wspólne odrabianie lekcji w świetlicy wiejskiej",
+      "opis": "Dwa popołudnia w tygodniu emerytowani nauczyciele i licealiści pomagają dzieciom w lekcjach w świetlicy przy remizie. Rodzice odbierają dzieci po pracy, a ośrodek pomocy społecznej mówi o zajęciach rodzinom, które wspiera.",
+      "istota": "Dziecko dostaje pomoc w nauce blisko domu, a rodzic nie musi wybierać między pracą a lekcjami.",
+      "dla_kogo": "Dzieci ze szkół podstawowych w małych miejscowościach i ich rodzice",
+      "etap": "prototyp",
+      "obszar_id": "rodzina-piecza",
+      "obszar_nazwa": "Rodzina i piecza zastępcza",
+      "opublikowany_at": "2026-10-04T10:15:00+02:00",
+      "liczba_ocen": 2,
+      "srednia_ocena": null
+    }
+  ]
 }

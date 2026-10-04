@@ -159,6 +159,66 @@ from (values
 join auth.users u on u.email = d.email
 where exists (select 1 from public.test_signups s where s.test_id = d.test_id::uuid and s.user_id = u.id);
 
+-- Good practices (P2, #104): two approved ideas whose authors agreed to show them, shown by ROPS
+-- in the Library (/library/good-practices). The first was tried with residents and has three
+-- ratings, so its average appears. Same texts as lib/contracts/fixtures/idea-creator.json.
+delete from public.ideas where id in (
+  'd1000000-0000-4000-8000-000000000004', 'd1000000-0000-4000-8000-000000000005');
+
+insert into public.ideas
+  (id, autor_id, tytul, istota, opis, dla_kogo, etap, obszar_id, wyslany_at, zgoda_publikacji_at)
+select d.id::uuid, u.id, d.tytul, d.istota, d.opis, d.dla_kogo, d.etap, d.obszar_id,
+  now() - interval '3 days', now() - interval '3 days'
+from (values
+  ('d1000000-0000-4000-8000-000000000004', 'demo.fundacja@example.org',
+   'Herbatka sąsiedzka na klatce schodowej',
+   'Samotny senior poznaje sąsiadów, do których może zapukać, zanim będzie potrzebował pomocy.',
+   'Raz w miesiącu sąsiedzi z jednej klatki spotykają się przy herbacie na parterze. Na drzwiach wisi kartka z zaproszeniem i godziną. Po trzech spotkaniach w dwóch blokach seniorzy znali z imienia średnio czterech sąsiadów więcej i wiedzieli, do kogo zapukać po pomoc.',
+   'Seniorzy mieszkający samotnie w blokach i ich sąsiedzi', 'przetestowane', 'seniorzy'),
+  ('d1000000-0000-4000-8000-000000000005', 'demo.gops@example.org',
+   'Wspólne odrabianie lekcji w świetlicy wiejskiej',
+   'Dziecko dostaje pomoc w nauce blisko domu, a rodzic nie musi wybierać między pracą a lekcjami.',
+   'Dwa popołudnia w tygodniu emerytowani nauczyciele i licealiści pomagają dzieciom w lekcjach w świetlicy przy remizie. Rodzice odbierają dzieci po pracy, a ośrodek pomocy społecznej mówi o zajęciach rodzinom, które wspiera.',
+   'Dzieci ze szkół podstawowych w małych miejscowościach i ich rodzice', 'prototyp', 'rodzina-piecza')
+) as d (id, email, tytul, istota, opis, dla_kogo, etap, obszar_id)
+join auth.users u on u.email = d.email;
+
+insert into public.idea_reviews (idea_id, status, komentarz, reviewer_id, created_at)
+select i.id, 'zatwierdzony', 'Dziękujemy, pokazujemy pomysł innym gminom.', rops.id, now() - interval '2 days'
+from public.ideas i
+join auth.users ru on ru.email = 'demo.rops@example.org'
+join public.profiles rops on rops.id = ru.id
+where i.id in ('d1000000-0000-4000-8000-000000000004', 'd1000000-0000-4000-8000-000000000005');
+
+-- Shown after the approval (public.dobre_praktyki() needs the current decision to be an approval)
+update public.ideas set opublikowany_at = now() - interval '1 day'
+where id in ('d1000000-0000-4000-8000-000000000004', 'd1000000-0000-4000-8000-000000000005');
+
+insert into public.tests (id, idea_id, tytul, opis, miejsce, termin, liczba_miejsc)
+select 'd3000000-0000-4000-8000-000000000004'::uuid, 'd1000000-0000-4000-8000-000000000004'::uuid,
+  'Herbatka sąsiedzka – próba w dwóch blokach', 'Trzy spotkania na parterze, potem krótka ankieta.',
+  'Bloki przy ul. Polnej (fikcyjne)', null, 15
+where exists (select 1 from public.ideas where id = 'd1000000-0000-4000-8000-000000000004');
+
+insert into public.test_signups (test_id, user_id)
+select 'd3000000-0000-4000-8000-000000000004'::uuid, u.id
+from auth.users u
+where u.email in ('demo.mieszkaniec@example.org', 'demo.gops@example.org', 'demo.ekspert@example.org')
+  and exists (select 1 from public.tests where id = 'd3000000-0000-4000-8000-000000000004');
+
+insert into public.test_ratings (test_id, user_id, ocena, co_dzialalo)
+select 'd3000000-0000-4000-8000-000000000004'::uuid, u.id, d.ocena, d.co_dzialalo
+from (values
+  ('demo.mieszkaniec@example.org', 5, 'Poznałem sąsiadkę z trzeciego piętra, teraz robimy razem zakupy.'),
+  ('demo.gops@example.org', 5, 'Seniorzy sami zaczęli zapraszać na kolejne spotkania.'),
+  ('demo.ekspert@example.org', 4, 'Prosty pomysł, który działa bez budżetu.')
+) as d (email, ocena, co_dzialalo)
+join auth.users u on u.email = d.email
+where exists (
+  select 1 from public.test_signups s
+  where s.test_id = 'd3000000-0000-4000-8000-000000000004' and s.user_id = u.id
+);
+
 delete from public.notifications n
 using auth.users u
 where n.user_id = u.id and u.email like 'demo.%@example.org' and n.typ = 'test_ocena';

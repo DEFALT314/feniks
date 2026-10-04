@@ -10,6 +10,7 @@ import {
 } from "@/lib/contracts/idea-creator";
 import type { Database, Json } from "@/lib/supabase/types";
 import { answerSchema, fields, stageFromAnswers } from "./canvas";
+import type { ConsentResult } from "./publication";
 import { currentReview } from "./submission";
 
 // Ideas of the signed-in author in public.ideas and public.idea_canvas (migration *_creator_tester.sql).
@@ -22,7 +23,7 @@ export type MyIdea = IdeaWithCanvas & {
 };
 
 const IDEA_COLUMNS =
-  "id, tytul, opis, istota, dla_kogo, etap, obszar_id, wyslany_at, created_at, updated_at";
+  "id, tytul, opis, istota, dla_kogo, etap, obszar_id, wyslany_at, zgoda_publikacji_at, opublikowany_at, created_at, updated_at";
 
 type IdeaRow = Database["public"]["Tables"]["ideas"]["Row"];
 type StatusRow = Database["public"]["Views"]["idea_status"]["Row"];
@@ -43,6 +44,8 @@ function toIdea(
     etap: stage.success ? stage.data : null,
     obszar_id: row.obszar_id,
     wyslany_at: row.wyslany_at,
+    zgoda_publikacji_at: row.zgoda_publikacji_at,
+    opublikowany_at: row.opublikowany_at,
     created_at: row.created_at,
     updated_at: row.updated_at,
     answers,
@@ -212,6 +215,27 @@ export async function sendIdea(db: Db, ideaId: string): Promise<SendResult> {
   const { data, error } = await untyped(db).rpc("wyslij_pomysl", { p_idea_id: ideaId });
   if (error) return { ok: false, reason: SEND_ERRORS[error.code ?? ""] ?? "failed" };
   return { ok: true, resent: data === "ponownie" };
+}
+
+const CONSENT_RESULTS = new Set(["zgoda", "brak_zgody", "ukryty"]);
+
+/**
+ * Gives or withdraws consent to show the idea as a good practice (#104) through
+ * public.ustaw_zgode_publikacji(): allowed for the author at any time, also while ROPS has the idea.
+ */
+export async function setPublicationConsent(
+  db: Db,
+  ideaId: string,
+  agree: boolean,
+): Promise<ConsentResult> {
+  if (!isUuid(ideaId)) return { ok: false, reason: "not-found" };
+  const { data, error } = await db.rpc("ustaw_zgode_publikacji", {
+    p_idea_id: ideaId,
+    p_zgoda: agree,
+  });
+  if (error?.code === "HM404") return { ok: false, reason: "not-found" };
+  if (error || !CONSENT_RESULTS.has(data)) return { ok: false, reason: "failed" };
+  return { ok: true, result: data as "zgoda" | "brak_zgody" | "ukryty" };
 }
 
 // wyslij_pomysl and idea_editable come from *_creator_submit.sql, which is not yet in the generated

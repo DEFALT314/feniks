@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { filterSummary, formatSentAt, plural } from "./format";
+import { describeAudit, filterSummary, formatSentAt, plural } from "./format";
 
 describe("plural", () => {
   it("picks the Polish form for the count", () => {
@@ -31,5 +31,23 @@ describe("formatSentAt", () => {
     expect(formatSentAt("2026-10-04T08:05:00Z", now)).toBe("dziś 10:05");
     expect(formatSentAt("2026-10-03T08:05:00Z", now)).toBe("wczoraj 10:05");
     expect(formatSentAt("2026-09-28T08:05:00Z", now)).toBe("28 września");
+  });
+});
+
+describe("describeAudit", () => {
+  it("names good-practice changes in plain words with the idea title (#104)", () => {
+    const d = { tytul: "Herbatka sąsiedzka" };
+    expect(describeAudit("pomysl.publikacja", d)).toBe(
+      "pokazano jako dobrą praktykę: Herbatka sąsiedzka",
+    );
+    expect(describeAudit("pomysl.publikacja_wycofana", d)).toBe(
+      "przestano pokazywać jako dobrą praktykę: Herbatka sąsiedzka",
+    );
+    expect(describeAudit("pomysl.zgoda_publikacji", d)).toBe(
+      "autor zgodził się pokazać pomysł: Herbatka sąsiedzka",
+    );
+    expect(describeAudit("pomysl.zgoda_wycofana", d)).toBe(
+      "autor wycofał zgodę na pokazanie: Herbatka sąsiedzka",
+    );
   });
 });

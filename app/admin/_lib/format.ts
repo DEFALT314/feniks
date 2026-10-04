@@ -35,6 +35,10 @@ const STATUS_WORDS: Record<string, string> = {
 const AUDIT_WORDS: Record<string, string> = {
   "pomysl.wyslanie": "nowy pomysł",
   "pomysl.ponowne_wyslanie": "poprawiony pomysł",
+  "pomysl.publikacja": "pokazano jako dobrą praktykę",
+  "pomysl.publikacja_wycofana": "przestano pokazywać jako dobrą praktykę",
+  "pomysl.zgoda_publikacji": "autor zgodził się pokazać pomysł",
+  "pomysl.zgoda_wycofana": "autor wycofał zgodę na pokazanie",
   "innowacja.edycja": "zmieniono kartę innowacji",
   "nabor.dodanie": "dodano nabór",
   "nabor.edycja": "zmieniono nabór",

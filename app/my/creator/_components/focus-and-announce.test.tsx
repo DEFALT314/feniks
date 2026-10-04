@@ -207,6 +207,8 @@ describe("SubmitPanel", () => {
           missing={[]}
           beforeSend={async () => true}
           justSent="first"
+          consent={false}
+          publishedAt={null}
         />,
       ),
     );

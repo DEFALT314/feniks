@@ -327,9 +327,11 @@ export type Database = {
           istota: string | null;
           obszar_id: string | null;
           opis: string | null;
+          opublikowany_at: string | null;
           tytul: string;
           updated_at: string;
           wyslany_at: string | null;
+          zgoda_publikacji_at: string | null;
         };
         Insert: {
           autor_id?: string;
@@ -340,9 +342,11 @@ export type Database = {
           istota?: string | null;
           obszar_id?: string | null;
           opis?: string | null;
+          opublikowany_at?: string | null;
           tytul: string;
           updated_at?: string;
           wyslany_at?: string | null;
+          zgoda_publikacji_at?: string | null;
         };
         Update: {
           autor_id?: string;
@@ -353,9 +357,11 @@ export type Database = {
           istota?: string | null;
           obszar_id?: string | null;
           opis?: string | null;
+          opublikowany_at?: string | null;
           tytul?: string;
           updated_at?: string;
           wyslany_at?: string | null;
+          zgoda_publikacji_at?: string | null;
         };
         Relationships: [
           {
@@ -1041,6 +1047,22 @@ export type Database = {
       };
       can_review_idea: { Args: { p_idea_id: string }; Returns: boolean };
       can_see_thread: { Args: { p_thread_id: string }; Returns: boolean };
+      dobre_praktyki: {
+        Args: { p_id?: string };
+        Returns: {
+          dla_kogo: string | null;
+          etap: string | null;
+          id: string;
+          istota: string | null;
+          liczba_ocen: number;
+          obszar_id: string | null;
+          obszar_nazwa: string | null;
+          opis: string | null;
+          opublikowany_at: string;
+          srednia_ocena: number | null;
+          tytul: string;
+        }[];
+      };
       dodaj_powiadomienie: {
         Args: {
           p_link?: string;
@@ -1072,6 +1094,10 @@ export type Database = {
         }[];
       };
       moja_rola: { Args: never; Returns: string };
+      opublikuj_pomysl: {
+        Args: { p_idea_id: string; p_publikuj: boolean };
+        Returns: string;
+      };
       post_message: {
         Args: { p_thread_id: string; p_tresc: string };
         Returns: string;
@@ -1096,6 +1122,10 @@ export type Database = {
           email: string;
           user_id: string;
         }[];
+      };
+      ustaw_zgode_publikacji: {
+        Args: { p_idea_id: string; p_zgoda: boolean };
+        Returns: string;
       };
       wyslij_pomysl: { Args: { p_idea_id: string }; Returns: string };
       zapisz_audit: {

@@ -194,6 +194,8 @@ export function IdeaCard({
             missing={missingForSubmission(card)}
             beforeSend={autosave.flush}
             justSent={justSent}
+            consent={Boolean(idea.zgoda_publikacji_at)}
+            publishedAt={idea.opublikowany_at ?? null}
           />
           {testPanel}
         </aside>
