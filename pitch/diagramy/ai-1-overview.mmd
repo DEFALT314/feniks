@@ -10,8 +10,7 @@ flowchart LR
         P("Remove<br/>personal data"):::data --> A("AI model"):::ai
         A --> V("Validate answer<br/>given IDs, exact quotes,<br/>no invented numbers"):::data
     end
-    V --> L("AI proposal<br/>label"):::ai
-    L --> H("Human decides"):::human
+    V --> H("Human decides<br/>on an AI proposal"):::human
     H --> R(["ROPS"]):::human
     style core fill:#F6F7F9,stroke:#D9DDE4,color:#4B5565
     classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold

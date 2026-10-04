@@ -20,8 +20,7 @@ flowchart LR
         P("Remove<br/>personal data"):::data --> A("AI model"):::ai
         A --> V("Validate answer<br/>given IDs, exact quotes,<br/>no invented numbers"):::data
     end
-    V --> L("AI proposal<br/>label"):::ai
-    L --> H("Human decides"):::human
+    V --> H("Human decides<br/>on an AI proposal"):::human
     H --> R(["ROPS"]):::human
     style core fill:#F6F7F9,stroke:#D9DDE4,color:#4B5565
     classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
@@ -55,14 +54,13 @@ flowchart LR
 ```mermaid
 %%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
 flowchart LR
+    L(["Similar Library<br/>innovations"]):::data --> X("AI points<br/>with evidence"):::ai
     I(["Idea card +<br/>canvas answers"]):::data --> R1("Rules<br/>from canvas"):::data
-    I --> X("AI points<br/>with evidence"):::ai
-    L(["Similar Library<br/>innovations"]):::data --> X
+    I --> X
     I --> B("Budget computed<br/>from canvas"):::data
-    I --> G("AI grant draft"):::ai
-    B --> G
-    R1 --> C("Check my card"):::data
-    X --> C
+    X --> C("Check my card"):::data
+    R1 --> C
+    B --> G("AI grant draft"):::ai
     C --> H("Author clicks<br/>to add"):::human
     G --> H
     H --> S("Send to ROPS"):::human
@@ -85,6 +83,32 @@ flowchart LR
     A --> S
     S --> E("Institution<br/>edits"):::human
     E --> R(["Sent to ROPS"]):::human
+    classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
+    classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
+    classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold
+```
+
+## 5. How meaning search works (embeddings)
+
+Once, offline (`scripts/embed.py`): 124 innovations, 48 challenges and 8 areas become about 1353 text chunks (descriptions, problems, keywords and plain-language questions). The Polish model `mmlw-e5-base` turns each chunk into 768 numbers, stored in Postgres with pgvector.
+For each search, the description goes through the same model (with the `query:` prefix) in our own server function (`/api/embed`), so no data leaves HubMI. The database compares meanings (cosine similarity) and scores each innovation by its best chunk. In parallel a keyword search (BM25) runs; the two are combined 80% meaning + 20% words. Without vectors the search still works on keywords only.
+Why both: words catch exact terms („asystent osobisty”, „PCPR”); meaning catches „nikt mnie nie odwiedza” ≈ loneliness of seniors.
+
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"background":"#FFFFFF","primaryColor":"#FFFFFF","primaryBorderColor":"#1F3A8A","primaryTextColor":"#151A23","lineColor":"#6B7487","fontFamily":"Inter, Arial, Liberation Sans, Noto Sans, sans-serif","fontSize":"16px"},"flowchart":{"curve":"basis","nodeSpacing":40,"rankSpacing":50,"padding":14,"wrappingWidth":260}}}%%
+flowchart LR
+    subgraph once["Once, offline"]
+        direction LR
+        L(["Library<br/>1353 text chunks"]):::data --> E1("Polish model<br/>mmlw-e5-base"):::ai
+        E1 --> DB[("768 numbers per chunk<br/>Postgres + pgvector")]:::data
+    end
+    Q(["Problem<br/>description"]):::data --> E2("Same model<br/>on our server"):::ai
+    E2 --> S("Closest meaning<br/>best chunk per innovation"):::data
+    DB --> S
+    Q --> K("Keyword search<br/>BM25"):::data
+    S --> F("Combined<br/>80% meaning + 20% words"):::ai
+    K --> F
+    style once fill:#F6F7F9,stroke:#D9DDE4,color:#4B5565
     classDef ai fill:#E8EDFA,stroke:#1F3A8A,stroke-width:2px,color:#1F3A8A,font-weight:bold
     classDef data fill:#FFFFFF,stroke:#6B7487,stroke-width:1.5px,color:#151A23
     classDef human fill:#E3F2EA,stroke:#1D6B48,stroke-width:2px,color:#1D6B48,font-weight:bold
