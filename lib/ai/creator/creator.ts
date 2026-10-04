@@ -153,6 +153,20 @@ export function budgetFromCanvas(answers: Answers): { text: string; sources: str
   return lines.length ? { text: lines.join("\n"), sources } : null;
 }
 
+// Sentences about whether the idea fits the call belong to "fit", not to the application text
+// (the model tends to add "Cel nie jest powiązany z celem naboru…" despite being told not to).
+const FIT_TALK = /\b(nabor\w*|naboru)\b/i;
+const NEGATION =
+  /\bnie\s+(jest|są|pasuj\w*|wiąż\w*|dotycz\w*|zgadza\w*|pokrywa\w*)|\bniezgodn\w*|\bniepowiązan\w*/i;
+
+export function withoutFitTalk(text: string): string {
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .filter((sentence) => !(FIT_TALK.test(sentence) && NEGATION.test(sentence)))
+    .join(" ")
+    .trim();
+}
+
 export async function applicationDraft(
   request: ApplicationRequest,
   options: GenerateJsonOptions = {},
@@ -191,7 +205,8 @@ export async function applicationDraft(
         role: "system",
         content: `You draft a grant application for an open call, from a resident's idea card and their answers to the innovation canvas. ${RULES}
 Use the canvas answers: they are the author's own facts (who the users are, who pays, partners, channels, impact). Write each section as 2-4 full, natural sentences, not a list of three-word sentences.
-Sections: goal (tied to the call's goal), audience (users, who pays, who decides), activities (concrete steps, partners and how people are reached), results (what changes for a person and a community, with placeholders for any numbers)${budget ? "" : ", budget (only cost categories with [kwota], never amounts)"}.
+Never pretend the idea fits the call. Tie the goal to the call's goal only where it truly matches (same people, same problem); if it does not, write the goal of the idea itself and say in "fit" (level "slaba" or "czesciowa") what does not match. Comments about the fit go only to "fit", never into the sections: the sections are text for the application form.
+Sections: goal (the idea's goal, tied to the call's goal only where it truly matches), audience (users, who pays, who decides), activities (concrete steps, partners and how people are reached), results (what changes for a person and a community, with placeholders for any numbers)${budget ? "" : ", budget (only cost categories with [kwota], never amounts)"}.
 For each section list "sources": which of these it is based on: ${JSON.stringify(allowedSources)}.
 "fit": does the idea fit what the call funds? level "dobra", "czesciowa" or "slaba" and one plain-Polish sentence why.
 "missing": up to 4 short items the author must still add before applying (e.g. "Ilu seniorom pomożecie"), plain Polish.
@@ -220,7 +235,7 @@ Return json: {"sections": [{"key": "goal"|"audience"|"activities"|"results"|"bud
     }
     const s = out.sections.find((x) => x.key === key);
     if (!s) return [];
-    const { text, replaced } = removeInventedNumbers(s.text.trim(), source);
+    const { text, replaced } = removeInventedNumbers(withoutFitTalk(s.text.trim()), source);
     return [
       {
         key,
