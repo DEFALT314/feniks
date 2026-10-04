@@ -76,28 +76,11 @@ input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;bor
         <button type="button" class="btn btn-s">Wyloguj się</button>
       </div>
     </section>
-    <section aria-labelledby="stany" style="display: flex; flex-direction: column; gap: 16px; margin-top: 24px">
-      <h2 id="stany" class="h" style="font-size: 28px">Stany po działaniu</h2>
-      <span class="lbl">Stan: nazwa zapisana (komunikat pod polem, odczytany przez czytnik)</span>
-      <div class="card" style="padding: 20px 32px"><p style="font-size: 16px">Zapisano.</p></div>
-      <span class="lbl">Stan: błąd nazwy (pod etykietą, fokus na polu)</span>
-      <div class="card" style="padding: 20px 32px; display: flex; flex-direction: column; gap: 6px">
-        <label for="p-nazwa-b" style="font-weight:700">Jak mamy Cię nazywać<span class="muted" style="font-weight: 400"> (wymagane)</span></label>
-        <p id="p-nazwa-b-err" style="color: #B42318; font-size: 16px; font-weight: 700">Wpisz co najmniej 2 znaki.</p>
-        <input id="p-nazwa-b" aria-invalid="true" aria-describedby="p-nazwa-b-err" value="S" style="border-color: #B42318">
-      </div>
-      <span class="lbl">Stan: prośba o rolę wysłana i czeka na decyzję</span>
-      <div class="card" style="padding: 20px 32px; display: flex; flex-direction: column; gap: 14px">
-        <p style="background: #FFF1DB; color: #8A4B00; border-radius: 10px; padding: 12px 16px; font-weight: 700">Prośba o rolę „Organizacja pozarządowa” czeka na decyzję ROPS. Dostaniesz powiadomienie.</p>
-        <p class="muted" style="font-size: 16px">Wybrana rola jest zaznaczona, a przycisk zmienia się na „Zmień prośbę”. Zaraz po wysłaniu pod przyciskiem: „Prośba wysłana do ROPS. Dostaniesz powiadomienie o decyzji.” Bez wybranej roli: „Wybierz rolę, o którą prosisz.”</p>
-        <button type="button" class="btn btn-s" style="align-self: flex-start">Zmień prośbę</button>
-      </div>
-    </section>
   </main>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2100}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1530}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

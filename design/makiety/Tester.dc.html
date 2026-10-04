@@ -24,7 +24,7 @@ h1,h2,h3,p{margin:0}
 .btn-p{background:#1F3A8A;color:#fff}
 .btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
 .card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
-.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#EEF0F4;color:#4B5565}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:999px;font-size:16px;line-height:1.5;font-weight:700;background:#EEF0F4;color:#4B5565}
 .tag-ok{background:#E3F2EA;color:#1D6B48}
 .tag-ai{background:#E8EDFA;color:#1F3A8A}
 .muted{color:#4B5565}
@@ -32,7 +32,7 @@ h1,h2,h3,p{margin:0}
 label{font-weight:700}
 textarea{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
 fieldset{border:none;margin:0;padding:0}
-.sc{position:relative;display:flex;align-items:center;justify-content:center;width:60px;height:56px;border:1px solid #6B7487;border-radius:10px;background:#fff;cursor:pointer;font-weight:700;font-size:20px}
+.sc{position:relative;display:flex;align-items:center;justify-content:center;min-width:44px;height:56px;border:1px solid #6B7487;border-radius:10px;background:#fff;cursor:pointer;font-weight:700;font-size:20px}
 .sc input{position:absolute;opacity:0;width:1px;height:1px}
 dl.m{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0;font-size:16px}
 dl.m dt{color:#4B5565}
@@ -74,7 +74,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
   <dc-import name="Naglowek" active="tester" rola="mieszkaniec" kto="Stanisław" hint-size="100%,112px"></dc-import>
   <main>
     <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
-      <div data-ruch="wejscie" class="wrap" style="padding-top: 44px; padding-bottom: 36px; display: flex; flex-direction: column; gap: 12px">
+      <div data-ruch="wejscie" class="wrap" style="padding-top: 40px; padding-bottom: 32px; display: flex; flex-direction: column; gap: 12px">
         <h1 class="h" style="font-size: 44px">Testy nowych rozwiązań</h1>
         <p class="muted" style="max-width: 760px">Zapisz się na test, wypróbuj rozwiązanie, oceń je i zaproponuj, co poprawić. Twoja opinia trafia do autorów i do ROPS.</p>
       </div>
@@ -82,87 +82,69 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
     <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 48px; padding-top: 36px; padding-bottom: 64px">
       <section data-ruch="pokaz" aria-labelledby="otwarte" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
         <h2 id="otwarte" class="h" style="font-size: 26px">Otwarte testy</h2>
-        <article class="card" aria-labelledby="t1" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
-          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h3 id="t1" class="h" style="font-size: 22px">Senior CUDER – gra karciana</h3><span class="tag tag-ok">Masz miejsce na teście</span></div>
-          <p>Spotkanie przy grze w małej grupie, potem krótka rozmowa o wrażeniach.</p>
-          <dl class="m"><dt>Gdzie</dt><dd>klub seniora</dd><dt>Kiedy</dt><dd>10 października 2026 17:00</dd><dt>Miejsca</dt><dd>wolne: 7 z 8</dd></dl>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px"><button type="button" class="btn btn-p" aria-describedby="t1">Oceń test</button><button type="button" class="btn btn-s" aria-describedby="t1">Wypisz się</button><a class="btn btn-s" href="Karta.dc.html" aria-describedby="t1">O rozwiązaniu</a></div>
-        </article>
-        <article class="card" aria-labelledby="t2" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
-          <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h3 id="t2" class="h" style="font-size: 22px">Kawiarenka cyfrowa – pierwsze spotkanie</h3><span class="tag tag-ok">Masz miejsce na teście</span></div>
-          <p>Godzina przy kawie: e-recepta i rozmowa wideo z rodziną. Potem krótka rozmowa o wrażeniach.</p>
-          <dl class="m"><dt>Gdzie</dt><dd>Biblioteka gminna, sala na parterze</dd><dt>Kiedy</dt><dd>14 października 2026 10:00</dd><dt>Miejsca</dt><dd>wolne: 10 z 12</dd></dl>
-          <p style="font-size: 16px"><strong>Twoja ocena:</strong> 5 z 5</p>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px"><button type="button" class="btn btn-p" aria-describedby="t2">Zmień ocenę</button></div>
-        </article>
-        <article class="card" aria-labelledby="t3" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
-          <h3 id="t3" class="h" style="font-size: 22px">Merkury – symulator bankomatu i paczkomatu</h3>
-          <p>Sprawdź, czy ćwiczenia w domu pomagają potem pewniej obsłużyć urządzenia w mieście.</p>
-          <dl class="m"><dt>Gdzie</dt><dd>online, z domu</dd><dt>Kiedy</dt><dd>Termin do ustalenia</dd><dt>Miejsca</dt><dd>wolne: 20 z 20</dd></dl>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px"><button type="button" class="btn btn-p" aria-describedby="t3">Zapisz się</button><a class="btn btn-s" href="Karta.dc.html" aria-describedby="t3">O rozwiązaniu</a></div>
-        </article>
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px">
+          <li>
+            <article class="card" aria-labelledby="t1" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
+              <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h3 id="t1" class="h" style="font-size: 22px">Senior CUDER – gra karciana</h3><span class="tag tag-ok">Masz miejsce na teście</span></div>
+              <p>Spotkanie przy grze w małej grupie, potem krótka rozmowa o wrażeniach.</p>
+              <dl class="m"><dt>Gdzie</dt><dd>klub seniora</dd><dt>Kiedy</dt><dd>10 października 2026 17:00</dd><dt>Miejsca</dt><dd>wolne: 7 z 8</dd></dl>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px"><button type="button" class="btn btn-p" aria-describedby="t1">Oceń test</button><button type="button" class="btn btn-s" aria-describedby="t1">Wypisz się</button><a class="btn btn-s" href="Karta.dc.html" aria-describedby="t1">O rozwiązaniu</a></div>
+            </article>
+          </li>
+          <li>
+            <article class="card" aria-labelledby="t3" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
+              <h3 id="t3" class="h" style="font-size: 22px">Merkury – symulator bankomatu i paczkomatu</h3>
+              <p>Sprawdź, czy ćwiczenia w domu pomagają potem pewniej obsłużyć urządzenia w mieście.</p>
+              <dl class="m"><dt>Gdzie</dt><dd>online, z domu</dd><dt>Kiedy</dt><dd>Termin do ustalenia</dd><dt>Miejsca</dt><dd>wolne: 20 z 20</dd></dl>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px"><button type="button" class="btn btn-p" aria-describedby="t3">Zapisz się</button><a class="btn btn-s" href="Karta.dc.html" aria-describedby="t3">O rozwiązaniu</a></div>
+            </article>
+          </li>
+        </ul>
       </section>
       <aside data-ruch="pokaz" aria-labelledby="ocena" style="flex: 1 1 360px; max-width: 420px; display: flex; flex-direction: column; gap: 16px">
         <form class="card" novalidate style="padding: 24px; display: flex; flex-direction: column; gap: 16px; border-top: 4px solid #1F3A8A">
           <h2 id="ocena" class="h" tabindex="-1" style="font-size: 22px">Oceń: Senior CUDER</h2>
           <fieldset data-ruch="wybor" style="display: flex; flex-direction: column; gap: 8px">
             <legend style="font-weight: 700; margin-bottom: 8px">Na ile pomaga? (1 – wcale, 5 – bardzo) <span class="muted" style="font-weight: 400">(wymagane)</span></legend>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; max-width: 332px">
               <label class="sc"><input type="radio" name="oc" value="1" required>1</label>
               <label class="sc"><input type="radio" name="oc" value="2">2</label>
               <label class="sc"><input type="radio" name="oc" value="3">3</label>
-              <label class="sc"><input type="radio" name="oc" value="4" checked>4</label>
+              <label class="sc"><input type="radio" name="oc" value="4">4</label>
               <label class="sc"><input type="radio" name="oc" value="5">5</label>
             </div>
           </fieldset>
-          <div style="display: flex; flex-direction: column; gap: 6px"><label for="t-ok">Co działało?</label><span class="hint" id="h-ok">Co Ci się podobało albo pomogło.</span><textarea id="t-ok" rows="2" aria-describedby="h-ok">Dużo rozmów, nikt nie czuł się oceniany.</textarea></div>
-          <div style="display: flex; flex-direction: column; gap: 6px"><label for="t-pop">Co poprawić?</label><span class="hint" id="h-pop">Zaproponuj usprawnienie: co zmienić, żeby działało lepiej. Np. większy druk, inna godzina spotkania, prostsza instrukcja.</span><textarea id="t-pop" rows="2" aria-describedby="h-pop">Większe litery na kartach.</textarea></div>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label for="t-ok">Co działało?</label><span class="hint" id="h-ok">Co Ci się podobało albo pomogło.</span><textarea id="t-ok" rows="2" aria-describedby="h-ok"></textarea></div>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label for="t-pop">Co poprawić?</label><span class="hint" id="h-pop">Zaproponuj usprawnienie: co zmienić, żeby działało lepiej. Np. większy druk, inna godzina spotkania, prostsza instrukcja.</span><textarea id="t-pop" rows="2" aria-describedby="h-pop"></textarea></div>
           <button type="submit" class="btn btn-p">Wyślij ocenę</button>
-          <p aria-live="polite" class="ok" style="font-size: 16px">Dziękujemy! Ocena trafiła do autorów.</p>
+          <p aria-live="polite" class="ok" style="font-size: 16px"></p>
         </form>
         <p class="muted" style="font-size: 16px">Ocenę zobaczą autorzy rozwiązania i ROPS. Nie pokazujemy przy niej Twojego imienia.</p>
       </aside>
     </div>
-
-    <section aria-labelledby="stan-autor" class="wrap" style="padding-bottom: 40px; display: flex; flex-direction: column; gap: 16px">
-      <h2 id="stan-autor" class="lbl">Stan: autor pomysłu albo ROPS – testy, które prowadzisz (pod listą)</h2>
-      <h2 class="h" style="font-size: 26px">Twoje testy i opinie</h2>
+    <section aria-labelledby="moje" class="wrap" style="padding-bottom: 64px; display: flex; flex-direction: column; gap: 16px">
+      <h2 id="moje" class="h" style="font-size: 26px">Twoje testy i opinie</h2>
       <p class="muted" style="max-width: 760px">Oceny uczestników, bez ich imion. Nowa ocena pojawia się też w powiadomieniach.</p>
-      <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px">
-        <li class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px">
-          <h3 class="h" style="font-size: 22px">Kawiarenka cyfrowa – pierwsze spotkanie</h3>
-          <p class="muted" style="font-size: 16px">Test Twojego pomysłu · zapisani: 2</p>
-          <dl class="m"><dt>Gdzie</dt><dd>Biblioteka gminna, sala na parterze</dd><dt>Kiedy</dt><dd>14 października 2026 10:00</dd><dt>Miejsca</dt><dd>wolne: 10 z 12</dd></dl>
-          <p style="font-size: 18px"><strong>Średnia ocena: 4,5 z 5</strong> <span class="muted">(2 oceny)</span></p>
-          <ul aria-label="Uwagi uczestników: Kawiarenka cyfrowa – pierwsze spotkanie" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
-            <li class="op"><p class="muted">Ocena 5 z 5 · 3 paź 2026, 18:20</p><p><strong>Co działało:</strong> Spokojne tempo, każdy mógł spróbować sam na telefonie.</p><p><strong>Propozycja usprawnienia:</strong> Wydrukować krótką instrukcję do zabrania do domu.</p></li>
-            <li class="op"><p class="muted">Ocena 4 z 5 · 2 paź 2026, 12:05</p><p><strong>Propozycja usprawnienia:</strong> Spotkanie o 10:00 jest za wcześnie, lepiej po południu.</p></li>
-          </ul>
-        </li>
-        <li class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px">
-          <h3 class="h" style="font-size: 22px">Merkury – symulator bankomatu i paczkomatu</h3>
-          <p class="muted" style="font-size: 16px">Rozwiązanie z Biblioteki: Merkury · zapisani: 0</p>
-          <dl class="m"><dt>Gdzie</dt><dd>online, z domu</dd><dt>Kiedy</dt><dd>Termin do ustalenia</dd><dt>Miejsca</dt><dd>wolne: 20 z 20</dd></dl>
-          <p style="background: #EEF0F4; border-radius: 10px; padding: 12px 16px; font-size: 16px">Nikt jeszcze nie ocenił tego testu.</p>
+      <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+        <li>
+          <article class="card" aria-labelledby="m1" style="height: 100%; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+            <h3 id="m1" class="h" style="font-size: 22px">Kawiarenka cyfrowa – pierwsze spotkanie</h3>
+            <p class="muted" style="font-size: 16px">Test Twojego pomysłu · zapisani: 2</p>
+            <dl class="m"><dt>Gdzie</dt><dd>Biblioteka gminna, sala na parterze</dd><dt>Kiedy</dt><dd>14 października 2026 10:00</dd><dt>Miejsca</dt><dd>wolne: 10 z 12</dd></dl>
+            <p style="font-size: 18px"><strong>Średnia ocena: 4,5 z 5</strong> <span class="muted">(2 oceny)</span></p>
+            <ul aria-label="Uwagi uczestników: Kawiarenka cyfrowa – pierwsze spotkanie" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+              <li class="op"><p class="muted">Ocena 4 z 5 · 3 paź 2026, 18:20</p><p><strong>Co działało:</strong> Rozmowa wideo z wnukami bardzo się podobała.</p><p><strong>Propozycja usprawnienia:</strong> Ściągawka na papierze do zabrania do domu.</p></li>
+              <li class="op"><p class="muted">Ocena 5 z 5 · 2 paź 2026, 12:05</p><p><strong>Co działało:</strong> Młodzież tłumaczyła cierpliwie, nikt się nie śpieszył.</p></li>
+            </ul>
+          </article>
         </li>
       </ul>
-    </section>
-
-    <section aria-labelledby="stan-pusto" class="wrap" style="padding-bottom: 64px; display: flex; flex-direction: column; gap: 12px">
-      <h2 id="stan-pusto" class="lbl">Stan: brak zapisów i brak testów</h2>
-      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
-        <div class="card" style="padding: 24px; flex: 1 1 360px; max-width: 420px; display: flex; flex-direction: column; gap: 12px; border-top: 4px solid #1F3A8A">
-          <h3 class="h" style="font-size: 22px">Ocena testu</h3>
-          <p class="muted" style="font-size: 16px">Zapisz się na test. Po spotkaniu ocenisz go tutaj: od 1 do 5, co działało i co poprawić.</p>
-        </div>
-        <p class="muted" style="flex: 1 1 360px; max-width: 520px">Teraz nie ma otwartych testów. Zajrzyj tu później albo przejrzyj <a href="Biblioteka.dc.html">Bibliotekę innowacji</a>.</p>
-      </div>
     </section>
   </main>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2300}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2020}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

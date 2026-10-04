@@ -125,10 +125,10 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
       <ul style="margin: 0; padding-left: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 32px">
         <li>Tekst 18 px, kontrast co najmniej 4,5:1.</li>
         <li>Przyciski 50 px wysokości, cele dotykowe min. 44 px.</li>
-        <li>Fokus: granatowa obwódka 3 px (w trybie A+ 4 px). Cegła wyglądała jak błąd.</li>
+        <li>Fokus: granatowa obwódka 3 px (w trybie A+ 4 px).</li>
         <li>Mało etykiet: tylko „Propozycja AI”, „Sprawdzona przez ROPS” (Biblioteka), „Z inkubatora …” (spoza Biblioteki) i statusy.</li>
         <li>Wykresy zawsze z tabelą z tymi samymi danymi.</li>
-        <li>Wyniki AI ogłaszane czytnikom ekranu (aria-live).</li>
+        <li>Wyniki AI i powiadomienia czytane przez czytniki ekranu.</li>
         <li>Układ działa przy 200% i na ekranie 320 px.</li>
         <li>Przycisk A+ powiększa tekst i podnosi kontrast.</li>
         <li>Ruch (GSAP, <code>ruch.js</code>): wejścia i odsłony 420 ms, krzywa expo.out; przy ograniczeniu ruchu treść od razu na miejscu.</li>
@@ -137,7 +137,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
   </main>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1750}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2210}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

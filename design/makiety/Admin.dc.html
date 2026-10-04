@@ -111,7 +111,6 @@ tbody tr:hover{background:#F8F9FB}
             </tbody>
           </table>
         </div>
-        <p class="muted" style="font-size: 15px">Wybrany filtr ma znaczek ✓ i podkreślenie, nie tylko kolor. Pusta lista: „Nie ma tu pomysłów. Nowe pojawią się, gdy autor kliknie „Wyślij do ROPS”.”</p>
       </section>
       <aside data-ruch="pokaz" aria-label="Szczegóły" style="flex: 1 1 340px; max-width: 400px; display: flex; flex-direction: column; gap: 20px">
         <div id="p1" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px; border-top: 4px solid #1F3A8A">
@@ -141,69 +140,11 @@ tbody tr:hover{background:#F8F9FB}
         </section>
       </aside>
     </div>
-
-    <div class="wrap" style="display: flex; flex-direction: column; gap: 24px; padding-bottom: 64px">
-      <section aria-labelledby="s-ok" class="stan">
-        <span class="lbl" id="s-ok">Stan: po kliknięciu „Zatwierdź” (pod przyciskami, focus na tym tekście, gdy pomysł zniknie z listy)</span>
-        <p style="font-size: 16px; color: #1D6B48"><strong>„Sąsiedzki dyżur po wypisie”: zatwierdzony. Autor dostał powiadomienie i maila.</strong></p>
-        <p class="muted" style="font-size: 15px">Bez wysłanego maila koniec brzmi: „… Autor dostał powiadomienie w aplikacji.” Przy „Do poprawy” albo „Odrzuć” bez odpowiedzi focus wraca do pola „Odpowiedź dla autora”.</p>
-      </section>
-
-      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
-        <section id="biblioteka" aria-labelledby="s-nk" class="stan" style="flex: 1 1 340px">
-          <span class="lbl">Zakładka Biblioteka (/admin/library), panel obok listy kart</span>
-          <div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 12px">
-            <h2 id="s-nk" style="font-size: 20px; font-weight: 700">Nowa karta</h2>
-            <p class="muted" style="font-size: 16px">Karta zaczyna jako ukryta. Uzupełnij opis, a potem zaznacz „Opublikowana”.</p>
-            <div style="display: flex; flex-direction: column; gap: 6px"><label for="nk-n" style="font-size: 17px">Nazwa innowacji <span class="muted" style="font-weight: 400">(wymagane)</span></label><input id="nk-n" required maxlength="200"></div>
-            <div style="display: flex; flex-direction: column; gap: 6px"><label for="nk-k" style="font-size: 17px">Kategoria <span class="muted" style="font-weight: 400">(wymagane)</span></label><select id="nk-k" required><option value="" selected disabled>Wybierz kategorię</option><option>Seniorzy</option></select></div>
-            <button type="button" class="btn btn-s" style="align-self: flex-start">Dodaj kartę</button>
-          </div>
-        </section>
-        <section id="nabory" aria-labelledby="s-nb" class="stan" style="flex: 1 1 340px">
-          <span class="lbl" id="s-nb">Zakładka Nabory (/admin/calls), fragment formularza</span>
-          <div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 8px">
-            <label style="display: flex; align-items: center; gap: 12px; min-height: 44px"><input type="checkbox" checked style="width: 20px; height: 20px; min-height: 0; accent-color: #1F3A8A">Nabór włączony (widzą go autorzy pomysłów)</label>
-            <p class="muted" style="font-size: 16px">Gdy włączysz nabór albo zmienisz jego termin, autorzy pomysłów z wybranych obszarów dostaną powiadomienie i maila.</p>
-            <button type="button" class="btn btn-p" style="align-self: flex-start">Zapisz zmiany</button>
-          </div>
-        </section>
-      </div>
-
-      <section id="trendy" aria-labelledby="s-tr" class="stan">
-        <span class="lbl">Zakładka Potrzeby w regionie (/admin/trends), skrót</span>
-        <h2 id="s-tr" class="h" style="font-size: 28px">Potrzeby w regionie</h2>
-        <p class="muted" style="max-width: 760px">Problemy opisane w „Dopasuj rozwiązanie” i pomysły wysłane do ROPS, w podziale na obszary Mapy Wyzwań. Bez treści zgłoszeń i danych osobowych. Widzą je tylko pracownicy ROPS.</p>
-        <div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 14px">
-          <h3 style="font-size: 22px; font-weight: 700">Zgłoszenia według obszarów z ostatnich 30 dni (razem: 23)</h3>
-          <div data-ruch="slupki" role="img" aria-label="Wykres słupkowy: Seniorzy 9, Niepełnosprawność 6, Zdrowie psychiczne 5, Ubóstwo 3" style="display: flex; flex-direction: column; gap: 8px">
-            <div class="bar"><span>Seniorzy</span><span style="width: 100%"></span><span>9</span></div>
-            <div class="bar"><span>Niepełnosprawność</span><span style="width: 67%"></span><span>6</span></div>
-            <div class="bar"><span>Zdrowie psychiczne</span><span style="width: 56%"></span><span>5</span></div>
-            <div class="bar"><span>Ubóstwo</span><span style="width: 33%"></span><span>3</span></div>
-          </div>
-          <a href="#trendy" style="font-size: 16px">Pokaż dane w tabeli</a>
-        </div>
-        <div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px; border-top: 4px solid #1F3A8A">
-          <h3 style="font-size: 22px; font-weight: 700">Co możesz z tym zrobić</h3>
-          <ul style="margin: 0; padding-left: 24px; display: flex; flex-direction: column; gap: 8px">
-            <li>Dużo problemów „bez dobrego dopasowania” w jednym obszarze to luka w Bibliotece. <a href="#nabory">Ogłoś nabór pomysłów w tym obszarze</a>.</li>
-            <li>Problemy są, ale pasujące innowacje się nie pokazują? Dopisz słowa kluczowe w <a href="#biblioteka">kartach innowacji</a>.</li>
-            <li>Dużo pomysłów z jednego obszaru czeka na odpowiedź? <a href="#kolejka">Przejrzyj nowe pomysły</a>.</li>
-          </ul>
-        </div>
-        <h3 style="font-size: 22px; font-weight: 700">Najczęstsze wyzwania</h3>
-        <ol style="margin: 0; padding-left: 24px; display: flex; flex-direction: column; gap: 8px">
-          <li><strong>Samotność osób starszych po wypisie ze szpitala</strong> <span class="muted" style="font-size: 16px">(Seniorzy, 5 zgłoszeń)</span> <span class="tag tag-warn">2 bez dobrego dopasowania</span></li>
-          <li><strong>Dostęp do usług opiekuńczych w gminie</strong> <span class="muted" style="font-size: 16px">(Seniorzy, 3 zgłoszenia)</span></li>
-        </ol>
-      </section>
-    </div>
   </main>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3300}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1760}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

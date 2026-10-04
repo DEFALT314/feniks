@@ -15,84 +15,45 @@ body{margin:0;background:#F6F7F9}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
 :focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
-.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
+.h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.625}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
 .btn-p{background:#1F3A8A;color:#fff}.btn-p:hover{background:#172C6B;color:#fff}
 .btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}.btn-s:hover{background:#E8EDFA;color:#172C6B}
-.card{background:#fff;border:1px solid #D9DDE4;border-radius:12px}
+.card{background:#fff;border:1px solid #D9DDE4;border-radius:14px}
 .muted{color:#4B5565}
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
 label{font-weight:700}
-input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
-.acc{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;background:#fff;text-decoration:none;color:#151A23;min-height:64px}
+input{font:inherit;font-size:18px;line-height:28px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+.acc{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;background:#fff;text-decoration:none;color:#151A23;min-height:64px;width:100%;font:inherit;text-align:left;cursor:pointer}
+.pw{position:absolute;right:4px;top:4px;bottom:4px;min-width:44px;padding:0 14px;border:1px solid transparent;border-radius:10px;background:#E8EDFA;color:#1F3A8A;font:inherit;font-size:16px;line-height:24px;font-weight:700;cursor:pointer}
+.bad{border-color:#B42318!important;box-shadow:0 0 0 1px #B42318}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .acc:hover{border-color:#1F3A8A;background:#F3F6FD;color:#151A23}
 .av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 40px;color:#FFFFFF}
-.opt{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid #D9DDE4;border-radius:10px;font-weight:400;cursor:pointer}
-.opt input{accent-color:#1F3A8A;width:22px;height:22px;margin-top:3px;flex:none}
 </style>
 </helmet>
-<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
+<div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.625">
   <dc-import name="Naglowek" rola="gosc" active="" hint-size="100%,112px"></dc-import>
   <main id="main-content" class="wrap" style="padding-top: 56px; padding-bottom: 72px; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 32px">
     <section class="card" role="region" aria-labelledby="rej" style="width: 100%; max-width: 480px; padding: 40px; display: flex; flex-direction: column; gap: 22px">
       <h1 id="rej" class="h" style="font-size: 34px">Załóż konto</h1>
       <form novalidate style="display: flex; flex-direction: column; gap: 20px">
-        <div style="display: flex; flex-direction: column; gap: 6px"><label for="r-mail">Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label><input id="r-mail" type="email" autocomplete="email" required></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label>Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label><input type="email" autocomplete="email" required></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label>Hasło<span class="muted" style="font-weight: 400"> (wymagane)</span></label><p class="muted" style="font-size: 16px; line-height: 1.5">Co najmniej 10 znaków.</p><div style="position: relative"><input type="password" autocomplete="new-password" minlength="10" required style="padding-right: 112px"><button type="button" class="pw">Pokaż<span class="sr-only"> hasło</span></button></div></div>
         <div style="display: flex; flex-direction: column; gap: 6px">
-          <label for="r-haslo">Hasło<span class="muted" style="font-weight: 400"> (wymagane)</span></label>
-          <p id="r-haslo-op" class="muted" style="font-size: 16px">Co najmniej 10 znaków.</p>
-          <div style="position: relative"><input id="r-haslo" type="password" autocomplete="new-password" minlength="10" required aria-describedby="r-haslo-op" style="padding-right: 112px"><button type="button" aria-controls="r-haslo" style="position: absolute; right: 4px; top: 4px; bottom: 4px; min-width: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: #E8EDFA; color: #1F3A8A; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Pokaż<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap"> hasło</span></button></div>
+          <label style="display: flex; gap: 12px; align-items: flex-start; min-height: 44px; font-weight: 400"><input type="checkbox" required style="accent-color: #1F3A8A; width: 20px; height: 20px; margin: 4px 0 0; flex: none"><span>Zgadzam się na przetwarzanie mojego adresu e-mail przez ROPS w Krakowie w celu korzystania z HubMI. <span class="muted">(wymagane)</span></span></label>
+          
         </div>
-        <label style="display: flex; gap: 12px; align-items: flex-start; min-height: 44px; font-weight: 400"><input type="checkbox" required style="accent-color: #1F3A8A; width: 20px; height: 20px; margin-top: 4px; flex: none"> <span>Zgadzam się na przetwarzanie mojego adresu e-mail przez ROPS w Krakowie w celu korzystania z HubMI. <span class="muted">(wymagane)</span></span></label>
         <button type="submit" class="btn btn-p" style="width: 100%">Załóż konto</button>
       </form>
       <p style="text-align: center; border-top: 1px solid #D9DDE4; padding-top: 20px">Masz już konto? <a href="Logowanie.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; font-weight: 700">Zaloguj się</a></p>
     </section>
   </main>
-
-  <section aria-labelledby="stany" class="wrap" style="padding-bottom: 72px; display: flex; flex-direction: column; gap: 20px">
-    <h2 id="stany" class="h" style="font-size: 28px">Stany po działaniu</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
-      <div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
-        <span class="lbl">Stan: błędy w formularzu (pod etykietą pola, fokus na pierwszym błędnym polu)</span>
-        <div class="card" style="padding: 28px 32px; display: flex; flex-direction: column; gap: 14px">
-          <div style="display: flex; flex-direction: column; gap: 6px">
-            <label for="r-mail-b">Adres e-mail<span class="muted" style="font-weight: 400"> (wymagane)</span></label>
-            <p id="r-mail-b-err" style="color: #B42318; font-size: 16px; font-weight: 700">Wpisz poprawny adres e-mail, np. jan@example.org</p>
-            <input id="r-mail-b" type="email" aria-invalid="true" aria-describedby="r-mail-b-err" value="stanislaw@" style="border-color: #B42318">
-          </div>
-          <p style="color: #B42318; font-size: 16px; font-weight: 700">Zaznacz zgodę, żeby założyć konto.</p>
-          <p class="muted" style="font-size: 16px">Inne komunikaty: „Konto z tym adresem już istnieje. Zaloguj się.” · „To hasło jest zbyt łatwe do odgadnięcia. Wybierz dłuższe.” · „Hasło może mieć najwyżej 72 znaki.”</p>
-        </div>
-      </div>
-      <div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px">
-        <span class="lbl">Stan: konto założone, czeka na potwierdzenie (zastępuje formularz w karcie)</span>
-        <div class="card" style="padding: 28px 32px; display: flex; flex-direction: column; gap: 16px">
-          <div role="status" style="background: #E3F2EA; border: 1px solid rgba(29,107,72,.3); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
-            <div style="display: flex; align-items: center; gap: 12px">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1D6B48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8"></path><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path><path d="m16 19 2 2 4-4"></path></svg>
-              <h3 class="h" tabindex="-1" style="font-size: 24px">Sprawdź skrzynkę</h3>
-            </div>
-            <p>Wysłaliśmy link na adres <strong>stanislaw@example.org</strong>.</p>
-            <ol style="margin: 0; padding-left: 24px; display: flex; flex-direction: column; gap: 4px">
-              <li>Otwórz maila „Potwierdź adres e-mail w HubMI.pl”.</li>
-              <li>Kliknij przycisk „Potwierdzam adres”.</li>
-              <li>Zalogujemy Cię automatycznie.</li>
-            </ol>
-            <p class="muted" style="font-size: 16px">Link jest ważny przez 24 godziny. Nie widzisz maila? Sprawdź folder Spam albo Oferty.</p>
-          </div>
-          <p style="font-size: 16px">Mail nie przyszedł albo link wygasł?</p>
-          <button type="button" class="btn btn-s" style="align-self: flex-start">Wyślij link ponownie</button>
-          <a href="Logowanie.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; align-self: flex-start; font-size: 16px">Wróć do logowania</a>
-        </div>
-      </div>
-    </div>
-  </section>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1120}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};
