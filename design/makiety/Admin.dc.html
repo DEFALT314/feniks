@@ -17,7 +17,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 18px;border-radius:10px;font:inherit;font-size:16px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
@@ -38,6 +38,12 @@ th{font-size:15px;color:#4B5565}
 .bar{display:grid;grid-template-columns:180px 1fr 32px;gap:12px;align-items:center;font-size:16px}
 .bar span:nth-child(2){height:16px;border-radius:4px;background:#1F3A8A;display:block}
 label{font-weight:700}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border:1px solid #D9DDE4;border-radius:999px;background:#fff;color:#151A23;font-size:16px;font-weight:700;text-decoration:none}
+.chip[aria-current=page]{border-color:#1F3A8A;background:#E8EDFA;color:#1F3A8A;text-decoration:underline}
+.btn-t{background:transparent;color:#1F3A8A;text-decoration:underline;text-underline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.stan{border:2px dashed #B8C0CD;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:12px}
+input,select{font:inherit;font-size:17px;min-height:46px;padding:0 12px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
 textarea{font:inherit;font-size:17px;padding:10px 12px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
 /* Ruch i stany – wspólne dla wszystkich ekranów (w aplikacji: tokeny w globals.css) */
 :root{--ruch-szybko:120ms;--ruch:200ms;--ruch-wolno:420ms;--ease:cubic-bezier(.16,1,.3,1)}
@@ -76,73 +82,69 @@ tbody tr:hover{background:#F8F9FB}
         <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px"><h1 class="h" style="font-size: 40px">Panel ROPS</h1><span class="tag tag-warn">Dane demonstracyjne</span></div>
         <nav aria-label="Sekcje panelu" style="display: flex; flex-wrap: wrap; gap: 4px 28px">
           <a class="tab" href="#kolejka" aria-current="page" style="color: #1F3A8A; font-weight: 700; border-bottom-color: #1F3A8A">Nowe pomysły (3)</a>
-          <a class="tab" href="#role">Prośby o rolę (1)</a>
-          <a class="tab" href="Biblioteka.dc.html">Biblioteka</a>
+          <a class="tab" href="#role">Prośby o rolę</a>
+          <a class="tab" href="#biblioteka">Biblioteka</a>
+          <a class="tab" href="#karty-uslug">Karty usług</a>
           <a class="tab" href="#nabory">Nabory</a>
           <a class="tab" href="#trendy">Potrzeby w regionie</a>
-          <a class="tab" href="#dziennik">Dziennik zmian</a>
         </nav>
       </div>
     </div>
-    <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 40px; padding-top: 32px; padding-bottom: 64px">
-      <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 32px">
-        <section id="kolejka" aria-labelledby="kol" style="display: flex; flex-direction: column; gap: 12px">
-          <h2 id="kol" class="h" style="font-size: 24px">Nowe pomysły</h2>
-          <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D9DDE4; border-radius: 12px">
-            <table>
-              <thead><tr><th scope="col">Pomysł</th><th scope="col">Autor</th><th scope="col">Obszar</th><th scope="col">Wysłano</th><th scope="col">Status</th></tr></thead>
-              <tbody data-ruch="pokaz">
-                <tr style="background: #F3F6FD"><td><a href="#p1"><strong>Sąsiedzki dyżur po wypisie</strong></a></td><td>Fundacja Dobry Start</td><td>Seniorzy</td><td>dziś 16:42</td><td><span class="tag tag-warn">W weryfikacji</span></td></tr>
-                <tr><td><a href="#p2">Kawiarenka cyfrowa w bibliotece</a></td><td>mieszkanka (konto demo)</td><td>Seniorzy</td><td>dziś 15:10</td><td><span class="tag">Nowy</span></td></tr>
-                <tr><td><a href="#p3">Mapa miejsc przyjaznych osobom w spektrum autyzmu</a></td><td>stowarzyszenie (konto demo)</td><td>Niepełnosprawność</td><td>wczoraj</td><td><span class="tag tag-err">Do poprawy</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <section id="trendy" aria-labelledby="tr" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 14px">
-          <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: baseline"><h2 id="tr" class="h" style="font-size: 22px">Zgłoszenia według obszarów Mapy Wyzwań, ostatnie 30 dni</h2><span class="tag tag-warn">Dane demonstracyjne</span></div>
-          <div data-ruch="slupki" role="img" aria-label="Wykres słupkowy: Seniorzy 14, Niepełnosprawność 9, Zdrowie psychiczne 7, Ubóstwo 6, Rodzina i piecza 5, Zdrowie 4, Cudzoziemcy 3, Bezdomność 2" style="display: flex; flex-direction: column; gap: 8px">
-            <div class="bar"><span>Seniorzy</span><span style="width: 100%"></span><span>14</span></div>
-            <div class="bar"><span>Niepełnosprawność</span><span style="width: 64%"></span><span>9</span></div>
-            <div class="bar"><span>Zdrowie psychiczne</span><span style="width: 50%"></span><span>7</span></div>
-            <div class="bar"><span>Ubóstwo</span><span style="width: 43%"></span><span>6</span></div>
-            <div class="bar"><span>Rodzina i piecza</span><span style="width: 36%"></span><span>5</span></div>
-            <div class="bar"><span>Zdrowie</span><span style="width: 29%"></span><span>4</span></div>
-            <div class="bar"><span>Cudzoziemcy</span><span style="width: 21%"></span><span>3</span></div>
-            <div class="bar"><span>Bezdomność</span><span style="width: 14%"></span><span>2</span></div>
-          </div>
-          <div style="border-top: 1px solid #D9DDE4; padding-top: 12px; display: flex; flex-direction: column; gap: 6px"><span class="tag tag-ai" style="align-self: flex-start">Propozycja AI</span><p>Najczęściej wraca wyzwanie „Dostęp do usług opiekuńczych w gminie”. W Bibliotece są pasujące innowacje; warto rozważyć je w kolejnym naborze.</p></div>
-          <a href="#tabela" style="font-size: 16px">Pokaż dane w tabeli</a>
-        </section>
-      </div>
+    <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 40px; padding-top: 32px; padding-bottom: 32px">
+      <section id="kolejka" aria-labelledby="kol" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+        <h2 id="kol" class="h" style="font-size: 24px">Pomysły wysłane do ROPS</h2>
+        <nav aria-label="Filtr statusu" style="display: flex; flex-wrap: wrap; gap: 8px">
+          <a class="chip" href="#kolejka" aria-current="page"><span aria-hidden="true">✓</span>Do decyzji</a>
+          <a class="chip" href="#kolejka">Do poprawy</a>
+          <a class="chip" href="#kolejka">Zatwierdzone</a>
+          <a class="chip" href="#kolejka">Odrzucone</a>
+          <a class="chip" href="#kolejka">Wszystkie</a>
+        </nav>
+        <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D9DDE4; border-radius: 12px">
+          <table style="min-width: 600px">
+            <caption class="sr">Pomysły wysłane do ROPS, najnowsze na górze</caption>
+            <thead><tr><th scope="col">Pomysł</th><th scope="col">Autor</th><th scope="col">Obszar</th><th scope="col">Wysłano</th><th scope="col">Status</th></tr></thead>
+            <tbody data-ruch="pokaz">
+              <tr style="background: #F3F6FD"><th scope="row" style="font-weight: 400; font-size: 16px; color: #151A23"><a href="#p1" aria-current="true"><strong>Sąsiedzki dyżur po wypisie</strong></a></th><td>Fundacja Dobry Start</td><td>Seniorzy</td><td style="white-space: nowrap">dziś 16:42</td><td><span class="tag tag-warn" style="white-space: nowrap">W weryfikacji</span></td></tr>
+              <tr><th scope="row" style="font-weight: 400; font-size: 16px; color: #151A23"><a href="#p2">Kawiarenka cyfrowa w bibliotece</a></th><td>Stanisław</td><td>Seniorzy</td><td style="white-space: nowrap">wczoraj 23:17</td><td><span class="tag">Nowy</span></td></tr>
+              <tr><th scope="row" style="font-weight: 400; font-size: 16px; color: #151A23"><a href="#p3">Wspólne obiady w świetlicy wiejskiej</a></th><td>GOPS w Przykładowej Woli</td><td>Ubóstwo</td><td style="white-space: nowrap">2 października</td><td><span class="tag">Nowy</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
       <aside data-ruch="pokaz" aria-label="Szczegóły" style="flex: 1 1 340px; max-width: 400px; display: flex; flex-direction: column; gap: 20px">
         <div id="p1" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px; border-top: 4px solid #1F3A8A">
           <span class="lbl">Fundacja Dobry Start</span>
           <h2 class="h" style="font-size: 22px">Sąsiedzki dyżur po wypisie</h2>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><span class="tag tag-warn">W weryfikacji</span><span class="muted" style="font-size: 16px">etap: pomysł</span></div>
           <p class="muted" style="font-size: 16px">Wolontariusze z sąsiedztwa odwiedzają seniorów przez dwa tygodnie po powrocie ze szpitala.</p>
-          <p style="font-size: 16px">Podobne w Bibliotece: <a href="Karta.dc.html">Organizator kompleksowej opieki</a></p>
-          <div style="display: flex; flex-direction: column; gap: 6px"><label for="a-odp" style="font-size: 16px">Odpowiedź dla autora</label><textarea id="a-odp" rows="3">Prosimy dopisać współpracę z OPS. Przypisujemy mentorkę.</textarea></div>
-          <p style="font-size: 16px">Ekspertka: Ewa · <a href="#zmien">zmień</a></p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-p">Zatwierdź</button><button type="button" class="btn btn-s">Do poprawy</button><button type="button" class="btn btn-d">Odrzuć</button></div>
+          <p style="font-size: 16px">Po wypisie ze szpitala senior często zostaje sam. Sąsiedzi-wolontariusze robią zakupy, przypominają o lekach i dają znać OPS, gdy dzieje się coś niepokojącego.</p>
+          <p style="font-size: 16px"><strong>Dla kogo:</strong> samotni seniorzy po pobycie w szpitalu</p>
+          <p style="font-size: 16px; background: #EEF0F4; border-radius: 10px; padding: 12px"><strong>Ostatnia odpowiedź:</strong> Przypisujemy mentorkę, odezwie się w wątku.</p>
+          <form style="display: flex; flex-direction: column; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="a-odp" style="font-size: 17px">Odpowiedź dla autora</label><span id="a-odp-h" class="muted" style="font-size: 16px">Autor dostanie ją w Wiadomościach i mailem. Wymagana przy „Do poprawy” i „Odrzuć”.</span><textarea id="a-odp" rows="3" aria-describedby="a-odp-h">Prosimy dopisać, jak wolontariusze będą współpracować z OPS.</textarea></div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="a-eks" style="font-size: 17px">Ekspert</label><select id="a-eks"><option>bez eksperta</option><option selected>Ewa</option></select></div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-p">Zatwierdź</button><button type="button" class="btn btn-s">Do poprawy</button><button type="button" class="btn btn-d">Odrzuć</button><button type="button" class="btn btn-t">Przekaż ekspertowi</button></div>
+          </form>
+          <a href="Wiadomosci.dc.html" style="align-self: flex-start; font-size: 16px">Rozmowa z autorem</a>
         </div>
-        <div id="role" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 10px">
-          <span class="lbl">Prośba o rolę</span>
-          <p><strong>GOPS w Przykładowej Woli</strong> prosi o rolę „gmina (JST)”.</p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-p">Zatwierdź</button><button type="button" class="btn btn-s">Odrzuć</button></div>
-        </div>
-        <div id="dziennik" style="display: flex; flex-direction: column; gap: 6px; font-size: 15px">
-          <span class="lbl">Dziennik zmian</span>
-          <p><span class="muted">17:05</span> status „do poprawy”: Sąsiedzki dyżur</p>
-          <p><span class="muted">16:58</span> przypisano ekspertkę</p>
-          <p><span class="muted">15:30</span> edycja karty: Merkury</p>
-        </div>
+        <section id="dziennik" aria-labelledby="dz" style="display: flex; flex-direction: column; gap: 6px; font-size: 15px">
+          <h2 id="dz" class="lbl">Dziennik zmian</h2>
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+            <li><span class="muted">dziś 16:50</span> „Sąsiedzki dyżur po wypisie”: przekazano ekspertowi</li>
+            <li><span class="muted">dziś 16:42</span> nowy pomysł: Sąsiedzki dyżur po wypisie</li>
+            <li><span class="muted">dziś 15:30</span> zmieniono kartę innowacji: Merkury</li>
+            <li><span class="muted">wczoraj 18:10</span> włączono nabór: Seniorzy w gminie 2026</li>
+            <li><span class="muted">wczoraj 11:02</span> zatwierdzono rolę: GOPS w Przykładowej Woli</li>
+          </ul>
+        </section>
       </aside>
     </div>
   </main>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1650}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1760}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

@@ -14,56 +14,69 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer;white-space:nowrap}
 .btn-p{background:#1F3A8A;color:#fff}
 .btn-s{background:#fff;color:#1F3A8A;border-color:#1F3A8A}
-.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#EEF0F4;color:#4B5565}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:999px;font-size:16px;line-height:1.5;font-weight:700;background:#EEF0F4;color:#4B5565}
 .tag-warn{background:#FFF1DB;color:#8A4B00}
+.tag-ok{background:#E3F2EA;color:#1D6B48}
 .tag-err{background:#FDECEA;color:#B42318}
 .muted{color:#4B5565}
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
-.th{display:flex;flex-direction:column;gap:2px;padding:16px 18px;border-bottom:1px solid #D9DDE4;text-decoration:none;color:#151A23}
+.th{display:flex;flex-direction:column;gap:2px;padding:16px 20px;border-bottom:1px solid #D9DDE4;text-decoration:none;color:#151A23}
 .th:hover{background:#F3F6FD;color:#151A23}
+.th[aria-current]{background:#F4F6FD;box-shadow:inset 4px 0 0 #1F3A8A}
 .msg{display:flex;flex-direction:column;margin-top:4px}
 .msg.first{margin-top:16px}
+.msg:first-child{margin-top:4px}
 .msg.me{align-items:flex-end}.msg.them{align-items:flex-start}
 .who{font-size:14px;font-weight:700;color:#4B5565;padding:0 12px 4px}
-.bub{margin:0;max-width:75%;padding:10px 16px;border-radius:20px}
+.bub{margin:0;max-width:75%;padding:10px 16px;border-radius:20px;border:1px solid transparent}
 .me .bub{background:#1F3A8A;color:#fff}.them .bub{background:#EEF0F4;color:#151A23}
 .me.last .bub{border-bottom-right-radius:6px}.them.last .bub{border-bottom-left-radius:6px}
 .tm{font-size:14px;color:#4B5565;padding:4px 12px 0}
 label{font-weight:700}
-textarea{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+textarea,input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+textarea{resize:vertical}
+select{font:inherit;font-size:16px;min-height:44px;padding:0 12px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+textarea:focus,input:focus,select:focus{outline:none;border-color:#1F3A8A;box-shadow:0 0 0 1px #1F3A8A,0 0 0 5px rgba(31,58,138,.18)}
+.fld{display:flex;flex-direction:column;gap:6px}
+.hint{font-size:16px;color:#4B5565}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.unr{flex-shrink:0;background:#C2452B;color:#fff;border-radius:999px;padding:0 8px;font-size:14px;font-weight:700}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </helmet>
 <div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
   <dc-import name="Naglowek" active="wiadomosci" rola="ngo" kto="Fundacja Dobry Start" hint-size="100%,112px"></dc-import>
   <main class="wrap" style="padding-top: 36px; padding-bottom: 64px; display: flex; flex-direction: column; gap: 20px">
-    <h1 class="h" style="font-size: 40px">Wiadomości</h1>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px">
+      <h1 class="h" style="font-size: 40px">Wiadomości</h1>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px"><a href="#" style="font-size: 16px">Zapytaj eksperta (mentora)</a><a class="btn btn-s" href="#">Napisz do ROPS</a></div>
+    </div>
     <div style="display: flex; flex-wrap: wrap; background: #FFFFFF; border: 1px solid #D9DDE4; border-radius: 12px; overflow: hidden; min-height: 640px">
       <nav aria-label="Rozmowy" style="flex: 1 1 300px; max-width: 360px; border-right: 1px solid #D9DDE4">
-        <a class="th" href="#w1" aria-current="true" style="background: #F3F6FD; box-shadow: inset 4px 0 0 #1F3A8A"><strong>Sąsiedzki dyżur po wypisie</strong><span class="muted" style="font-size: 16px">Redakcja ROPS, Ewa · dziś 17:12</span><span class="tag tag-err" style="align-self: flex-start; margin-top: 4px">Do poprawy</span></a>
-        <a class="th" href="#w2"><strong>Pytanie o wdrożenie: Organizator kompleksowej opieki</strong><span class="muted" style="font-size: 16px">Redakcja ROPS · wczoraj</span></a>
-        <a class="th" href="#w3"><strong>Nowy nabór pasuje do Twojej fiszki</strong><span class="muted" style="font-size: 16px">powiadomienie · 2 dni temu</span></a>
+        <ul style="list-style: none; margin: 0; padding: 0">
+          <li><a class="th" href="#w1" aria-current="true"><strong>Sąsiedzki dyżur po wypisie</strong><span class="muted" style="font-size: 16px">Ewa, Redakcja ROPS · dziś 10:34</span><span class="tag tag-warn" style="align-self: flex-start; margin-top: 4px">W weryfikacji</span></a></li>
+          <li><a class="th" href="#w2"><strong>Mapa miejsc przyjaznych osobom w spektrum autyzmu</strong><span class="muted" style="font-size: 16px">Redakcja ROPS · wczoraj</span><span class="tag tag-ok" style="align-self: flex-start; margin-top: 4px">Zatwierdzony</span></a></li>
+        </ul>
       </nav>
       <section aria-labelledby="w1t" style="flex: 999 1 480px; min-width: 0; padding: 24px 32px; display: flex; flex-direction: column; gap: 8px">
         <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: baseline">
           <h2 id="w1t" class="h" style="font-size: 24px">Sąsiedzki dyżur po wypisie</h2>
-          <span class="muted" style="font-size: 15px">wysłany 16:42 → w weryfikacji 16:50 → do poprawy 17:05</span>
+          <span class="muted" style="font-size: 15px">wysłany dziś, 09:40 → w weryfikacji 10:05</span>
         </div>
-        <ol aria-label="Wiadomości" style="list-style: none; margin: 0; padding: 4px 0 12px">
-          <li class="msg me first last"><p class="bub">Dzień dobry, wysłaliśmy fiszkę „Sąsiedzki dyżur po wypisie”.</p><span class="tm">16:42</span></li>
-          <li class="msg them first"><span class="who">Redakcja ROPS</span><p class="bub">Dziękujemy za fiszkę. Pomysł dobrze uzupełnia innowację „Organizator kompleksowej opieki w miejscu zamieszkania”.</p></li>
-          <li class="msg them last"><p class="bub">Prosimy dopisać, jak wolontariusze będą współpracować z ośrodkiem pomocy społecznej. Przypisaliśmy mentorkę.</p><span class="tm">17:05</span></li>
-          <li class="msg them first last"><span class="who">Ewa, mentorka</span><p class="bub">Chętnie pomogę. Proponuję krótką rozmowę w tym tygodniu, przygotuję listę pytań do OPS.</p><span class="tm">17:12</span></li>
-          <li class="msg me first last"><p class="bub">Dziękujemy! Uzupełnimy fiszkę do jutra.</p><span class="tm">17:20</span></li>
+        <p class="muted" style="font-size: 16px">W rozmowie: Ewa, Redakcja ROPS, Ty. Zespół ROPS widzi każdą rozmowę i może pomóc.</p>
+        <ol aria-label="Historia rozmowy" style="list-style: none; margin: 0; padding: 12px 0">
+          <li class="msg them first last"><span class="who">Redakcja ROPS</span><p class="bub">Dziękujemy za fiszkę. Pomysł dobrze uzupełnia innowację „Organizator kompleksowej opieki w miejscu zamieszkania”. Prosimy dopisać, jak wolontariusze będą współpracować z ośrodkiem pomocy społecznej. Przypisaliśmy mentorkę.</p><span class="tm">dziś, 10:05</span></li>
+          <li class="msg them first last"><span class="who">Ewa</span><p class="bub">Chętnie pomogę. Proponuję krótką rozmowę w tym tygodniu, przygotuję listę pytań do OPS.</p><span class="tm">dziś, 10:21</span></li>
+          <li class="msg me first last"><span class="sr">Ty</span><p class="bub">Dziękujemy! Uzupełnimy fiszkę do jutra.</p><span class="tm">dziś, 10:34</span></li>
         </ol>
         <form style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #D9DDE4; padding-top: 16px">
-          <label for="odp">Odpowiedz</label>
-          <textarea id="odp" rows="3"></textarea>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap"><button type="button" class="btn btn-p">Wyślij</button><a class="btn btn-s" href="Fiszka.dc.html">Popraw fiszkę</a></div>
+          <div class="fld"><label for="odp">Twoja odpowiedź <span class="muted" style="font-weight: 400">(wymagane)</span></label><textarea id="odp" rows="3" required></textarea></div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap"><button type="button" class="btn btn-p">Wyślij</button></div>
         </form>
       </section>
     </div>
@@ -71,7 +84,7 @@ textarea{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1320}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

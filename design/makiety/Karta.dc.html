@@ -17,7 +17,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
 .btn-p{background:#1F3A8A;color:#fff}
@@ -29,6 +29,8 @@ h1,h2,h3,p{margin:0}
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
 .blk{padding:24px 0;border-top:1px solid #D9DDE4;display:flex;flex-direction:column;gap:8px}
 .blk h2{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.lbl{font-size:15px;font-weight:700;color:#4B5565}
+.tl{display:inline-flex;align-items:center;min-height:44px}
 .file{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #D9DDE4;text-decoration:none;min-height:48px}
 /* Ruch i stany – wspólne dla wszystkich ekranów (w aplikacji: tokeny w globals.css) */
 :root{--ruch-szybko:120ms;--ruch:200ms;--ruch-wolno:420ms;--ease:cubic-bezier(.16,1,.3,1)}
@@ -63,23 +65,23 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
   <main>
     <div style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
       <div data-ruch="wejscie" class="wrap" style="padding-top: 20px; padding-bottom: 36px; display: flex; flex-direction: column; gap: 14px">
-        <nav aria-label="Ścieżka" style="font-size: 16px"><a href="Biblioteka.dc.html">Biblioteka</a> › <a href="Biblioteka.dc.html">Dla seniorów</a> › <span aria-current="page" class="muted">Organizator kompleksowej opieki</span></nav>
+        <nav aria-label="Ścieżka" style="font-size: 16px"><a href="Biblioteka.dc.html">Biblioteka</a> › <a href="Biblioteka.dc.html">Dla seniorów</a> › <span aria-current="page" class="muted">Organizator kompleksowej opieki w miejscu zamieszkania</span></nav>
         <h1 class="h" style="font-size: 44px; max-width: 900px">Organizator kompleksowej opieki w miejscu zamieszkania</h1>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag">Z inkubatora MIWS</span><span class="muted" style="font-size: 16px">Małopolski Inkubator Włączenia Społecznego</span></div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="tag tag-ok">Sprawdzona przez ROPS</span><span class="muted" style="font-size: 16px">Małopolski Inkubator Włączenia Społecznego</span></div>
       </div>
     </div>
     <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 48px; padding-top: 16px; padding-bottom: 64px">
       <article data-ruch="pokaz" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
         <div class="blk" style="border-top: none"><h2>Na czym polega</h2><p>Program pilnej, wielokierunkowej pomocy w domu dla osób niesamodzielnych po wyjściu ze szpitala i ich rodzin: organizacja opieki, sprzętu i wsparcia dostosowanych do możliwości bliskich.</p></div>
         <div class="blk"><h2>Jaki problem rozwiązuje</h2><p>Rodzina nie wie, jak zorganizować opiekę, sprzęt i pomoc, gdy z dnia na dzień w domu pojawia się chory wymagający stałego wsparcia.</p></div>
-        <div class="blk"><h2>Dla kogo</h2><ul style="margin: 0; padding-left: 22px"><li>osoby niesamodzielne po pobycie w szpitalu</li><li>seniorzy po nagłym pogorszeniu zdrowia</li></ul></div>
-        <div class="blk"><h2>Kto może wdrożyć</h2><ul style="margin: 0; padding-left: 22px"><li>podmioty organizujące pielęgniarstwo i opiekę długoterminową</li><li>gminy (JST)</li><li>ośrodki pomocy społecznej</li></ul></div>
+        <div class="blk"><h2>Dla kogo</h2><ul style="margin: 0; padding-left: 22px"><li>osoby niesamodzielne po pobycie w szpitalu</li><li>seniorzy po nagłym pogorszeniu zdrowia</li><li>rodziny i opiekunowie nieformalni</li></ul></div>
+        <div class="blk"><h2>Kto może wdrożyć</h2><ul style="margin: 0; padding-left: 22px"><li>podmioty organizujące pielęgniarstwo opieki długoterminowej</li><li>JST</li><li>OPS</li></ul></div>
         <div class="blk"><h2>Czy to działa</h2><p>Wdrożenie pomaga rodzinie poradzić sobie z opieką nad chorym i zmniejsza stres opiekunów.</p></div>
-        <div class="blk"><h2>Wyzwania z Mapy Wyzwań</h2><p><a href="MapaWyzwan.dc.html">Seniorzy: dostęp do usług opiekuńczych w gminie</a> · <a href="MapaWyzwan.dc.html">Zdrowie: opieka długoterminowa</a></p></div>
+        <div class="blk"><h2>Na jakie wyzwania odpowiada</h2><ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column"><li><a class="tl" href="MapaWyzwan.dc.html">Seniorzy: Instytucje i usługi zdrowotne dopasowane do starzejącego się społeczeństwa, także z nowymi technologiami</a></li><li><a class="tl" href="MapaWyzwan.dc.html">Seniorzy: Szersza oferta aktywizacji i integracji seniorów</a></li><li><a class="tl" href="MapaWyzwan.dc.html">Seniorzy: Kompetencje cyfrowe seniorów</a></li></ul></div>
       </article>
       <aside data-ruch="pokaz" aria-label="Materiały i działania" style="flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 20px; padding-top: 24px">
         <div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px; border-top: 4px solid #1F3A8A">
-          <strong style="font-size: 19px">Chcesz to wdrożyć?</strong>
+          <h2 style="font-size: 19px">Chcesz to wdrożyć?</h2>
           <a class="btn btn-p" href="Middleman.dc.html">Przygotuj kartę usługi</a>
           <a class="btn btn-s" href="Wiadomosci.dc.html">Zapytaj ROPS</a>
         </div>
@@ -87,13 +89,13 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
           <a class="file" href="#pdf"><span>Opis modelu</span><span class="muted" style="font-size: 15px">PDF</span></a>
           <a class="file" href="#zip"><span>Pakiet materiałów</span><span class="muted" style="font-size: 15px">ZIP</span></a>
           <a class="file" href="#zasady"><span>Zasady wykorzystania</span><span class="muted" style="font-size: 15px">PDF</span></a>
-          <p style="padding-top: 12px; font-size: 16px"><a href="#rops">Pełna karta na stronie ROPS ↗</a></p>
+          <p style="padding-top: 12px; font-size: 16px"><a class="tl" href="#rops">Pełna karta na stronie ROPS ↗</a></p>
         </div>
         <div style="display: flex; flex-direction: column; gap: 6px">
-          <strong style="font-size: 17px">Podobne innowacje</strong>
-          <a href="Karta.dc.html">Terapeuta przestrzeni</a>
-          <a href="Karta.dc.html">Asystent osoby starszej</a>
-          <a href="Karta.dc.html">Therapy Set</a>
+          <h2 style="font-size: 17px">Podobne innowacje</h2>
+          <a class="tl" href="Karta.dc.html">Centrum antydepresyjne</a>
+          <a class="tl" href="Karta.dc.html">Asystent osoby starszej – nowa forma usług opiekuńczych</a>
+          <a class="tl" href="Karta.dc.html">Therapy Set</a>
         </div>
       </aside>
     </div>
@@ -101,7 +103,7 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1600}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};
