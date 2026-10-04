@@ -1116,16 +1116,16 @@ export type Database = {
       dobre_praktyki: {
         Args: { p_id?: string };
         Returns: {
-          dla_kogo: string | null;
-          etap: string | null;
+          dla_kogo: string;
+          etap: string;
           id: string;
-          istota: string | null;
+          istota: string;
           liczba_ocen: number;
-          obszar_id: string | null;
-          obszar_nazwa: string | null;
-          opis: string | null;
+          obszar_id: string;
+          obszar_nazwa: string;
+          opis: string;
           opublikowany_at: string;
-          srednia_ocena: number | null;
+          srednia_ocena: number;
           tytul: string;
         }[];
       };
@@ -1140,6 +1140,7 @@ export type Database = {
         Returns: number;
       };
       idea_author_email: { Args: { p_idea_id: string }; Returns: string };
+      idea_current_status: { Args: { p_idea_id: string }; Returns: string };
       idea_editable: { Args: { p_idea_id: string }; Returns: boolean };
       innovation_feedback_summary: {
         Args: { p_innowacja_id: string };
