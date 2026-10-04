@@ -8,6 +8,7 @@ import { isDemoMode } from "@/lib/auth/demo-accounts";
 import { createClient } from "@/lib/supabase/server";
 import { ADMIN_TABS, AdminTabs } from "./_components/admin-tabs";
 import { AnnounceOnChange, FocusHeading } from "@/components/ui/param-focus";
+import { GoodPracticeBox } from "./_components/good-practice";
 import { ReviewForm } from "./_components/review-form";
 import { describeAudit, filterSummary, formatSentAt } from "./_lib/format";
 import { loadExperts, loadIdeaDetail, loadIdeaQueue, loadRecentAudit } from "./_lib/queue";
@@ -207,6 +208,13 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                 ideaId={detail.idea_id}
                 experts={experts}
                 currentExpertId={detail.ekspert_id}
+              />
+              <GoodPracticeBox
+                key={detail.idea_id}
+                ideaId={detail.idea_id}
+                approved={detail.status === "zatwierdzony"}
+                consent={detail.zgoda_publikacji_at !== null}
+                publishedAt={detail.opublikowany_at}
               />
               <Link
                 href={`/my/messages?idea=${detail.idea_id}&topic=${encodeURIComponent(detail.tytul)}`}

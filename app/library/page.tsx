@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { LibraryFilters, type InnovationSummary } from "@/lib/contracts/knowledge-base";
+import { createClient } from "@/lib/supabase/server";
 import { getAvailableFilters, getInnovations } from "./_lib/data";
+import { getGoodPractices } from "./_lib/good-practices";
+import { practiceCountLabel } from "./_lib/good-practices-format";
 import { search } from "./_lib/search";
 import { libraryUrl } from "./_lib/url-params";
 import { filterSummary, formatResultCount, libraryTitle, sourceBreakdown } from "./_lib/format";
@@ -34,7 +38,10 @@ export async function generateMetadata({ searchParams }: PageProps<"/library">):
 }
 
 export default async function LibraryPage({ searchParams }: PageProps<"/library">) {
-  const { filters, available, list, summary } = await loadLibrary(searchParams);
+  const [{ filters, available, list, summary }, practices] = await Promise.all([
+    loadLibrary(searchParams),
+    createClient().then(getGoodPractices),
+  ]);
   const breakdown = sourceBreakdown(list.liczba, list.liczniki.z_biblioteki);
   const pageUrl = (page: number) => `${libraryUrl(filters, { page })}#${RESULTS}`;
 
@@ -84,6 +91,8 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
           </p>
         </div>
       </section>
+
+      {practices.length > 0 ? <GoodPracticesBand count={practices.length} /> : null}
 
       <div className="mx-auto flex max-w-[1200px] flex-wrap gap-10 px-4 pt-8 pb-16 sm:px-10">
         <aside aria-label="Filtry" className="flex max-w-[300px] flex-[1_1_260px] flex-col gap-7">
@@ -213,6 +222,28 @@ export default async function LibraryPage({ searchParams }: PageProps<"/library"
         </section>
       </div>
     </main>
+  );
+}
+
+// Entry to the good practices of residents (#104): approved ideas from the Idea creator
+function GoodPracticesBand({ count }: { count: number }) {
+  return (
+    <section aria-labelledby="good-practices-heading" className="border-line border-b bg-white">
+      <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-x-8 gap-y-3 px-4 py-5 sm:px-10">
+        <div className="flex max-w-[760px] flex-col gap-1">
+          <h2 id="good-practices-heading" className="text-[1.1875rem] font-bold">
+            Dobre praktyki mieszkańców
+          </h2>
+          <p className="text-ink-muted text-base">
+            {practiceCountLabel(count)} z Kreatora pomysłów, sprawdzone i zatwierdzone przez ROPS.
+          </p>
+        </div>
+        <Link href="/library/good-practices" className={buttonVariants({ variant: "secondary" })}>
+          Zobacz dobre praktyki
+          <ArrowRight aria-hidden="true" />
+        </Link>
+      </div>
+    </section>
   );
 }
 

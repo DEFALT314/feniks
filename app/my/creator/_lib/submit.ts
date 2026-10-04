@@ -1,5 +1,6 @@
 import type { AuditEntry } from "@/lib/audit";
 import type { MyIdea, SendResult } from "./ideas";
+import type { ConsentState } from "./publication";
 import { canSubmit, missingForSubmission } from "./submission";
 
 export type SubmitState =
@@ -13,6 +14,8 @@ export type SubmitDeps = {
   // P4's notifyIdeaSent(): a notification for every ROPS user and an e-mail to the ROPS inbox
   notifyRops: (idea: { ideaId: string; tytul: string }) => Promise<unknown>;
   writeAudit: (e: AuditEntry) => Promise<unknown>;
+  // Consent to show the idea as a good practice (#104), ticked in the send form
+  changeConsent: (idea: { id: string; tytul: string }, agree: boolean) => Promise<ConsentState>;
 };
 
 const SEND_FAILED: Record<Exclude<SendResult, { ok: true }>["reason"], string> = {
@@ -27,8 +30,15 @@ const SEND_FAILED: Record<Exclude<SendResult, { ok: true }>["reason"], string> =
  * the database sends it (public.wyslij_pomysl checks again under a row lock), and ROPS is notified
  * and the audit log written. A failed notification or audit entry does not undo the
  * submission: the idea is in the ROPS queue either way.
+ *
+ * `consent` is the "show it to others" box in the send form (#104): when it differs from the saved
+ * choice it is saved first, and a failure stops the send, so the author is never surprised later.
  */
-export async function submitIdea(deps: SubmitDeps, ideaId: string): Promise<SubmitState> {
+export async function submitIdea(
+  deps: SubmitDeps,
+  ideaId: string,
+  consent?: boolean,
+): Promise<SubmitState> {
   const idea = await deps.loadIdea(ideaId);
   if (!idea) return { status: "error", message: "Nie ma takiego pomysłu albo nie jest Twój." };
 
@@ -40,8 +50,17 @@ export async function submitIdea(deps: SubmitDeps, ideaId: string): Promise<Subm
     return { status: "error", message: "Uzupełnij fiszkę przed wysłaniem.", missing };
   }
 
+  const consentChanged = consent !== undefined && consent !== Boolean(idea.zgoda_publikacji_at);
+  if (consentChanged) {
+    const saved = await deps.changeConsent({ id: idea.id, tytul: idea.tytul }, consent);
+    if (saved.status === "error") return saved;
+  }
+
   const sent = await deps.send(idea.id);
-  if (!sent.ok) return { status: "error", message: SEND_FAILED[sent.reason] };
+  if (!sent.ok) {
+    const kept = consentChanged ? " Twój wybór o pokazywaniu pomysłu innym zapisaliśmy." : "";
+    return { status: "error", message: SEND_FAILED[sent.reason] + kept };
+  }
   const { resent } = sent;
 
   const followUps = await Promise.allSettled([

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser, headerName } from "@/lib/auth";
 import { writeAudit } from "@/lib/audit";
 import type { CanvasAnswer, IdeaCardInput } from "@/lib/contracts/idea-creator";
-import { notifyIdeaSent } from "@/lib/notifications";
+import { addNotification, notifyIdeaSent } from "@/lib/notifications";
 import { createClient } from "@/lib/supabase/server";
 import { fields } from "./_lib/canvas";
 import {
@@ -14,8 +14,15 @@ import {
   sendIdea,
   saveAnswer,
   saveCard,
+  setPublicationConsent,
   type SaveResult,
 } from "./_lib/ideas";
+import {
+  changeConsent,
+  shortTitle as short,
+  type ConsentDeps,
+  type ConsentState,
+} from "./_lib/publication";
 import { submitIdea, type SubmitState } from "./_lib/submit";
 
 // Server actions are public endpoints: each one checks the session itself. RLS limits every query
@@ -49,7 +56,44 @@ export async function saveIdeaCard(ideaId: string, input: IdeaCardInput): Promis
   return saveCard(await createClient(), user.id, ideaId, input);
 }
 
-export async function sendToRops(ideaId: string): Promise<SubmitState> {
+// Consent to show an idea as a good practice (#104). ROPS hears about it only when the withdrawal
+// took a practice down from the Library.
+function consentDeps(db: Awaited<ReturnType<typeof createClient>>): ConsentDeps {
+  return {
+    setConsent: (id, agree) => setPublicationConsent(db, id, agree),
+    notifyRops: ({ id, tytul }) =>
+      addNotification(
+        {
+          role: ["rops_redaktor", "rops_admin"],
+          typ: "pomysl_zgoda_wycofana",
+          tytul: `Wycofano zgodę na pokazanie: „${short(tytul)}” zniknął z Biblioteki.`,
+          link: `/admin?status=zatwierdzony&idea=${id}`,
+        },
+        db,
+      ),
+    writeAudit: (e) => writeAudit(e, db),
+  };
+}
+
+export async function setIdeaConsent(ideaId: string, agree: boolean): Promise<ConsentState> {
+  const user = await getCurrentUser();
+  if (!user) return { status: "error", message: SIGN_IN.error };
+  // Arguments of a server action come from the client as they are: accept only a real boolean
+  if (typeof agree !== "boolean") return { status: "error", message: "Nie rozumiemy tej zmiany." };
+  const db = await createClient();
+  const idea = await getMyIdea(db, user.id, ideaId);
+  if (!idea) return { status: "error", message: "Nie ma takiego pomysłu albo nie jest Twój." };
+  const state = await changeConsent(consentDeps(db), idea, agree);
+  if (state.status === "saved") {
+    revalidatePath("/my/creator");
+    revalidatePath(`/my/creator/${ideaId}/card`);
+    revalidatePath("/library/good-practices");
+  }
+  return state;
+}
+
+/** `consent`: the "show it to others" box in the send form; undefined leaves the choice as it is. */
+export async function sendToRops(ideaId: string, consent?: boolean): Promise<SubmitState> {
   const user = await getCurrentUser();
   if (!user) return { status: "error", message: SIGN_IN.error };
   const db = await createClient();
@@ -60,8 +104,10 @@ export async function sendToRops(ideaId: string): Promise<SubmitState> {
       notifyRops: ({ ideaId, tytul }) =>
         notifyIdeaSent({ ideaId, tytul, autorNazwa: headerName(user) }, db),
       writeAudit: (e) => writeAudit(e, db),
+      changeConsent: (idea, agree) => changeConsent(consentDeps(db), idea, agree),
     },
     ideaId,
+    typeof consent === "boolean" ? consent : undefined,
   );
   if (state.status !== "sent") return state;
   revalidatePath("/my/creator");

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { focusElement, useFocusFirstError } from "@/components/ui/focus";
 import type { IdeaStatus } from "@/lib/contracts/admin";
 import { sendToRops } from "../actions";
+import { PublicationConsent } from "./publication-consent";
 import { authorStatus, canSubmit } from "../_lib/submission";
 import type { SubmitState } from "../_lib/submit";
 
@@ -24,6 +25,8 @@ type Props = {
   missing: string[]; // empty required card fields, from the current (unsaved) draft
   beforeSend: () => Promise<boolean>; // saves pending card edits first
   justSent: "first" | "again" | null; // after a successful send the page reloads with ?sent=
+  consent: boolean; // the author agreed to show the idea as a good practice (#104)
+  publishedAt: string | null; // ROPS shows it in the Library since then
 };
 
 // "Wyślij do ROPS" (#35): sendToRops sends the idea, notifies ROPS and reloads the card with ?sent=
@@ -35,9 +38,11 @@ export function SubmitPanel({
   missing,
   beforeSend,
   justSent,
+  consent,
+  publishedAt,
 }: Props) {
-  const [state, send, pending] = useActionState<SubmitState>(
-    async () => {
+  const [state, send, pending] = useActionState<SubmitState, FormData>(
+    async (_previous, form) => {
       if (!(await beforeSend())) {
         return {
           status: "error",
@@ -45,7 +50,7 @@ export function SubmitPanel({
             "Nie wysłaliśmy pomysłu, bo nie udało się zapisać fiszki. Popraw zaznaczone pola i wyślij jeszcze raz.",
         };
       }
-      return sendToRops(ideaId);
+      return sendToRops(ideaId, form.get("zgoda") === "on");
     },
     { status: "idle" },
   );
@@ -53,6 +58,7 @@ export function SubmitPanel({
   const sentRef = useRef<HTMLParagraphElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const missingId = useId();
+  const consentHintId = useId();
   // A failed send: focus the error, so it is read and the user knows the send didn't happen
   useFocusFirstError(formRef, state.status === "error" ? state : undefined);
 
@@ -101,6 +107,23 @@ export function SubmitPanel({
               Żeby wysłać, uzupełnij: <strong>{missing.join(", ")}</strong>.
             </p>
           ) : null}
+          <div className="flex flex-col gap-1.5 pb-1">
+            <label className="flex min-h-11 cursor-pointer items-start gap-3 text-base font-bold">
+              <input
+                type="checkbox"
+                name="zgoda"
+                defaultChecked={consent}
+                aria-describedby={consentHintId}
+                className="accent-navy mt-0.5 size-5 shrink-0"
+              />
+              Zgadzam się, żeby ROPS pokazał mój pomysł innym, bez mojego imienia i nazwiska.
+            </label>
+            <p id={consentHintId} className="text-muted-foreground pl-8 text-base">
+              Po zatwierdzeniu ROPS może pokazać fiszkę w Bibliotece jako dobrą praktykę: tytuł,
+              opis, istotę, dla kogo i etap. Nie wpisuj w niej danych osobowych. Zgodę możesz
+              wycofać w każdej chwili.
+            </p>
+          </div>
           <Button
             type="submit"
             disabled={pending || missing.length > 0}
@@ -112,6 +135,14 @@ export function SubmitPanel({
             ROPS dostanie powiadomienie. Odpowiedź zobaczysz w Wiadomościach, wyślemy ją też mailem.
           </p>
         </form>
+      ) : null}
+      {sentAt && !allowed ? (
+        <PublicationConsent
+          ideaId={ideaId}
+          consent={consent}
+          publishedAt={publishedAt}
+          approved={status === "zatwierdzony"}
+        />
       ) : null}
       <div ref={formRef}>
         {justSent && sentAt ? (

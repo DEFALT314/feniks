@@ -18,6 +18,8 @@ const submitProps = {
   missing: [],
   beforeSend: async () => true,
   justSent: null,
+  consent: false,
+  publishedAt: null,
 };
 
 describe("AiHints", () => {
