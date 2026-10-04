@@ -14,7 +14,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.15}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
 .btn-p{background:#1F3A8A;color:#fff}
@@ -40,40 +40,64 @@ input{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;bor
 </helmet>
 <div style="font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif; color: #151A23; background: #F6F7F9; font-size: 18px; line-height: 1.6">
   <dc-import name="Naglowek" active="profil" rola="mieszkaniec" kto="Stanisław" hint-size="100%,112px"></dc-import>
-  <main class="wrap" style="max-width: 820px; padding-top: 40px; padding-bottom: 72px; display: flex; flex-direction: column; gap: 24px">
+  <main id="main-content" class="wrap" style="max-width: 820px; padding-top: 40px; padding-bottom: 72px; display: flex; flex-direction: column; gap: 24px">
     <h1 class="h" style="font-size: 40px">Twój profil</h1>
-    <section class="card" aria-labelledby="konto" style="padding: 28px 32px; display: flex; flex-direction: column; gap: 6px">
-      <h2 id="konto" class="h" style="font-size: 24px; margin-bottom: 8px">Konto</h2>
-      <form style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 8px">
-        <div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 320px"><label for="p-nazwa" style="font-weight:700">Jak mamy Cię nazywać</label><input id="p-nazwa" value="Stanisław"></div>
+    <!-- Tylko zaraz po zmianie hasła (/my/profile?password=changed) -->
+    <p role="status" style="background: #E3F2EA; color: #1D6B48; border: 1px solid #1D6B48; border-left-width: 4px; border-radius: 12px; padding: 16px 20px; font-weight: 700">Hasło zostało zmienione. Przy następnym logowaniu wpisz nowe hasło.</p>
+    <section class="card" role="region" aria-labelledby="konto" style="padding: 28px 32px; display: flex; flex-direction: column; gap: 16px">
+      <h2 id="konto" class="h" style="font-size: 24px">Konto</h2>
+      <form novalidate style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap">
+        <div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 320px"><label for="p-nazwa" style="font-weight:700">Jak mamy Cię nazywać<span class="muted" style="font-weight: 400"> (wymagane)</span></label><input id="p-nazwa" name="name" autocomplete="nickname" required value="Stanisław"></div>
         <button type="submit" class="btn btn-s">Zapisz</button>
       </form>
-      <div class="row"><span class="muted">Adres e-mail</span><strong>stanislaw@example.org</strong></div>
-      <div class="row"><span class="muted">Rola</span><span class="tag">Mieszkaniec</span></div>
+      <dl style="margin: 0">
+        <div class="row" style="border-top-color: #D9DDE4"><dt class="muted">Adres e-mail</dt><dd style="margin: 0; font-weight: 700">stanislaw@example.org</dd></div>
+        <div class="row" style="border-top-color: #D9DDE4"><dt class="muted">Rola</dt><dd style="margin: 0"><span class="tag">Mieszkaniec</span></dd></div>
+      </dl>
     </section>
-    <section class="card" aria-labelledby="rola" style="padding: 28px 32px; display: flex; flex-direction: column; gap: 14px">
+    <!-- Konto ROPS nie widzi tej sekcji -->
+    <section class="card" role="region" aria-labelledby="rola" style="padding: 28px 32px; display: flex; flex-direction: column; gap: 14px">
       <h2 id="rola" class="h" style="font-size: 24px">Działasz w imieniu instytucji?</h2>
       <p class="muted">Organizacje, gminy i eksperci mają dodatkowe narzędzia, np. kartę usługi dla gminy. Rolę zatwierdza ROPS.</p>
-      <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
-        <legend class="sr-only">Rola, o którą prosisz</legend>
-        <label class="opt"><input type="radio" name="r"> Organizacja pozarządowa</label>
-        <label class="opt"><input type="radio" name="r"> Gmina lub instytucja publiczna</label>
-        <label class="opt"><input type="radio" name="r"> Ekspertka lub ekspert</label>
+      <form novalidate style="display: flex; flex-direction: column; gap: 14px">
+      <fieldset role="radiogroup" style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
+        <legend style="font-weight: 700; margin-bottom: 4px; padding: 0">Rola, o którą prosisz</legend>
+        <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 17px; font-weight: 400; cursor: pointer"><input type="radio" name="r" style="width: 20px; height: 20px; accent-color: #1F3A8A"> Organizacja pozarządowa</label>
+        <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 17px; font-weight: 400; cursor: pointer"><input type="radio" name="r" style="width: 20px; height: 20px; accent-color: #1F3A8A"> Gmina lub instytucja publiczna</label>
+        <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 17px; font-weight: 400; cursor: pointer"><input type="radio" name="r" style="width: 20px; height: 20px; accent-color: #1F3A8A"> Ekspertka lub ekspert</label>
       </fieldset>
-      <button type="button" class="btn btn-s" style="align-self: flex-start">Wyślij prośbę do ROPS</button>
+      <button type="submit" class="btn btn-s" style="align-self: flex-start">Wyślij prośbę do ROPS</button>
+      </form>
     </section>
-    <section class="card" aria-labelledby="bezp" style="padding: 28px 32px; display: flex; flex-direction: column; gap: 14px">
+    <section class="card" role="region" aria-labelledby="bezp" style="padding: 28px 32px; display: flex; flex-direction: column; gap: 14px">
       <h2 id="bezp" class="h" style="font-size: 24px">Bezpieczeństwo</h2>
       <div style="display: flex; gap: 10px; flex-wrap: wrap">
         <a class="btn btn-s" href="#haslo">Zmień hasło</a>
-        <button type="button" class="btn btn-p">Wyloguj się</button>
+        <button type="button" class="btn btn-s">Wyloguj się</button>
+      </div>
+    </section>
+    <section aria-labelledby="stany" style="display: flex; flex-direction: column; gap: 16px; margin-top: 24px">
+      <h2 id="stany" class="h" style="font-size: 28px">Stany po działaniu</h2>
+      <span class="lbl">Stan: nazwa zapisana (komunikat pod polem, odczytany przez czytnik)</span>
+      <div class="card" style="padding: 20px 32px"><p style="font-size: 16px">Zapisano.</p></div>
+      <span class="lbl">Stan: błąd nazwy (pod etykietą, fokus na polu)</span>
+      <div class="card" style="padding: 20px 32px; display: flex; flex-direction: column; gap: 6px">
+        <label for="p-nazwa-b" style="font-weight:700">Jak mamy Cię nazywać<span class="muted" style="font-weight: 400"> (wymagane)</span></label>
+        <p id="p-nazwa-b-err" style="color: #B42318; font-size: 16px; font-weight: 700">Wpisz co najmniej 2 znaki.</p>
+        <input id="p-nazwa-b" aria-invalid="true" aria-describedby="p-nazwa-b-err" value="S" style="border-color: #B42318">
+      </div>
+      <span class="lbl">Stan: prośba o rolę wysłana i czeka na decyzję</span>
+      <div class="card" style="padding: 20px 32px; display: flex; flex-direction: column; gap: 14px">
+        <p style="background: #FFF1DB; color: #8A4B00; border-radius: 10px; padding: 12px 16px; font-weight: 700">Prośba o rolę „Organizacja pozarządowa” czeka na decyzję ROPS. Dostaniesz powiadomienie.</p>
+        <p class="muted" style="font-size: 16px">Wybrana rola jest zaznaczona, a przycisk zmienia się na „Zmień prośbę”. Zaraz po wysłaniu pod przyciskiem: „Prośba wysłana do ROPS. Dostaniesz powiadomienie o decyzji.” Bez wybranej roli: „Wybierz rolę, o którą prosisz.”</p>
+        <button type="button" class="btn btn-s" style="align-self: flex-start">Zmień prośbę</button>
       </div>
     </section>
   </main>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1350}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2100}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

@@ -10,7 +10,7 @@ from `app/layout.tsx`.
 | `System.dc.html` | colors, typography, buttons, fields, tags | Makiety i system wizualny (P2) |
 | `Logo.dc.html` | logo (wariant C „Razem”), pliki w `design/logo/` | Komponenty UI i układ strony (P2) |
 | `Cover.dc.html` | okładka projektu (`design/okladka.png`) | Kompletne zgłoszenie (P1) |
-| `Naglowek.dc.html`, `NaglowekMenu.dc.html`, `Stopka.dc.html` | header (one-row menu, account menu, phone menu), footer | Komponenty UI i układ strony (P2) |
+| `Naglowek.dc.html`, `NaglowekMenu.dc.html`, `Stopka.dc.html` | header (one-row menu with „Wiedza” and the role's main task, account menu, phone menu; `rola="gosc"` = signed out), footer | Komponenty UI i układ strony (P2) |
 | `Main.dc.html` | `/` | Strona główna (P2) |
 | `Logowanie.dc.html` | `/login`: e-mail i hasło | Strona główna i wygląd logowania (P2), logika P4 |
 | `Rejestracja.dc.html` | `/register`: e-mail i hasło | Strona główna i wygląd logowania (P2), logika P4 |
@@ -25,9 +25,10 @@ from `app/layout.tsx`.
 | `Admin.dc.html` | `/admin` | Panel ROPS (P4) |
 | `Middleman.dc.html` | `/my/middleman` | Middleman (P3) |
 
-Colors: navy `#1F3A8A`, brick `#C2452B` (focus and accents only), green `#1D6B48`, background `#F6F7F9`,
+Colors: navy `#1F3A8A`, brick `#C2452B` (accents only; focus rings are navy), green `#1D6B48`, background `#F6F7F9`,
 text `#151A23`, secondary text `#4B5565`, lines `#D9DDE4`. Fonts: Bricolage Grotesque (headings), Atkinson Hyperlegible
-Next (body text). The data in the mockups is sample data: the app uses real data from the database, and demo data is
+Next (body text). Screens that change after an action (errors, confirmations, empty lists, other roles) are shown as dashed „Stan: …”
+panels under the main view. `/resources` („Wiedza”) has no mockup yet. The data in the mockups is sample data: the app uses real data from the database, and demo data is
 labeled "Dane demonstracyjne" (demo data). Mockup changes: P2 edits the Claude Design artifact "HubMI.pl – makiety",
 then exports it here.
 

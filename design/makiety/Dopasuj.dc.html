@@ -17,7 +17,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
@@ -27,11 +27,11 @@ h1,h2,h3,p{margin:0}
 .tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#EEF0F4;color:#4B5565}
 .tag-ok{background:#E3F2EA;color:#1D6B48}
 .tag-ai{background:#E8EDFA;color:#1F3A8A}
-mark{background:linear-gradient(transparent 55%,#FFE08A 55%);color:inherit;padding:0 1px}
+mark{background:linear-gradient(transparent 55%,#FFE08A 55%);color:inherit;padding:0 1px;text-decoration:underline;text-decoration-color:#8A4B00;text-decoration-thickness:2px;text-underline-offset:4px}
 .muted{color:#4B5565}
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
 label{font-weight:700}
-textarea,select{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
+input,textarea,select{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #6B7487;border-radius:10px;background:#fff;color:#151A23;width:100%}
 .ex{min-height:44px;padding:6px 14px;border:1px solid #B8C0CD;border-radius:10px;background:#fff;font:inherit;font-size:16px;color:#151A23;cursor:pointer;text-align:left}
 .step{position:relative;padding:0 0 28px 44px}
 .step:before{content:"";position:absolute;left:11px;top:28px;bottom:0;width:2px;background:#B8C0CD}
@@ -40,6 +40,12 @@ textarea,select{font:inherit;font-size:18px;padding:12px 14px;border:1px solid #
 dl.kv{display:grid;grid-template-columns:120px 1fr;gap:4px 12px;margin:0;font-size:16px}
 dl.kv dt{color:#4B5565}
 dl.kv dd{margin:0}
+@media (max-width:640px){dl.kv{grid-template-columns:1fr}}
+.req{font-weight:400;color:#4B5565}
+.ain{color:#1F3A8A;font-size:15px;font-weight:700}
+summary{cursor:pointer;padding:10px 0;font-weight:700;color:#1F3A8A}
+.crisis{background:#fff;border:2px solid #B42318;border-left-width:8px;border-radius:12px;padding:20px 24px}
+.tel{font-weight:700;white-space:nowrap}
 /* Ruch i stany – wspólne dla wszystkich ekranów (w aplikacji: tokeny w globals.css) */
 :root{--ruch-szybko:120ms;--ruch:200ms;--ruch-wolno:420ms;--ease:cubic-bezier(.16,1,.3,1)}
 html{scrollbar-color:#B8C0CD #F6F7F9;caret-color:#1F3A8A}
@@ -77,75 +83,124 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
       <div class="wrap" data-ruch="wejscie" style="padding-top: 48px; padding-bottom: 48px; display: flex; flex-direction: column; gap: 20px; max-width: 920px">
         <h1 id="dop" class="h" style="font-size: 44px">Opisz problem, a znajdziemy, kto już go rozwiązał</h1>
         <div style="display: flex; flex-direction: column; gap: 8px">
-          <label for="opis">Co się dzieje? Napisz własnymi słowami</label>
+          <label for="opis">Co się dzieje? Napisz własnymi słowami <span class="req">(wymagane)</span></label>
           <span id="opis-h" class="muted" style="font-size: 16px">Bez imion, nazwisk i adresów. Wystarczy opis sytuacji.</span>
-          <textarea id="opis" rows="3" aria-describedby="opis-h">Tata wraca ze szpitala po udarze, mieszka sam na wsi. Nie wiemy, jak zorganizować opiekę i sprzęt w domu.</textarea>
+          <textarea id="opis" rows="3" aria-describedby="opis-h" required>Tata wraca ze szpitala po udarze, mieszka sam na wsi. Nie wiemy, jak zorganizować opiekę i sprzęt w domu.</textarea>
         </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
-          <span class="muted" style="font-size: 16px">Przykłady:</span>
+        <div role="group" aria-labelledby="przyk" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+          <span id="przyk" class="muted" style="font-size: 16px">Przykłady (kliknij, żeby wpisać do pola):</span>
           <button type="button" class="ex">Samotni seniorzy na wsi z objawami depresji</button>
           <button type="button" class="ex">Bezdomni nie mają gdzie się umyć zimą</button>
           <button type="button" class="ex">Niewidomi petenci gubią się w urzędzie</button>
         </div>
         <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end">
-          <div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 240px"><label for="gm">Gmina</label><select id="gm"><option>Przykładowa Wola (gmina wiejska)</option></select></div>
+          <div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 240px"><label for="gm">Gmina (nieobowiązkowo)</label><input id="gm" autocomplete="address-level2" value="Przykładowa Wola"></div>
           <button type="button" class="btn btn-p">Dopasuj</button>
         </div>
       </div>
     </section>
 
-    <section aria-labelledby="wynik" aria-live="polite" class="wrap" style="padding-top: 48px; padding-bottom: 64px; max-width: 920px">
+    <section aria-labelledby="wynik" class="wrap" style="padding-top: 48px; padding-bottom: 48px; max-width: 920px">
       <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px; margin-bottom: 28px">
         <h2 id="wynik" class="h" style="font-size: 32px">Wynik</h2>
         <span class="tag tag-ai">Propozycja AI, wybór należy do Ciebie</span>
       </div>
-      <ol data-ruch="tok" data-ruch-wyzwalacz="button.btn-p, button.ex" style="list-style: none; margin: 0; padding: 0">
+      <ol data-ruch="tok" data-ruch-wyzwalacz="button.btn-p" style="list-style: none; margin: 0; padding: 0">
         <li class="step">
           <span class="dot" aria-hidden="true">1</span>
-          <h3 class="lbl" style="margin-bottom: 6px">Twój opis</h3>
-          <p>Tata wraca <mark>ze szpitala</mark> po <mark>udarze</mark>, mieszka sam na <mark>wsi</mark>. Nie wiemy, jak zorganizować <mark>opiekę</mark> i <mark>sprzęt w domu</mark>.</p>
+          <p class="lbl" style="margin-bottom: 6px">Twój opis</p>
+          <p>Tata wraca ze <mark>szpitala po udarze</mark>, <mark>mieszka sam</mark> na wsi. Nie wiemy, jak <mark>zorganizować</mark> opiekę i <mark>sprzęt w domu</mark>.</p>
+          <p class="muted" style="margin-top: 4px; font-size: 16px">Podkreślone słowa zdecydowały o dopasowaniu.</p>
         </li>
         <li class="step">
           <span class="dot" aria-hidden="true">2</span>
-          <h3 class="lbl" style="margin-bottom: 6px">Wyzwanie z Mapy Wyzwań ROPS</h3>
-          <p><strong>Seniorzy:</strong> dostęp do usług opiekuńczych w gminie, w tym specjalistycznych. <a href="MapaWyzwan.dc.html">Zobacz obszar</a></p>
+          <p class="lbl" style="margin-bottom: 6px">Wyzwanie z Mapy Wyzwań ROPS</p>
+          <p><strong>Zdrowie:</strong> Dostosowanie opieki do starzejącego się społeczeństwa, w tym opieka długoterminowa <a href="MapaWyzwan.dc.html">Zobacz obszar</a></p>
         </li>
         <li class="step">
           <span class="dot" aria-hidden="true" style="background: #1F3A8A; color: #FFFFFF">3</span>
-          <h3 class="lbl" style="margin-bottom: 12px">Pasujące innowacje</h3>
+          <p class="lbl" style="margin-bottom: 12px">Pasujące innowacje</p>
           <div style="display: flex; flex-direction: column; gap: 16px">
             <article class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px; border-left: 4px solid #1F3A8A">
-              <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h4 class="h" style="font-size: 23px; margin: 0">Organizator kompleksowej opieki w miejscu zamieszkania</h4><span class="tag">Z inkubatora MIWS</span></div>
-              <p>Program pilnej pomocy w domu dla osób niesamodzielnych <mark>po wyjściu ze szpitala</mark> i ich rodzin, łącznie z organizacją <mark>opieki</mark> i <mark>sprzętu</mark>.</p>
-              <dl class="kv"><dt>Kto wdraża</dt><dd>OPS, gmina, podmioty opieki długoterminowej</dd></dl>
-              <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px"><a class="btn btn-p" href="Karta.dc.html">Zobacz kartę</a><a class="btn btn-s" href="Middleman.dc.html">Przygotuj dla mojej gminy</a></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h3 class="h" style="font-size: 23px; margin: 0">Organizator kompleksowej opieki w miejscu zamieszkania</h3><span class="tag tag-ok">Sprawdzona przez ROPS</span></div>
+              <p>Program pilnej, wielokierunkowej pomocy w <mark>domu</mark> dla osób niesamodzielnych po wyjściu ze <mark>szpitala</mark> i ich rodzin: organizacja opieki, <mark>sprzętu</mark> i wsparcia dostosowanych do możliwości bliskich.</p>
+              <p><strong>Dlaczego pasuje</strong> <span class="ain">(Propozycja AI)</span>: program organizuje opiekę i sprzęt w domu dla osób, które wracają ze szpitala, a rodzina dostaje jednego koordynatora. <span class="muted">Z opisu: „Nie wiemy, jak zorganizować opiekę i sprzęt w domu”.</span></p>
+              <dl class="kv"><dt>Kto wdraża</dt><dd>podmioty organizujące pielęgniarstwo opieki długoterminowej, JST, OPS</dd></dl>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px"><a class="btn btn-p" href="Karta.dc.html">Zobacz kartę</a></div>
             </article>
             <article class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
-              <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h4 class="h" style="font-size: 21px; margin: 0">Asystent osoby starszej – nowa forma usług opiekuńczych</h4><span class="tag">Z inkubatora MIIS</span></div>
-              <p>Asystent pomaga seniorowi w codziennym życiu, także <mark>w czasie hospitalizacji</mark>, i współpracuje z rodziną.</p>
-              <dl class="kv"><dt>Kto wdraża</dt><dd>samorządy, gminne ośrodki pomocy społecznej</dd></dl>
-              <a href="Karta.dc.html" style="font-weight: 700">Zobacz kartę<span class="arr" aria-hidden="true">→</span></a>
+              <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h3 class="h" style="font-size: 21px; margin: 0">Asystent osoby starszej – nowa forma usług opiekuńczych</h3><span class="tag">Z inkubatora MIIS</span></div>
+              <p>Model nowego zawodu: asystent wspiera seniora w organizowaniu codziennego życia, współpracuje ze specjalistami i rodziną, pomaga m.in. w kontaktach rodzinnych, <mark>w czasie hospitalizacji</mark> i w ochronie przed oszustwami.</p>
+              <p><strong>Dlaczego pasuje</strong> <span class="ain">(Propozycja AI)</span>: asystent pomaga seniorowi, który mieszka sam, i jest w kontakcie z rodziną także po pobycie w szpitalu. <span class="muted">Z opisu: „mieszka sam na wsi”.</span></p>
+              <dl class="kv"><dt>Kto wdraża</dt><dd>samorządy lokalne, gminne ośrodki pomocy społecznej</dd></dl>
+              <a href="Karta.dc.html" style="font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; align-self: flex-start">Zobacz kartę<span class="arr" aria-hidden="true">→</span></a>
             </article>
             <article class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
-              <h4 class="h" style="font-size: 21px; margin: 0">Terapeuta przestrzeni</h4>
-              <p>Tanie <mark>dostosowanie mieszkania</mark> do ograniczeń seniora, żeby mógł zostać w swoim domu.</p>
-              <dl class="kv"><dt>Kto wdraża</dt><dd>OPS, dzienne domy pomocy, DPS</dd></dl>
-              <a href="Karta.dc.html" style="font-weight: 700">Zobacz kartę<span class="arr" aria-hidden="true">→</span></a>
+              <h3 class="h" style="font-size: 21px; margin: 0">Terapeuta przestrzeni</h3>
+              <p>Usługa dostosowania <mark>mieszkania</mark> seniora do jego ograniczeń niskim kosztem, połączona z treningiem poruszania się w nowej przestrzeni i wsparciem psychologicznym dla seniora i bliskich.</p>
+              <p><strong>Dlaczego pasuje</strong> <span class="ain">(Propozycja AI)</span>: po udarze trzeba przystosować dom, żeby tata mógł w nim bezpiecznie zostać. <span class="muted">Z opisu: „sprzęt w domu”.</span></p>
+              <dl class="kv"><dt>Kto wdraża</dt><dd>OPS, miejskie dzienne domy pomocy społecznej, DPS, centra aktywności seniorów, NGO</dd></dl>
+              <a href="Karta.dc.html" style="font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; align-self: flex-start">Zobacz kartę<span class="arr" aria-hidden="true">→</span></a>
             </article>
           </div>
+          <details style="margin-top: 24px">
+            <summary>Inne innowacje, które mogą pasować (3)</summary>
+            <p class="muted" style="margin-top: 8px; font-size: 15px">Mniej podobne do Twojego opisu. Wybrała je wyszukiwarka, AI ich nie oceniała.</p>
+            <ul style="list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+              <li style="border-left: 2px solid #D9DDE4; padding-left: 16px"><span style="display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline"><a href="Karta.dc.html" style="font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">BaWita</a><span class="tag tag-ok">Sprawdzona przez ROPS</span></span><span style="display: block; font-size: 16px">Drewniana tablica manipulacyjna z siedmioma ruchomymi elementami, służąca do ćwiczenia pamięci, sprawności rąk i planowania dnia u osób z zaburzeniami otępiennymi.</span></li>
+              <li style="border-left: 2px solid #D9DDE4; padding-left: 16px"><span style="display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline"><a href="Karta.dc.html" style="font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">Senior CUDER</a><span class="tag tag-ok">Sprawdzona przez ROPS</span></span></li>
+              <li style="border-left: 2px solid #D9DDE4; padding-left: 16px"><span style="display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline"><a href="Karta.dc.html" style="font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">Mobilne centrum pomocy dla osób starszych</a></span><span style="display: block; font-size: 16px">Mobilna usługa dojeżdżająca do domów seniorów na wsi: coaching senioralny oraz porady prawnika, dietetyka, rehabilitanta i specjalisty od budżetu domowego, dobrane do lokalnych potrzeb.</span></li>
+            </ul>
+          </details>
         </li>
       </ol>
       <div class="card" style="margin-top: 8px; padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; background: #FFFFFF">
-        <p style="max-width: 560px">Nic nie pasuje? Zgłoś potrzebę do ROPS. Trafi na Mapę Wyzwań i pomoże zaplanować kolejne nabory.</p>
+        <p style="max-width: 560px">Nic nie pasuje? Napisz o tym do ROPS. Przygotujemy wiadomość z Twoim opisem, a Ty zdecydujesz, czy ją wysłać.</p>
         <a class="btn btn-s" href="Wiadomosci.dc.html">Zgłoś potrzebę</a>
       </div>
-      <p class="muted" style="margin-top: 16px; font-size: 15px">Model wybiera wyłącznie spośród innowacji z Biblioteki ROPS i pokazuje słowa, które zdecydowały o dopasowaniu. Twojego opisu nie zapisujemy, do statystyk trafia tylko obszar i wyzwanie.</p>
+      <p class="muted" style="margin-top: 16px; font-size: 15px">AI wybiera tylko spośród innowacji z Biblioteki ROPS. Twojego opisu nie zapisujemy. Do statystyk trafia tylko obszar i wyzwanie.</p>
+    </section>
+
+    <section aria-labelledby="stan-gmina" class="wrap" style="padding-bottom: 40px; max-width: 920px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="stan-gmina" class="lbl">Stan: konto gminy, ośrodka pomocy albo organizacji (np. GOPS w Przykładowej Woli)</h2>
+      <p class="muted" style="font-size: 16px">Pierwsza karta wyniku ma drugi przycisk. Mieszkaniec (jak Stanisław powyżej) i ekspert go nie widzą. Gość widzi go i po kliknięciu loguje się.</p>
+      <article class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 10px; border-left: 4px solid #1F3A8A">
+        <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline"><h3 class="h" style="font-size: 23px; margin: 0">Organizator kompleksowej opieki w miejscu zamieszkania</h3><span class="tag tag-ok">Sprawdzona przez ROPS</span></div>
+        <dl class="kv"><dt>Kto wdraża</dt><dd>podmioty organizujące pielęgniarstwo opieki długoterminowej, JST, OPS</dd></dl>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px"><a class="btn btn-p" href="Karta.dc.html">Zobacz kartę</a><a class="btn btn-s" href="Middleman.dc.html">Przygotuj kartę usługi</a></div>
+      </article>
+    </section>
+
+    <section aria-labelledby="stan-pilne" class="wrap" style="padding-bottom: 40px; max-width: 920px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="stan-pilne" class="lbl">Stan: opis wygląda na zagrożenie (ramka nad nagłówkiem „Wynik”)</h2>
+      <div role="note" aria-label="Pilna pomoc" class="crisis">
+        <p style="font-weight: 700">Jeśli komuś teraz grozi niebezpieczeństwo, zadzwoń pod numer <a class="tel" href="tel:112">112</a>.</p>
+        <p style="margin-top: 8px">Pomoc dla osób doznających przemocy w rodzinie: Niebieska Linia, <a class="tel" href="tel:800120002">800 120 002</a> (bezpłatnie). Możesz też poprosić o pomoc ośrodek pomocy społecznej w swojej gminie.</p>
+      </div>
+      <p class="muted" style="font-size: 16px">Gdy opis mówi o myślach samobójczych, drugie zdanie brzmi:</p>
+      <div role="note" aria-label="Pilna pomoc" class="crisis">
+        <p style="font-weight: 700">Jeśli komuś teraz grozi niebezpieczeństwo, zadzwoń pod numer <a class="tel" href="tel:112">112</a>.</p>
+        <p style="margin-top: 8px">Wsparcie w kryzysie psychicznym, bezpłatnie i całą dobę: <a class="tel" href="tel:800702222">800 70 2222</a>. Dzieci i młodzież: <a class="tel" href="tel:116111">116 111</a>.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="stan-slabe" class="wrap" style="padding-bottom: 64px; max-width: 920px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="stan-slabe" class="lbl">Stan: AI ocenia, że innowacje pasują słabo (ramka pod wynikiem)</h2>
+      <div class="card" style="padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; background: #FFFFFF">
+        <p style="max-width: 560px"><strong>Te innowacje pasują tylko częściowo. </strong>Napisz o tym do ROPS. Przygotujemy wiadomość z Twoim opisem, a Ty zdecydujesz, czy ją wysłać.</p>
+        <a class="btn btn-p" href="Wiadomosci.dc.html">Zgłoś potrzebę</a>
+      </div>
+      <p class="muted" style="font-size: 16px">Gdy AI nie wybrała żadnej innowacji:</p>
+      <div class="card" style="padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; background: #FFFFFF">
+        <p style="max-width: 560px"><strong>Wygląda na to, że takiego rozwiązania jeszcze nie ma. </strong>Napisz o tym do ROPS. Przygotujemy wiadomość z Twoim opisem, a Ty zdecydujesz, czy ją wysłać.</p>
+        <a class="btn btn-p" href="Wiadomosci.dc.html">Zgłoś potrzebę</a>
+      </div>
     </section>
   </main>
   <dc-import name="Stopka" hint-size="100%,220px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2100}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3300}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

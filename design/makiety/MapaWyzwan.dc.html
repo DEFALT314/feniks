@@ -17,7 +17,7 @@ body{margin:0;background:#F6F7F9}
 *{box-sizing:border-box}
 a{color:#1F3A8A;text-underline-offset:3px}a:hover{color:#172C6B}
 h1,h2,h3,p{margin:0}
-:focus-visible{outline:3px solid #C2452B;outline-offset:2px}
+:focus-visible{outline:3px solid #1F3A8A;outline-offset:2px}
 .h{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;letter-spacing:-.015em;line-height:1.12}
 .lbl{font-size:15px;font-weight:700;color:#4B5565}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:10px;font:inherit;font-size:17px;font-weight:700;text-decoration:none;border:1px solid transparent;cursor:pointer}
@@ -30,7 +30,8 @@ h1,h2,h3,p{margin:0}
 table{border-collapse:collapse;width:100%;font-size:16px}
 th,td{text-align:left;padding:12px 14px;border-bottom:1px solid #D9DDE4;vertical-align:top}
 th{font-size:15px;color:#4B5565}
-.ch{display:flex;justify-content:space-between;gap:16px;align-items:baseline;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid #D9DDE4}
+tbody th{font-size:inherit;font-weight:400;color:#151A23}
+.ch{display:flex;justify-content:space-between;gap:0 16px;align-items:baseline;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid #D9DDE4}
 /* Ruch i stany – wspólne dla wszystkich ekranów (w aplikacji: tokeny w globals.css) */
 :root{--ruch-szybko:120ms;--ruch:200ms;--ruch-wolno:420ms;--ease:cubic-bezier(.16,1,.3,1)}
 html{scrollbar-color:#B8C0CD #F6F7F9;caret-color:#1F3A8A}
@@ -64,7 +65,8 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
     <section style="background: #FFFFFF; border-bottom: 1px solid #D9DDE4">
       <div data-ruch="wejscie" class="wrap" style="padding-top: 44px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 16px">
         <h1 class="h" style="font-size: 44px">Mapa wyzwań społecznych</h1>
-        <p class="muted" style="max-width: 820px">8 obszarów i 48 wyzwań opisanych przez Dział Innowacji Społecznych ROPS. Każdy problem zgłoszony w HubMI przypisujemy do obszaru i wyzwania, żeby było widać, czego najbardziej potrzebuje region.</p>
+        <p class="muted" style="max-width: 820px">ROPS w Krakowie opisał 8 obszarów i 48 wyzwań. Każdy problem zgłoszony w HubMI łączymy z jednym obszarem. Dzięki temu widać, czego region potrzebuje najbardziej.</p>
+        <p style="max-width: 820px">Wybierz obszar, który Cię dotyczy. Zobaczysz, z czym ludzie mają kłopot, co mówią dane i jakie gotowe rozwiązania są już w Bibliotece.</p>
         <nav data-ruch="pokaz" aria-label="Obszary" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 8px">
           <a href="#o1" class="area"><strong>Rodzina i piecza zastępcza</strong><span class="muted" style="font-size: 15px">5 wyzwań</span></a>
           <a href="#o2" class="area"><strong>Bezdomność</strong><span class="muted" style="font-size: 15px">4 wyzwania</span></a>
@@ -80,40 +82,49 @@ input:not([type=radio]):not([type=checkbox]):focus,textarea:focus,select:focus{o
     <div class="wrap" style="display: flex; flex-wrap: wrap; gap: 48px; padding-top: 40px; padding-bottom: 40px">
       <section data-ruch="pokaz" id="o8" aria-labelledby="sen" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
         <h2 id="sen" class="h" style="font-size: 34px">Seniorzy</h2>
-        <p>Dostosowanie się do starzejącego się społeczeństwa: opieka zdrowotna i opiekuńcza, godna, bezpieczna i możliwie samodzielna starość bez izolacji.</p>
+        <p>Dostosowanie się do starzejącego się społeczeństwa: opieka zdrowotna i opiekuńcza, godna, bezpieczna i możliwie samodzielna starość bez izolacji i dyskryminacji.</p>
         <h3 class="lbl" style="margin-top: 12px">Kluczowe wyzwania</h3>
-        <div>
-          <div class="ch"><span>Usługi zdrowotne dopasowane do starzejącego się społeczeństwa, także z nowymi technologiami</span><a href="Biblioteka.dc.html">Innowacje</a></div>
-          <div class="ch"><span>Projektowanie uniwersalne przestrzeni i mieszkań, mieszkalnictwo senioralne</span><a href="Biblioteka.dc.html">Innowacje</a></div>
-          <div class="ch"><span>Odpowiedzialne przyjmowanie leków i suplementów</span><a href="Biblioteka.dc.html">Innowacje</a></div>
-          <div class="ch"><span>Szersza oferta aktywizacji i integracji seniorów</span><a href="Biblioteka.dc.html">Innowacje</a></div>
-          <div class="ch"><span>Kompetencje cyfrowe seniorów</span><a href="Biblioteka.dc.html">Innowacje</a></div>
-          <div class="ch" style="background: #FFFBEA; padding-left: 10px; padding-right: 10px"><span><strong>Dostęp do usług opiekuńczych w gminie, w tym specjalistycznych</strong> <span class="muted" style="font-size: 15px">· z Twojego ostatniego dopasowania</span></span><a href="Biblioteka.dc.html">Innowacje</a></div>
-        </div>
+        <ul style="margin: 0; padding: 0; list-style: none">
+          <li class="ch"><span>Instytucje i usługi zdrowotne dopasowane do starzejącego się społeczeństwa, także z nowymi technologiami</span><a href="Biblioteka.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; flex-shrink: 0">Zobacz 16 innowacji<span class="sr" style="position: absolute; left: -9999px"> dla wyzwania: Instytucje i usługi zdrowotne dopasowane do starzejącego się społeczeństwa, także z nowymi technologiami</span></a></li>
+          <li class="ch"><span>Projektowanie uniwersalne przestrzeni i mieszkań, mieszkalnictwo senioralne</span><a href="Biblioteka.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; flex-shrink: 0">Zobacz 20 innowacji<span class="sr" style="position: absolute; left: -9999px"> dla wyzwania: Projektowanie uniwersalne przestrzeni i mieszkań, mieszkalnictwo senioralne</span></a></li>
+          <li class="ch"><span>Odpowiedzialne przyjmowanie leków i suplementów</span><a href="Biblioteka.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; flex-shrink: 0">Zobacz 30 innowacji z obszaru<span class="sr" style="position: absolute; left: -9999px"> dla wyzwania: Odpowiedzialne przyjmowanie leków i suplementów</span></a></li>
+          <li class="ch"><span>Szersza oferta aktywizacji i integracji seniorów</span><a href="Biblioteka.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; flex-shrink: 0">Zobacz 29 innowacji<span class="sr" style="position: absolute; left: -9999px"> dla wyzwania: Szersza oferta aktywizacji i integracji seniorów</span></a></li>
+          <li class="ch"><span>Kompetencje cyfrowe seniorów</span><a href="Biblioteka.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; flex-shrink: 0">Zobacz 29 innowacji<span class="sr" style="position: absolute; left: -9999px"> dla wyzwania: Kompetencje cyfrowe seniorów</span></a></li>
+          <li class="ch"><span>Dostęp do usług opiekuńczych w gminie, w tym specjalistycznych</span><a href="Biblioteka.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; flex-shrink: 0">Zobacz 16 innowacji<span class="sr" style="position: absolute; left: -9999px"> dla wyzwania: Dostęp do usług opiekuńczych w gminie, w tym specjalistycznych</span></a></li>
+        </ul>
+        <h3 class="lbl" style="margin-top: 24px">Co mówią dane</h3>
+        <ul style="margin: 0; padding-left: 22px">
+          <li>Największe problemy seniorów: zdrowie, samotność, finanse, cyfryzacja.</li>
+          <li>Wielu seniorów mieszka w budynkach z barierami architektonicznymi.</li>
+          <li>Wielolekowość (polipragmazja) to poważne ryzyko.</li>
+          <li>Samotność jest powiązana z gorszą sytuacją materialną.</li>
+        </ul>
+        <p style="margin-top: 16px; font-size: 16px"><a href="#zrodlo" style="min-height: 44px; display: inline-flex; align-items: center">Mapa Wyzwań Społecznych ROPS (PDF)<span aria-hidden="true">&nbsp;↗</span><span style="position: absolute; left: -9999px"> (otwiera się w nowej karcie)</span></a></p>
       </section>
       <aside data-ruch="pokaz" aria-labelledby="persona" class="card" style="flex: 1 1 300px; max-width: 380px; padding: 24px; display: flex; flex-direction: column; gap: 10px; align-self: flex-start">
-        <span class="lbl">Persona z Mapy Wyzwań (fikcyjna)</span>
-        <h3 id="persona" class="h" style="font-size: 26px">Janina, 73 lata</h3>
-        <p>Mieszka sama w małym mieście, niedawno owdowiała, rzadko wychodzi z domu, przyjmuje wiele leków.</p>
-        <p><strong>Cele:</strong> mniej samotności, poczucie wartości, świadome dbanie o zdrowie.</p>
-        <p><strong>Wyzwania:</strong> samotność, nadużywanie leków, życie po stracie męża.</p>
-        <a class="btn btn-s" href="Dopasuj.dc.html" style="margin-top: 6px">Dopasuj dla Janiny</a>
+        <span class="lbl">Przykładowa osoba z Mapy Wyzwań (postać fikcyjna)</span>
+        <h3 id="persona" class="h" style="font-size: 26px">Janina</h3>
+        <p>73 lata, mieszka sama w małym mieście, niedawno owdowiała, rzadko wychodzi, wiele chorób i leków.</p>
+        <p><strong>Cele:</strong> mniej samotności, więcej aktywności, poczucie wartości, świadome dbanie o zdrowie i leki.</p>
+        <p><strong>Wyzwania:</strong> samotność, nadużywanie leków i suplementów, życie po stracie męża.</p>
+        <a class="btn btn-s" href="Dopasuj.dc.html" style="margin-top: 6px">Znajdź rozwiązanie dla: Janina</a>
       </aside>
     </div>
-    <section aria-labelledby="tab" class="wrap" style="padding-bottom: 64px; display: flex; flex-direction: column; gap: 12px">
+    <section class="wrap" style="padding-bottom: 64px; display: flex; flex-direction: column; gap: 12px">
       <h2 id="tab" class="h" style="font-size: 24px">Cała mapa w tabeli</h2>
-      <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D9DDE4; border-radius: 12px">
-        <table>
-          <thead><tr><th scope="col">Obszar</th><th scope="col">Wyzwań</th><th scope="col">Persona</th><th scope="col">Kategoria Biblioteki</th></tr></thead>
-          <tbody data-ruch="pokaz">
-            <tr><td>Rodzina i piecza zastępcza</td><td>5</td><td>Ania i Staś</td><td>dzieci, młodzież i rodzina</td></tr>
-            <tr><td>Bezdomność</td><td>4</td><td>Kuba</td><td>kryzys bezdomności</td></tr>
-            <tr><td>Niepełnosprawność</td><td>9</td><td>Krystian</td><td>mobilność, sensoryczna, intelektualna</td></tr>
-            <tr><td>Ubóstwo</td><td>8</td><td>Tomek</td><td>rynek pracy, bezdomność</td></tr>
-            <tr><td>Integracja cudzoziemców</td><td>7</td><td>Swietłana</td><td>cudzoziemcy</td></tr>
-            <tr><td>Zdrowie</td><td>5</td><td>Stanisław</td><td>zdrowie i medycyna</td></tr>
-            <tr><td>Zdrowie psychiczne</td><td>4</td><td>Mateusz, Karina</td><td>zdrowie; dzieci i młodzież</td></tr>
-            <tr><td>Seniorzy</td><td>6</td><td>Janina</td><td>seniorzy</td></tr>
+      <div role="region" aria-labelledby="tab" tabindex="0" style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D9DDE4; border-radius: 12px">
+        <table style="font-size: 17px">
+          <caption style="position: absolute; left: -9999px">Wszystkie obszary Mapy wyzwań: kluczowe wyzwania, przykładowe osoby i kategorie Biblioteki</caption>
+          <thead><tr style="border-bottom: 2px solid #151A23"><th scope="col">Obszar</th><th scope="col" style="min-width: 18rem">Kluczowe wyzwania</th><th scope="col">Przykładowe osoby</th><th scope="col">Kategoria Biblioteki</th></tr></thead>
+          <tbody data-ruch="pokaz" style="font-size: 16px">
+            <tr><th scope="row"><a href="#o1">Rodzina i piecza zastępcza</a><span class="muted" style="display: block; font-size: 15px">5 wyzwań</span></th><td><ul style="margin: 0; padding-left: 20px"><li>Więcej pozytywnie zweryfikowanych kandydatów na rodziny zastępcze</li><li>Lepsza współpraca między powiatami w systemie pieczy</li><li>Nierozdzielanie rodzeństwa przy umieszczaniu w pieczy</li><li>Krótszy pobyt w pieczy i szybsze przejście do docelowej formy opieki</li><li>Spójne standardy pracy ośrodków adopcyjnych</li></ul></td><td>Ania i Staś</td><td>Dla dzieci, młodzieży i rodziny</td></tr>
+            <tr><th scope="row"><a href="#o2">Bezdomność</a><span class="muted" style="display: block; font-size: 15px">4 wyzwania</span></th><td><ul style="margin: 0; padding-left: 20px"><li>Oferta wsparcia dopasowana do młodych dorosłych i nastolatków</li><li>Docieranie do „niewidzialnych” młodych osób w kryzysie bezdomności</li><li>Ciągłość pomocy po opuszczeniu placówki opiekuńczo-wychowawczej</li><li>Budowanie więzi i sieci wsparcia osób bez rodziny</li></ul></td><td>Kuba</td><td>Dla osób w kryzysie bezdomności</td></tr>
+            <tr><th scope="row"><a href="#o3">Niepełnosprawność</a><span class="muted" style="display: block; font-size: 15px">9 wyzwań</span></th><td><ul style="margin: 0; padding-left: 20px"><li>Większy dostęp do rynku pracy</li><li>Wykształcenie dające samodzielność i rozwój zawodowy</li><li>Samodzielne relacje społeczne i towarzyskie</li><li>Wsparcie emocjonalne</li><li>Wsparcie techniczne, infrastruktura i dostępność</li><li>Samodzielne przemieszczanie się i korzystanie z usług bez asysty</li><li>Dostęp do opieki medycznej, fizjoterapii i pomocy w codziennych czynnościach</li><li>Rozwój zainteresowań</li><li>Mieszkania dostosowane do ograniczeń funkcjonalnych</li></ul></td><td>Krystian</td><td>Dla osób o ograniczonej mobilności; Dla osób z niepełnosprawnością sensoryczną; Dla osób z niepełnosprawnością intelektualną</td></tr>
+            <tr><th scope="row"><a href="#o4">Ubóstwo</a><span class="muted" style="display: block; font-size: 15px">8 wyzwań</span></th><td><ul style="margin: 0; padding-left: 20px"><li>Ubóstwo dzieci – dobra wczesna opieka i edukacja</li><li>Ubóstwo seniorów</li><li>Ubóstwo osób z niepełnosprawnościami</li><li>Ubóstwo osób pracujących, np. drobnych rolników</li><li>Bezrobotni i bezdomni – zatrudnienie socjalne, spółdzielnie socjalne</li><li>Ubóstwo uchodźców z Ukrainy</li><li>Ubóstwo energetyczne</li><li>Głód i niedożywienie</li></ul></td><td>Tomek</td><td>Dla rynku pracy; Dla osób w kryzysie bezdomności</td></tr>
+            <tr><th scope="row"><a href="#o5">Integracja cudzoziemców</a><span class="muted" style="display: block; font-size: 15px">7 wyzwań</span></th><td><ul style="margin: 0; padding-left: 20px"><li>Równy dostęp migrantów do usług społecznych</li><li>Usługi dopasowane do migrantów: tłumacz, asysta kulturowa, indywidualne programy</li><li>Włączenie kulturowe, w tym dzieci i młodzieży</li><li>Rynek pracy otwarty na cudzoziemców: język branżowy, uznawanie kwalifikacji</li><li>Integracja dzieci migrantów w szkole</li><li>Przeciwdziałanie stereotypom</li><li>Zdrowie psychiczne cudzoziemców</li></ul></td><td>Swietłana</td><td>Dla cudzoziemców</td></tr>
+            <tr><th scope="row"><a href="#o6">Zdrowie</a><span class="muted" style="display: block; font-size: 15px">5 wyzwań</span></th><td><ul style="margin: 0; padding-left: 20px"><li>Świadomość i edukacja: zdrowy styl życia, profilaktyka, dieta, ruch</li><li>Równy dostęp do dobrej opieki zdrowotnej</li><li>Dostosowanie opieki do starzejącego się społeczeństwa, w tym opieka długoterminowa</li><li>Promocja zdrowia dzieci i młodzieży</li><li>Świadomość zdrowia psychicznego i walka ze stygmatyzacją</li></ul></td><td>Stanisław</td><td>Dla zdrowia i medycyny</td></tr>
+            <tr><th scope="row"><a href="#o7">Zdrowie psychiczne</a><span class="muted" style="display: block; font-size: 15px">4 wyzwania</span></th><td><ul style="margin: 0; padding-left: 20px"><li>Edukacja o zdrowiu psychicznym dzieci, młodzieży i seniorów</li><li>Rodzice, którzy rozpoznają sygnały kryzysu u dzieci</li><li>Przejście z opieki instytucjonalnej na środowiskową</li><li>Mniej stygmatyzacji, łatwiejsze sięganie po pomoc</li></ul></td><td>Mateusz, Karina</td><td>Dla zdrowia i medycyny; Dla dzieci, młodzieży i rodziny</td></tr>
+            <tr><th scope="row"><a href="#o8">Seniorzy</a><span class="muted" style="display: block; font-size: 15px">6 wyzwań</span></th><td><ul style="margin: 0; padding-left: 20px"><li>Instytucje i usługi zdrowotne dopasowane do starzejącego się społeczeństwa, także z nowymi technologiami</li><li>Projektowanie uniwersalne przestrzeni i mieszkań, mieszkalnictwo senioralne</li><li>Odpowiedzialne przyjmowanie leków i suplementów</li><li>Szersza oferta aktywizacji i integracji seniorów</li><li>Kompetencje cyfrowe seniorów</li><li>Dostęp do usług opiekuńczych w gminie, w tym specjalistycznych</li></ul></td><td>Janina</td><td>Dla seniorów</td></tr>
           </tbody>
         </table>
       </div>
