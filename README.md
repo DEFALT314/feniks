@@ -58,3 +58,19 @@ pnpm db:roles            # signs in as every demo account and a guest: who sees 
 service cards, test sign-ups and ratings, conversations, notifications, the daily AI counter) and
 inserts the mockup data again: 3 ideas in the ROPS queue, a conversation, a service card, 3 tests,
 3 grant calls and the search statistics for "Potrzeby w regionie". Real accounts are not touched.
+
+## Open data: grant calls API (P4)
+
+Published calls for proposals ("nabory") for municipal websites and grant databases. Public, no key,
+CORS enabled, cached for 5 minutes.
+
+```bash
+curl https://feniks-hub.vercel.app/api/calls                         # open calls, JSON
+curl "https://feniks-hub.vercel.app/api/calls?area=seniorzy"         # one Challenge map area
+curl "https://feniks-hub.vercel.app/api/calls?status=all&format=csv" # also past ones, CSV for Excel
+```
+
+Import from an external grant database (ROPS session only): `POST /api/admin/calls/import` with
+`{ "calls": [{ "id": "nabor-x-2027", "nazwa": "…", "termin_do": "2027-03-31", "obszary": ["seniorzy"] }] }`.
+New calls arrive switched off and are published by ROPS in Panel ROPS → Nabory; existing ids are
+updated. Schemas: `CallsQuery`, `CallsResponse`, `CallImportRequest` in `lib/contracts/admin.ts`.
